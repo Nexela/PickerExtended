@@ -1,0 +1,10 @@
+{
+  "name": "picker-old",
+  "version": "1.0.1",
+  "factorio_version": "0.13",
+  "title": "Picker old version",
+  "author": "Tinyboss",
+  "contact": "ericdb@gmail.com",
+  "homepage": "https://forums.factorio.com/viewtopic.php?f=93&t=14695",
+  "description": "Adds a hotkey to select the entity under the mouse cursor from player inventory, if present."
+}
