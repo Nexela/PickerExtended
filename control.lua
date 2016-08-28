@@ -1,30 +1,18 @@
-local DEBUG = true
+local DEBUG = false
 script.on_event("picker-select", function(event)
 	local player = game.players[event.player_index]
 	local creative = player.cheat_mode
 	if player.selected then
 		
 		
-        --local item, locname = player.selected.name, player.selected.localised_name
-  --       local dir = player.selected.direction
-		-- player.print("Direction =".. tostring(dir))
-        --if item == "straight-rail" or item == "curved-rail" then item = "rail" end
-		
 		local ip
 		local locname = player.selected.localised_name -- use entity name as locname in case we can't find an item.
         local ep = player.selected.prototype
+       
         
-
-        -- if ep and ep.mineable_properties.minable and ep.mineable_properties.products and not ep.autoplace_specification then
-        -- 	local product = ep.mineable_properties.products[1] --Retrieve the first available product
-        -- 	if product.type == "item" and product.name then -- no point even trying with fluids :)
-        -- 		ip = game.item_prototypes[product.name]
-        -- 		locname=ip.localised_name
-        -- --ip.place_result
-        -- 	end
-        -- end
-        
-        if ep and ep.mineable_properties and ep.mineable_properties.minable and ep.mineable_properties.products and ep.mineable_properties.products[1].type == "item" then -- If the entity has mineable products.
+        if ep and ep.mineable_properties and ep.mineable_properties.minable and ep.mineable_properties.products
+        and ep.mineable_properties.products[1].type == "item" then -- If the entity has mineable products.
+        	
         	ip = game.item_prototypes[ep.mineable_properties.products[1].name] -- Retrieve first available item prototype
 			
 			
