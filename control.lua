@@ -2,9 +2,9 @@ local DEBUG = false
 
 script.on_event("picker-select", function(event)
     local player = game.players[event.player_index]
-    local creative = player.cheat_mode
-    if player.selected then
+    if player.connected and player.selected and player.controller_type ~= defines.controllers.ghost then
 
+      local creative = player.cheat_mode
       local ip
       local locname = player.selected.localised_name -- use entity name as locname in case we can't find an item.
       local ep = player.selected.prototype
