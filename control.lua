@@ -34,15 +34,16 @@ script.on_event("picker-select",
                             player.cursor_stack.clear()
                         end
                         --If it is a ghost just revive it.
+                        --local max_distance = 12 + player.character_build_distance_bonus + player.force.character_build_distance_bonus
                         if entity.name == "entity-ghost" or entity.name == "tile-ghost" and player.can_reach_entity(entity) then
                             local type, position = entity.name, entity.position
                             local revived, new_entity = entity.revive()
                             if revived and type == "entity-ghost" then
-                                game.raise_event(defines.events.on_robot_built_entity, {created_entity=new_entity, robot=player})
+                                game.raise_event(defines.events.on_built_entity, {created_entity=new_entity, player_index=player.index})
                                 player.remove_item({name = ip.name, count = 1})
                             end
                             if revived and type == "tile-ghost" then
-                                game.raise_event(defines.events.on_robot_built_tile, {robot=player, positions={position}})
+                                game.raise_event(defines.events.on_player_built_tile, {player_index=player.index, positions={position}})
                                 player.remove_item({name = ip.name, count = 1})
                             end
                         else
@@ -71,8 +72,7 @@ script.on_event("picker-select",
                         end
                     else -- None in inventory
                         if DEBUG then locname = ip.name end
-                        if remote.interfaces.handyhands and remote.interfaces.handyhands.paused and not remote.call("handyhands", "paused", player.index) then
-                            --player.print("HandyHands not paused")
+                        if player.force.recipes[ip.name] and remote.interfaces.handyhands and not remote.call("handyhands", "paused", player.index) then
                             if player.get_craftable_count(ip.name) > 0 and player.force.recipes[ip.name].enabled then
                                 player.begin_crafting{count=1,recipe=ip.name,silent=true}
                             end
