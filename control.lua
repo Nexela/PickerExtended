@@ -1,97 +1,125 @@
 local DEBUG = false
+local Entity = require("stdlib.entity.entity")
 
-script.on_event("picker-select",
-    function(event)
-        local player = game.players[event.player_index]
-        if player.connected and player.selected and player.controller_type ~= defines.controllers.ghost then
-            local entity = player.selected
-            local creative = player.cheat_mode
-            local ip, locname, ep
+local function get_item_stack(e, name)
+    for _, ind in pairs(defines.inventory) do
+        local stack = e.get_inventory(ind) and e.get_inventory(ind).find_item_stack(name)
+        if stack then return stack end
+    end
+end
 
-            if entity.name == "entity-ghost" or entity.name == "tile-ghost" then
-                locname = entity.ghost_localised_name
-                ep = entity.ghost_prototype
-            else
-                locname = entity.localised_name -- use entity name as locname in case we can't find an item.
-                ep = entity.prototype
-            end
-
-            if ep and ep.mineable_properties and ep.mineable_properties.minable and ep.mineable_properties.products
-            and ep.mineable_properties.products[1].type == "item" then -- If the entity has mineable products.
-
-                ip = game.item_prototypes[ep.mineable_properties.products[1].name] -- Retrieve first available item prototype
-
-                if ip and (ip.place_result or ip.place_as_tile_result) then -- If the entity has an item with a placeable prototype,
-                    locname=ip.localised_name or locname
-                    local n = math.min(player.get_item_count(ip.name), ip.stack_size)
-
-                    if n > 0 then --Player has some of this item in their inventory.
-                        --Save the current stack (if not using combined Q button)
-                        local held_stack
-                        if player.cursor_stack.valid_for_read then
-                            --Player is already holding something, remember what it was:
-                            held_stack = {name = player.cursor_stack.name, count = player.cursor_stack.count, health = player.cursor_stack.health}
-                            player.cursor_stack.clear()
-                        end
-                        --If it is a ghost just revive it.
-                        --local max_distance = 12 + player.character_build_distance_bonus + player.force.character_build_distance_bonus
-                        if entity.name == "entity-ghost" or entity.name == "tile-ghost" and player.can_reach_entity(entity) then
-                            local type, position = entity.name, entity.position
-                            local revived, new_entity = entity.revive()
-                            if revived and type == "entity-ghost" then
-                                game.raise_event(defines.events.on_built_entity, {created_entity=new_entity, player_index=player.index})
-                                player.remove_item({name = ip.name, count = 1})
-                            end
-                            if revived and type == "tile-ghost" then
-                                game.raise_event(defines.events.on_player_built_tile, {player_index=player.index, positions={position}})
-                                player.remove_item({name = ip.name, count = 1})
-                            end
-                        else
-                            -- Put items in the cursor stack:
-                            player.cursor_stack.set_stack({name = ip.name, count = n})
-                            -- Remove an equal number from the main inventory:
-                            player.remove_item({name = ip.name, count = n})
-                            -- Put whatever was originally being held back into player's inventory:
-                            if held_stack then
-                                player.insert(held_stack)
-                            end
-                        end
-                    elseif creative then -- player has cheat_mode enabled just give him 1 if he doesn't have any!
-                        if entity.name == "entity-ghost" or entity.name == "tile-ghost" then
-                            local type, position = entity.name, entity.position
-                            local revived, new_entity = entity.revive()
-                            if revived and type == "entity-ghost" then
-                                game.raise_event(defines.events.on_robot_built_entity, {created_entity=new_entity, robot=player})
-                            end
-                            if revived and type == "tile-ghost" then
-                                game.raise_event(defines.events.on_player_built_tile, {robot=player, positions={position}})
-                            end
-                        else
-                            player.cursor_stack.clear()
-                            player.cursor_stack.set_stack({name = ip.name, count = 1})
-                        end
-                    else -- None in inventory
-                        if DEBUG then locname = ip.name end
-                        if player.force.recipes[ip.name] and remote.interfaces.handyhands and not remote.call("handyhands", "paused", player.index) then
-                            if player.get_craftable_count(ip.name) > 0 and player.force.recipes[ip.name].enabled then
-                                player.begin_crafting{count=1,recipe=ip.name,silent=true}
-                            end
-                        else
-                            player.print({"msg-no-item-inv", locname})
-                        end
-                    end
-                else -- No prototype found.
-                    if DEBUG then player.print("No placeable item prototype found for item "..ep.name..".") end
-                end
-            else
-                if DEBUG then player.print("Not a minable entity with item products") end
-            end
-
-        else -- No entity under cursor; maybe the player doesn't know how to use the picker.
-            if DEBUG then player.print("Place cursor over an object before activating picker tool.") end
+local function get_blueprint(e)
+    for _, ind in pairs(defines.inventory) do
+        local blueprint = e.get_inventory(ind) and e.get_inventory(ind).find_item_stack("blueprint")
+        if blueprint and (not blueprint.is_blueprint_setup() or (blueprint.is_blueprint_setup() and blueprint.label == "Picker-blueprint")) then
+            blueprint.set_stack({name="blueprint", count = 1})
+            blueprint.label = "Picker-blueprint"
+            return blueprint
         end
     end
-)
+end
+
+--Return localised name, entity_prototype, and item_prototype
+local function get_placeable_item(entity)
+    local locname, ep
+    if entity.name == "entity-ghost" or entity.name == "tile-ghost" then
+        locname = entity.ghost_localised_name
+        ep = entity.ghost_prototype
+    else
+        locname = entity.localised_name
+        ep = entity.prototype
+    end
+    if ep and ep.mineable_properties and ep.mineable_properties.minable and ep.mineable_properties.products
+    and ep.mineable_properties.products[1].type == "item" then -- If the entity has mineable products.
+        local ip = game.item_prototypes[ep.mineable_properties.products[1].name] -- Retrieve first available item prototype
+        if ip and (ip.place_result or ip.place_as_tile_result) then -- If the entity has an item with a placeable prototype,
+            return (ip.localised_name or locname), ep, ip
+        end
+        return locname, ep
+    end
+end
+
+--Requires empty blueprint in inventory
+local function make_simple_blueprint(event)
+    local player = game.players[event.player_index]
+    if player.selected and player.controller_type ~= defines.controllers.ghost then
+        local entity = player.selected
+        --local locname, ep, ip = get_placeable_item(entity)
+        local blueprint = get_blueprint(player)
+        if blueprint then
+            blueprint.create_blueprint{surface=entity.surface, force=player.force, area=Entity.to_selection_area(entity), always_include_tiles=false}
+            if blueprint.is_blueprint_setup() then
+                --Clean the cursor_stack (if not using combined Q button)
+                player.clean_cursor()
+                --If cursor stack is empty, and we were able to transfer the stack. clear the stack from inventory.
+                if not player.cursor_stack.valid_for_read and player.cursor_stack.set_stack(blueprint) then
+                    blueprint.clear()
+                else
+                    if DEBUG then player.print("Can't clean cursor") end
+                end
+            end
+        else
+            player.print({"msg-no-blueprint-inv"})
+        end --blueprint
+    end --player.selected
+end
+script.on_event("picker-make-ghost", make_simple_blueprint)
+
+local function picker_select(event)
+    local player = game.players[event.player_index]
+    if player.selected and player.controller_type ~= defines.controllers.ghost then
+        local entity = player.selected
+        local creative = player.cheat_mode
+        local locname, ep, ip = get_placeable_item(entity)
+        if ep then
+            if ip then
+                local stack = get_item_stack(player, ip.name)
+                if stack or creative then --Player has some of this item in their inventory.
+                    --If it is a ghost just revive it
+                    if entity.name == "entity-ghost" or entity.name == "tile-ghost" and player.can_reach_entity(entity) then
+                        local type, position = entity.name, entity.position
+                        local revived, new_entity = entity.revive()
+                        if revived then
+                            if not creative then
+                                new_entity.health = (new_entity.health > 0) and ((stack.health or 1) * new_entity.prototype.max_health)
+                                stack.count = stack.count - 1
+                            end
+                            if type == "entity-ghost" then
+                                game.raise_event(defines.events.on_built_entity, {created_entity=new_entity, player_index=player.index})
+                            elseif type == "tile-ghost" then
+                                game.raise_event(defines.events.on_player_built_tile, {player_index=player.index, positions={position}})
+                            end
+                        end
+                    else
+                        --Clean the cursor_stack (if not using combined Q button)
+                        player.clean_cursor()
+                        --If cursor stack is empty, and we were able to transfer the stack. clear the stack from inventory.
+                        if not player.cursor_stack.valid_for_read and player.cursor_stack.set_stack(stack) then
+                            stack.clear()
+                        else
+                            if DEBUG then player.print("Can't clean cursor") end
+                        end
+                    end
+                else -- None in inventory
+                    if player.force.recipes[ip.name] and remote.interfaces.handyhands and not remote.call("handyhands", "paused", player.index) then
+                        if player.get_craftable_count(ip.name) > 0 and player.force.recipes[ip.name].enabled then
+                            player.begin_crafting{count=1, recipe=ip.name, silent=true}
+                        end
+                    else
+                        player.print({"msg-no-item-inv", locname})
+                    end
+                end
+            else -- No prototype found.
+                if DEBUG then player.print("No placeable item prototype found for item "..ep.name..".") end
+            end
+        else
+            if DEBUG then player.print("Not a minable entity with item products") end
+        end
+    else -- No entity under cursor; maybe the player doesn't know how to use the picker.
+        if DEBUG then player.print("Place cursor over an object before activating picker tool.") end
+    end
+end
+script.on_event("picker-select", picker_select)
 
 local function SpawnGUI(player)
     local frame = player.gui.center.add{type="frame", name="picker_renameFrame"}
@@ -102,35 +130,33 @@ local function SpawnGUI(player)
     frame.add{type = "button",name = "picker_renamerButton",caption = "OK",style = "picker-renamer-button-style"}
 end
 
-script.on_event(defines.events.on_gui_click,
-    function(event)
-        if event.element.name == "picker_renamerX" then
-            game.players[event.player_index].gui.center.picker_renameFrame.destroy()
-        elseif event.element.name == "picker_renamerButton" then
-            local player = game.players[event.player_index]
-            if global.renamer[event.player_index].valid then
-                global.renamer[event.player_index].backer_name =
-                player.gui.center.picker_renameFrame.picker_renameTextfield.text
-            end
-            player.gui.center.picker_renameFrame.destroy()
+local function on_gui_click(event)
+    if event.element.name == "picker_renamerX" then
+        game.players[event.player_index].gui.center.picker_renameFrame.destroy()
+    elseif event.element.name == "picker_renamerButton" then
+        local player = game.players[event.player_index]
+        if global.renamer[event.player_index].valid then
+            global.renamer[event.player_index].backer_name =
+            player.gui.center.picker_renameFrame.picker_renameTextfield.text
         end
+        player.gui.center.picker_renameFrame.destroy()
     end
-)
+end
+script.on_event(defines.events.on_gui_click, on_gui_click)
 
-script.on_event("picker-rename",
-    function(event)
-        if game.players[event.player_index].gui.center.picker_renameFrame then
-            game.players[event.player_index].gui.center.picker_renameFrame.destroy()
-        end
-        local selection = game.players[event.player_index].selected
-        if selection then
-            if selection.supports_backer_name() then
-                if not global.renamer then global.renamer = {} end
-                global.renamer[event.player_index] = selection
-                SpawnGUI(game.players[event.player_index])
-            else
-                game.players[event.player_index].print({"selection-not-renamable"})
-            end
+local function picker_rename(event)
+    if game.players[event.player_index].gui.center.picker_renameFrame then
+        game.players[event.player_index].gui.center.picker_renameFrame.destroy()
+    end
+    local selection = game.players[event.player_index].selected
+    if selection then
+        if selection.supports_backer_name() then
+            if not global.renamer then global.renamer = {} end
+            global.renamer[event.player_index] = selection
+            SpawnGUI(game.players[event.player_index])
+        else
+            game.players[event.player_index].print({"selection-not-renamable"})
         end
     end
-)
+end
+script.on_event("picker-rename", picker_rename)

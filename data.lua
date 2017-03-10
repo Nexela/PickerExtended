@@ -6,6 +6,12 @@ data:extend({
       key_sequence = "Q",
       consuming = "all"
     },
+    {
+      type = "custom-input",
+      name = "picker-make-ghost",
+      key_sequence = "CONTROL + Q",
+      consuming = "all"
+    },
   })
 
 if data.raw["custom-input"]["rename"] then -- Gotlags renamer is installed unassign hotkey?
