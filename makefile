@@ -47,7 +47,7 @@ nodebug:
 check:
 	luacheck2.bat config.lua
 
-package: package-copy $(OUT_FILES) nodebug
+package: package-copy $(OUT_FILES)
 	cd $(BUILD_DIR) && zip -rq $(OUTPUT_NAME).zip $(OUTPUT_NAME)
 
 clean:
