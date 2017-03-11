@@ -1,20 +1,30 @@
 local DEBUG = false
 local Entity = require("stdlib.entity.entity")
+local INVENTORIES = {defines.inventory.player_quickbar, defines.inventory.player_main, defines.inventory.god_quickbar, defines.inventory.god_main}
 
 local function get_item_stack(e, name)
-    for _, ind in pairs(defines.inventory) do
+    for _, ind in pairs(INVENTORIES) do
         local stack = e.get_inventory(ind) and e.get_inventory(ind).find_item_stack(name)
-        if stack then return stack end
+        if stack then
+            return stack
+        end
+    end
+    if e.vehicle and e.vehicle.get_inventory(defines.inventory.car_trunk) then
+        local stack = e.vehicle.get_inventory(defines.inventory.car_trunk).find_item_stack(name)
+        if stack then
+            return stack
+        end
     end
 end
 
-local function get_blueprint(e)
-    for _, ind in pairs(defines.inventory) do
-        local blueprint = e.get_inventory(ind) and e.get_inventory(ind).find_item_stack("blueprint")
+local function get_and_setup_blueprint(player, entity)
+    for _, ind in pairs(INVENTORIES) do
+        local blueprint = player.get_inventory(ind) and player.get_inventory(ind).find_item_stack("blueprint")
         if blueprint and (not blueprint.is_blueprint_setup() or (blueprint.is_blueprint_setup() and blueprint.label == "Picker-blueprint")) then
             blueprint.set_stack({name="blueprint", count = 1})
             blueprint.label = "Picker-blueprint"
-            return blueprint
+            blueprint.create_blueprint{surface=entity.surface, force=player.force, area=Entity.to_selection_area(entity), always_include_tiles=false}
+            return blueprint.is_blueprint_setup() and blueprint
         end
     end
 end
@@ -45,18 +55,15 @@ local function make_simple_blueprint(event)
     if player.selected and player.controller_type ~= defines.controllers.ghost then
         local entity = player.selected
         --local locname, ep, ip = get_placeable_item(entity)
-        local blueprint = get_blueprint(player)
+        local blueprint = get_and_setup_blueprint(player, entity)
         if blueprint then
-            blueprint.create_blueprint{surface=entity.surface, force=player.force, area=Entity.to_selection_area(entity), always_include_tiles=false}
-            if blueprint.is_blueprint_setup() then
-                --Clean the cursor_stack (if not using combined Q button)
-                player.clean_cursor()
-                --If cursor stack is empty, and we were able to transfer the stack. clear the stack from inventory.
-                if not player.cursor_stack.valid_for_read and player.cursor_stack.set_stack(blueprint) then
-                    blueprint.clear()
-                else
-                    if DEBUG then player.print("Can't clean cursor") end
-                end
+            --Clean the cursor_stack (if not using combined Q button)
+            player.clean_cursor()
+            --If cursor stack is empty, and we were able to transfer the stack. clear the stack from inventory.
+            if not player.cursor_stack.valid_for_read and player.cursor_stack.set_stack(blueprint) then
+                blueprint.clear()
+            else
+                if DEBUG then player.print("Can't clean cursor") end
             end
         else
             player.print({"msg-no-blueprint-inv"})
@@ -93,9 +100,11 @@ local function picker_select(event)
                     else
                         --Clean the cursor_stack (if not using combined Q button)
                         player.clean_cursor()
-                        --If cursor stack is empty, and we were able to transfer the stack. clear the stack from inventory.
-                        if not player.cursor_stack.valid_for_read and player.cursor_stack.set_stack(stack) then
-                            stack.clear()
+                        --If cursor stack is empty, and we were able to transfer or create the stack. clear the stack from inventory.
+                        if not player.cursor_stack.valid_for_read then
+                            if player.cursor_stack.set_stack(stack or ((creative and {name=ip.name, count = 1}) or nil)) and stack then
+                                stack.clear()
+                            end
                         else
                             if DEBUG then player.print("Can't clean cursor") end
                         end
