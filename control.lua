@@ -88,7 +88,9 @@ local function picker_select(event)
                         local revived, new_entity = entity.revive()
                         if revived then
                             if not creative then
-                                new_entity.health = (new_entity.health > 0) and ((stack.health or 1) * new_entity.prototype.max_health)
+                                if new_entity then
+                                    new_entity.health = (new_entity.health > 0) and ((stack.health or 1) * new_entity.prototype.max_health)
+                                end
                                 stack.count = stack.count - 1
                             end
                             if type == "entity-ghost" then
