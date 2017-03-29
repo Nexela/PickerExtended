@@ -190,7 +190,7 @@ local function copy_chest(event)
                 data.src = chest
                 data.tick = game.tick
             elseif data.src.valid then
-                game.print({"paste-dest"})
+                game.print({"picker.paste-dest"})
                 local src, dest = data.src, chest
                 --clone inventory 1 to inventory 2
                 local src_inv = src.get_inventory(defines.inventory.chest)
