@@ -1,11 +1,20 @@
 local DEBUG = false
-local Entity = require("stdlib.entity.entity")
 local INVENTORIES = {defines.inventory.player_quickbar, defines.inventory.player_main, defines.inventory.god_quickbar, defines.inventory.god_main}
+local WIRE_DISTANCE = 7.5
 
+require("stdlib.table")
+local Entity = require("stdlib.entity.entity")
+--local Area = require("stdlib.area.area")
+local Position = require("stdlib.area.position")
+
+-------------------------------------------------------------------------------
+--[[Picker]]--
+-------------------------------------------------------------------------------
 local function get_item_stack(e, name)
     for _, ind in pairs(INVENTORIES) do
         local stack = e.get_inventory(ind) and e.get_inventory(ind).find_item_stack(name)
-        if stack then
+        --.14 Bug fix for picking item stacks with grids
+        if stack and not (stack.grid and #stack.grid.equipment > 0) then
             return stack
         end
     end
@@ -13,18 +22,6 @@ local function get_item_stack(e, name)
         local stack = e.vehicle.get_inventory(defines.inventory.car_trunk).find_item_stack(name)
         if stack then
             return stack
-        end
-    end
-end
-
-local function get_and_setup_blueprint(player, entity)
-    for _, ind in pairs(INVENTORIES) do
-        local blueprint = player.get_inventory(ind) and player.get_inventory(ind).find_item_stack("blueprint")
-        if blueprint and (not blueprint.is_blueprint_setup() or (blueprint.is_blueprint_setup() and blueprint.label == "Picker-blueprint")) then
-            blueprint.set_stack({name="blueprint", count = 1})
-            blueprint.label = "Picker-blueprint"
-            blueprint.create_blueprint{surface=entity.surface, force=player.force, area=Entity.to_selection_area(entity), always_include_tiles=false}
-            return blueprint.is_blueprint_setup() and blueprint
         end
     end
 end
@@ -48,29 +45,6 @@ local function get_placeable_item(entity)
         return locname, ep
     end
 end
-
---Requires empty blueprint in inventory
-local function make_simple_blueprint(event)
-    local player = game.players[event.player_index]
-    if player.selected and player.controller_type ~= defines.controllers.ghost then
-        local entity = player.selected
-        --local locname, ep, ip = get_placeable_item(entity)
-        local blueprint = get_and_setup_blueprint(player, entity)
-        if blueprint then
-            --Clean the cursor_stack (if not using combined Q button)
-            player.clean_cursor()
-            --If cursor stack is empty, and we were able to transfer the stack. clear the stack from inventory.
-            if not player.cursor_stack.valid_for_read and player.cursor_stack.set_stack(blueprint) then
-                blueprint.clear()
-            else
-                if DEBUG then player.print("Can't clean cursor") end
-            end
-        else
-            player.print({"msg-no-blueprint-inv"})
-        end --blueprint
-    end --player.selected
-end
-script.on_event("picker-make-ghost", make_simple_blueprint)
 
 local function picker_select(event)
     local player = game.players[event.player_index]
@@ -117,7 +91,7 @@ local function picker_select(event)
                             player.begin_crafting{count=1, recipe=ip.name, silent=true}
                         end
                     else
-                        player.print({"msg-no-item-inv", locname})
+                        player.print({"picker.msg-no-item-inv", locname})
                     end
                 end
             else -- No prototype found.
@@ -132,6 +106,46 @@ local function picker_select(event)
 end
 script.on_event("picker-select", picker_select)
 
+-------------------------------------------------------------------------------
+--[[Picker Blueprinter]]--
+-------------------------------------------------------------------------------
+local function get_and_setup_blueprint(player, entity)
+    for _, ind in pairs(INVENTORIES) do
+        local blueprint = player.get_inventory(ind) and player.get_inventory(ind).find_item_stack("blueprint")
+        if blueprint and (not blueprint.is_blueprint_setup() or (blueprint.is_blueprint_setup() and blueprint.label == "Picker-blueprint")) then
+            blueprint.set_stack({name="blueprint", count = 1})
+            blueprint.label = "Picker-blueprint"
+            blueprint.create_blueprint{surface=entity.surface, force=player.force, area=Entity.to_selection_area(entity), always_include_tiles=false}
+            return blueprint.is_blueprint_setup() and blueprint
+        end
+    end
+end
+--Requires empty blueprint in inventory
+local function make_simple_blueprint(event)
+    local player = game.players[event.player_index]
+    if player.selected and player.controller_type ~= defines.controllers.ghost then
+        local entity = player.selected
+        --local locname, ep, ip = get_placeable_item(entity)
+        local blueprint = get_and_setup_blueprint(player, entity)
+        if blueprint then
+            --Clean the cursor_stack (if not using combined Q button)
+            player.clean_cursor()
+            --If cursor stack is empty, and we were able to transfer the stack. clear the stack from inventory.
+            if not player.cursor_stack.valid_for_read and player.cursor_stack.set_stack(blueprint) then
+                blueprint.clear()
+            else
+                if DEBUG then player.print("Can't clean cursor") end
+            end
+        else
+            player.print({"picker.msg-no-blueprint-inv"})
+        end --blueprint
+    end --player.selected
+end
+script.on_event("picker-make-ghost", make_simple_blueprint)
+
+-------------------------------------------------------------------------------
+--[[Picker Rename]]--
+-------------------------------------------------------------------------------
 local function SpawnGUI(player)
     local frame = player.gui.center.add{type="frame", name="picker_renameFrame"}
     frame.add{type = "button",name = "picker_renamerX",caption = " X ",style = "picker-renamer-button-style"}
@@ -166,12 +180,15 @@ local function picker_rename(event)
             global.renamer[event.player_index] = selection
             SpawnGUI(game.players[event.player_index])
         else
-            game.players[event.player_index].print({"selection-not-renamable"})
+            game.players[event.player_index].print({"picker.selection-not-renamable"})
         end
     end
 end
 script.on_event("picker-rename", picker_rename)
 
+-------------------------------------------------------------------------------
+--[[Copy Chest]]--
+-------------------------------------------------------------------------------
 local chest_types = {
     ["container"] = true,
     ["logistic-container"] = true
@@ -212,3 +229,100 @@ local function copy_chest(event)
     end
 end
 script.on_event("picker-copy-chest", copy_chest)
+
+-------------------------------------------------------------------------------
+--[[Picker Dolly]]--
+-------------------------------------------------------------------------------
+local input_to_direction = {
+    ["dolly-move-north"] = defines.direction.north,
+    ["dolly-move-east"] = defines.direction.east,
+    ["dolly-move-south"] = defines.direction.south,
+    ["dolly-move-west"] = defines.direction.west,
+}
+
+local combinator_names = {
+    ["constant-combinator"] = true,
+    ["arithmetic-combinator"] = true,
+    ["decider-combinator"] = true,
+    ["rocket-combinator"] = true,
+    ["clock-combinator"] = true,
+    ["pushbutton"] = true,
+    ["power-switch"] = false,
+}
+local oblong_combinators = {
+    ["arithmetic-combinator"] = true,
+    ["decider-combinator"] = true,
+}
+
+local function move_combinator(event)
+    local player = game.players[event.player_index]
+    local entity = player.selected
+    if entity and combinator_names[entity.name] then
+        local direction = event.direction or input_to_direction[event.input_name]
+        local distance = event.distance or 1
+
+        local start_pos = event.start_pos or entity.position
+        local target_pos = Position.translate(entity.position, direction, distance)
+        local source_distance, target_distance, has_remote
+
+        if remote.interfaces["data-raw"] then
+            has_remote = true
+            source_distance = remote.call("data-raw", "prototype", entity.type, entity.name).circuit_wire_max_distance
+        else
+            source_distance = WIRE_DISTANCE
+            target_distance = WIRE_DISTANCE
+        end
+
+        local _check_pos = function(v, _)
+            if v ~= entity then
+                target_distance = has_remote and remote.call("data-raw", "prototype", v.type, v.name).circuit_wire_max_distance or WIRE_DISTANCE
+                local ent_distance = Position.distance(v.position, target_pos)
+                return ent_distance > source_distance or ent_distance > target_distance
+            end
+        end
+
+        --teleport the entity out of the way.
+        entity.teleport(Position.translate(entity.position, direction, 10))
+        if entity.surface.can_place_entity{name=entity.name,position=target_pos, direction=entity.direction, force=entity.force} then
+            --We can place the entity here, check for wire distance
+            if not (table.any(entity.circuit_connected_entities.red, _check_pos) or table.any(entity.circuit_connected_entities.green, _check_pos)) then
+                entity.teleport(target_pos)
+                return true
+            else
+                player.print({"picker.wires-maxed"})
+                entity.teleport(start_pos)
+            end
+        else
+            --Ent can't won't fit, restore position.
+            entity.teleport(start_pos)
+        end
+
+    end
+end
+script.on_event({"dolly-move-north", "dolly-move-east", "dolly-move-south", "dolly-move-west"}, move_combinator)
+
+local function try_rotate_combinator(event)
+    local player = game.players[event.player_index]
+    local entity = player.selected
+    if entity and oblong_combinators[entity.name] then
+        local diags = {
+            [defines.direction.north] = defines.direction.northeast,
+            [defines.direction.south] = defines.direction.northeast,
+            [defines.direction.west] = defines.direction.southwest,
+            [defines.direction.east] = defines.direction.southwest,
+        }
+
+        event.start_pos = entity.position
+        event.start_direction = entity.direction
+
+        event.distance = .5
+        entity.direction = entity.direction == 6 and 0 or entity.direction + 2
+
+        event.direction = diags[entity.direction]
+
+        if not move_combinator(event) then
+            entity.direction = event.start_direction
+        end
+    end
+end
+script.on_event("dolly-rotate-rectangle", try_rotate_combinator)
