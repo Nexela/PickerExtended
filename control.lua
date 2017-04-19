@@ -257,25 +257,24 @@ local oblong_combinators = {
 local function move_combinator(event)
     local player = game.players[event.player_index]
     local entity = player.selected
-    if entity and combinator_names[entity.name] then
+    if entity and entity.force == player.force and combinator_names[entity.name] and player.can_reach_entity(entity) then
         local direction = event.direction or input_to_direction[event.input_name]
         local distance = event.distance or 1
 
         local start_pos = event.start_pos or entity.position
         local target_pos = Position.translate(entity.position, direction, distance)
-        local source_distance, target_distance, has_remote
+        local source_distance = WIRE_DISTANCE
+        local target_distance = WIRE_DISTANCE
+        local has_remote
 
         if remote.interfaces["data-raw"] then
             has_remote = true
             source_distance = remote.call("data-raw", "prototype", entity.type, entity.name).circuit_wire_max_distance
-        else
-            source_distance = WIRE_DISTANCE
-            target_distance = WIRE_DISTANCE
         end
 
         local _check_pos = function(v, _)
             if v ~= entity then
-                target_distance = has_remote and remote.call("data-raw", "prototype", v.type, v.name).circuit_wire_max_distance or WIRE_DISTANCE
+                target_distance = has_remote and remote.call("data-raw", "prototype", v.type, v.name).circuit_wire_max_distance or target_distance
                 local ent_distance = Position.distance(v.position, target_pos)
                 return ent_distance > source_distance or ent_distance > target_distance
             end
@@ -304,7 +303,7 @@ script.on_event({"dolly-move-north", "dolly-move-east", "dolly-move-south", "dol
 local function try_rotate_combinator(event)
     local player = game.players[event.player_index]
     local entity = player.selected
-    if entity and oblong_combinators[entity.name] then
+    if entity and entity.force == player.force and oblong_combinators[entity.name] and player.can_reach_entity(entity) then
         local diags = {
             [defines.direction.north] = defines.direction.northeast,
             [defines.direction.south] = defines.direction.northeast,
