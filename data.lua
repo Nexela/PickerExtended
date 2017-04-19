@@ -1,3 +1,10 @@
+-- 'consuming'
+-- available options:
+-- none: default if not defined
+-- all: if this is the first input to get this key sequence then no other inputs listening for this sequence are fired
+-- script-only: if this is the first *custom* input to get this key sequence then no other *custom* inputs listening for this sequence are fired.
+----Normal game inputs will still be fired even if they match this sequence.
+-- game-only: The opposite of script-only: blocks game inputs using the same key sequence but lets other custom inputs using the same key sequence fire.
 -------------------------------------------------------------------------------
 --[[Picker]]--
 -------------------------------------------------------------------------------
@@ -51,31 +58,31 @@ data:extend{
     {
         type = "custom-input",
         name = "dolly-move-north",
-        key_sequence = "SHIFT + W",
+        key_sequence = "UP",
         consuming = "game-only"
     },
     {
         type = "custom-input",
         name = "dolly-move-west",
-        key_sequence = "SHIFT + A",
+        key_sequence = "LEFT",
         consuming = "game-only"
     },
     {
         type = "custom-input",
         name = "dolly-move-south",
-        key_sequence = "SHIFT + S",
+        key_sequence = "DOWN",
         consuming = "game-only"
     },
     {
         type = "custom-input",
         name = "dolly-move-east",
-        key_sequence = "SHIFT + D",
+        key_sequence = "RIGHT",
         consuming = "game-only"
     },
     {
         type = "custom-input",
         name = "dolly-rotate-rectangle",
-        key_sequence = "SHIFT + R",
+        key_sequence = "PGUP",
         consuming = "game-only"
     }
 }
