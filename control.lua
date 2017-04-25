@@ -65,7 +65,6 @@ local function picker_revive_selected(event)
             local is_tile = ghost.name == "tile-ghost"
             local revived, entity, requests = ghost.revive(true)
             if revived then
-                stack.count = stack.count - 1
                 for collided, count in pairs(revived) do
                     if game.item_prototypes[collided] then
                         local simple_stack = {name = collided, count = count}
@@ -94,6 +93,7 @@ local function picker_revive_selected(event)
                 elseif is_tile then
                     script.raise_event(defines.events.on_player_built_tile, {player_index=player.index, positions={position}})
                 end
+                stack.count = stack.count - 1
             end
         elseif player.selected.name == "item-on-ground" and not player.cursor_stack.valid_for_read then
             if player.cursor_stack.set_stack(player.selected.stack) then
