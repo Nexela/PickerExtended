@@ -1,3 +1,6 @@
+require("stdlib.table")
+require("stdlib.string")
+
 -- 'consuming'
 -- available options:
 -- none: default if not defined
@@ -13,7 +16,7 @@ data:extend{
         type = "custom-input",
         name = "picker-select",
         key_sequence = "Q",
-        consuming = "all"
+        --consuming = "all"
     },
     {
         type = "custom-input",
@@ -32,8 +35,9 @@ data:extend{
 -------------------------------------------------------------------------------
 --[[Renamer]]--
 -------------------------------------------------------------------------------
-if data.raw["custom-input"]["rename"] then -- Gotlags renamer is installed unassign hotkey?
-    log("PickerExtended: Renamer installed")
+if data.raw["custom-input"]["rename"] then
+    -- Gotlags renamer is installed unassign hotkey?
+    error("PickerExtended: Renamer installed")
 end
 
 data:extend{
@@ -45,7 +49,7 @@ data:extend{
     },
     {
         type = "font",
-        name = "picker-renamer-button",
+        name = "picker-rename-button",
         from = "default-bold",
         size = 14
     }
@@ -59,42 +63,56 @@ data:extend{
         type = "custom-input",
         name = "dolly-move-north",
         key_sequence = "UP",
-        consuming = "game-only"
+        --consuming = "game-only"
     },
     {
         type = "custom-input",
         name = "dolly-move-west",
         key_sequence = "LEFT",
-        consuming = "game-only"
+        --consuming = "game-only"
     },
     {
         type = "custom-input",
         name = "dolly-move-south",
         key_sequence = "DOWN",
-        consuming = "game-only"
+        --consuming = "game-only"
     },
     {
         type = "custom-input",
         name = "dolly-move-east",
         key_sequence = "RIGHT",
-        consuming = "game-only"
+        --consuming = "game-only"
     },
     {
         type = "custom-input",
         name = "dolly-rotate-rectangle",
-        key_sequence = "PGUP",
-        consuming = "game-only"
+        key_sequence = "CONTROL + ALT + R",
+        --consuming = "game-only"
     }
 }
 
 -------------------------------------------------------------------------------
+--[[Sounds]]--
+-------------------------------------------------------------------------------
+local sound_drop = table.deepcopy(data.raw["explosion"]["explosion"])
+sound_drop.name = "drop-planner"
+for _, animation in pairs(sound_drop.animations) do
+    animation.scale = .5
+end
+for _, variation in pairs(sound_drop.sound.variations) do
+    variation.filename = "__base__/sound/fight/laser-1.ogg"
+    variation.volume = .5
+end
+data:extend{sound_drop}
+
+-------------------------------------------------------------------------------
 --[[Styles]]--
 -------------------------------------------------------------------------------
-data.raw["gui-style"].default["picker-renamer-button-style"] =
+data.raw["gui-style"].default["picker-rename-button-style"] =
 {
     type = "button_style",
     parent = "button_style",
-    font = "picker-renamer-button",
+    font = "picker-rename-button",
     align = "center",
     top_padding = 2,
     right_padding = 2,

@@ -1,11 +1,11 @@
 {
   "name": "PickerExtended",
-  "version": "2.2.2",
-  "factorio_version": "0.14",
+  "version": "2.2.3",
+  "factorio_version": "0.15",
   "title": "Picker Extended Version",
   "author": "Tinyboss, nexela",
   "contact": "nexela@gmail.com",
-  "dependencies": ["? Renamer"],
+  "dependencies": ["base", "? Renamer"],
   "homepage": "https://forums.factorio.com/viewtopic.php?f=93&t=14695",
   "description": "Adds a hotkey to select the entity under the mouse cursor from player inventory, if present. extended with renamer and debugger blueprinter and combinator dollies"
 }

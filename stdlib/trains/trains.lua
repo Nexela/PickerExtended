@@ -14,7 +14,6 @@ local Surface = require 'stdlib/surface'
 local Entity = require 'stdlib/entity/entity'
 
 local Trains = {}
-
 --- This event is fired when a train's id has changed.
 -- <p>Train id's are dervied from a property of the train's main locomotive.
 -- That means when locomotives are attached/detached from carriages or other
@@ -68,13 +67,13 @@ end
 -- @tparam Table criteria Table with any keys supported by the <a href="Surface.html#find_all_entities">Surface</a> module.</p>
 -- <p>If the name key isn't supplied, this will default to 'diesel-locomotive'</p>
 -- <p>If the surface key isn't supplied, this will default to 1</p>
--- @return A list of train details tables, if any are found matching the criteria. Otherwise the empty list.
--- <table><tr><td>train (LuaTrain)</td><td>The LuaTrain instance</td></tr><tr><td>id (int)</td><td>The id of the train</td></tr></table>
+-- @return A list of train details tables, if any are found matching the criteria. Otherwise the empty list. <table><tr><td>train (LuaTrain)</td><td>The LuaTrain instance
+-- </td></tr><tr><td>id (int)</td><td>The id of the train</td></tr></table>
 function Trains.find_filtered(criteria)
     criteria = criteria or {}
 
     -- Ensuure surface is set
-    -- Not needed to ensure, not setting a surface will check all surfaces.
+    criteria.surface = criteria.surface or 'nauvis'
 
     -- Make sure 'locomotive' is specified as the type by default
     criteria.type = criteria.type or 'locomotive'
@@ -108,13 +107,13 @@ end
 function Trains._on_locomotive_changed()
     -- For all the known trains
     local renames = {}
-    for id, train in pairs(global._trains) do
+    for id, train in pairs(global._registry) do
         -- Check if their known ID is the same as the LuaTrain's dervied id
         local derived_id = Trains.get_train_id(train)
         -- If it's not
         if (id ~= derived_id) then
             -- Capture the rename
-            table.insert(renames, {old_id = id, new_id = derived_id, train = train })
+            table.insert(renames, {old_id = id , new_id = derived_id, train = train })
         end
     end
 
@@ -122,8 +121,8 @@ function Trains._on_locomotive_changed()
     for _, renaming in pairs(renames) do
         -- Rename it in the registry
         -- and dispatch a renamed event
-        global._trains[renaming.new_id] = renaming.train
-        table.remove_keys(global._trains, {renaming.old_id})
+        global._registry[renaming.new_id] = renaming.train
+        table.remove_keys(global._registry, {renaming.old_id})
 
         local event_data = {
             old_id = renaming.old_id,
@@ -138,8 +137,8 @@ end
 -- @return void
 function Trains._on_locomotive_created(new_locomotive)
     local train_id = Trains.get_train_id(new_locomotive.train)
-    if (global._trains[train_id] == nil) then
-        global._trains[train_id] = new_locomotive.train
+    if (global._registry[train_id] == nil) then
+        global._registry[train_id] = new_locomotive.train
     end
 end
 
@@ -190,7 +189,8 @@ end
 -- @return table A mapping of train id to LuaTrain object
 local function create_train_registry()
     local registry = {}
-    local all_trains = Trains.find_filtered()
+
+    local all_trains = Trains.find_filtered({surface_name = 1})
     for _, trainInfo in pairs(all_trains) do
         registry[tonumber(trainInfo.id)] = trainInfo.train
     end
@@ -217,15 +217,12 @@ end
 Event.register(defines.events.on_entity_died, filter_event('entity', 'locomotive', Trains._on_locomotive_changed))
 Event.register(defines.events.on_preplayer_mined_item, filter_event('entity', 'locomotive', Trains._on_locomotive_changed))
 Event.register(defines.events.on_robot_pre_mined, filter_event('entity', 'locomotive', Trains._on_locomotive_changed))
--- Event.register(defines.events.on_picked_up_item, filter_event('item_stack', 'diesel-locomotive', Trains._on_locomotive_changed))
--- Event.register(defines.events.on_player_mined_item, filter_event('item_stack', 'diesel-locomotive', Trains._on_locomotive_changed))
--- Event.register(defines.events.on_robot_mined, filter_event('item_stack', 'diesel-locomotive', Trains._on_locomotive_changed))
 
 -- When a locomotive is added ..
 Event.register(defines.events.on_built_entity, filter_event('created_entity', 'locomotive', Trains._on_locomotive_created))
 Event.register(defines.events.on_robot_built_entity, filter_event('created_entity', 'locomotive', Trains._on_locomotive_created))
 
 -- When the mod is initialized the first time
-Event.register(Event.core_events.init, function() global._trains = create_train_registry() end)
+Event.register(Event.core_events.init, function() global._registry = create_train_registry() end)
 
 return Trains

@@ -2,10 +2,9 @@
 -- @module Event.Time
 
 require 'stdlib/event/event'
---local Time = require 'stdlib/time'
 
 Event.Time = {}
-Event.Time._last_change = {}
+--Event.Time._last_change = {}
 
 --All times are offset by 0.5
 --This is because both EvoGUI and MoWeather already apply that offset.
@@ -34,13 +33,15 @@ Event.Time.minutely = script.generate_event_name()
 --- @field Fires every day for a surface
 Event.Time.daily = script.generate_event_name()
 
-Event.register(defines.events.on_tick, function()
+Event.register(defines.events.on_tick,
+    function()
         for idx, surface in pairs(game.surfaces) do
             local day_time = math.fmod(Event.Time.get_day_time(idx), 1)
             local day_time_minutes = math.floor(day_time * 24 * 60)
 
-            if day_time_minutes ~= Event.Time._last_change[idx] then
-                Event.Time._last_change[idx] = day_time_minutes
+            global._last_time_change = global._last_time_change or {}
+            if day_time_minutes ~= global._last_time_change[idx] then
+                global._last_time_change[idx] = day_time_minutes
                 game.raise_event(Event.Time.minutely, {surface = surface})
 
                 if day_time_minutes % 60 == 0 then
@@ -71,4 +72,5 @@ Event.register(defines.events.on_tick, function()
                 end
             end
         end
-    end)
+    end
+)
