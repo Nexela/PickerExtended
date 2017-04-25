@@ -20,6 +20,12 @@ data:extend{
     },
     {
         type = "custom-input",
+        name = "picker-crafter",
+        key_sequence = "ALT + Q",
+        --consuming = "all"
+    },
+    {
+        type = "custom-input",
         name = "picker-make-ghost",
         key_sequence = "CONTROL + Q",
         consuming = "all"

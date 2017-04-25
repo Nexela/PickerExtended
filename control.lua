@@ -24,9 +24,10 @@ local function get_item_stack(e, name)
         end
     end
 end
-
+--]]
+---[[
 --Return localised name, entity_prototype, and item_prototype
-local function get_placeable_tile_item(entity)
+local function get_placeable_item(entity)
     local locname, ep
     if entity.name == "entity-ghost" or entity.name == "tile-ghost" then
         locname = entity.ghost_localised_name
@@ -56,10 +57,10 @@ end
 
 local function picker_revive_selected(event)
     local player = game.players[event.player_index]
-    if player.controller_type ~= defines.controllers.ghost then
+    if player.selected and player.controller_type ~= defines.controllers.ghost then
         local ghost = player.selected and (player.selected.name == "entity-ghost" or player.selected.name == "tile-ghost") and player.selected
         local stack = player.cursor_stack and player.cursor_stack.valid_for_read and player.cursor_stack
-        if ghost and stack and stack_equals_ghost(stack, ghost) and Position.distance(player.position, ghost.position) <= player.build_distance then
+        if ghost and stack and stack_equals_ghost(stack, ghost) and Position.distance(player.position, ghost.position) <= player.build_distance + 4 then
             local position = ghost.position
             local is_tile = ghost.name == "tile-ghost"
             local revived, entity, requests = ghost.revive(true)
@@ -80,7 +81,7 @@ local function picker_revive_selected(event)
                         local pinv = player.get_inventory(defines.inventory.player_main) or player.get_inventory(defines.inventory.god_main)
                         local new_requests = {}
                         for name, count in pairs(requests.item_requests) do
-                            local removed = pinv.remove_item({name = name, count = count})
+                            local removed = pinv.remove({name = name, count = count})
                             if removed > 0 then
                                 entity.insert({name = name, count = removed})
                             end
@@ -93,7 +94,10 @@ local function picker_revive_selected(event)
                 elseif is_tile then
                     script.raise_event(defines.events.on_player_built_tile, {player_index=player.index, positions={position}})
                 end
-
+            end
+        elseif player.selected.name == "item-on-ground" and not player.cursor_stack.valid_for_read then
+            if player.cursor_stack.set_stack(player.selected.stack) then
+                player.selected.destroy()
             end
         end
     end
@@ -101,26 +105,48 @@ end
 script.on_event("picker-select", picker_revive_selected)
 
 -------------------------------------------------------------------------------
+--[[Picker Crafter]]--
+-------------------------------------------------------------------------------
+local function picker_crafter(event)
+    local player = game.players[event.player_index]
+    if player.selected then
+        local _, _, ip = get_placeable_item(player.selected)
+        if ip then
+            player.begin_crafting{count=1,recipe=ip.name,silent=false}
+        end
+    end
+end
+script.on_event("picker-crafter", picker_crafter)
+
+-------------------------------------------------------------------------------
 --[[Picker Blueprinter]]--
 -------------------------------------------------------------------------------
-
-local function get_blueprint(player)
+local function get_planner(player, planner, pipette)
+    planner = planner or "blueprint"
     for _, idx in pairs(INVENTORIES) do
         local inventory = player.get_inventory(idx)
         if inventory then
             for i = 1, #inventory do
                 local slot = inventory[i]
-                if slot.valid_for_read and slot.name == "blueprint"
-                and (not slot.is_blueprint_setup() or (slot.is_blueprint_setup() and slot.label == "Pipette Blueprint")) then
-                    if player.cursor_stack.set_stack(slot) then
-                        slot.clear()
-                        return player.cursor_stack
+                if slot.valid_for_read and slot.name == planner then
+                    if planner == "blueprint" then
+                        if (not slot.is_blueprint_setup() or (pipette and slot.is_blueprint_setup() and slot.label == "Pipette Blueprint")) then
+                            if player.cursor_stack.set_stack(slot) then
+                                slot.clear()
+                                return player.cursor_stack
+                            end
+                        end
+                    elseif planner == "deconstruction-planner" then
+                        if slot.entity_filter_slots == 0 and player.cursor_stack.set_stack(slot) then
+                            slot.clear()
+                            return player.cursor_stack
+                        end
                     end
                 end
             end
         end
     end
-    return player.cursor_stack.set_stack("blueprint") and player.cursor_stack
+    return player.cursor_stack.set_stack(planner) and player.cursor_stack
 end
 
 --Requires empty blueprint in inventory
@@ -129,7 +155,7 @@ local function make_simple_blueprint(event)
     if player.selected and player.controller_type ~= defines.controllers.ghost then
         local entity = player.selected
         if player.clean_cursor() then
-            local bp = get_blueprint(player)
+            local bp = get_planner(player, "blueprint", true)
             if bp then
                 bp.clear_blueprint()
                 bp.label = "Pipette Blueprint"
@@ -140,22 +166,30 @@ local function make_simple_blueprint(event)
         else
             player.print({"picker.msg-cant-insert-blueprint"})
         end
+    elseif not player.selected and player.controller_type ~= defines.controllers.ghost then
+        if (not player.cursor_stack.valid_for_read or player.cursor_stack.valid_for_read and player.cursor_stack.name ~= "blueprint") then
+            --if player.clean_cursor() then
+            return player.clean_cursor() and get_planner(player)
+            --end
+        elseif player.cursor_stack.valid_for_read and player.cursor_stack.name == "blueprint" then
+            return player.clean_cursor() and get_planner(player, "deconstruction-planner")
+        end
     end
 end
 script.on_event("picker-make-ghost", make_simple_blueprint)
 
 -------------------------------------------------------------------------------
---[[Blueprint cleanup]]--
+--[[Item Zapper]]--
 -------------------------------------------------------------------------------
-local planners = {
-    ["blueprint"] = true,
-    ["deconstruction-planner"] = true,
-    ["blueprint-book"] = true,
-    ["zone-planner"] = true,
-}
+local zapper = "picker-item-zapper"
 local function cleanup_planners(event)
     local player = game.players[event.player_index]
-    if planners[event.entity.stack.name] then
+    local _zappable = function(v, _, name)
+        return v == name
+    end
+
+    --game.print(serpent.block(planners))
+    if table.any(settings.get_player_settings(player.index)[zapper].value:split(" "), _zappable, event.entity.stack.name) then
         global.last_dropped = global.last_dropped or {}
 
         if (global.last_dropped[event.player_index] or 0) + 45 < game.tick then
@@ -256,6 +290,17 @@ local function copy_chest(event)
     end
 end
 script.on_event("picker-copy-chest", copy_chest)
+
+-------------------------------------------------------------------------------
+--[[Picker Hide Minimap]]--
+-------------------------------------------------------------------------------
+local function picker_hide_minimap(event)
+    local player = game.players[event.player_index]
+    if settings.get_player_settings(player.index)["picker-hide-minimap"].value then
+        player.game_view_settings.show_minimap = not (player.selected and player.selected.type == "logistic-container")
+    end
+end
+script.on_event(defines.events.on_selected_entity_changed, picker_hide_minimap)
 
 -------------------------------------------------------------------------------
 --[[Picker Dolly]]--
