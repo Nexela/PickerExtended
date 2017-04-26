@@ -3,6 +3,8 @@ local WIRE_DISTANCE = 7.5
 
 require("stdlib.table")
 require("stdlib.string")
+require("stdlib.event.event")
+require("stdlib.gui.gui")
 local Entity = require("stdlib.entity.entity")
 local Position = require("stdlib.area.position")
 
@@ -188,7 +190,6 @@ local function cleanup_planners(event)
         return v == name
     end
 
-    --game.print(serpent.block(planners))
     if table.any(settings.get_player_settings(player.index)[zapper].value:split(" "), _zappable, event.entity.stack.name) then
         global.last_dropped = global.last_dropped or {}
 
@@ -207,19 +208,21 @@ script.on_event(defines.events.on_player_dropped_item, cleanup_planners)
 -------------------------------------------------------------------------------
 --[[Picker Rename]]--
 -------------------------------------------------------------------------------
-local function spawn_gui(player)
+local function spawn_rename_gui(player)
     local frame = player.gui.center.add{type="frame", name="picker_rename_frame"}
     frame.add{type = "button", name = "picker_rename_x", caption = " X ", style = "picker-rename-button-style"}
-    frame.add{type="textfield", name="picker_rename_textfield"}
+    frame.add{type = "textfield", name = "picker_rename_textfield"}
     player.gui.center.picker_rename_frame.picker_rename_textfield.text =
     global.renamer[player.index].backer_name
     frame.add{type = "button", name = "picker_rename_button", caption = "OK", style = "picker-rename-button-style"}
 end
 
-local function on_gui_click(event)
-    if event.element.name == "picker_rename_x" then
+Gui.on_click("picker_rename_x",
+    function(event)
         game.players[event.player_index].gui.center.picker_rename_frame.destroy()
-    elseif event.element.name == "picker_rename_button" then
+    end
+)
+Gui.on_click("picker_rename_button", function(event)
         local player = game.players[event.player_index]
         if global.renamer[event.player_index].valid then
             global.renamer[event.player_index].backer_name =
@@ -227,8 +230,7 @@ local function on_gui_click(event)
         end
         player.gui.center.picker_rename_frame.destroy()
     end
-end
-script.on_event(defines.events.on_gui_click, on_gui_click)
+)
 
 local function picker_rename(event)
     if game.players[event.player_index].gui.center.picker_rename_frame then
@@ -239,13 +241,52 @@ local function picker_rename(event)
         if selection.supports_backer_name() then
             if not global.renamer then global.renamer = {} end
             global.renamer[event.player_index] = selection
-            spawn_gui(game.players[event.player_index])
+            spawn_rename_gui(game.players[event.player_index])
         else
             game.players[event.player_index].print({"picker.selection-not-renamable"})
         end
     end
 end
 script.on_event("picker-rename", picker_rename)
+
+-------------------------------------------------------------------------------
+--[[Picker Item Count]]--
+-------------------------------------------------------------------------------
+local function get_or_create_itemcount_gui(player)
+    local gui = player.gui.center.itemcount
+    if not gui then
+        gui = player.gui.center.add{type="label", name="itemcount", caption="0", direction = "vertical"}
+        gui.style.font = "default-bold"
+    end
+    local enabled = settings.get_player_settings(player.index)["picker-itemcount"].value
+    gui.style.visible = enabled and player.cursor_stack.valid_for_read and #gui.parent.children == 1
+    return gui
+end
+
+local function get_itemcount_counts(event)
+    local player = game.players[event.player_index]
+    local stack = player.cursor_stack.valid_for_read and player.cursor_stack
+    local gui = get_or_create_itemcount_gui(player)
+    if stack then
+        local inventory_count = player.get_item_count(stack.name)
+        local vehicle_count
+        if player.vehicle and player.vehicle.get_inventory(defines.inventory.car_trunk) then
+            vehicle_count = player.vehicle.get_inventory(defines.inventory.car_trunk).get_item_count(stack.name)
+        end
+        gui.caption = inventory_count .. (vehicle_count and (" ("..vehicle_count..")") or "")
+    else
+        gui.caption = 0
+    end
+end
+
+local events = {
+    defines.events.on_player_cursor_stack_changed,
+    defines.events.on_player_driving_changed_state,
+    defines.events.on_player_main_inventory_changed,
+    defines.events.on_player_ammo_inventory_changed,
+    defines.events.on_player_quickbar_inventory_changed,
+}
+script.on_event(events, get_itemcount_counts)
 
 -------------------------------------------------------------------------------
 --[[Copy Chest]]--
@@ -397,3 +438,24 @@ local function try_rotate_combinator(event)
     end
 end
 script.on_event("dolly-rotate-rectangle", try_rotate_combinator)
+
+-------------------------------------------------------------------------------
+--[[Settings events]]--
+-------------------------------------------------------------------------------
+local function update_settings(event)
+    local player = game.players[event.player_index]
+    --Toggle minimap back on when switching settings just in case
+    if event.setting == "picker-hide-minimap" then
+        player.game_view_settings.show_minimap = true
+    end
+    if event.setting == "picker-itemcount" then
+        local enabled = settings.get_player_settings(player.index)["picker-itemcount"].value
+        local gui = get_or_create_itemcount_gui(player)
+        gui.style.visible = enabled and player.cursor_stack.valid_for_read or false
+    end
+end
+script.on_event(defines.events.on_runtime_mod_setting_changed, update_settings)
+
+-------------------------------------------------------------------------------
+--[[INIT]]--
+-------------------------------------------------------------------------------

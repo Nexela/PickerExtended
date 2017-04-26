@@ -13,4 +13,11 @@ data:extend{
         default_value = true,
         per_user = true
     },
+    {
+        type = "bool-setting",
+        name = "picker-itemcount",
+        setting_type = "runtime-per-user",
+        default_value = true,
+        per_user = true
+    },
 }
