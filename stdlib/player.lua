@@ -4,10 +4,8 @@
 require("stdlib/event/event")
 local Player = {}
 
-function Player.get_object_and_data(index)
-    if game.players[index] then
-        return game.players[index], global.players[index]
-    end
+function Player.get(index)
+    return game.players[index], global.players[index]
 end
 
 function Player.new(player_index)
