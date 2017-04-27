@@ -26,23 +26,23 @@ require("picker.copychest")
 require("picker.sortinventory")
 require("picker.zapper")
 
-Event.register(defines.events.on_player_created, function()MOD.interfaces.write_global() end)
-
 -------------------------------------------------------------------------------
 --[[INIT]]--
 -------------------------------------------------------------------------------
 Event.register(Event.core_events.configuration_changed,
     function (event)
-        if event and event.mod_changes and event.mod_changes[MOD.name] then
+        if event.data and event.data.mod_changes and event.data.mod_changes[MOD.name] then
+            global._changes = global._changes or {}
+            global._changes[event.data.mod_changes[MOD.name].new_version] = event.data.mod_changes[MOD.name].old_version or "0.0.0"
             Player.init()
-            MOD.interfaces.write_global()
         end
     end
 )
 
 Event.register(Event.core_events.init, function()
+        global._changes = {}
+        global._changes[game.active_mods[MOD.name]] = "0.0.0"
         Player.init()
-        MOD.interfaces.write_global()
     end
 )
 
