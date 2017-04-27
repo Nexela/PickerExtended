@@ -1,2 +1,2 @@
 require("prototypes/final-fixes/sortinventory")
-require("prototypes/final-fixes/reacher")
+require("prototypes/final-fixes/small-fixes")

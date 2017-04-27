@@ -37,7 +37,7 @@ local function get_planner(player, planner, pipette)
                             end
                         end
                     elseif planner == "deconstruction-planner" then
-                        if slot.entity_filter_slots == 0 and player.cursor_stack.set_stack(slot) then
+                        if player.cursor_stack.set_stack(slot) then
                             slot.clear()
                             return player.cursor_stack
                         end
@@ -52,27 +52,29 @@ end
 --Requires empty blueprint in inventory
 local function make_simple_blueprint(event)
     local player = game.players[event.player_index]
-    if player.selected and player.controller_type ~= defines.controllers.ghost then
-        local entity = player.selected
-        if player.clean_cursor() then
-            local bp = get_planner(player, "blueprint", true)
-            if bp then
-                bp.clear_blueprint()
-                bp.label = "Pipette Blueprint"
-                bp.allow_manual_label_change = false
-                bp.create_blueprint{surface = entity.surface, force = player.force, area = Entity.to_selection_area(entity), always_include_tiles = false}
-                -- return blueprint.is_blueprint_setup() and blueprint
+    if player.controller_type ~= defines.controllers.ghost then
+        if player.selected and not (player.selected.type == "resource" or player.selected.has_flag("not-blueprintable")) then
+            local entity = player.selected
+            if player.clean_cursor() then
+                local bp = get_planner(player, "blueprint", true)
+                if bp then
+                    bp.clear_blueprint()
+                    bp.label = "Pipette Blueprint"
+                    bp.allow_manual_label_change = false
+                    bp.create_blueprint{surface = entity.surface, force = player.force, area = Entity.to_selection_area(entity), always_include_tiles = false}
+                    return bp.is_blueprint_setup() and bp
+                end
+            else
+                player.print({"picker.msg-cant-insert-blueprint"})
             end
-        else
-            player.print({"picker.msg-cant-insert-blueprint"})
-        end
-    elseif not player.selected and player.controller_type ~= defines.controllers.ghost then
-        if (not player.cursor_stack.valid_for_read or player.cursor_stack.valid_for_read and player.cursor_stack.name ~= "blueprint") then
-            --if player.clean_cursor() then
-            return player.clean_cursor() and get_planner(player)
-            --end
-        elseif player.cursor_stack.valid_for_read and player.cursor_stack.name == "blueprint" then
-            return player.clean_cursor() and get_planner(player, "deconstruction-planner")
+        elseif not player.selected or (player.selected and (player.selected.type == "resource" or player.selected.has_flag("not-blueprintable"))) then
+            if (not player.cursor_stack.valid_for_read or player.cursor_stack.valid_for_read and player.cursor_stack.name ~= "blueprint") then
+                --if player.clean_cursor() then
+                return player.clean_cursor() and get_planner(player)
+                --end
+            elseif player.cursor_stack.valid_for_read and player.cursor_stack.name == "blueprint" then
+                return player.clean_cursor() and get_planner(player, "deconstruction-planner")
+            end
         end
     end
 end

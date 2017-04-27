@@ -123,7 +123,7 @@ local function sort_opened_inventory(data)
 
     local inventory = data.inventory
     local sort_limit = #inventory
-    local filtered = data.filtered or false
+    local filtered = inventory.is_filtered()
     local stacks = {}
     local orders = {}
     local filters
@@ -251,10 +251,10 @@ local function sort_inventory(event)
         sort_opened_inventory{
             player_index = event.player_index,
             inventory =
-            player.opened.get_inventory(defines.inventory.chest)
-            or player.opened.get_inventory(defines.inventory.car_trunk)
-            or player.opened.get_inventory(defines.inventory.cargo_wagon),
-            filtered = (player.opened.type == "cargo-wagon" or player.opened.type == "car")
+            player.opened.get_inventory(defines.inventory.car_trunk)
+            or player.opened.get_inventory(defines.inventory.cargo_wagon)
+            or player.opened.get_inventory(defines.inventory.chest),
+            --filtered = player.opened.type == "cargo-wagon"
         }
     end
 end

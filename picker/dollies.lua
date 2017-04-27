@@ -3,8 +3,6 @@
 -------------------------------------------------------------------------------
 local Position = require("stdlib.area.position")
 
-local WIRE_DISTANCE = 7.5
-
 local input_to_direction = {
     ["dolly-move-north"] = defines.direction.north,
     ["dolly-move-east"] = defines.direction.east,
@@ -12,62 +10,79 @@ local input_to_direction = {
     ["dolly-move-west"] = defines.direction.west,
 }
 
-local combinator_names = {
-    ["constant-combinator"] = true,
-    ["arithmetic-combinator"] = true,
-    ["decider-combinator"] = true,
-    ["rocket-combinator"] = true,
-    ["clock-combinator"] = true,
-    ["pushbutton"] = true,
-    ["power-switch"] = false,
+local moveable_names = {
+    ["constant-combinator"] = 7.5,
+    ["arithmetic-combinator"] = 7.5,
+    ["decider-combinator"] = 7.5,
+    ["rocket-combinator"] = 7.5,
+    ["clock-combinator"] = 7.5,
+    ["pushbutton"] = 7.5,
 }
+
 local oblong_combinators = {
     ["arithmetic-combinator"] = true,
     ["decider-combinator"] = true,
 }
 
+local function _get_distance(entity)
+    local wire = remote.interfaces["data-raw"] and remote.call("data-raw", "prototype", entity.type, entity.name).maximum_wire_distance
+    local circuit = remote.interfaces["data-raw"] and remote.call("data-raw", "prototype", entity.type, entity.name).circuit_wire_max_distance
+    return circuit or wire or 7.5
+end
+
 local function move_combinator(event)
     local player = game.players[event.player_index]
     local entity = player.selected
-    if entity and entity.force == player.force and combinator_names[entity.name] and player.can_reach_entity(entity) then
+    if entity and entity.force == player.force and (remote.interfaces["data-raw"] or moveable_names[entity.name]) and player.can_reach_entity(entity) then
+        --Direction to move the source
         local direction = event.direction or input_to_direction[event.input_name]
+        --Distance to move the source, defaults to 1
         local distance = event.distance or 1
 
+        --Where we started from in case we have to return it
         local start_pos = event.start_pos or entity.position
+        --Where we want to go too
         local target_pos = Position.translate(entity.position, direction, distance)
-        local source_distance = WIRE_DISTANCE
-        local target_distance = WIRE_DISTANCE
-        local has_remote
 
-        if remote.interfaces["data-raw"] then
-            has_remote = true
-            source_distance = remote.call("data-raw", "prototype", entity.type, entity.name).circuit_wire_max_distance
-        end
+        --Wire distance for the source
+        local source_distance = _get_distance(entity)
 
-        local _check_pos = function(v, _)
-            if v ~= entity then
-                target_distance = has_remote and remote.call("data-raw", "prototype", v.type, v.name).circuit_wire_max_distance or target_distance
-                local ent_distance = Position.distance(v.position, target_pos)
-                return ent_distance > source_distance or ent_distance > target_distance
-            end
+        local _cant_reach = function (neighbours)
+            return table.any(neighbours,
+                function(neighbour)
+                    local dist = Position.distance(neighbour.position, target_pos)
+                    return dist > source_distance or dist > _get_distance(neighbour)
+                end
+            )
         end
 
         --teleport the entity out of the way.
-        entity.teleport(Position.translate(entity.position, direction, 10))
-        if entity.surface.can_place_entity{name = entity.name, position = target_pos, direction = entity.direction, force = entity.force} then
-            --We can place the entity here, check for wire distance
-            if not (table.any(entity.circuit_connected_entities.red, _check_pos) or table.any(entity.circuit_connected_entities.green, _check_pos)) then
-                entity.teleport(target_pos)
-                return true
-            else
-                player.print({"picker.wires-maxed"})
+        if entity.teleport(Position.translate(entity.position, direction, 10)) then
+            if entity.surface.can_place_entity{name = entity.name, position = target_pos, direction = entity.direction, force = entity.force} then
+                --We can place the entity here, check for wire distance
+                if entity.circuit_connected_entities then
+                    if entity.type == "electric-pole" and not table.any(entity.neighbours, _cant_reach) then
+                        entity.teleport(target_pos)
+                        entity.last_user = player
+                        return
+                    elseif entity.type ~= "electric-pole" and not table.any(entity.circuit_connected_entities, _cant_reach) then
+                        entity.teleport(target_pos)
+                        entity.last_user = player
+                        return
+                    else
+                        player.print({"picker-dollies.wires-maxed"})
+                        entity.teleport(start_pos)
+                        return false
+                    end
+                else --All others
+                    entity.teleport(target_pos)
+                end
+            else --Ent can't won't fit, restore position.
                 entity.teleport(start_pos)
             end
-        else
-            --Ent can't won't fit, restore position.
-            entity.teleport(start_pos)
+        else --Entity can't be teleported
+            player.print({"picker-dollies.cant-be-teleported", entity.localised_name})
         end
-
     end
 end
 script.on_event({"dolly-move-north", "dolly-move-east", "dolly-move-south", "dolly-move-west"}, move_combinator)
