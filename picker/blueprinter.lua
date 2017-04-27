@@ -2,52 +2,7 @@
 --[[Picker Blueprinter]]--
 -------------------------------------------------------------------------------
 local Entity = require("stdlib.entity.entity")
-local INVENTORIES = {defines.inventory.player_quickbar, defines.inventory.player_main, defines.inventory.god_quickbar, defines.inventory.god_main}
-
---[[
-local function get_item_stack(e, name)
-    for _, ind in pairs(INVENTORIES) do
-        local stack = e.get_inventory(ind) and e.get_inventory(ind).find_item_stack(name)
-        if stack then
-            return stack
-        end
-    end
-    if e.vehicle and e.vehicle.get_inventory(defines.inventory.car_trunk) then
-        local stack = e.vehicle.get_inventory(defines.inventory.car_trunk).find_item_stack(name)
-        if stack then
-            return stack
-        end
-    end
-end
---]]
-
-local function get_planner(player, planner, pipette)
-    planner = planner or "blueprint"
-    for _, idx in pairs(INVENTORIES) do
-        local inventory = player.get_inventory(idx)
-        if inventory then
-            for i = 1, #inventory do
-                local slot = inventory[i]
-                if slot.valid_for_read and slot.name == planner then
-                    if planner == "blueprint" then
-                        if (not slot.is_blueprint_setup() or (pipette and slot.is_blueprint_setup() and slot.label == "Pipette Blueprint")) then
-                            if player.cursor_stack.set_stack(slot) then
-                                slot.clear()
-                                return player.cursor_stack
-                            end
-                        end
-                    elseif planner == "deconstruction-planner" then
-                        if player.cursor_stack.set_stack(slot) then
-                            slot.clear()
-                            return player.cursor_stack
-                        end
-                    end
-                end
-            end
-        end
-    end
-    return player.cursor_stack.set_stack(planner) and player.cursor_stack
-end
+local lib = require("picker.lib")
 
 --Requires empty blueprint in inventory
 local function make_simple_blueprint(event)
@@ -56,7 +11,7 @@ local function make_simple_blueprint(event)
         if player.selected and not (player.selected.type == "resource" or player.selected.has_flag("not-blueprintable")) then
             local entity = player.selected
             if player.clean_cursor() then
-                local bp = get_planner(player, "blueprint", true)
+                local bp = lib.get_planner(player, "blueprint", "Pipette Blueprint")
                 if bp then
                     bp.clear_blueprint()
                     bp.label = "Pipette Blueprint"
@@ -70,10 +25,10 @@ local function make_simple_blueprint(event)
         elseif not player.selected or (player.selected and (player.selected.type == "resource" or player.selected.has_flag("not-blueprintable"))) then
             if (not player.cursor_stack.valid_for_read or player.cursor_stack.valid_for_read and player.cursor_stack.name ~= "blueprint") then
                 --if player.clean_cursor() then
-                return player.clean_cursor() and get_planner(player)
+                return player.clean_cursor() and lib.get_planner(player, "blueprint")
                 --end
             elseif player.cursor_stack.valid_for_read and player.cursor_stack.name == "blueprint" then
-                return player.clean_cursor() and get_planner(player, "deconstruction-planner")
+                return player.clean_cursor() and lib.get_planner(player, "deconstruction-planner")
             end
         end
     end

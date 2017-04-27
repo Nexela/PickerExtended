@@ -2,6 +2,7 @@
 --[[Chest Limiter]]--
 -------------------------------------------------------------------------------
 local Player = require("stdlib/player")
+local Pad = require("picker.adjustment-pad")
 
 local match_to_item = {
     ["container"] = true,
@@ -9,36 +10,21 @@ local match_to_item = {
     ["cargo-wagon"] = true,
 }
 
-local function remove_gui(player, frame_name)
-    return player.gui.left[frame_name] and player.gui.left[frame_name].destroy()
-end
-
-local function get_or_create_chest_limiter_gui(player) -- return gui
-    local gui = player.gui.left["chestlimit_frame_main"]
-    if not gui then
-        gui = player.gui.left.add{type="frame", name="chestlimit_frame_main", direction="horizontal", style="chestlimit_frame_style"}
-        gui.add{type="label", name="chestlimit_label", caption={"chestlimit-gui.label-caption"}, tooltip={"chestlimit-tooltip.label-caption"}, style="chestlimit_label_style"}
-        gui.add{type="textfield", name = "chestlimit_text_box", text=0, style="chestlimit_text_style"}
-        --Up/Down buttons
-        local table = gui.add{type="table", name = "chestlimit_table", colspan=1, style="chestlimit_table_style"}
-        table.add{type="button", name="chestlimit_btn_up", style="chestlimit_btn_up"}
-        table.add{type="button", name="chestlimit_btn_dn", style="chestlimit_btn_dn"}
-        --Reset button
-        gui.add{type="button", name="chestlimit_btn_reset", style="chestlimit_btn_reset", tooltip={"chestlimit-tooltip.label-reset"}}
+local function get_match(stack)
+    if stack.valid_for_read and stack.prototype.place_result and match_to_item[stack.prototype.place_result.type or "nil"] then
+        return true
     end
-    return player.gui.left["chestlimit_frame_main"]
 end
 
 local function increase_decrease_reprogrammer(event, change)
     local player, pdata = Player.get(event.player_index)
     if player.cursor_stack.valid_for_read then
         local stack = player.cursor_stack
-        local match = (stack.prototype.place_result and stack.prototype.place_result.type) or "not_found"
-        if match_to_item[match] then
+        if get_match(stack) then
             pdata.chests = pdata.chests or {}
             local bar = pdata.chests[stack.name] or 0
             --.15 we can get the #slots from prototype
-            local text_field = get_or_create_chest_limiter_gui(player)["chestlimit_text_box"]
+            local text_field = Pad.get_or_create_adjustment_pad(player, "chestlimit")["chestlimit_text_box"]
             --text_field.text = pdata[stack.name] or 0
             if event.element and event.element.name == "chestlimit_text_box" and not type(event.element.text) == "number" then
                 return
@@ -51,13 +37,13 @@ local function increase_decrease_reprogrammer(event, change)
             text_field.text = bar
         end
     else
-        remove_gui(player, "chestlimit_frame_main")
+        Pad.remove_gui(player, "chestlimit_frame_main")
     end
 end
 
 local function adjust_pad(event)
     local player = Player.get(event.player_index)
-    if player.gui.left["chestlimit_frame_main"] then
+    if get_match(player.cursor_stack) and player.gui.left["chestlimit_frame_main"] then
         if event.input_name == "adjustment-pad-increase" then
             increase_decrease_reprogrammer(event, 1)
         elseif event.input_name == "adjustment-pad-decrease" then
