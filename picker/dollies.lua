@@ -36,6 +36,8 @@ local function move_combinator(event)
     if entity and entity.force == player.force and (remote.interfaces["data-raw"] or moveable_names[entity.name]) and player.can_reach_entity(entity) then
         --Direction to move the source
         local direction = event.direction or input_to_direction[event.input_name]
+        --BUG .15.2 teleporting rectangles, make sure to set direction.
+        local ent_direction = entity.direction
         --Distance to move the source, defaults to 1
         local distance = event.distance or 1
 
@@ -57,28 +59,34 @@ local function move_combinator(event)
         end
 
         --teleport the entity out of the way.
-        if entity.teleport(Position.translate(entity.position, direction, 10)) then
-            if entity.surface.can_place_entity{name = entity.name, position = target_pos, direction = entity.direction, force = entity.force} then
+        if entity.teleport(Position.translate(entity.position, Position.opposite_direction(direction), 20)) then
+            entity.direction = ent_direction
+            if entity.surface.can_place_entity{name = entity.name, position = target_pos, direction = ent_direction, force = entity.force} then
                 --We can place the entity here, check for wire distance
                 if entity.circuit_connected_entities then
                     if entity.type == "electric-pole" and not table.any(entity.neighbours, _cant_reach) then
                         entity.teleport(target_pos)
+                        entity.direction = ent_direction
                         entity.last_user = player
                         return
                     elseif entity.type ~= "electric-pole" and not table.any(entity.circuit_connected_entities, _cant_reach) then
                         entity.teleport(target_pos)
+                        entity.direction = ent_direction
                         entity.last_user = player
                         return
                     else
                         player.print({"picker-dollies.wires-maxed"})
                         entity.teleport(start_pos)
+                        entity.direction = ent_direction
                         return false
                     end
                 else --All others
                     entity.teleport(target_pos)
+                    entity.direction = ent_direction
                 end
             else --Ent can't won't fit, restore position.
                 entity.teleport(start_pos)
+                entity.direction = ent_direction
             end
         else --Entity can't be teleported
             player.print({"picker-dollies.cant-be-teleported", entity.localised_name})
