@@ -6,8 +6,10 @@ local settings = settings["startup"]
 
 --Gotlags renamer is installed unassign hotkey?
 --Also set to consuming all so only 1 fires.
-data.raw["custom-input"]["rename"].key_sequence = ""
-data.raw["custom-input"]["rename"].key_sequence = "all"
+if data.raw["custom-input"]["rename"] then
+    data.raw["custom-input"]["rename"].key_sequence = ""
+    data.raw["custom-input"]["rename"].key_sequence = "all"
+end
 -------------------------------------------------------------------------------
 --[[Fix Bots]]--
 -------------------------------------------------------------------------------
