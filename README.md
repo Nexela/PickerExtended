@@ -3,7 +3,7 @@ Extended version of the picker mod by Tinyboss
 
 ### Picker ghost revivier
 Hover over a ghost and use the Factorio pipette tool to pick the entity that places it. Press the pipette tool button again to revive the ghost. Reviving a ghost keeps all of its settings and module requests. Picker extended will also try and fill module slots of revived ghosts if they have requests.
-Recomend using this with the same keybinds and clean cursor and pipette tool. Picker extend can also pick up items on the ground and put it in your hands.
+Recomend using this with the same keybinds as clean cursor and pipette tool. Picker extend can also pick up selected items on the ground and put it in your hands.
 
 ### Picker Crafter
 Alt-Q on an entity and picker will try to craft that entity.
@@ -12,7 +12,7 @@ Alt-Q on an entity and picker will try to craft that entity.
 Hover over entities and use the Picker dolly keybinds to move entities around. Entities will keep their wire connections and settings. This allows you to build your set up spaced out and when you are finished push it all together for a nice tight build. Some entities can't be shoved around. Also respect max wire distance. Data Raw Prototypes mod is needed to Move entities, Combinators can be moved without it.  Note Moving some modded entities that rely on position can cause issues.
 
 ### Picker Entity Blueprinter
-Hover over an entity and take a quick blueprint of everything in its selection area with CTRL + R. Blueprints are created automaticly if you don't have an existing Pipette Blueprint in your inventory. Modules and recipes are stored in the blueprint. Now you can quickly blueprint your moduled beacon for fast placing! Using this keybind with nothing in your hand and nothing selected will put a blank blueprint in your hand for quick blueprinting an area. If you have a blueprint in your hand it will switch to the deconstruction planner if you have nothing selected.
+Hover over an entity and take a quick blueprint of everything in its selection area with CTRL + R. Blueprints are created automatically if you don't have an existing Pipette Blueprint in your inventory. Modules and recipes are stored in the blueprint. Now you can quickly blueprint your moduled beacon for fast placing! Using this keybind with nothing in your hand and nothing selected will put a blank blueprint in your hand for quick blueprinting an area. If you have a blueprint in your hand it will switch to the deconstruction planner if you have nothing selected.
 
 ### Picker Zapper
 Have an inventory full of pesky blueprints? Try dropping them on the ground by using the drop item keybind (default z) and they will be zapped away into the nether.
@@ -30,7 +30,7 @@ Automatically set the bar limits on newly placed chests. (Chest limiter mod)
 Sorts container inventories when opened if the option is enabled. Can lag big warehouses, runtime option to disable.
 
 ### Picker Belt Brush (soon)
-With a transport or underground belt in your hand hit pad increase buttons to increase the number of belts you can place at once.
+With a transport or underground belt in your hand hit pad increase or decrease buttons to change the width of your belts you can place at once.
 
 ### Picker Small Fixes
 -   Picker Reacher, Comes default with modestly increased reach distances. Along with startup mod options to easily change them to suit your needs.

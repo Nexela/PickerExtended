@@ -4,6 +4,7 @@ data:extend{
         name = "picker-unminable-construction-robots",
         setting_type = "startup",
         default_value = true,
+        order = "picker-a[bots]-a"
         --default factorio false
     },
     {
@@ -11,6 +12,7 @@ data:extend{
         name = "picker-unminable-logistic-robots",
         setting_type = "startup",
         default_value = true,
+        order = "picker-a[bots]-b"
         --default factorio false
     },
     {
@@ -20,6 +22,7 @@ data:extend{
         default_value = 2,
         maximum_value = 100,
         minimum_value = 1,
+        order = "picker-c[requester-paste]-a"
         --default factorio 2
     },
     {
@@ -27,8 +30,19 @@ data:extend{
         name = "picker-corpse-time",
         setting_type = "startup",
         default_value = 60 * 60,
-        minimum_value = 1,
-        maximum_value = 60 * 60 * 60,
+        minimum_value = 0,
+        maximum_value = 60 * 60 * 60 * 60,
+        order = "picker-m[corpse-time]-a"
+        --default factorio 54000, 15 minutes
+    },
+    {
+        type = "int-setting",
+        name = "picker-player-corpse-time",
+        setting_type = "startup",
+        default_value = 60 * 60 * 15,
+        minimum_value = 0,
+        maximum_value = 60 * 60 * 60 * 60,
+        order = "picker-m[corpse-time]-b"
         --default factorio 54000, 15 minutes
     },
     {
@@ -38,16 +52,8 @@ data:extend{
         default_value = 60,
         minimum_value = 1,
         maxium_value = 600,
+        order = "picker-b[inv-size]-a"
         --default factorio 60
-    },
-    {
-        type = "double-setting",
-        name = "picker-reacher-build-distance",
-        setting_type = "startup",
-        default_value = 30,
-        maximum_value = 10000,
-        minimum_value = 1,
-        --default factorio 6
     },
     {
         type = "double-setting",
@@ -56,6 +62,17 @@ data:extend{
         default_value = 30,
         maximum_value = 10000,
         minimum_value = 1,
+        order = "picker-d[reacher]-a"
+        --default factorio 6
+    },
+    {
+        type = "double-setting",
+        name = "picker-reacher-build-distance",
+        setting_type = "startup",
+        default_value = 30,
+        maximum_value = 10000,
+        minimum_value = 1,
+        order = "picker-d[reacher]-b"
         --default factorio 6
     },
     {
@@ -65,6 +82,7 @@ data:extend{
         default_value = 2.7,
         maximum_value = 10000,
         minimum_value = 1,
+        order = "picker-d[reacher]-c"
         --default factorio 2.7
     },
     {
@@ -74,6 +92,7 @@ data:extend{
         default_value = 6,
         maximum_value = 10000,
         minimum_value = 1,
+        order = "picker-d[reacher]-d"
         --default factorio 6
     },
     {
@@ -83,6 +102,7 @@ data:extend{
         default_value = 1,
         maximum_value = 100,
         minimum_value = 1,
+        order = "picker-d[reacher]-e"
         --default factorio 1
     },
     {
@@ -92,6 +112,7 @@ data:extend{
         default_value = 2,
         maximum_value = 100,
         minimum_value = 1,
+        order = "picker-d[reacher]-f"
         --default factorio 2
     },
 }

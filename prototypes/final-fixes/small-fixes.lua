@@ -4,6 +4,10 @@
 local player = data.raw["player"]["player"]
 local settings = settings["startup"]
 
+--Gotlags renamer is installed unassign hotkey?
+--Also set to consuming all so only 1 fires.
+data.raw["custom-input"]["rename"].key_sequence = ""
+data.raw["custom-input"]["rename"].key_sequence = "all"
 -------------------------------------------------------------------------------
 --[[Fix Bots]]--
 -------------------------------------------------------------------------------
@@ -62,6 +66,7 @@ local corpse_time = settings["picker-corpse-time"].value
 for _, corpse in pairs(data.raw["corpse"]) do
     if corpse.time_before_removed == 54000 then corpse.time_before_removed = corpse_time end
 end
+data.raw["character-corpse"]["character-corpse"].time_to_live = settings["picker-player-corpse-time"].value
 
 -------------------------------------------------------------------------------
 --[[Starting inventory size]]--

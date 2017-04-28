@@ -1,24 +1,20 @@
 -------------------------------------------------------------------------------
 --[[Renamer]]--
 -------------------------------------------------------------------------------
---Gotlags renamer is installed unassign hotkey?
-if not data.raw["custom-input"]["rename"] then
-    data:extend{
-        {
-            type = "custom-input",
-            name = "picker-rename",
-            key_sequence = "CONTROL + R",
-            consuming = "all"
-        },
-        {
-            type = "font",
-            name = "picker-rename-button",
-            from = "default-bold",
-            size = 14
-        }
+data:extend{
+    {
+        type = "custom-input",
+        name = "picker-rename",
+        key_sequence = "CONTROL + R",
+        consuming = "all"
+    },
+    {
+        type = "font",
+        name = "picker-rename-button",
+        from = "default-bold",
+        size = 14
     }
-end
-
+}
 -------------------------------------------------------------------------------
 --[[Styles]]--
 -------------------------------------------------------------------------------
