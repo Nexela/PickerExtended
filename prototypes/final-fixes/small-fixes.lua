@@ -20,7 +20,7 @@ for _, bot in pairs(types) do
         if bot == "construction-robot" and settings["picker-unminable-construction-robots"].value then
             entity.minable = nil
         end
-        if bot == "logistic-robot" and settings["picker-unminable-logistic-robots"] then
+        if bot == "logistic-robot" and settings["picker-unminable-logistic-robots"].value then
             entity.minable = nil
         end
     end
