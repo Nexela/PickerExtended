@@ -259,11 +259,11 @@ local function sort_inventory(event)
     end
 end
 script.on_event("picker-manual-inventory-sort", sort_inventory)
-local function auto_sort_inventory(event)
-    if settings.get_player_settings(event.player_index)["picker-auto-sort-inventory"].value then
-        sort_inventory(event)
-    end
-end
-Event.register(defines.events.on_selected_entity_changed, auto_sort_inventory)
+-- local function auto_sort_inventory(event)
+--     if settings.get_player_settings(event.player_index)["picker-auto-sort-inventory"].value then
+--         sort_inventory(event)
+--     end
+-- end
+--Event.register(defines.events.on_selected_entity_changed, auto_sort_inventory)
 
 return sort_inventory
