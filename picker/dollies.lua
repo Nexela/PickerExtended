@@ -53,7 +53,7 @@ local function move_combinator(event)
             return table.any(neighbours,
                 function(neighbour)
                     local dist = Position.distance(neighbour.position, target_pos)
-                    return dist > source_distance or dist > _get_distance(neighbour)
+                    return entity ~= neighbour and dist > source_distance or dist > _get_distance(neighbour)
                 end
             )
         end
