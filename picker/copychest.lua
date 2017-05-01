@@ -28,7 +28,9 @@ local function copy_chest(event)
                     for i = 1, #src_inv do
                         local stack = src_inv[i]
                         if stack and stack.valid_for_read then
-                            stack.count = stack.count - dest_inv.insert({name = stack.name, count = stack.count, health = stack.health})
+                            local new_stack = {name = stack.name, count = stack.count, health = stack.health, durability = stack.durability}
+                            new_stack.ammo = stack.prototype.magazine_size and stack.ammo
+                            stack.count = stack.count - dest_inv.insert(new_stack)
                         end
                     end
                 end

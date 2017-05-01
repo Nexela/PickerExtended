@@ -28,4 +28,10 @@ data:extend{
         key_sequence = "CONTROL + V",
         consuming = "all"
     },
+    {
+        type = "custom-input",
+        name = "picker-pipe-cleaner",
+        key_sequence = "CONTROL + DELETE",
+        consuming = "none"
+    },
 }

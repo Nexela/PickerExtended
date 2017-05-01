@@ -2,10 +2,11 @@
 --- <p>A chunk represents a 32x32 area of a surface in factorio.</p>
 -- @module Chunk
 
-local Core = require 'stdlib/core'
+local fail_if_missing = require 'stdlib/core'['fail_if_missing']
 local Position = require 'stdlib/area/position'
 
-local Chunk = {}
+Chunk = {} --luacheck: allow defined top
+
 local MAX_UINT = 4294967296
 
 --- Calculates the chunk coordinates for the tile position given
@@ -32,7 +33,7 @@ end
 -- @param chunk_pos to convert to an area
 -- @return area that chunk is valid for
 function Chunk.to_area(chunk_pos)
-    Core.fail_if_missing(chunk_pos, "missing chunk_pos argument")
+    fail_if_missing(chunk_pos, "missing chunk_pos argument")
     chunk_pos = Position.to_table(chunk_pos)
 
     local left_top = { x = chunk_pos.x * 32, y = chunk_pos.y * 32 }
@@ -46,8 +47,8 @@ end
 -- @param default_value (optional) to set and return if no data exists
 -- @return the data, or nil if no data exists for the chunk
 function Chunk.get_data(surface, chunk_pos, default_value)
-    Core.fail_if_missing(surface, "missing surface argument")
-    Core.fail_if_missing(chunk_pos, "missing chunk_pos argument")
+    fail_if_missing(surface, "missing surface argument")
+    fail_if_missing(chunk_pos, "missing chunk_pos argument")
     if not global._chunk_data then
         if not default_value then return nil end
         global._chunk_data = {}
@@ -70,8 +71,8 @@ end
 -- @param data the data to set (or nil to erase the data for the chunk)
 -- @return the previous data associated with the chunk, or nil if the chunk had no previous data
 function Chunk.set_data(surface, chunk_pos, data)
-    Core.fail_if_missing(surface, "missing surface argument")
-    Core.fail_if_missing(chunk_pos, "missing chunk_pos argument")
+    fail_if_missing(surface, "missing surface argument")
+    fail_if_missing(chunk_pos, "missing chunk_pos argument")
     if not global._chunk_data then global._chunk_data = {} end
 
     local idx = Chunk.get_index(surface, chunk_pos)
@@ -86,8 +87,8 @@ end
 -- @param surface the chunk is on
 -- @param chunk_pos of the chunk
 function Chunk.get_index(surface, chunk_pos)
-    Core.fail_if_missing(surface, "missing surface argument")
-    Core.fail_if_missing(chunk_pos, "missing chunk_pos argument")
+    fail_if_missing(surface, "missing surface argument")
+    fail_if_missing(chunk_pos, "missing chunk_pos argument")
     if not global._next_chunk_index then global._next_chunk_index = 0 end
     if not global._chunk_indexes then global._chunk_indexes = {} end
 
@@ -106,3 +107,5 @@ function Chunk.get_index(surface, chunk_pos)
 
     return surface_chunks[chunk_pos.x][chunk_pos.y]
 end
+
+return Chunk

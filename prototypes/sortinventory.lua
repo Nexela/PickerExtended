@@ -1,4 +1,4 @@
-local Proto = require("stdlib.data.protohelpers")
+local Prototype = require("stdlib.data.prototype")
 local input_inventory_sort = {
     type = "custom-input",
     name = "picker-manual-inventory-sort",
@@ -15,7 +15,7 @@ local container = {
     collision_mask = {},
     max_health = 10000,
     inventory_size = 0,
-    picture = Proto.empty_animation,
+    picture = Prototype.empty_animation,
     circuit_wire_max_distance = 0
 }
 

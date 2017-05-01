@@ -11,13 +11,17 @@ local function make_simple_blueprint(event)
         if player.selected and not (player.selected.type == "resource" or player.selected.has_flag("not-blueprintable")) then
             local entity = player.selected
             if player.clean_cursor() then
-                local bp = lib.get_planner(player, "blueprint", "Pipette Blueprint")
-                if bp then
-                    bp.clear_blueprint()
-                    bp.label = "Pipette Blueprint"
-                    bp.allow_manual_label_change = false
-                    bp.create_blueprint{surface = entity.surface, force = player.force, area = Entity.to_selection_area(entity), always_include_tiles = false}
-                    return bp.is_blueprint_setup() and bp
+                if entity.force == player.force and lib.damaged(entity) and lib.get_planner(player, "repair-tool") then
+                    return
+                else
+                    local bp = lib.get_planner(player, "blueprint", "Pipette Blueprint")
+                    if bp then
+                        bp.clear_blueprint()
+                        bp.label = "Pipette Blueprint"
+                        bp.allow_manual_label_change = false
+                        bp.create_blueprint{surface = entity.surface, force = player.force, area = Entity.to_selection_area(entity), always_include_tiles = false}
+                        return bp.is_blueprint_setup() and bp
+                    end
                 end
             else
                 player.print({"picker.msg-cant-insert-blueprint"})

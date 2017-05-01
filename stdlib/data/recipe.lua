@@ -2,10 +2,10 @@
 -- @module Recipe
 -- luacheck: ignore item
 
-local Core = require 'stdlib/core'
+local fail_if_missing = require 'stdlib/core'['fail_if_missing']
 local Data = require 'stdlib/data/data'
 
-local Recipe = {}
+Recipe = {} --luacheck: allow defined top
 
 --- Selects all recipe values where the key matches the selector pattern.
 -- The selector pattern is divided into groups. The pattern should have a colon character `:` to denote the selection for each group.
@@ -20,7 +20,7 @@ local Recipe = {}
 -- @param pattern to search with
 -- @return table containing the elements matching the selector pattern, or an empty table if there was no matches
 function Recipe.select(pattern)
-    Core.fail_if_missing(pattern, "missing pattern argument")
+    fail_if_missing(pattern, "missing pattern argument")
 
     local results = {}
     local parts = string.split(pattern, ":")
@@ -116,3 +116,5 @@ function Recipe.format_items(recipes)
         end)
     return recipes
 end
+
+return Recipe

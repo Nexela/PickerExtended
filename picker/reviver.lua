@@ -2,21 +2,14 @@
 --[[Reviver]]--
 -------------------------------------------------------------------------------
 local Position = require("stdlib.area.position")
-
-local function stack_equals_ghost(stack, ghost)
-    if ghost.name == "entity-ghost" then
-        return stack.prototype.place_result and stack.prototype.place_result.name == ghost.ghost_name
-    elseif ghost.name == "tile-ghost" then
-        return stack.prototype.place_as_tile_result and stack.prototype.place_as_tile_result.result.name == ghost.ghost_name
-    end
-end
+local lib = require("picker/lib")
 
 local function picker_revive_selected(event)
     local player = game.players[event.player_index]
     if player.selected and player.controller_type ~= defines.controllers.ghost then
         local ghost = player.selected and (player.selected.name == "entity-ghost" or player.selected.name == "tile-ghost") and player.selected
         local stack = player.cursor_stack and player.cursor_stack.valid_for_read and player.cursor_stack
-        if ghost and stack and stack_equals_ghost(stack, ghost) and Position.distance(player.position, ghost.position) <= player.build_distance + 4 then
+        if ghost and stack and lib.stack_is_ghost(stack, ghost) and Position.distance(player.position, ghost.position) <= player.build_distance + 4 then
             local position = ghost.position
             local is_tile = ghost.name == "tile-ghost"
             local revived, entity, requests = ghost.revive(true)
@@ -33,17 +26,7 @@ local function picker_revive_selected(event)
                 if entity then
                     entity.health = (entity.health > 0) and ((stack.health or 1) * entity.prototype.max_health)
                     if requests then
-                        local pinv = player.get_inventory(defines.inventory.player_main) or player.get_inventory(defines.inventory.god_main)
-                        local new_requests = {}
-                        for name, count in pairs(requests.item_requests) do
-                            local removed = pinv.remove({name = name, count = count})
-                            if removed > 0 then
-                                entity.insert({name = name, count = removed})
-                            end
-                            local balance = count - removed
-                            new_requests[name] = balance > 0 and balance or nil
-                        end
-                        requests.item_requests = new_requests
+                        requests.item_requests = lib.satisfy_requests(entity, player, requests)
                     end
                     script.raise_event(defines.events.on_built_entity, {created_entity = entity, player_index = player.index})
                 elseif is_tile then
@@ -55,6 +38,8 @@ local function picker_revive_selected(event)
             if player.cursor_stack.set_stack(player.selected.stack) then
                 player.selected.destroy()
             end
+        elseif player.selected.name == "item-request-proxy" and not player.cursor_stack.valid_for_read then
+            player.selected.item_requests = lib.satisfy_requests(player.selected, player, player.selected)
         end
     end
 end

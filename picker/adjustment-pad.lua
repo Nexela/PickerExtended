@@ -27,7 +27,7 @@ function Pad.get_or_create_adjustment_pad(player, name) -- return gui
     return player.gui.left[name.."_frame_main"]
 end
 
-MOD.interfaces["get_adjustment_pad_id"] = Event.adjustment_pad
+MOD.interfaces["get_adjustment_pad_id"] = function() return(Event.adjustment_pad) end
 MOD.interfaces["get_or_create_adjustment_pad"] = Pad.get_or_create_adjustment_pad
 
 return Pad

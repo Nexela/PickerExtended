@@ -5,7 +5,8 @@ MOD.interfaces = {}
 
 require("stdlib.table")
 require("stdlib.string")
-require("stdlib.color.defines")
+require("stdlib.defines.colors")
+require("stdlib.defines.time")
 require("stdlib.event.event")
 require("stdlib.gui.gui")
 
@@ -45,6 +46,8 @@ require("picker.chestlimit")
 require("picker.copychest")
 require("picker.sortinventory")
 require("picker.zapper")
+require("picker.pipecleaner")
+require("picker.orphans")
 --require("picker.beltbrush")
 
 -------------------------------------------------------------------------------
