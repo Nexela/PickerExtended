@@ -38,7 +38,7 @@ require("picker.adjustment-pad")
 require("picker.reviver")
 require("picker.blueprinter")
 require("picker.dollies")
-require("picker.minimap")
+--require("picker.minimap") --Disabled pending desync investigation
 require("picker.itemcount")
 require("picker.crafter")
 require("picker.renamer")
@@ -46,9 +46,13 @@ require("picker.chestlimit")
 require("picker.copychest")
 require("picker.sortinventory")
 require("picker.zapper")
-require("picker.pipecleaner")
+require("picker.wiretool") --#10
+require("picker.pipecleaner") --#5
 require("picker.orphans")
---require("picker.beltbrush")
+--require("picker.mirror") --#8
+--require("picker.beltbrush") --#5
+--require("picker.beltools") --#3
+require("picker.pastesettings")  --#13, #11
 
 -------------------------------------------------------------------------------
 --[[Remote Interfaces]]--

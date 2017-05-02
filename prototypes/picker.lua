@@ -34,4 +34,16 @@ data:extend{
         key_sequence = "CONTROL + DELETE",
         consuming = "none"
     },
+    {
+        type = "custom-input",
+        name = "picker-wire-cutter",
+        key_sequence = "CONTROL + DELETE",
+        consuming = "none"
+    },
+    {
+        type = "custom-input",
+        name = "picker-wire-picker",
+        key_sequence = "SHIFT + Q",
+        consuming = "none"
+    },
 }

@@ -115,4 +115,11 @@ data:extend{
         order = "picker-d[reacher]-f"
         --default factorio 2
     },
+    {
+        type = "bool-setting",
+        name = "picker-hide-mod-names",
+        setting_type = "startup",
+        default_value = false,
+        order = "picker-e[hide-mod-names]-b"
+    },
 }
