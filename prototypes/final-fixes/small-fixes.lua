@@ -51,9 +51,9 @@ end
 -------------------------------------------------------------------------------
 --From small-fixes mod
 --change requester paste multiplier for anything at default (2)
-local value = settings["picker-requester-paste-multiplier"].value or 2
+local value = settings["picker-requester-paste-multiplier"].value or 10
 for _, recipe in pairs(data.raw["recipe"]) do
-    if not recipe.requester_paste_multiplier or recipe.requester_paste_multiplier == 2 then
+    if not recipe.requester_paste_multiplier or recipe.requester_paste_multiplier == 10 then
         recipe.requester_paste_multiplier = value
     end
 end

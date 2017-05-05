@@ -19,7 +19,7 @@ data:extend{
         type = "int-setting",
         name = "picker-requester-paste-multiplier",
         setting_type = "startup",
-        default_value = 2,
+        default_value = 10,
         maximum_value = 100,
         minimum_value = 1,
         order = "picker-c[requester-paste]-a"
