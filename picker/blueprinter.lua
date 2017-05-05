@@ -55,15 +55,20 @@ local function get_or_create_blueprint_gui(player)
     return bpframe
 end
 
+local function is_belt_brush(stack)
+    return stack.label and stack.label:find("Belt Brush")
+end
+
 local function show_bp_tools(event)
     local player = game.players[event.player_index]
-    get_or_create_blueprint_gui(player).style.visible = lib.cursor_stack_name(player, "blueprint") and player.cursor_stack.is_blueprint_setup() or false
+    local bp = lib.cursor_stack_name(player, "blueprint", true) and not is_belt_brush(player.cursor_stack) and player.cursor_stack
+    get_or_create_blueprint_gui(player).style.visible = bp and true or false
 end
 Event.register(defines.events.on_player_cursor_stack_changed, show_bp_tools)
 
 local function update_blueprint(event)
     local player = game.players[event.player_index]
-    if lib.cursor_stack_name(player, "blueprint") and player.cursor_stack.is_blueprint_setup() then
+    if lib.cursor_stack_name(player, "blueprint", true) then
         local from = event.element.parent["picker_bp_tools_from"].elem_value
         local to = event.element.parent["picker_bp_tools_to"].elem_value
         if from and to then
@@ -169,13 +174,12 @@ end
 
 local function mirror_blueprint (event)
     local player = game.players[event.player_index]
-    local blueprint = lib.cursor_stack_name(player, "blueprint")
-    if blueprint and blueprint.is_blueprint_setup() then
+    local blueprint = lib.cursor_stack_name(player, "blueprint", true)
+    if blueprint then
         local mirrored = get_mirrored_blueprint(blueprint)
         blueprint.set_blueprint_entities(mirrored.entities)
         blueprint.set_blueprint_tiles(mirrored.tiles)
-    else
-        player.print("Click this button with a blueprint or book with an active blueprint to mirror it")
     end
 end
 Gui.on_click("picker_bp_tools_mirror", mirror_blueprint)
+script.on_event("picker-mirror-blueprint", mirror_blueprint)

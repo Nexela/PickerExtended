@@ -49,7 +49,7 @@ require("picker.zapper")
 require("picker.wiretool") --#10
 require("picker.pipecleaner") --#5
 require("picker.orphans")
---require("picker.beltbrush") --#5
+require("picker.beltbrush") --#5
 --require("picker.beltools") --#3
 require("picker.pastesettings")  --#13, #11
 

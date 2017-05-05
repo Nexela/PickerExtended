@@ -2,6 +2,7 @@
 --[[Picker Dolly]]--
 -------------------------------------------------------------------------------
 local Position = require("stdlib.area.position")
+local lib = require("picker.lib")
 
 Event.dolly_moved = script.generate_event_name()
 MOD.interfaces["dolly_moved_entity_id"] = function() return Event.dolly_moved end
@@ -75,31 +76,32 @@ local function move_combinator(event)
                 if entity.circuit_connected_entities then
                     if entity.type == "electric-pole" and not table.any(entity.neighbours, _cant_reach) then
                         entity.teleport(target_pos)
-                        entity.direction = ent_direction
                         entity.last_user = player
                         script.raise_event(Event.dolly_moved, {player_index = player.index, moved_entity = entity})
                         return
                     elseif entity.type ~= "electric-pole" and not table.any(entity.circuit_connected_entities, _cant_reach) then
+
                         entity.teleport(target_pos)
-                        entity.direction = ent_direction
-                        entity.last_user = player
-                        script.raise_event(Event.dolly_moved, {player_index = player.index, moved_entity = entity})
-                        return true
+                        if entity.type == "mining-drill" and lib.find_resources(entity) == 0 then
+                            entity.teleport(start_pos)
+                            return
+                        else
+                            entity.last_user = player
+                            script.raise_event(Event.dolly_moved, {player_index = player.index, moved_entity = entity})
+                            return true
+                        end
                     else
                         player.print({"picker-dollies.wires-maxed"})
                         entity.teleport(start_pos)
-                        entity.direction = ent_direction
                         return false
                     end
                 else --All others
                     entity.teleport(target_pos)
-                    entity.direction = ent_direction
                     script.raise_event(Event.dolly_moved, {player_index = player.index, moved_entity = entity})
                     return
                 end
             else --Ent can't won't fit, restore position.
                 entity.teleport(start_pos)
-                entity.direction = ent_direction
                 return
             end
         else --Entity can't be teleported

@@ -2,10 +2,16 @@
 --[[Helper Functions]]--
 -------------------------------------------------------------------------------
 local lib = {}
+local Position = require("stdlib.area.position")
 local INVENTORIES = {defines.inventory.player_quickbar, defines.inventory.player_main, defines.inventory.god_quickbar, defines.inventory.god_main}
 
-function lib.cursor_stack_name(player, name)
-    return player.cursor_stack and player.cursor_stack.valid_for_read and player.cursor_stack.name == name and player.cursor_stack
+function lib.cursor_stack_name(player, name, is_bp_setup)
+    local stack = player.cursor_stack and player.cursor_stack.valid_for_read and player.cursor_stack.name == name and player.cursor_stack
+    if stack and is_bp_setup then
+        return stack and stack.name == "blueprint" and stack.is_blueprint_setup() and stack
+    else
+        return stack
+    end
 end
 
 function lib.stack_is_ghost(stack, ghost)
@@ -14,6 +20,15 @@ function lib.stack_is_ghost(stack, ghost)
     elseif ghost.name == "tile-ghost" then
         return stack.prototype.place_as_tile_result and stack.prototype.place_as_tile_result.result.name == ghost.ghost_name
     end
+end
+
+function lib.find_resources(entity)
+    if entity.type == "mining-drill" then
+        local area = Position.expand_to_area(entity.position, game.entity_prototypes[entity.name].mining_drill_radius)
+        local name = entity.mining_target and entity.mining_target.name or nil
+        return entity.surface.count_entities_filtered{area=area, type="resource", name=name}
+    end
+    return 0
 end
 
 function lib.damaged(entity)

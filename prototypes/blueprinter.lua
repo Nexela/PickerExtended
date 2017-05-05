@@ -57,4 +57,11 @@ style.picker_blueprinter_btn_upgrade = {
     clicked_graphical_set = graphical_set("upgrade"),
 }
 
-log(serpent.block(style, {comment=false, sparse=false}))
+data:extend{
+    {
+        type = "custom-input",
+        name = "picker-mirror-blueprint",
+        key_sequence = "ALT + R",
+        consuming = "all"
+    },
+}

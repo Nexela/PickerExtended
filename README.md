@@ -13,7 +13,7 @@ Hover over entities and use the Picker dolly keybinds to move entities around. E
 ![Dollies in Action](https://github.com/Nexela/PickerExtended/blob/master/web/picker-combinator-dolly.gif)
 
 ### Picker Entity Blueprinter
-Hover over an entity and take a quick blueprint of everything in its selection area with CTRL + R. Blueprints are created automatically if you don't have an existing Pipette Blueprint in your inventory. Modules and recipes are stored in the blueprint. Now you can quickly blueprint your moduled beacon for fast placing! Using this keybind with nothing in your hand and nothing selected will put a blank blueprint in your hand for quick blueprinting an area. If you have a blueprint in your hand it will switch to the deconstruction planner if you have nothing selected.
+Hover over an entity and take a quick blueprint of everything in its selection area with CTRL + Q. Blueprints are created automatically if you don't have an existing Pipette Blueprint in your inventory. Modules and recipes are stored in the blueprint. Now you can quickly blueprint your moduled beacon for fast placing! Using this keybind with nothing in your hand and nothing selected will put a blank blueprint in your hand for quick blueprinting an area. If you have a blueprint in your hand it will switch to the deconstruction planner if you have nothing selected. Blue print mirroing is Availble by holding a blueprint and pressing ALT-R, Blueprint upgrading is available using the toolbar that shows up whenever you are holding a blueprint.
 
 ![Blueprinter in Action](https://github.com/Nexela/PickerExtended/blob/master/web/picker-blueprinter.gif)
 
@@ -46,7 +46,7 @@ Hover over any damanged entity and press CTRL - Q with nothing in your hands to 
 ### Picker Module Reviver
 Hover over any item request proxy and press Q to search your inventory for the requested modules/items and insert them.
 
-### Picker Auto Hide Minimap (Temporarily Disabled)
+### Picker Auto Hide Minimap
 Automatically hides the minimap when you are hovering over a logistic container. This option can be disabled in the mod settings screen.
 
 ![Minimap Hide in Action](https://github.com/Nexela/PickerExtended/blob/master/web/picker-minimap-hide.gif)
