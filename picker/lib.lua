@@ -4,6 +4,10 @@
 local lib = {}
 local INVENTORIES = {defines.inventory.player_quickbar, defines.inventory.player_main, defines.inventory.god_quickbar, defines.inventory.god_main}
 
+function lib.cursor_stack_name(player, name)
+    return player.cursor_stack and player.cursor_stack.valid_for_read and player.cursor_stack.name == name and player.cursor_stack
+end
+
 function lib.stack_is_ghost(stack, ghost)
     if ghost.name == "entity-ghost" then
         return stack.prototype.place_result and stack.prototype.place_result.name == ghost.ghost_name

@@ -3,6 +3,16 @@
 -------------------------------------------------------------------------------
 local Position = require("stdlib.area.position")
 
+Event.dolly_moved = script.generate_event_name()
+MOD.interfaces["dolly_moved_entity_id"] = function() return Event.dolly_moved end
+--[[
+Event = {player_index = player_index, moved_entity = entity}
+--In your mods on_load and on_init
+if remote.interfaces["picker"] and remote.interfaces["picker"]["dolly_moved_entity_id"] then
+    script.on_event(remote.call("picker", "dolly_moved_entity_id"), function_to_update_positions)
+end
+--]]
+
 local input_to_direction = {
     ["dolly-move-north"] = defines.direction.north,
     ["dolly-move-east"] = defines.direction.east,
@@ -36,7 +46,6 @@ local function move_combinator(event)
     if entity and entity.force == player.force and (remote.interfaces["data-raw"] or moveable_names[entity.name]) and player.can_reach_entity(entity) then
         --Direction to move the source
         local direction = event.direction or input_to_direction[event.input_name]
-        --BUG .15.2 teleporting rectangles, make sure to set direction.
         local ent_direction = entity.direction
         --Distance to move the source, defaults to 1
         local distance = event.distance or 1
@@ -68,12 +77,14 @@ local function move_combinator(event)
                         entity.teleport(target_pos)
                         entity.direction = ent_direction
                         entity.last_user = player
+                        script.raise_event(Event.dolly_moved, {player_index = player.index, moved_entity = entity})
                         return
                     elseif entity.type ~= "electric-pole" and not table.any(entity.circuit_connected_entities, _cant_reach) then
                         entity.teleport(target_pos)
                         entity.direction = ent_direction
                         entity.last_user = player
-                        return
+                        script.raise_event(Event.dolly_moved, {player_index = player.index, moved_entity = entity})
+                        return true
                     else
                         player.print({"picker-dollies.wires-maxed"})
                         entity.teleport(start_pos)
@@ -83,10 +94,13 @@ local function move_combinator(event)
                 else --All others
                     entity.teleport(target_pos)
                     entity.direction = ent_direction
+                    script.raise_event(Event.dolly_moved, {player_index = player.index, moved_entity = entity})
+                    return
                 end
             else --Ent can't won't fit, restore position.
                 entity.teleport(start_pos)
                 entity.direction = ent_direction
+                return
             end
         else --Entity can't be teleported
             player.print({"picker-dollies.cant-be-teleported", entity.localised_name})

@@ -71,7 +71,7 @@ end
 
 local function increase_decrease_reprogrammer(event, change)
     local player = Player.get(event.player_index)
-    if player.cursor_stack.valid_for_read then
+    if player.cursor_stack and player.cursor_stack.valid_for_read then
         local stack = player.cursor_stack
         if get_match(stack) or is_beltbrush_bp(stack) then
             local text_field = Pad.get_or_create_adjustment_pad(player, "beltbrush")["beltbrush_text_box"]

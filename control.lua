@@ -36,9 +36,9 @@ Event.register(Event.core_events.init, function()
 -------------------------------------------------------------------------------
 require("picker.adjustment-pad")
 require("picker.reviver")
-require("picker.blueprinter")
+require("picker.blueprinter") --#8 mirror
 require("picker.dollies")
---require("picker.minimap") --Disabled pending desync investigation
+require("picker.minimap")
 require("picker.itemcount")
 require("picker.crafter")
 require("picker.renamer")
@@ -49,7 +49,6 @@ require("picker.zapper")
 require("picker.wiretool") --#10
 require("picker.pipecleaner") --#5
 require("picker.orphans")
---require("picker.mirror") --#8
 --require("picker.beltbrush") --#5
 --require("picker.beltools") --#3
 require("picker.pastesettings")  --#13, #11

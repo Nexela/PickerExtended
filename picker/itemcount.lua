@@ -14,7 +14,7 @@ end
 
 local function get_itemcount_counts(event)
     local player = game.players[event.player_index]
-    local stack = player.cursor_stack.valid_for_read and player.cursor_stack
+    local stack = player.cursor_stack and player.cursor_stack.valid_for_read and player.cursor_stack
     local gui = get_or_create_itemcount_gui(player)
     if stack then
         local inventory_count = player.get_item_count(stack.name)

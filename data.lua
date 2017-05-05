@@ -7,6 +7,7 @@ require("stdlib.defines.time")
 --[[Picker]]--
 -------------------------------------------------------------------------------
 require("prototypes/adjustment-pad")
+require("prototypes/blueprinter")
 
 require("prototypes/picker")
 require("prototypes/renamer")

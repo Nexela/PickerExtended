@@ -18,7 +18,7 @@ end
 
 local function increase_decrease_reprogrammer(event, change)
     local player, pdata = Player.get(event.player_index)
-    if player.cursor_stack.valid_for_read then
+    if player.cursor_stack and player.cursor_stack.valid_for_read then
         local stack = player.cursor_stack
         if get_match(stack) then
             pdata.chests = pdata.chests or {}

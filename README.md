@@ -31,6 +31,7 @@ Holding an item in your hand will show the total count of all of that item in yo
 ![Item Count in Action](https://github.com/Nexela/PickerExtended/blob/master/web/picker-item-count.gif)
 
 ### Picker Pipe Cleaner
+Call a plumber on any fluidbox by selecting the pipe and pressing CTRL-D. This will loop through all connected pipes and remove the selected fluid allowing your pipes to freely flow again.
 
 ![Pipe Cleaner in Action](https://github.com/Nexela/PickerExtended/blob/master/web/picker-pipe-cleaner.gif)
 
@@ -78,6 +79,7 @@ Quickly upgrade a section of belt by pressing the hotkey while hovering over the
 
 ### Picker Adjustment Pad
 A quick increase/decrease pad using the +/- keys or the buttons on the gui. Mods can quickly create their own adjustment pad using a remote call to get or create the window and listening for the pad changed event.
+
 ![Minimap Hide in Action](https://github.com/Nexela/PickerExtended/blob/master/web/picker-adjustment-pad.gif)
 
 ### Picker Small Fixes
