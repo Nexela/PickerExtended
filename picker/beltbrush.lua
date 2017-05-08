@@ -185,7 +185,6 @@ local function increase_decrease_reprogrammer(event, change)
             local text_field = Pad.get_or_create_adjustment_pad(player, "beltbrush")["beltbrush_text_box"]
             local lanes = tonumber(text_field.text)
             if event.element and event.element.name == "beltbrush_text_box" and not tonumber(event.element.text) then
-                game.print("should be returning")
                 return
             elseif event.element and event.element.name == "beltbrush_text_box" then
                 lanes = (tonumber(text_field.text) or 1) <= 32 and (tonumber(text_field.text) or 1) or 32
