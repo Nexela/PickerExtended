@@ -55,32 +55,31 @@ local function get_or_create_blueprint_gui(player)
     return bpframe
 end
 
-local function is_belt_brush(stack)
-    return stack.label and stack.label:find("Belt Brush")
-end
-
 local function show_bp_tools(event)
     local player = game.players[event.player_index]
-    local bp = lib.cursor_stack_name(player, "blueprint", true) and not is_belt_brush(player.cursor_stack) and player.cursor_stack
+    local bp = lib.cursor_stack_name(player, "blueprint", true)
     get_or_create_blueprint_gui(player).style.visible = bp and true or false
 end
 Event.register(defines.events.on_player_cursor_stack_changed, show_bp_tools)
 
 local function update_blueprint(event)
     local player = game.players[event.player_index]
-    if lib.cursor_stack_name(player, "blueprint", true) then
+    local stack = lib.cursor_stack_name(player, "blueprint", true)
+    if stack then
+        game.print(stack.name)
+        game.print(stack.label)
         local from = event.element.parent["picker_bp_tools_from"].elem_value
         local to = event.element.parent["picker_bp_tools_to"].elem_value
         if from and to then
             if game.entity_prototypes[from].fast_replaceable_group == game.entity_prototypes[to].fast_replaceable_group then
-                local bp_entities = player.cursor_stack.get_blueprint_entities()
+                local bp_entities = stack.get_blueprint_entities()
                 for _, entity in pairs(bp_entities) do
                     if entity.name == from then
                         entity.name = to
                     end
                 end
 
-                player.cursor_stack.set_blueprint_entities(bp_entities)
+                stack.set_blueprint_entities(bp_entities)
             else
                 player.print({"blueprinter.selections-not-fast-replaceable", {"entity-name."..from}, {"entity-name."..to}})
             end

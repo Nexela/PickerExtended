@@ -50,7 +50,7 @@ local function build_beltbrush(stack, name, lanes)
                 direction = defines.direction.north,
             }
         end
-        table.each(entities, function(ent) ent.position = Position.translate(ent.position, defines.direction.west, math.floor(lanes/2)) end)
+        table.each(entities, function(ent) ent.position = Position.translate(ent.position, defines.direction.west, math.ceil(lanes/2)-1) end)
         stack.set_blueprint_entities(entities)
     end
 end
@@ -132,7 +132,7 @@ local function beltbrush_corners(event)
                         }
                     end
                 end
-                table.each(new_ents, function(ent) ent.position = Position.translate(ent.position, defines.direction.northwest, math.floor(lanes/2)) end)
+                table.each(new_ents, function(ent) ent.position = Position.translate(ent.position, defines.direction.northwest, math.ceil(lanes/2)-1) end)
                 stack.set_blueprint_entities(new_ents)
                 stack.label = "Belt Brush Corners "..lanes
             end
@@ -144,7 +144,9 @@ script.on_event("picker-beltbrush-corners", beltbrush_corners)
 local function beltbrush_balancers(event)
     local player = Player.get(event.player_index)
     if is_beltbrush_bp(player.cursor_stack) then
+
         local stack = player.cursor_stack
+
         local bp = stack.get_blueprint_entities()
         local belt = table.find(bp, function(v) return match_to_item[game.entity_prototypes[v.name].type] end)
         belt = belt and belt.name
@@ -192,6 +194,8 @@ local function increase_decrease_reprogrammer(event, change)
             end
             text_field.text = lanes or 1
             create_or_destroy_bp(player, lanes or 1)
+        else
+            Pad.remove_gui(player, "beltbrush_frame_main")
         end
     else
         Pad.remove_gui(player, "beltbrush_frame_main")

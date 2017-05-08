@@ -6,11 +6,20 @@ local Position = require("stdlib.area.position")
 local INVENTORIES = {defines.inventory.player_quickbar, defines.inventory.player_main, defines.inventory.god_quickbar, defines.inventory.god_main}
 
 function lib.cursor_stack_name(player, name, is_bp_setup)
-    local stack = player.cursor_stack and player.cursor_stack.valid_for_read and player.cursor_stack.name == name and player.cursor_stack
-    if stack and is_bp_setup then
-        return stack and stack.name == "blueprint" and stack.is_blueprint_setup() and stack
-    else
-        return stack
+    if player.cursor_stack and player.cursor_stack.valid_for_read then
+        local cursor = player.cursor_stack
+        local stack
+        if cursor.name == name then
+            stack = cursor
+        elseif cursor.name == name.."-book" then
+            local inv = cursor.get_inventory(defines.inventory.item_main)
+            stack = inv and cursor.active_index and cursor.active_index + 1 and inv[cursor.active_index + 1]
+        end
+        if stack and is_bp_setup then
+            return stack and stack.name == "blueprint" and stack.is_blueprint_setup() and stack
+        else
+            return stack
+        end
     end
 end
 
