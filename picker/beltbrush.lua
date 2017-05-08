@@ -6,6 +6,8 @@ local Position = require("stdlib.area.position")
 local Pad = require("picker.adjustment-pad")
 local lib = require("picker.lib")
 
+local balancers = require("blueprints.balancers")
+
 local match_to_item = {
     ["transport-belt"] = true,
     ["underground-belt"] = true
@@ -35,7 +37,6 @@ local function revive_belts(event)
         end
     end
 end
-
 Event.register(defines.events.on_built_entity, revive_belts)
 
 local function build_beltbrush(stack, name, lanes)
@@ -49,6 +50,7 @@ local function build_beltbrush(stack, name, lanes)
                 direction = defines.direction.north,
             }
         end
+        table.each(entities, function(ent) ent.position = Position.translate(ent.position, defines.direction.west, math.floor(lanes/2)) end)
         stack.set_blueprint_entities(entities)
     end
 end
@@ -83,7 +85,8 @@ local function create_or_destroy_bp(player, lanes)
                     stack.clear()
                     stack.set_stack(item)
                     item.clear()
-                    return
+                else
+                    stack.clear()
                 end
             end
         end
@@ -111,47 +114,67 @@ local function beltbrush_corners(event)
                 end
 
                 local function get_dir(x, y)
-                    if y - (lanes-1) + x  <= 0 then
+                    if y - lanes + x <= 1 then
                         return next_dir()
                     else
                         return dir
                     end
                 end
 
-                for x = 0, lanes-1 do
-                    for y = 0, lanes-1 do
-
-
+                for x = 1, lanes do
+                    for y = 1, lanes do
                         next_id = next_id + 1
                         new_ents[#new_ents + 1] = {
-                            entity_number = lanes + next_id,
+                            entity_number = next_id,
                             name = belt,
-                            position = {x = -x, y = -y},
+                            position = {x = x, y = y},
                             direction = get_dir(x, y)
                         }
                     end
                 end
-
-                --
-                -- repeat
-                -- new_ents[#new_ents+1] = {
-                -- entity_number = i+lanes,
-                -- name = belt,
-                -- position = {bp[i].position.x, bp[i].position.y + 1},
-                -- direction = bp[i].direction,
-                -- }
-                -- i = i+1
-                -- until i == lanes + 1
-
-                --game.print(serpent.block(new_ents, {comment=false, sparse=false}))
+                table.each(new_ents, function(ent) ent.position = Position.translate(ent.position, defines.direction.northwest, math.floor(lanes/2)) end)
                 stack.set_blueprint_entities(new_ents)
-
+                stack.label = "Belt Brush Corners "..lanes
             end
         end
     end
 end
 script.on_event("picker-beltbrush-corners", beltbrush_corners)
 
+local function beltbrush_balancers(event)
+    local player = Player.get(event.player_index)
+    if is_beltbrush_bp(player.cursor_stack) then
+        local stack = player.cursor_stack
+        local bp = stack.get_blueprint_entities()
+        local belt = table.find(bp, function(v) return match_to_item[game.entity_prototypes[v.name].type] end)
+        belt = belt and belt.name
+        if belt and game.entity_prototypes[belt].type == "transport-belt" then
+            local lanes = tonumber(Pad.get_or_create_adjustment_pad(player, "beltbrush")["beltbrush_text_box"].text)
+            local kind = belt:gsub("transport%-belt", "")
+            local current = stack.label:gsub("Belt Brush Balancers %d+x", "")
+            local width = (tonumber(current) and tonumber(current) - 1) or 32
+
+            local ents
+
+            repeat
+                ents = balancers[lanes.."x"..width]
+                width = (not ents and width - 1) or width
+            until ents or width <= 0
+
+            if ents then
+                table.each(ents, function(v) v.name = kind..v.name end)
+                stack.set_blueprint_entities(ents)
+                stack.label = "Belt Brush Balancers "..lanes.."x"..width
+            end
+        end
+    end
+end
+script.on_event("picker-beltbrush-balancers", beltbrush_balancers)
+
+print(tonumber("test"))
+-------------------------------------------------------------------------------
+--[[Adjustment Pad]]--
+-------------------------------------------------------------------------------
 local function increase_decrease_reprogrammer(event, change)
     local player = Player.get(event.player_index)
     if player.cursor_stack and player.cursor_stack.valid_for_read then
@@ -159,15 +182,16 @@ local function increase_decrease_reprogrammer(event, change)
         if get_match(stack) or is_beltbrush_bp(stack) then
             local text_field = Pad.get_or_create_adjustment_pad(player, "beltbrush")["beltbrush_text_box"]
             local lanes = tonumber(text_field.text)
-            if event.element and event.element.name == "beltbrush_text_box" and not type(event.element.text) == "number" then
+            if event.element and event.element.name == "beltbrush_text_box" and not tonumber(event.element.text) then
+                game.print("should be returning")
                 return
             elseif event.element and event.element.name == "beltbrush_text_box" then
-                lanes = tonumber(text_field.text)
+                lanes = (tonumber(text_field.text) or 1) <= 32 and (tonumber(text_field.text) or 1) or 32
             else
-                lanes = math.min(math.max(1, lanes + (change or 0)),32)
+                lanes = lanes and math.min(math.max(1, lanes + (change or 0)),32) or 1
             end
-            text_field.text = lanes
-            create_or_destroy_bp(player, lanes)
+            text_field.text = lanes or 1
+            create_or_destroy_bp(player, lanes or 1)
         end
     else
         Pad.remove_gui(player, "beltbrush_frame_main")

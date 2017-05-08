@@ -71,8 +71,8 @@ Cycle between Red, Green, and Copper wires in your inventory with SHIFT + Q  for
 
 ![Wire Tools in Action](https://github.com/Nexela/PickerExtended/blob/master/web/picker-wire-tools.gif)
 
-### Picker Belt Brush (soon)
-With a transport or underground belt in your hand hit pad increase or decrease buttons to change the width of your belts you can place at once.
+### Picker Belt Brush
+With a transport or underground belt in your hand hit pad increase or decrease buttons to change the width of your belts you can place at once. Once you have reached the desired width you can press CONTROL+SHIFT+R to create a corner blueprint of that width. Pressing CONTROL+SHIFT+B will cycle through all the available balancers.
 
 ### Picker Belt Upgrader (SOON)
 Quickly upgrade a section of belt by pressing the hotkey while hovering over the old belt while holding the belt type you want to upgrade to.
@@ -88,3 +88,4 @@ A quick increase/decrease pad using the +/- keys or the buttons on the gui. Mods
 -   Change the default requester paste multiplier from 2 to whatever you want. Can be changed with startup options
 -   Corpse timer, Adjusts the length of time that corpses stay on the map.
 -   Inventory size, Set the starting size of the players inventory
+-   Cheaty Lights added in for youtube/twitch videos. Turned off by default.
