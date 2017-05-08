@@ -157,7 +157,7 @@ local function beltbrush_balancers(event)
             local ents
 
             repeat
-                ents = balancers[lanes.."x"..width]
+                ents = table.deepcopy(balancers[lanes.."x"..width])
                 width = (not ents and width - 1) or width
             until ents or width <= 0
 
