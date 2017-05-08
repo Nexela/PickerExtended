@@ -8,7 +8,7 @@ local lib = require("picker.lib")
 --https://mods.factorio.com/mods/justarandomgeek/wirestripper
 local function cut_wires(event)
     local player = Player.get(event.player_index)
-    if player.selected and player.selected.circuit_connected_entities then
+    if player.admin and player.selected and player.selected.circuit_connected_entities then
         pcall(function() player.selected.disconnect_neighbour() end)
         pcall(function() player.selected.disconnect_neighbour(defines.wire_type.red) end)
         pcall(function() player.selected.disconnect_neighbour(defines.wire_type.green) end)

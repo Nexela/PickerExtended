@@ -122,4 +122,18 @@ data:extend{
         default_value = false,
         order = "picker-e[hide-mod-names]-b"
     },
+    {
+        type = "bool-setting",
+        name = "picker-brighter-lights-player",
+        setting_type = "startup",
+        default_value = false,
+        order = "picker-f[brighter-lights]-a"
+    },
+    {
+        type = "bool-setting",
+        name = "picker-brighter-lights-vehicles",
+        setting_type = "startup",
+        default_value = false,
+        order = "picker-f[brighter-lights]-b"
+    },
 }

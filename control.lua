@@ -36,7 +36,7 @@ Event.register(Event.core_events.init, function()
 -------------------------------------------------------------------------------
 require("picker.adjustment-pad")
 require("picker.reviver")
-require("picker.blueprinter") --#8 mirror
+require("picker.blueprinter")
 require("picker.dollies")
 require("picker.minimap")
 require("picker.itemcount")
@@ -46,12 +46,13 @@ require("picker.chestlimit")
 require("picker.copychest")
 require("picker.sortinventory")
 require("picker.zapper")
-require("picker.wiretool") --#10
-require("picker.pipecleaner") --#5
+require("picker.wiretool")
+require("picker.pipecleaner")
 require("picker.orphans")
-require("picker.beltbrush") --#5
---require("picker.beltools") --#3
-require("picker.pastesettings")  --#13, #11
+require("picker.beltbrush")
+--require("picker.beltools")
+require("picker.pastesettings")
+require("picker.lights")
 
 -------------------------------------------------------------------------------
 --[[Remote Interfaces]]--

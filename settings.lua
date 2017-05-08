@@ -1,2 +1,3 @@
-require("settings/picker")
-require("settings/small-fixes")
+require("settings/startup")
+require("settings/runtime")
+require("settings/user")

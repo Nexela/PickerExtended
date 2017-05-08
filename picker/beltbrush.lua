@@ -38,7 +38,6 @@ end
 
 Event.register(defines.events.on_built_entity, revive_belts)
 
-
 local function build_beltbrush(stack, name, lanes)
     if name then
         local entities = {}
@@ -90,6 +89,68 @@ local function create_or_destroy_bp(player, lanes)
         end
     end
 end
+
+local function beltbrush_corners(event)
+    local player = Player.get(event.player_index)
+    if is_beltbrush_bp(player.cursor_stack) then
+        local stack = player.cursor_stack
+        local bp = stack.get_blueprint_entities()
+        local belt = table.find(bp, function(v) return match_to_item[game.entity_prototypes[v.name].type] end)
+        belt = belt and belt.name
+        if belt and game.entity_prototypes[belt].type == "transport-belt" then
+            local stored = tonumber(Pad.get_or_create_adjustment_pad(player, "beltbrush")["beltbrush_text_box"].text)
+            local lanes = #bp
+            if lanes == stored then
+                local new_ents = {}
+                local next_id = 1
+
+                local dir = bp[1].direction or 0
+
+                local function next_dir()
+                    return dir == 0 and 6 or dir - 2
+                end
+
+                local function get_dir(x, y)
+                    if y - (lanes-1) + x  <= 0 then
+                        return next_dir()
+                    else
+                        return dir
+                    end
+                end
+
+                for x = 0, lanes-1 do
+                    for y = 0, lanes-1 do
+
+
+                        next_id = next_id + 1
+                        new_ents[#new_ents + 1] = {
+                            entity_number = lanes + next_id,
+                            name = belt,
+                            position = {x = -x, y = -y},
+                            direction = get_dir(x, y)
+                        }
+                    end
+                end
+
+                --
+                -- repeat
+                -- new_ents[#new_ents+1] = {
+                -- entity_number = i+lanes,
+                -- name = belt,
+                -- position = {bp[i].position.x, bp[i].position.y + 1},
+                -- direction = bp[i].direction,
+                -- }
+                -- i = i+1
+                -- until i == lanes + 1
+
+                --game.print(serpent.block(new_ents, {comment=false, sparse=false}))
+                stack.set_blueprint_entities(new_ents)
+
+            end
+        end
+    end
+end
+script.on_event("picker-beltbrush-corners", beltbrush_corners)
 
 local function increase_decrease_reprogrammer(event, change)
     local player = Player.get(event.player_index)

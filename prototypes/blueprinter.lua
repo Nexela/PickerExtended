@@ -44,9 +44,6 @@ style.picker_blueprinter_btn_mirror = {
 style.picker_blueprinter_btn_elem = {
     type="button_style",
     parent="picker_blueprinter_buttons",
-    -- default_graphical_set = graphical_set("mirror"),
-    -- hovered_graphical_set = graphical_set("mirror"),
-    -- clicked_graphical_set = graphical_set("mirror"),
 }
 
 style.picker_blueprinter_btn_upgrade = {
@@ -55,13 +52,4 @@ style.picker_blueprinter_btn_upgrade = {
     default_graphical_set = graphical_set("upgrade"),
     hovered_graphical_set = graphical_set("upgrade"),
     clicked_graphical_set = graphical_set("upgrade"),
-}
-
-data:extend{
-    {
-        type = "custom-input",
-        name = "picker-mirror-blueprint",
-        key_sequence = "ALT + R",
-        consuming = "all"
-    },
 }

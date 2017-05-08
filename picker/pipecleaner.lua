@@ -8,7 +8,7 @@ local Player = require("stdlib/player")
 --Start at a drain and clear fluidboxes out that match. find drain connections not cleaned and repeat
 local function call_a_plumber(event)
     local plumber = Player.get(event.player_index)
-    if plumber.selected and plumber.selected.fluidbox then
+    if plumber.admin and plumber.selected and plumber.selected.fluidbox then
         local rootered = {}
         local toilets = {}
         toilets[plumber.selected.unit_number] = plumber.selected.fluidbox

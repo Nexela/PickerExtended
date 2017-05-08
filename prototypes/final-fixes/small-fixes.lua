@@ -1,4 +1,18 @@
 -------------------------------------------------------------------------------
+--[[DATA RAW HAX]]--
+-------------------------------------------------------------------------------
+if _G.data_raw_require then
+    for type_name, type in pairs(data.raw) do
+        for _, entity in pairs(type) do
+            if entity.maximum_wire_distance or entity.circuit_wire_max_distance then
+                _G.data_raw_require(type_name, "*", {"maximum_wire_distance", "circuit_wire_max_distance"})
+                break
+            end
+        end
+    end
+end
+
+-------------------------------------------------------------------------------
 --[[SMALL FIXES]]--
 -------------------------------------------------------------------------------
 local player = data.raw["player"]["player"]

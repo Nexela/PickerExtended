@@ -36,9 +36,10 @@ local oblong_combinators = {
 }
 
 local function _get_distance(entity)
-    local wire = remote.interfaces["data-raw"] and remote.call("data-raw", "prototype", entity.type, entity.name).maximum_wire_distance
-    local circuit = remote.interfaces["data-raw"] and remote.call("data-raw", "prototype", entity.type, entity.name).circuit_wire_max_distance
-    return circuit or wire or 7.5
+    if remote.interfaces["data-raw"] then
+        local ent_type = remote.call("data-raw", "prototype", entity.type, entity.name)
+        return (ent_type and (ent_type.circuit_wire_max_distance or ent_type.maximum_wire_distance)) or 7.5
+    end
 end
 
 local function move_combinator(event)

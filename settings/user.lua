@@ -29,6 +29,13 @@ data:extend{
     },
     {
         type = "bool-setting",
+        name = "picker-search-light",
+        setting_type = "runtime-per-user",
+        default_value = true,
+        order = "picker-b[lights]-a",
+    },
+    {
+        type = "bool-setting",
         name = "picker-find-orphans",
         setting_type = "runtime-per-user",
         default_value = true,

@@ -46,4 +46,22 @@ data:extend{
         key_sequence = "SHIFT + Q",
         consuming = "none"
     },
+    {
+        type = "custom-input",
+        name = "picker-beltbrush-corners",
+        key_sequence = "CONTROL + SHIFT + R",
+        consuming = "none"
+    },
+    {
+        type = "custom-input",
+        name = "picker-beltbrush-balancers",
+        key_sequence = "CONTROL + SHIFT + B",
+        consuming = "all"
+    },
+    {
+        type = "custom-input",
+        name = "picker-mirror-blueprint",
+        key_sequence = "ALT + R",
+        consuming = "all"
+    }
 }
