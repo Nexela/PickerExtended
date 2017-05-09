@@ -2,18 +2,43 @@
 --[[Helper Functions]]--
 -------------------------------------------------------------------------------
 local lib = {}
+--local mod_gui = require("mod-gui")
 local Position = require("stdlib.area.position")
 local INVENTORIES = {defines.inventory.player_quickbar, defines.inventory.player_main, defines.inventory.god_quickbar, defines.inventory.god_main}
 
-function lib.cursor_stack_name(player, name, is_bp_setup)
-    if player.cursor_stack and player.cursor_stack.valid_for_read then
-        local cursor = player.cursor_stack
+function lib.get_or_create_main_left_flow(player, flow_name)
+    local main_flow = player.gui.left[flow_name.."_main_flow"]
+    if not main_flow then
+        main_flow = player.gui.left.add{type = "flow", name = flow_name.."_main_flow", direction = "vertical", style = "slot_table_spacing_flow_style"}
+    end
+    return main_flow
+end
+
+-- Gets the name of the item at the given position, or nil if there
+-- is no item at that position
+function lib.get_item_at_position(inventory, n)
+    return inventory[n].valid_for_read and inventory[n].name
+end
+
+-- Returns either the item at a position, or the filter
+-- at the position if there isn't an item there
+function lib.get_item_or_filter_at_position(inventory, n)
+    local filter = inventory.get_filter(n)
+    return filter or lib.get_item_at_position(inventory, n)
+end
+
+function lib.is_beltbrush_bp(stack)
+    return stack.valid_for_read and stack.name == "blueprint" and stack.label and stack.label:find("Belt Brush")
+end
+
+function lib.stack_name(slot, name, is_bp_setup)
+    if slot and slot.valid_for_read then
         local stack
-        if cursor.name == name then
-            stack = cursor
-        elseif cursor.name == name.."-book" then
-            local inv = cursor.get_inventory(defines.inventory.item_main)
-            stack = inv and cursor.active_index and cursor.active_index + 1 and inv[cursor.active_index + 1]
+        if slot.name == name then
+            stack = slot
+        elseif slot.name == name.."-book" then
+            local inv = slot.get_inventory(defines.inventory.item_main)
+            stack = inv and slot.active_index and inv[slot.active_index]
         end
         if stack and is_bp_setup then
             return stack and stack.name == "blueprint" and stack.is_blueprint_setup() and stack

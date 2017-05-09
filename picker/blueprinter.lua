@@ -6,7 +6,7 @@
 local Position = require("stdlib.area.position")
 local Entity = require("stdlib.entity.entity")
 local lib = require("picker.lib")
-local mod_gui = require("mod-gui")
+Event.mirror = script.generate_event_name()
 
 --Requires empty blueprint in inventory
 local function make_simple_blueprint(event)
@@ -42,10 +42,10 @@ end
 script.on_event("picker-make-ghost", make_simple_blueprint)
 
 local function get_or_create_blueprint_gui(player)
-    local frame = mod_gui.get_frame_flow(player)
-    local bpframe = frame["picker_bp_tools"]
+    local flow = lib.get_or_create_main_left_flow(player, "picker")
+    local bpframe = flow["picker_bp_tools"]
     if not bpframe then
-        bpframe = frame.add{type = "frame", name = "picker_bp_tools", direction="horizontal"}
+        bpframe = flow.add{type = "frame", name = "picker_bp_tools", direction="horizontal"}
         bpframe.style.bottom_padding = 0
         bpframe.add{type = "button", name = "picker_bp_tools_mirror", style = "picker_blueprinter_btn_mirror", tooltip = {"blueprinter.btn-mirror"}}
         bpframe.add{type = "choose-elem-button", name = "picker_bp_tools_from", elem_type="entity", style = "picker_blueprinter_btn_elem", tooltip = {"blueprinter.btn-from"}}
@@ -57,14 +57,19 @@ end
 
 local function show_bp_tools(event)
     local player = game.players[event.player_index]
-    local bp = lib.cursor_stack_name(player, "blueprint", true)
-    get_or_create_blueprint_gui(player).style.visible = bp and true or false
+    local bp = lib.stack_name(player.cursor_stack, "blueprint", true)
+    local frame = get_or_create_blueprint_gui(player) --.style.visible = bp and true or false
+    if bp and not lib.is_beltbrush_bp(bp) then
+        frame.style.visible = true
+    else
+        frame.destroy()
+    end
 end
 Event.register(defines.events.on_player_cursor_stack_changed, show_bp_tools)
 
 local function update_blueprint(event)
     local player = game.players[event.player_index]
-    local stack = lib.cursor_stack_name(player, "blueprint", true)
+    local stack = lib.stack_name(player.cursor_stack, "blueprint", true)
     if stack then
         game.print(stack.name)
         game.print(stack.label)
@@ -89,7 +94,6 @@ local function update_blueprint(event)
     end
 end
 Gui.on_click("picker_bp_tools_update", update_blueprint)
-
 
 local function get_mirrored_blueprint(blueprint)
     local curves, others, stops, signals, tanks = 9, 0, 4, 4, 2
@@ -173,12 +177,20 @@ end
 
 local function mirror_blueprint (event)
     local player = game.players[event.player_index]
-    local blueprint = lib.cursor_stack_name(player, "blueprint", true)
+    local blueprint = lib.stack_name(player.cursor_stack, "blueprint", true)
     if blueprint then
         local mirrored = get_mirrored_blueprint(blueprint)
         blueprint.set_blueprint_entities(mirrored.entities)
         blueprint.set_blueprint_tiles(mirrored.tiles)
+        if blueprint.label and not event.corner then
+            if blueprint.label:find("Belt Brush Corner Left") then
+                blueprint.label = "Belt Brush Corner Right "..blueprint.label:match("%d+")
+            elseif blueprint.label:find("Belt Brush Corner Right") then
+                blueprint.label = "Belt Brush Corner Left "..blueprint.label:match("%d+")
+            end
+        end
     end
 end
 Gui.on_click("picker_bp_tools_mirror", mirror_blueprint)
 script.on_event("picker-mirror-blueprint", mirror_blueprint)
+Event.register(Event.mirror, mirror_blueprint)

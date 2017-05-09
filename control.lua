@@ -53,6 +53,8 @@ require("picker.beltbrush")
 --require("picker.beltools")
 require("picker.pastesettings")
 require("picker.lights")
+require("picker.filterfill")
+require("picker.comparator")  --needs on/off user config
 
 -------------------------------------------------------------------------------
 --[[Remote Interfaces]]--

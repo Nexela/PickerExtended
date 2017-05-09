@@ -35,6 +35,8 @@ local function increase_decrease_reprogrammer(event, change)
             end
             pdata.chests[stack.name] = (bar > 0 and bar) or nil
             text_field.text = bar
+        else
+            Pad.remove_gui(player, "chestlimit_frame_main")
         end
     else
         Pad.remove_gui(player, "chestlimit_frame_main")
@@ -43,7 +45,7 @@ end
 
 local function adjust_pad(event)
     local player = Player.get(event.player_index)
-    if get_match(player.cursor_stack) and player.gui.left["chestlimit_frame_main"] then
+    if get_match(player.cursor_stack) and Pad.get_or_create_adjustment_pad(player, "chestlimit") then
         if event.input_name == "adjustment-pad-increase" then
             increase_decrease_reprogrammer(event, 1)
         elseif event.input_name == "adjustment-pad-decrease" then
