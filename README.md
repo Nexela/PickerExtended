@@ -35,8 +35,8 @@ Call a plumber on any fluidbox by selecting the pipe and pressing CONTROL+DELETE
 
 ![Pipe Cleaner in Action](https://github.com/Nexela/PickerExtended/blob/master/web/picker-pipe-cleaner.gif)
 
-### Picker Chest Copy
-Quickly copy the contents of once chest to another. This is a quick and simple copy. CONTROL+V on the source chest and CONTROL+V on the destination chest. This will not transfer item grids.
+### Picker Chest Contents Mover
+Quickly Move the contents of once chest to another. This is a quick and dirty move. CONTROL+V on the source chest and CONTROL+V on the destination chest. Items with grids or inventories will lose their grids or inventories when transferred. Use this for bulk material only.
 
 ![Chest Copy in Action](https://github.com/Nexela/PickerExtended/blob/master/web/picker-inv-copy.gif)
 
@@ -81,6 +81,9 @@ Quickly and easily set filters and adjust requests using the handy dandy filter 
 
 ### Picker Belt Upgrader (soon)
 Quickly upgrade a section of belt by pressing the hotkey while hovering over the old belt while holding the belt type you want to upgrade to.
+
+### Picker Quick UG Belt
+Removes belts between newly placed underground belts if they are going the same direction.
 
 ### Picker Adjustment Pad
 A quick increase/decrease pad using the +/- keys or the buttons on the gui. Mods can quickly create their own adjustment pad using a remote call to get or create the window and listening for the pad changed event.
