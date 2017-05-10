@@ -48,7 +48,7 @@ local function filterfill_all(event)
     local inventory = player.opened.get_output_inventory()
     local desired = (player.cursor_stack.valid_for_read and player.cursor_stack.name) or lib.get_item_or_filter_at_position(inventory, 1)
     for i = 1, #inventory do
-        local current = lib.get_item_at_position(inventory, i)
+        local current = not event.shift and lib.get_item_or_filter_at_position(inventory, i)
         inventory.set_filter(i, current or desired or nil)
     end
 end
@@ -66,8 +66,8 @@ local function filterfill_down(event)
         for r = 1, rows do
             local i = c + (r - 1) * INVENTORY_COLUMNS
             if i <= size then
-                desired = lib.get_item_at_position(inventory, i) or desired
-                inventory.set_filter(c + (r - 1) * INVENTORY_COLUMNS, desired or nil)
+                desired = lib.get_item_or_filter_at_position(inventory, i) or desired
+                inventory.set_filter(i, desired or nil)
             end
         end
     end
@@ -80,12 +80,13 @@ local function filterfill_right(event)
     local inventory = player.opened.get_output_inventory()
     local size = #inventory
     local rows = math.ceil(size / INVENTORY_COLUMNS)
+    --local desired
     for r = 1, rows do
         local desired = lib.get_item_or_filter_at_position(inventory, 1 + (r - 1) * INVENTORY_COLUMNS)
         for c = 1, INVENTORY_COLUMNS do
             local i = c + (r - 1) * INVENTORY_COLUMNS
             if i <= size then
-                desired = lib.get_item_at_position(inventory, i) or desired
+                desired = lib.get_item_or_filter_at_position(inventory, i) or desired
                 inventory.set_filter(i, desired or nil)
             end
         end

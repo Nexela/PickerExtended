@@ -32,13 +32,14 @@ function lib.is_beltbrush_bp(stack)
 end
 
 function lib.stack_name(slot, name, is_bp_setup)
-    if slot and slot.valid_for_read then
+    if slot and slot.valid and slot.valid_for_read then
         local stack
         if slot.name == name then
             stack = slot
         elseif slot.name == name.."-book" then
             local inv = slot.get_inventory(defines.inventory.item_main)
-            stack = inv and slot.active_index and inv[slot.active_index]
+            local index = slot.active_index + (game.active_mods["base"] == "0.15.9" and 1) or 0
+            stack = inv and index and inv[index].valid_for_read and inv[index]
         end
         if stack and is_bp_setup then
             return stack and stack.name == "blueprint" and stack.is_blueprint_setup() and stack

@@ -8,7 +8,7 @@ require("stdlib.string")
 require("stdlib.defines.colors")
 require("stdlib.defines.time")
 require("stdlib.event.event")
-require("stdlib.gui.gui")
+require("stdlib.event.gui")
 
 -------------------------------------------------------------------------------
 --[[INIT]]--
@@ -51,10 +51,9 @@ require("picker.pipecleaner")
 require("picker.orphans")
 require("picker.beltbrush")
 --require("picker.beltools")
-require("picker.pastesettings")
+require("picker.pastesettings") --needs on/off user config
 require("picker.lights")
 require("picker.filterfill")
-require("picker.comparator")  --needs on/off user config
 
 -------------------------------------------------------------------------------
 --[[Remote Interfaces]]--

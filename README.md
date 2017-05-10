@@ -72,7 +72,13 @@ Cycle between Red, Green, and Copper wires in your inventory with SHIFT + Q  for
 ![Wire Tools in Action](https://github.com/Nexela/PickerExtended/blob/master/web/picker-wire-tools.gif)
 
 ### Picker Belt Brush
-With a transport or underground belt in your hand hit pad increase or decrease buttons to change the width of your belts you can place at once. Once you have reached the desired width you can press CONTROL+SHIFT+R to create a corner blueprint of that width. Pressing CONTROL+SHIFT+B will cycle through all the available balancers.
+With a transport or underground belt in your hand hit pad increase or decrease buttons to change the width of your belts you can place at once. Once you have reached the desired width you can press CONTROL+SHIFT+R to create a corner blueprint of that width, Pressing CONTROL+SHIFT+R again will get a mirrored copy of the corner. Pressing CONTROL+SHIFT+B will cycle through all the available balancers. Feel free to submit your own balancer design if you don't like the included ones.
+
+### Picker Paste Settings
+Additional paste settings. Copying from an assembler to a requester chest will add the new requests to the old ones instead of clearing them. Usefull for using one requester for multiple machines.
+
+### Picker Filter Fill
+Quickly and easily set filters and adjust requests using the handy dandy filter fill toolbar, Automatically shows up whenever you open a requester chest or filterable inventory. Requester chests can be made to quickly request all items in a blueprint by putting it in the first chest slot and clicking the button, or clicking the button with a blueprint in your hand.
 
 ### Picker Belt Upgrader (SOON)
 Quickly upgrade a section of belt by pressing the hotkey while hovering over the old belt while holding the belt type you want to upgrade to.
@@ -85,7 +91,7 @@ A quick increase/decrease pad using the +/- keys or the buttons on the gui. Mods
 ### Picker Small Fixes
 -   Picker Reacher, Comes default with modestly increased reach distances. Along with startup mod options to easily change them to suit your needs.
 -   Construction and Logistic robots can't be plucked from the air. Comes with startup option to enable/disable this feature.  Also fixes bots going to quickbar by default.
--   Change the default requester paste multiplier from 2 to whatever you want. Can be changed with startup options
+-   Change the default requester paste multiplier from 10 to whatever you want. Can be changed with startup options
 -   Corpse timer, Adjusts the length of time that corpses stay on the map.
 -   Inventory size, Set the starting size of the players inventory
 -   Cheaty Lights added in for youtube/twitch videos. Turned off by default.

@@ -117,8 +117,8 @@ Event.register(defines.events.on_pre_entity_settings_pasted, on_pre_entity_setti
 -------------------------------------------------------------------------------
 --Set the default inserter comparator to < for circuit and logistics
 local function set_default_comparator(event)
-    local entity = event.created_entity
-    local behavior = entity.type == "inserter" and entity.get_or_create_control_behavior()
+    local entity = event.created_entity and event.created_entity.valid and event.created_entity
+    local behavior = entity and entity.type == "inserter" and entity.get_or_create_control_behavior()
     if behavior then
         local circuit = behavior.circuit_condition
         if not circuit.condition.first_signal.name and circuit.condition.constant == 0  then
@@ -130,4 +130,4 @@ local function set_default_comparator(event)
         end
     end
 end
-Event.register(defines.events.on_built_entity, set_default_comparator)
+Event.register({defines.events.on_built_entity, defines.events.on_robot_built_entity}, set_default_comparator)
