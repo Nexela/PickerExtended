@@ -34,7 +34,7 @@ local function get_or_create_deconstructor_gui(player)
 end
 
 local function deconstruction_planner(event)
-    local player, pdata = Player.get(event.player_index)
+    local player, pdata = Player.get(event.player_index)--luacheck: ignore pdata
     local stack = player.cursor_stack
     local frame = get_or_create_deconstructor_gui(player)
     if stack.valid_for_read and stack.name == "deconstruction-planner" then
