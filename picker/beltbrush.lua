@@ -179,14 +179,18 @@ local function beltbrush_balancers(event)
             local lanes = tonumber(Pad.get_or_create_adjustment_pad(player, "beltbrush")["beltbrush_text_box"].text)
             local kind = belt:gsub("transport%-belt", "")
             local current = stack.label:gsub("Belt Brush Balancers %d+x", "")
+
+            --set the width to 1 less then existing or existing if not a balancer already
             local width = (tonumber(current) and tonumber(current) - 1) or lanes
 
             if lanes then
                 local ents
+
                 repeat
                     ents = table.deepcopy(balancers[lanes.."x"..width])
                     width = not ents and ((width <= 1 and 32) or (width - 1)) or width
-                until ents or width == lanes
+                until ents or width == lanes -1
+
                 if ents then
                     table.each(ents, function(v) v.name = kind..v.name end)
                     stack.set_blueprint_entities(ents)
