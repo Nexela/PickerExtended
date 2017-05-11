@@ -26,6 +26,13 @@ release: clean check package
 
 optimized-release: clean check optimize-package
 
+git: tag
+	git checkout master
+	git merge develop master
+	git checkout develop
+	git push --all
+	git push --tags
+
 package-copy: $(PKG_DIRS) $(PKG_FILES)
 	@mkdir -p $(OUTPUT_DIR)
 ifneq ($(PKG_COPY),)

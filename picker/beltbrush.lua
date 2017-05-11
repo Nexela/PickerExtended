@@ -93,9 +93,10 @@ local function create_or_destroy_bp(player, lanes)
             for _, inv in pairs({defines.inventory.player_main, defines.inventory.player_quickbar}) do
                 local item = player.get_inventory(inv).find_item_stack(name)
                 if item then
-                    stack.clear()
+                    --stack.clear()
                     stack.set_stack(item)
                     item.clear()
+                    break
                 else
                     stack.clear()
                 end
