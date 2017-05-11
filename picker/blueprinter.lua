@@ -45,8 +45,7 @@ local function get_or_create_blueprint_gui(player)
     local flow = lib.get_or_create_main_left_flow(player, "picker")
     local bpframe = flow["picker_bp_tools"]
     if not bpframe then
-        bpframe = flow.add{type = "frame", name = "picker_bp_tools", direction="horizontal"}
-        bpframe.style.bottom_padding = 0
+        bpframe = flow.add{type = "frame", name = "picker_bp_tools", direction="horizontal", style="filterfill_frame"}
         bpframe.add{type = "button", name = "picker_bp_tools_mirror", style = "picker_blueprinter_btn_mirror", tooltip = {"blueprinter.btn-mirror"}}
         bpframe.add{type = "choose-elem-button", name = "picker_bp_tools_from", elem_type="entity", style = "picker_blueprinter_btn_elem", tooltip = {"blueprinter.btn-from"}}
         bpframe.add{type = "choose-elem-button", name = "picker_bp_tools_to", elem_type="entity", style = "picker_blueprinter_btn_elem", tooltip = {"blueprinter.btn-to"}}
@@ -71,8 +70,6 @@ local function update_blueprint(event)
     local player = game.players[event.player_index]
     local stack = lib.stack_name(player.cursor_stack, "blueprint", true)
     if stack then
-        game.print(stack.name)
-        game.print(stack.label)
         local from = event.element.parent["picker_bp_tools_from"].elem_value
         local to = event.element.parent["picker_bp_tools_to"].elem_value
         if from and to then
@@ -194,3 +191,56 @@ end
 Gui.on_click("picker_bp_tools_mirror", mirror_blueprint)
 script.on_event("picker-mirror-blueprint", mirror_blueprint)
 Event.register(Event.mirror, mirror_blueprint)
+
+-------------------------------------------------------------------------------
+--[[Quick Pick Blueprint]]--
+-------------------------------------------------------------------------------
+local function create_or_destroy_quick_picker(event)
+    local player = game.players[event.player_index]
+    local gui = player.gui.center["picker_quick_picker"]
+    if gui then
+        gui.destroy()
+    else
+        gui = player.gui.center.add{type="frame", name="picker_quick_picker", direction="vertical", style = "filterfill_frame"}
+        gui.add{type="label", name = "picker_quick_picker_label", caption = "Quick BP"}
+        local btn = gui.add{type="choose-elem-button", name = "picker_quick_picker_item", elem_type="item", style = "picker_blueprinter_btn_elem"}
+        btn.style.minimal_height = 32
+        btn.style.minimal_height = 32
+    end
+end
+script.on_event("picker-quick-picker", create_or_destroy_quick_picker)
+
+local function create_quick_pick_blueprint(event)
+    local player = game.players[event.player_index]
+    if event.element.elem_value then
+        if player.cheat_mode then
+            if player.clean_cursor() then
+                player.cursor_stack.set_stack({name = event.element.elem_value, count = 1})
+            end
+        else
+            if game.item_prototypes[event.element.elem_value].place_result then
+                local stack = player.clean_cursor() and lib.get_planner(player, "blueprint")
+                local entities = {
+                    {
+                        entity_number = 1,
+                        name = game.item_prototypes[event.element.elem_value].place_result.name,
+                        direction = defines.direction.north,
+                        position = {0, 0}
+                    }
+                }
+                stack.set_blueprint_entities(entities)
+            end
+
+        end
+    end
+    create_or_destroy_quick_picker(event)
+end
+Gui.on_elem_changed("picker_quick_picker_item", create_quick_pick_blueprint)
+
+local function open_held_item_inventory(event)
+    local player = game.players[event.player_index]
+    if player.cursor_stack.valid_for_read then
+        player.opened = player.cursor_stack
+    end
+end
+script.on_event("picker-inventory-editer", open_held_item_inventory)

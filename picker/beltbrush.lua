@@ -188,13 +188,15 @@ local function beltbrush_balancers(event)
 
                 repeat
                     ents = table.deepcopy(balancers[lanes.."x"..width])
-                    width = not ents and ((width <= 1 and 32) or (width - 1)) or width
-                until ents or width == lanes -1
+                    width = (not ents and ((width <= 1 and 32) or (width - 1))) or width
+                until ents or width == lanes
 
-                if ents then
+                if ents and not (width == lanes and stack.label:find("Belt Brush Balancers")) then
                     table.each(ents, function(v) v.name = kind..v.name end)
                     stack.set_blueprint_entities(ents)
                     stack.label = "Belt Brush Balancers "..lanes.."x"..width
+                elseif stack.label:find("Belt Brush Balancers") then
+                    build_beltbrush(stack, belt, lanes)
                 end
             end
         end

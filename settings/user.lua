@@ -1,10 +1,26 @@
 data:extend{
     {
         type = "string-setting",
+        name = "picker-no-blueprint-inv",
+        setting_type = "runtime-per-user",
+        default_value = "none",
+        allowed_values = {"none", "main", "all"},
+        order = "picker-z[zapper]-a",
+    },
+    {
+        type = "string-setting",
+        name = "picker-no-deconstruction-planner-inv",
+        setting_type = "runtime-per-user",
+        default_value = "none",
+        allowed_values = {"none", "main", "all"},
+        order = "picker-z[zapper]-b",
+    },
+    {
+        type = "string-setting",
         name = "picker-item-zapper",
         setting_type = "runtime-per-user",
         default_value = "blueprint blueprint-book deconstruction-planner zone-planner unit-remote-control",
-        order = "picker-z[zapper]-a",
+        order = "picker-z[zapper]-z",
     },
     {
         type = "bool-setting",

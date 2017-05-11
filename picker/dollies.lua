@@ -51,7 +51,6 @@ local function move_combinator(event)
 
         --Wire distance for the source
         local source_distance = _get_distance(entity)
-        --game.print(source_distance)
 
         local _cant_reach = function (neighbours)
             return table.any(neighbours,

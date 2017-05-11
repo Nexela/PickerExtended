@@ -63,5 +63,17 @@ data:extend{
         name = "picker-mirror-blueprint",
         key_sequence = "ALT + R",
         consuming = "all"
+    },
+    {
+        type = "custom-input",
+        name = "picker-quick-picker",
+        key_sequence = "CONTROL + SHIFT + ENTER",
+        consuming = "all"
+    },
+    {
+        type = "custom-input",
+        name = "picker-inventory-editer",
+        key_sequence = "CONTROL + SHIFT + GRAVE",
+        consuming = "all"
     }
 }
