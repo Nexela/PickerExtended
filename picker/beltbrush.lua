@@ -234,7 +234,7 @@ local function increase_decrease_reprogrammer(event, change)
         local stack = player.cursor_stack
         if get_match(stack) or lib.is_beltbrush_bp(stack) then
             local text_field = Pad.get_or_create_adjustment_pad(player, "beltbrush")["beltbrush_text_box"]
-            local lanes = tonumber(text_field.text)
+            local lanes = lib.is_beltbrush_bp(stack) and stack.label:match("%d+") or tonumber(text_field.text)
             if event.element and event.element.name == "beltbrush_text_box" and not tonumber(event.element.text) then
                 return
             elseif event.element and event.element.name == "beltbrush_text_box" then
@@ -243,7 +243,9 @@ local function increase_decrease_reprogrammer(event, change)
                 lanes = lanes and math.min(math.max(1, lanes + (change or 0)),32) or 1
             end
             text_field.text = lanes or 1
-            create_or_destroy_bp(player, lanes or 1)
+            if not (lib.is_beltbrush_bp(stack) and not change) then
+                create_or_destroy_bp(player, lanes or 1)
+            end
         else
             Pad.remove_gui(player, "beltbrush_frame_main")
         end

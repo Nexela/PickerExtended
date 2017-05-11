@@ -136,4 +136,11 @@ data:extend{
         default_value = false,
         order = "picker-f[brighter-lights]-b"
     },
+    {
+        type = "bool-setting",
+        name = "picker-fast-replace-ug",
+        setting_type = "startup",
+        default_value = true,
+        order = "picker-g[fast-replace]-b"
+    },
 }

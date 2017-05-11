@@ -38,7 +38,7 @@ function lib.stack_name(slot, name, is_bp_setup)
             stack = slot
         elseif slot.name == name.."-book" then
             local inv = slot.get_inventory(defines.inventory.item_main)
-            local index = slot.active_index + (game.active_mods["base"] == "0.15.9" and 1) or 0
+            local index = slot.active_index
             stack = inv and index and inv[index].valid_for_read and inv[index]
         end
         if stack and is_bp_setup then
@@ -102,6 +102,32 @@ function lib.get_item_stack(e, name)
         if stack then
             return stack
         end
+    end
+end
+
+-- Attempt to insert an item_stack or array of item_stacks into the entity
+-- Spill to the ground at the entity/player anything that doesn't get inserted
+-- @param entity: the entity or player object
+-- @param item_stacks: a SimpleItemStack or array of SimpleItemStacks to insert
+-- @return bool : there was some items inserted or spilled
+function lib.insert_or_spill_items(entity, item_stacks)
+    local new_stacks = {}
+    if item_stacks then
+        if item_stacks[1] and item_stacks[1].name then
+            new_stacks = item_stacks
+        elseif item_stacks and item_stacks.name then
+            new_stacks = {item_stacks}
+        end
+        for _, stack in pairs(new_stacks) do
+            local name, count, health = stack.name, stack.count, stack.health or 1
+            if game.item_prototypes[name] and not game.item_prototypes[name].has_flag("hidden") and stack.count > 0 then
+                local inserted = entity.insert({name=name, count=count, health=health})
+                if inserted ~= count then
+                    entity.surface.spill_item_stack(entity.position, {name=name, count=count-inserted, health=health}, true)
+                end
+            end
+        end
+        return new_stacks[1] and new_stacks[1].name and true
     end
 end
 

@@ -72,24 +72,26 @@ function Event.dispatch(event)
     Core.fail_if_missing(event, "missing event argument")
     if Event._registry[event.name] then
         for _, handler in pairs(Event._registry[event.name]) do
-            local metatbl = { __index = function(tbl, key) if key == '_handler' then return handler else return rawget(tbl, key) end end }
-            setmetatable(event, metatbl)
-            local success, err = pcall(handler, event)
-            if not success then
-                -- may be nil in on_load
-                if _G.game then
-                    if Game.print_all(err) == 0 then
-                        -- no players received the message, force a real error so someone notices
+            if not table.any(event, function(v) return type(v) == "table" and type(v.__self) == "userdata" and not v.valid end) then
+                local metatbl = { __index = function(tbl, key) if key == '_handler' then return handler else return rawget(tbl, key) end end }
+                setmetatable(event, metatbl)
+                local success, err = pcall(handler, event)
+                if not success then
+                    -- may be nil in on_load
+                    if _G.game then
+                        if Game.print_all(err) == 0 then
+                            -- no players received the message, force a real error so someone notices
+                            error(err)
+                        end
+                    else
+                        -- no way to handle errors cleanly when the game is not up
                         error(err)
                     end
-                else
-                    -- no way to handle errors cleanly when the game is not up
-                    error(err)
+                    return
                 end
-                return
-            end
-            if err then
-                return
+                if err then
+                    return
+                end
             end
         end
     end

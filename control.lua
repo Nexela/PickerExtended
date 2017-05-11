@@ -50,7 +50,7 @@ require("picker.wiretool")
 require("picker.pipecleaner")
 require("picker.orphans")
 require("picker.beltbrush")
---require("picker.beltools")
+require("picker.belttools")
 require("picker.pastesettings") --needs on/off user config
 require("picker.lights")
 require("picker.filterfill")

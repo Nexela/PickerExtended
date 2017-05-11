@@ -83,7 +83,7 @@ Quickly and easily set filters and adjust requests using the handy dandy filter 
 Quickly upgrade a section of belt by pressing the hotkey while hovering over the old belt while holding the belt type you want to upgrade to.
 
 ### Picker Quick UG Belt
-Removes belts between newly placed underground belts if they are going the same direction.
+Removes belts between newly placed underground belts if they are going the same direction. Makes belts fast replaceable. Config options to enable/disable both features.
 
 ### Picker Adjustment Pad
 A quick increase/decrease pad using the +/- keys or the buttons on the gui. Mods can quickly create their own adjustment pad using a remote call to get or create the window and listening for the pad changed event.

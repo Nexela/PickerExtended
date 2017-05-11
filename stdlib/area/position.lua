@@ -1,4 +1,5 @@
 --- Position module
+-- <p>For working with x, y coordinates.
 -- @module Position
 
 local fail_if_missing = require 'stdlib/core'['fail_if_missing']
@@ -202,20 +203,21 @@ function Position.tostring(pos)
     end
 end
 
+local opposites = {
+    [defines.direction.north] = defines.direction.south,
+    [defines.direction.south] = defines.direction.north,
+    [defines.direction.east] = defines.direction.west,
+    [defines.direction.west] = defines.direction.east,
+    [defines.direction.northeast] = defines.direction.southwest,
+    [defines.direction.southwest] = defines.direction.northeast,
+    [defines.direction.northwest] = defines.direction.southeast,
+    [defines.direction.southeast] = defines.direction.northwest,
+}
+
 --- Returns the opposite direction - Adapted from Factorio util.lua
 -- @param direction the defines.direction to get the opposite of
 -- @return the opposite direction
 function Position.opposite_direction(direction)
-    local opposites = {
-        [defines.direction.north] = defines.direction.south,
-        [defines.direction.south] = defines.direction.north,
-        [defines.direction.east] = defines.direction.west,
-        [defines.direction.west] = defines.direction.east,
-        [defines.direction.northeast] = defines.direction.southwest,
-        [defines.direction.southwest] = defines.direction.northeast,
-        [defines.direction.northwest] = defines.direction.southeast,
-        [defines.direction.southeast] = defines.direction.northwest,
-    }
     return opposites[direction or defines.direction.north]
 end
 

@@ -24,7 +24,6 @@ style.picker_blueprinter_buttons = {
     minimal_height = 33,
     maximal_width = 33,
     minimal_width = 33,
-    --font="adjustment_pad-button-font",
     left_click_sound = {
         {
             filename = "__core__/sound/gui-click.ogg",

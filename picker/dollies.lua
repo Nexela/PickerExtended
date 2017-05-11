@@ -21,29 +21,23 @@ local input_to_direction = {
     ["dolly-move-west"] = defines.direction.west,
 }
 
-local moveable_names = {
-    ["constant-combinator"] = 7.5,
-    ["arithmetic-combinator"] = 7.5,
-    ["decider-combinator"] = 7.5,
-    ["rocket-combinator"] = 7.5,
-    ["clock-combinator"] = 7.5,
-    ["pushbutton"] = 7.5,
-}
-
 local oblong_combinators = {
     ["arithmetic-combinator"] = true,
     ["decider-combinator"] = true,
 }
 
 local function _get_distance(entity)
-        local ent_type = remote.interfaces["data-raw"] and remote.call("data-raw", "prototype", entity.type, entity.name)
-        return (ent_type and (ent_type.circuit_wire_max_distance or ent_type.maximum_wire_distance)) or 7.5
+    if entity.type == "electric-pole" then
+        return entity.prototype.max_wire_distance
+    elseif entity.circuit_connected_entities then
+        return entity.prototype.max_circuit_wire_distance
+    end
 end
 
 local function move_combinator(event)
     local player = game.players[event.player_index]
     local entity = player.selected
-    if entity and entity.force == player.force and (remote.interfaces["data-raw"] or moveable_names[entity.name]) and player.can_reach_entity(entity) then
+    if entity and entity.force == player.force and player.can_reach_entity(entity) then
         --Direction to move the source
         local direction = event.direction or input_to_direction[event.input_name]
         local ent_direction = entity.direction
@@ -57,6 +51,7 @@ local function move_combinator(event)
 
         --Wire distance for the source
         local source_distance = _get_distance(entity)
+        --game.print(source_distance)
 
         local _cant_reach = function (neighbours)
             return table.any(neighbours,
@@ -73,15 +68,19 @@ local function move_combinator(event)
             if entity.surface.can_place_entity{name = entity.name, position = target_pos, direction = ent_direction, force = entity.force} then
                 --We can place the entity here, check for wire distance
                 if entity.circuit_connected_entities then
+                    --Move Poles
                     if entity.type == "electric-pole" and not table.any(entity.neighbours, _cant_reach) then
                         entity.teleport(target_pos)
                         entity.last_user = player
                         script.raise_event(Event.dolly_moved, {player_index = player.index, moved_entity = entity})
                         return
+                        --Move Wires
                     elseif entity.type ~= "electric-pole" and not table.any(entity.circuit_connected_entities, _cant_reach) then
 
                         entity.teleport(target_pos)
                         if entity.type == "mining-drill" and lib.find_resources(entity) == 0 then
+                            local name = entity.mining_target and entity.mining_target.localised_name or {"picker-dollies.generic-ore-patch"}
+                            player.print({"picker-dollies.off-ore-patch", entity.localised_name, name})
                             entity.teleport(start_pos)
                             return
                         else

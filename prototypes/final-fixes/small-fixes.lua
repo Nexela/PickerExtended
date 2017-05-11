@@ -1,23 +1,21 @@
+------------------------------------------------------------------------------
+--[[SMALL FIXES]]--
 -------------------------------------------------------------------------------
---[[DATA RAW HAX]]--
+local settings = settings["startup"]
+local player = data.raw["player"]["player"]
 -------------------------------------------------------------------------------
-if _G.data_raw_require then
-    for type_name, type in pairs(data.raw) do
-        for _, entity in pairs(type) do
-            if entity.maximum_wire_distance or entity.circuit_wire_max_distance then
-                _G.data_raw_require(type_name, "*", {"maximum_wire_distance", "circuit_wire_max_distance"})
-                break
-            end
-        end
+--[[Fast Replace UG belts]]--
+-------------------------------------------------------------------------------
+if settings["picker-fast-replace-ug"].value then
+    for _, ug in pairs(data.raw["underground-belt"]) do
+        ug.fast_replaceable_group = "transport-belt"
+        --ug.flags[#ug.flags+1] = "fast-replaceable-no-build-while-moving"
     end
 end
 
 -------------------------------------------------------------------------------
---[[SMALL FIXES]]--
+--[[Renamer Override]]--
 -------------------------------------------------------------------------------
-local player = data.raw["player"]["player"]
-local settings = settings["startup"]
-
 --Gotlags renamer is installed unassign hotkey?
 --Also set to consuming all so only 1 fires.
 if data.raw["custom-input"]["rename"] then
