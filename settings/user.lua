@@ -65,13 +65,13 @@ data:extend{
         allowed_values = {"off", "safe", "aggresive"},
         order = "picker-c[quick-ug]-b",
     },
-    -- {
-    --     type = "double-setting",
-    --     name = "picker-player-paste-modifier",
-    --     setting_type = "runtime-per-user",
-    --     default_value = 1,
-    --     minimum_value = .1,
-    --     maximum_value = 1000,
-    --     order = "picker-x[paste-modifier]-a",
-    -- },
+    {
+        type = "double-setting",
+        name = "picker-player-paste-modifier",
+        setting_type = "runtime-per-user",
+        default_value = 1,
+        minimum_value = .1,
+        maximum_value = 1000,
+        order = "picker-x[paste-modifier]-a",
+    },
 }
