@@ -27,5 +27,4 @@ for i=1, 32 do
     end
 end
 log("Imported "..count.." Balancers")
-log(serpent.block(balancers["1x1"], {comment=false, sparse=false}))
 return balancers

@@ -8,7 +8,7 @@ local atan2 , pi , floor = math.atan2, math.pi, math.floor
 local function orient_players( event )
     local player = game.players[event.player_index]
     if player.selected and player.character and not player.vehicle and not player.walking_state.walking then
-        if settings.get_player_settings(player)["picker-search-light"].value then
+        if player.mod_settings["picker-search-light"].value then
             --Code optimization by GotLag
             local dx = player.position.x - player.selected.position.x
             local dy = player.selected.position.y - player.position.y

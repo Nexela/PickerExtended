@@ -33,7 +33,7 @@ local function call_a_plumber(event)
                         end
                     end
                     toilets[index] = nil
-                    drain.owner.last_user = drain.owner.last_user and plumber
+                    if drain.owner.last_user then drain.owner.last_user = plumber end
                 end
             until not index
         elseif #plumber.selected.fluidbox > 0 then

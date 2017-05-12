@@ -3,7 +3,7 @@
 -------------------------------------------------------------------------------
 local function picker_hide_minimap(event)
     local player = game.players[event.player_index]
-    if settings.get_player_settings(player.index)["picker-hide-minimap"].value then
+    if player.mod_settings["picker-hide-minimap"].value then
         if not player.opened and player.selected and player.selected.type == "logistic-container" and player.game_view_settings.show_minimap then
             player.game_view_settings.show_minimap = false
         elseif not player.game_view_settings.show_minimap and not (player.selected and player.selected.type == "logistic-container") then

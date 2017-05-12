@@ -13,7 +13,9 @@ Hover over entities and use the Picker dolly keybinds to move entities around. E
 ![Dollies in Action](https://github.com/Nexela/PickerExtended/blob/master/web/picker-combinator-dolly.gif)
 
 ### Picker Entity Blueprinter
-Hover over an entity and take a quick blueprint of everything in its selection area with CONTROL+Q. Blueprints are created automatically if you don't have an existing Pipette Blueprint in your inventory. Modules and recipes are stored in the blueprint. Now you can quickly blueprint your moduled beacon for fast placing! Using this keybind with nothing in your hand and nothing selected will put a blank blueprint in your hand for quick blueprinting an area. If you have a blueprint in your hand it will switch to the deconstruction planner if you have nothing selected. Blue print mirroing is Availble by holding a blueprint and pressing ALT-R, Blueprint upgrading is available using the toolbar that shows up whenever you are holding a blueprint. Quickly Edit the current blueprint or deconstruction planner in your hand with CONTROL+SHIFT+~, Pick any item in the game to make a blueprint of with CONTROL+SHIFT+ENTER.
+Hover over an entity and take a quick blueprint of everything in its selection area with CONTROL+Q. Blueprints are created automatically if you don't have an existing Pipette Blueprint in your inventory. Modules and recipes are stored in the blueprint. Now you can quickly blueprint your moduled beacon for fast placing! Blue print mirroing is Availble by holding a blueprint and pressing ALT-R, Blueprint upgrading is available using the toolbar that shows up whenever you are holding a blueprint. Quickly Edit the current blueprint or deconstruction planner in your hand with CONTROL+SHIFT+~, Pick any item in the game to make a blueprint of with CONTROL+SHIFT+ENTER.
+
+CONTROL+Q with nothing selected will cycle through the available planners (blueprint, deconstruction, upgrade, etc). If you don't have the planner in your inventory and the required research has been met the planner will be automatically created.
 
 ![Blueprinter in Action](https://github.com/Nexela/PickerExtended/blob/master/web/picker-blueprinter.gif)
 
@@ -75,7 +77,7 @@ Quickly and easily set filters and adjust requests using the handy dandy filter 
 Quickly upgrade a section of belt by pressing the hotkey while hovering over the old belt while holding the belt type you want to upgrade to.
 
 ### Picker Quick UG Belt
-Removes belts between newly placed underground belts if they are going the same direction. Makes belts fast replaceable. Config options to enable/disable both features.
+Removes belts between newly placed underground belts if they are going the same direction. Makes belts fast replaceable. Config options to enable/disable both features. Visual flying text displaying both the amount of items removed off the belt and the amount of items inserted into you.
 
 ### Picker Adjustment Pad
 A quick increase/decrease pad using the +/- keys or the buttons on the gui. Mods can quickly create their own adjustment pad using a remote call to get or create the window and listening for the pad changed event.

@@ -9,10 +9,14 @@ local lib = require("picker.lib")
 local function cut_wires(event)
     local player = Player.get(event.player_index)
     if player.admin and player.selected and player.selected.circuit_connected_entities then
-        pcall(function() player.selected.disconnect_neighbour() end)
-        pcall(function() player.selected.disconnect_neighbour(defines.wire_type.red) end)
-        pcall(function() player.selected.disconnect_neighbour(defines.wire_type.green) end)
-        player.print({"wiretool.all-wires-removed"})
+        local a, b, c
+        a = pcall(function() player.selected.disconnect_neighbour() end)
+        b = pcall(function() player.selected.disconnect_neighbour(defines.wire_type.red) end)
+        c = pcall(function() player.selected.disconnect_neighbour(defines.wire_type.green) end)
+        if a or b or c then
+            player.print({"wiretool.all-wires-removed"})
+            if player.selected.last_user then player.selected.last_user = player end
+        end
     end
 end
 script.on_event("picker-wire-cutter", cut_wires)

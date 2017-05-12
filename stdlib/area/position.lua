@@ -203,6 +203,23 @@ function Position.tostring(pos)
     end
 end
 
+--- Increment a position each time it is called
+-- @param position the position to start with
+-- @param inc_x optional increment x by this amount
+-- @param inc_y optional increment y by this amount
+-- @return a function closure that returns an incrememnted position
+function Position.increment(position, inc_x, inc_y)
+    local x, y = position.x, position.y
+    inc_x, inc_y = inc_x or 0, inc_y or 0
+
+    return function(new_inc_x, new_inc_y)
+        x = x + (new_inc_x or inc_x)
+        y = y + (new_inc_y or inc_y)
+        return {x = x, y = y}
+    end
+end
+
+
 local opposites = {
     [defines.direction.north] = defines.direction.south,
     [defines.direction.south] = defines.direction.north,

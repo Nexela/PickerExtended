@@ -4,43 +4,14 @@
 --Mirroring and Upgradeing code from "Foreman", by "Choumiko"
 
 local Position = require("stdlib.area.position")
+local Area = require("stdlib.area.area")
 local Entity = require("stdlib.entity.entity")
 local lib = require("picker.lib")
 Event.mirror = script.generate_event_name()
 
---Requires empty blueprint in inventory
-local function make_simple_blueprint(event)
-    local player = game.players[event.player_index]
-    if player.controller_type ~= defines.controllers.ghost then
-        if player.selected and not (player.selected.type == "resource" or player.selected.has_flag("not-blueprintable")) then
-            local entity = player.selected
-            if player.clean_cursor() then
-                if entity.force == player.force and lib.damaged(entity) and lib.get_planner(player, "repair-tool") then
-                    return
-                else
-                    local bp = lib.get_planner(player, "blueprint", "Pipette Blueprint")
-                    if bp then
-                        bp.clear_blueprint()
-                        bp.label = "Pipette Blueprint"
-                        bp.allow_manual_label_change = false
-                        bp.create_blueprint{surface = entity.surface, force = player.force, area = Entity.to_selection_area(entity), always_include_tiles = false}
-                        return bp.is_blueprint_setup() and bp
-                    end
-                end
-            else
-                player.print({"picker.msg-cant-insert-blueprint"})
-            end
-        elseif not player.selected or (player.selected and (player.selected.type == "resource" or player.selected.has_flag("not-blueprintable"))) then
-            if (not player.cursor_stack.valid_for_read or player.cursor_stack.valid_for_read and player.cursor_stack.name ~= "blueprint") then
-                return player.clean_cursor() and lib.get_planner(player, "blueprint")
-            elseif player.cursor_stack.valid_for_read and player.cursor_stack.name == "blueprint" then
-                return player.clean_cursor() and lib.get_planner(player, "deconstruction-planner")
-            end
-        end
-    end
-end
-script.on_event("picker-make-ghost", make_simple_blueprint)
-
+-------------------------------------------------------------------------------
+--[[BP Tools]]--
+-------------------------------------------------------------------------------
 local function get_or_create_blueprint_gui(player)
     local flow = lib.get_or_create_main_left_flow(player, "picker")
     local bpframe = flow["picker_bp_tools"]
@@ -66,6 +37,55 @@ local function show_bp_tools(event)
 end
 Event.register(defines.events.on_player_cursor_stack_changed, show_bp_tools)
 
+-------------------------------------------------------------------------------
+--[[Open held item inventory]]--
+-------------------------------------------------------------------------------
+local function open_held_item_inventory(event)
+    local player = game.players[event.player_index]
+    if player.cursor_stack.valid_for_read then
+        player.opened = player.cursor_stack
+    end
+end
+script.on_event("picker-inventory-editor", open_held_item_inventory)
+
+-------------------------------------------------------------------------------
+--[[Make Simple Blueprint]]--
+-------------------------------------------------------------------------------
+local function make_simple_blueprint(event)
+    local player = game.players[event.player_index]
+    if player.controller_type ~= defines.controllers.ghost then
+        if player.selected and not (player.selected.type == "resource" or player.selected.has_flag("not-blueprintable")) then
+            local entity = player.selected
+            if player.clean_cursor() then
+                if entity.force == player.force and lib.damaged(entity) and lib.get_planner(player, "repair-tool") then
+                    return
+                else
+                    local area = Entity.to_collision_area(entity)
+                    if Area.size(area) > 0 then
+                        local bp = lib.get_planner(player, "blueprint", "Pipette Blueprint")
+                        if bp then
+                            bp.clear_blueprint()
+                            bp.label = "Pipette Blueprint"
+                            bp.allow_manual_label_change = false
+                            bp.create_blueprint{surface = entity.surface, force = player.force, area = area, always_include_tiles = false}
+                            return bp.is_blueprint_setup() and bp
+                        end
+                    end
+
+                end
+            else
+                player.print({"picker.msg-cant-insert-blueprint"})
+            end
+        elseif not player.selected or (player.selected and (player.selected.type == "resource" or player.selected.has_flag("not-blueprintable"))) then
+            lib.get_next_planner(player)
+        end
+    end
+end
+script.on_event("picker-make-ghost", make_simple_blueprint)
+
+-------------------------------------------------------------------------------
+--[[Update BP Entities]]--
+-------------------------------------------------------------------------------
 local function update_blueprint(event)
     local player = game.players[event.player_index]
     local stack = lib.stack_name(player.cursor_stack, "blueprint", true)
@@ -92,6 +112,9 @@ local function update_blueprint(event)
 end
 Gui.on_click("picker_bp_tools_update", update_blueprint)
 
+-------------------------------------------------------------------------------
+--[[Mirroring]]--
+-------------------------------------------------------------------------------
 local function get_mirrored_blueprint(blueprint)
     local curves, others, stops, signals, tanks = 9, 0, 4, 4, 2
 
@@ -225,7 +248,7 @@ local function create_quick_pick_blueprint(event)
                         entity_number = 1,
                         name = game.item_prototypes[event.element.elem_value].place_result.name,
                         direction = defines.direction.north,
-                        position = {0, 0}
+                        position = {0.5, 0.5}
                     }
                 }
                 stack.set_blueprint_entities(entities)
@@ -236,11 +259,3 @@ local function create_quick_pick_blueprint(event)
     create_or_destroy_quick_picker(event)
 end
 Gui.on_elem_changed("picker_quick_picker_item", create_quick_pick_blueprint)
-
-local function open_held_item_inventory(event)
-    local player = game.players[event.player_index]
-    if player.cursor_stack.valid_for_read then
-        player.opened = player.cursor_stack
-    end
-end
-script.on_event("picker-inventory-editer", open_held_item_inventory)

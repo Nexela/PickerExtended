@@ -7,7 +7,7 @@ local function get_or_create_itemcount_gui(player)
         gui = player.gui.center.add{type="label", name="itemcount", caption="0", direction = "vertical"}
         gui.style.font = "default-bold"
     end
-    local enabled = settings.get_player_settings(player.index)["picker-itemcount"].value
+    local enabled = player.mod_settings["picker-itemcount"].value
     gui.style.visible = enabled and player.cursor_stack.valid_for_read and #gui.parent.children == 1
     return gui
 end
@@ -40,7 +40,7 @@ Event.register(item_count_events, get_itemcount_counts)
 local function update_item_count_settings(event)
     local player = game.players[event.player_index]
     if event.setting == "picker-itemcount" then
-        local enabled = settings.get_player_settings(player)["picker-itemcount"].value
+        local enabled = player.mod_settings["picker-itemcount"].value
         local gui = get_or_create_itemcount_gui(player)
         gui.style.visible = enabled and player.cursor_stack.valid_for_read or false
     end

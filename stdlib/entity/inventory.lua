@@ -58,7 +58,8 @@ function Inventory.each(inventory, func, ...)
 end
 
 --- Given a function, apply it to each slot in the inventory. Passes the slot index as second argument to the function.
--- <p>Iteration is aborted if the applied function returns true for any element during iteration.
+-- <p>Iteration is aborted if the applied function returns true for any element during iteration. Iteration is performed from
+-- last to first in order to support dynamically sized inventories.</p>
 -- @param inventory to be iterated
 -- @param func to apply to values
 -- @param[opt] ... additional arguments passed to the function

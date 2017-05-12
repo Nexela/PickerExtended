@@ -17,6 +17,14 @@ data:extend{
     },
     {
         type = "string-setting",
+        name = "picker-no-other-planner-inv",
+        setting_type = "runtime-per-user",
+        default_value = "none",
+        allowed_values = {"none", "main", "all"},
+        order = "picker-z[zapper]-c",
+    },
+    {
+        type = "string-setting",
         name = "picker-item-zapper",
         setting_type = "runtime-per-user",
         default_value = "blueprint blueprint-book deconstruction-planner zone-planner unit-remote-control",

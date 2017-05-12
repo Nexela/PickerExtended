@@ -72,8 +72,17 @@ data:extend{
     },
     {
         type = "custom-input",
-        name = "picker-inventory-editer",
+        name = "picker-inventory-editor",
         key_sequence = "CONTROL + SHIFT + GRAVE",
         consuming = "all"
     }
 }
+
+local text ={
+    type = "flying-text",
+    name = "picker-flying-text",
+    flags = {"placeable-off-grid", "not-on-map"},
+    time_to_live = 60,
+    speed = 0.05
+}
+data:extend{text}

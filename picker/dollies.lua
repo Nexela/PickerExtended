@@ -14,6 +14,12 @@ if remote.interfaces["picker"] and remote.interfaces["picker"]["dolly_moved_enti
 end
 --]]
 
+local blacklist = {
+    ["entity-ghost"] = true,
+    ["tile-ghost"] = true,
+    ["item-request-proxy"] = true,
+}
+
 local input_to_direction = {
     ["dolly-move-north"] = defines.direction.north,
     ["dolly-move-east"] = defines.direction.east,
@@ -37,7 +43,7 @@ end
 local function move_combinator(event)
     local player = game.players[event.player_index]
     local entity = player.selected
-    if entity and entity.force == player.force and player.can_reach_entity(entity) then
+    if entity and entity.force == player.force and not blacklist[entity.name] and player.can_reach_entity(entity) then
         --Direction to move the source
         local direction = event.direction or input_to_direction[event.input_name]
         local ent_direction = entity.direction
@@ -70,7 +76,7 @@ local function move_combinator(event)
                     --Move Poles
                     if entity.type == "electric-pole" and not table.any(entity.neighbours, _cant_reach) then
                         entity.teleport(target_pos)
-                        entity.last_user = player
+                        if entity.last_user then entity.last_user = player end
                         script.raise_event(Event.dolly_moved, {player_index = player.index, moved_entity = entity})
                         return
                         --Move Wires
@@ -83,7 +89,7 @@ local function move_combinator(event)
                             entity.teleport(start_pos)
                             return
                         else
-                            entity.last_user = player
+                            if entity.last_user then entity.last_user = player end
                             script.raise_event(Event.dolly_moved, {player_index = player.index, moved_entity = entity})
                             return true
                         end
@@ -93,6 +99,7 @@ local function move_combinator(event)
                         return false
                     end
                 else --All others
+                    if entity.last_user then entity.last_user = player end
                     entity.teleport(target_pos)
                     script.raise_event(Event.dolly_moved, {player_index = player.index, moved_entity = entity})
                     return

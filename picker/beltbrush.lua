@@ -105,6 +105,9 @@ local function create_or_destroy_bp(player, lanes)
     end
 end
 
+-------------------------------------------------------------------------------
+--[[Automatic Corners]]--
+-------------------------------------------------------------------------------
 -- Build corners based on brushed width on key press
 -- pressing a second time will mirror the corner
 -- pressing a third time will revert to brush width
@@ -165,6 +168,9 @@ local function beltbrush_corners(event)
 end
 script.on_event("picker-beltbrush-corners", beltbrush_corners)
 
+-------------------------------------------------------------------------------
+--[[Automatic Balancers]]--
+-------------------------------------------------------------------------------
 -- Build balaners based on brush width on key press.
 -- Subsequent key presses will cycle through the availble balancers
 local function beltbrush_balancers(event)
@@ -209,7 +215,7 @@ script.on_event("picker-beltbrush-balancers", beltbrush_balancers)
 local function placed_blueprint(event)
     local player = game.players[event.player_index]
     local stack = lib.stack_name(player.cursor_stack, "blueprint", true)
-    if stack and lib.is_beltbrush_bp(stack) then
+    if stack and lib.is_beltbrush_bp(stack) and stack.label:find("balancers") then
         local corners = {lx=0, ly=0, rx=0, ry=0}
         --Create a bounding box from the blueprint entities.
         table.each(stack.get_blueprint_entities(),
@@ -279,5 +285,4 @@ Gui.on_text_changed("beltbrush_text_box", function (event) increase_decrease_rep
 Gui.on_click("beltbrush_btn_up", function (event) increase_decrease_reprogrammer(event, 1) end)
 Gui.on_click("beltbrush_btn_dn", function (event) increase_decrease_reprogrammer(event, -1) end)
 Gui.on_click("beltbrush_btn_reset", function(event) increase_decrease_reprogrammer(event, -99999999999) end)
-
 Event.register(defines.events.on_player_cursor_stack_changed, increase_decrease_reprogrammer)

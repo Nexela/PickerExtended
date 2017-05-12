@@ -17,7 +17,7 @@ local function find_orphans(event)
     local player, pdata = Player.get(event.player_index)
     local cursor_type = player.cursor_stack and player.cursor_stack.valid_for_read and player.cursor_stack.prototype.place_result and types[player.cursor_stack.prototype.place_result.type]
     if (player.selected and types[player.selected.type]) or cursor_type then
-        if event.tick > (pdata._next_check or 0) and settings.get_player_settings(player)["picker-find-orphans"].value then
+        if event.tick > (pdata._next_check or 0) and player.mod_settings["picker-find-orphans"].value then
             local type = player.selected and types[player.selected.type] or cursor_type
             local ent = player.selected or player
             local filter = {area=Position.expand_to_area(ent.position, 64), type = type, force = player.force}
