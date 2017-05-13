@@ -1,3 +1,7 @@
+-------------------------------------------------------------------------------
+--[[Proxy Chest]]--
+-------------------------------------------------------------------------------
+--Set the proxy chest size to the size of the largest inventory
 local size = 0
 
 local data_to_check = {

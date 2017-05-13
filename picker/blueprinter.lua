@@ -14,13 +14,16 @@ Event.mirror = script.generate_event_name()
 -------------------------------------------------------------------------------
 local function get_or_create_blueprint_gui(player)
     local flow = lib.get_or_create_main_left_flow(player, "picker")
+
     local bpframe = flow["picker_bp_tools"]
     if not bpframe then
-        bpframe = flow.add{type = "frame", name = "picker_bp_tools", direction="horizontal", style="filterfill_frame"}
-        bpframe.add{type = "button", name = "picker_bp_tools_mirror", style = "picker_blueprinter_btn_mirror", tooltip = {"blueprinter.btn-mirror"}}
-        bpframe.add{type = "choose-elem-button", name = "picker_bp_tools_from", elem_type="entity", style = "picker_blueprinter_btn_elem", tooltip = {"blueprinter.btn-from"}}
-        bpframe.add{type = "choose-elem-button", name = "picker_bp_tools_to", elem_type="entity", style = "picker_blueprinter_btn_elem", tooltip = {"blueprinter.btn-to"}}
-        bpframe.add{type = "button", name = "picker_bp_tools_update", caption = "OK", style = "picker_blueprinter_btn_upgrade", tooltip = {"blueprinter.btn-upgrade"}}
+        bpframe = flow.add{type = "frame", name = "picker_bp_tools", direction="horizontal", style = "picker_frame"}
+
+        local bptable = bpframe.add{type = "table", name = "picker_bp_tools_table", colspan = 4, style = "picker_table"}
+        bptable.add{type = "sprite-button", name = "picker_bp_tools_mirror", sprite = "picker-mirror-sprite", style = "picker_buttons", tooltip = {"blueprinter.btn-mirror"}}
+        bptable.add{type = "choose-elem-button", name = "picker_bp_tools_from", elem_type = "entity", style = "picker_buttons", tooltip = {"blueprinter.btn-from"}}
+        bptable.add{type = "choose-elem-button", name = "picker_bp_tools_to", elem_type = "entity", style = "picker_buttons", tooltip = {"blueprinter.btn-to"}}
+        bptable.add{type = "sprite-button", name = "picker_bp_tools_update", sprite = "picker-upgrade-sprite", style = "picker_buttons", tooltip = {"blueprinter.btn-upgrade"}}
     end
     return bpframe
 end

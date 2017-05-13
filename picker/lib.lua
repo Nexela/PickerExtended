@@ -10,6 +10,10 @@ function lib.get_or_create_main_left_flow(player, flow_name)
     local main_flow = player.gui.left[flow_name.."_main_flow"]
     if not main_flow then
         main_flow = player.gui.left.add{type = "flow", name = flow_name.."_main_flow", direction = "vertical", style = "slot_table_spacing_flow_style"}
+        main_flow.style.top_padding = 4
+        main_flow.style.right_padding = 0
+        main_flow.style.left_padding = 0
+        main_flow.style.bottom_padding = 0
     end
     return main_flow
 end
