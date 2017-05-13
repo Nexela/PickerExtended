@@ -1,8 +1,13 @@
+TODO:
+Train entry to manual mode
+Train manual toggle hotkey
+
 2.6.1:
 Only change inventory size if less than inventory size
 Fast replace UG belts defaults to false
 Switch to sprite buttons
 Orphans are a little less aggressive
+Autosorting limits put in place
 
 2.6.0:
 Blueprinter automatic planner expanded
