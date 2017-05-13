@@ -140,7 +140,7 @@ data:extend{
         type = "bool-setting",
         name = "picker-fast-replace-ug",
         setting_type = "startup",
-        default_value = true,
+        default_value = false,
         order = "picker-g[fast-replace]-b"
     },
 }
