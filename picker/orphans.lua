@@ -28,7 +28,7 @@ local function find_orphans(event)
                     entity.surface.create_entity{name = "picker-orphan-mark", position = entity.position}
                 end
             end
-            pdata._next_check = event.tick + (defines.time.second * 2)
+            pdata._next_check = event.tick + (defines.time.second * 5)
         end
     end
 end
@@ -37,7 +37,7 @@ Event.register({defines.events.on_selected_entity_changed, defines.events.on_pla
 local function orphan_builder(event)
     local _, pdata = Player.get(event.player_index)
     if types[event.created_entity] then
-        pdata._next_check = event.tick + (defines.time.second * 2)
+        pdata._next_check = event.tick + (defines.time.second * 5)
     end
 end
 Event.register(defines.events.on_built_entity, orphan_builder)

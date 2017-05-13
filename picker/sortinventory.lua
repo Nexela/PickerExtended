@@ -129,6 +129,9 @@ local function sort_opened_inventory(data)
     local orders = {}
     local filters
 
+    local a = 0
+    if table.each(inventory.get_contents(), function () a = a + 1 return a > 20 end) then return end
+
     local proxy = player.surface.create_entity{name = "picker-proxy-chest", position = player.position}
     proxy.operable = false
     proxy.destructible = false

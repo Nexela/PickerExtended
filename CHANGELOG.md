@@ -1,3 +1,9 @@
+2.6.1:
+Only change inventory size if less than inventory size
+Fast replace UG belts defaults to false
+Switch to sprite buttons
+Orphans are a little less aggressive
+
 2.6.0:
 Blueprinter automatic planner expanded
 Now cycles through a list of blueprints and gets or creates them
