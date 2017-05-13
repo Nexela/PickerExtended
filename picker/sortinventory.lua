@@ -130,7 +130,7 @@ local function sort_opened_inventory(data)
     local filters
 
     local a = 0
-    if table.each(inventory.get_contents(), function () a = a + 1 return a > 20 end) then return end
+    if data.auto_sort and table.each(inventory.get_contents(), function () a = a + 1 return a > 20 end) then return end
 
     local proxy = player.surface.create_entity{name = "picker-proxy-chest", position = player.position}
     proxy.operable = false
@@ -253,6 +253,7 @@ local function sort_inventory(event)
     local player = Player.get(event.player_index)
     if player.opened and sortable_entities[player.opened.type] then
         sort_opened_inventory{
+            auto_sort = event.auto_sort,
             player_index = event.player_index,
             inventory =
             player.opened.get_inventory(defines.inventory.car_trunk)
@@ -265,6 +266,7 @@ script.on_event("picker-manual-inventory-sort", sort_inventory)
 
 local function auto_sort_inventory(event)
     if settings.get_player_settings(event.player_index)["picker-auto-sort-inventory"].value then
+        event.auto_sort = true
         sort_inventory(event)
     end
 end
