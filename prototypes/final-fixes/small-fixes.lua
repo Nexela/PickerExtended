@@ -9,7 +9,6 @@ local player = data.raw["player"]["player"]
 if settings["picker-fast-replace-ug"].value then
     for _, ug in pairs(data.raw["underground-belt"]) do
         ug.fast_replaceable_group = "transport-belt"
-        --ug.flags[#ug.flags+1] = "fast-replaceable-no-build-while-moving"
     end
 end
 
@@ -62,7 +61,7 @@ end
 --[[Requester Paste Multiplier]]--
 -------------------------------------------------------------------------------
 --From small-fixes mod
---change requester paste multiplier for anything at default (2)
+--change requester paste multiplier for anything at default (10)
 local value = settings["picker-requester-paste-multiplier"].value or 10
 for _, recipe in pairs(data.raw["recipe"]) do
     if not recipe.requester_paste_multiplier or recipe.requester_paste_multiplier == 10 then
@@ -86,7 +85,8 @@ data.raw["character-corpse"]["character-corpse"].time_to_live = settings["picker
 --[[Starting inventory size]]--
 -------------------------------------------------------------------------------
 local inv_size = settings["picker-inventory-size"].value
-if player.inventory_size == 60 then
+--Modify player inventory size
+if player.inventory_size < inv_size then
     player.inventory_size = inv_size
 end
 
