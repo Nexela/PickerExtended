@@ -11,7 +11,11 @@ if settings["picker-fast-replace-ug"].value then
         ug.fast_replaceable_group = "transport-belt"
     end
 end
-
+if settings["picker-fast-replace-ug"].value then
+    for _, ug in pairs(data.raw["splitter"]) do
+        ug.fast_replaceable_group = "transport-belt"
+    end
+end
 -------------------------------------------------------------------------------
 --[[Renamer Override]]--
 -------------------------------------------------------------------------------
@@ -99,3 +103,23 @@ player.reach_resource_distance = settings["picker-reacher-reach-resource-distanc
 player.drop_item_distance = settings["picker-reacher-drop-item-distance"].value
 player.loot_pickup_distance = settings["picker-reacher-loot-pickup-distance"].value
 player.item_pickup_distance = settings["picker-reacher-item-pickup-distance"].value
+
+-------------------------------------------------------------------------------
+--[[Smaller Tree Boxes]]--
+-------------------------------------------------------------------------------
+if settings["picker-smaller-tree-box"].value then
+    for _, stupid_tree in pairs(data.raw["tree"]) do
+        if stupid_tree.collision_box then
+            stupid_tree.collision_box = {{-0.05, -0.05}, {0.05, 0.05}}
+        end
+    end
+end
+
+-------------------------------------------------------------------------------
+--[[Roundup]]--
+-------------------------------------------------------------------------------
+if settings["picker-roundup"].value then
+    if data.raw["tile"]["concrete"] then
+        data.raw["tile"]["concrete"].decorative_removal_probability = 1
+    end
+end

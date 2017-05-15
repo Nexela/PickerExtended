@@ -138,6 +138,20 @@ data:extend{
     },
     {
         type = "bool-setting",
+        name = "picker-smaller-tree-box",
+        setting_type = "startup",
+        default_value = true,
+        order = "picker-f[smaller-tree-box]-c"
+    },
+    {
+        type = "bool-setting",
+        name = "picker-roundup",
+        setting_type = "startup",
+        default_value = true,
+        order = "picker-f[roundup]-c"
+    },
+    {
+        type = "bool-setting",
         name = "picker-fast-replace-ug",
         setting_type = "startup",
         default_value = false,

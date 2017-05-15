@@ -82,4 +82,18 @@ data:extend{
         maximum_value = 1000,
         order = "picker-x[paste-modifier]-a",
     },
+    {
+        type = "bool-setting",
+        name = "picker-alt-mode-default",
+        setting_type = "runtime-per-user",
+        default_value = true,
+        order = "picker-d[alt-mode]-a",
+    },
+    {
+        type = "bool-setting",
+        name = "picker-auto-manual-train",
+        setting_type = "runtime-per-user",
+        default_value = true,
+        order = "picker-e[automatic-trains]-a",
+    },
 }

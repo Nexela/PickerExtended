@@ -75,6 +75,12 @@ data:extend{
         name = "picker-inventory-editor",
         key_sequence = "CONTROL + SHIFT + GRAVE",
         consuming = "all"
+    },
+    {
+        type = "custom-input",
+        name = "picker-dude-wheres-my-car",
+        key_sequence = "CONTROL + SHIFT + J",
+        consuming = "none"
     }
 }
 

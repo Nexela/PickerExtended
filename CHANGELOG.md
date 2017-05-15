@@ -1,6 +1,6 @@
 TODO:
-Train entry to manual mode
-Train manual toggle hotkey
+picker fast replace stuff
+picker remember last planner
 
 2.6.1:
 Only change inventory size if less than inventory size
@@ -8,6 +8,11 @@ Fast replace UG belts defaults to false
 Switch to sprite buttons
 Orphans are a little less aggressive
 Autosorting limits put in place
+Hotkey to toggle train to manual mode J
+Option to enable alt-mode when joining game
+Entering a train with 1 station or no stations puts the train in manual mode
+Find my car alert - Ctrl-shift-j
+Small fixes smaller tree hitbox
 
 2.6.0:
 Blueprinter automatic planner expanded
