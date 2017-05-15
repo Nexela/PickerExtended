@@ -1,6 +1,5 @@
 TODO:
 picker fast replace stuff
-picker remember last planner
 
 2.6.1:
 Only change inventory size if less than inventory size
@@ -13,6 +12,7 @@ Option to enable alt-mode when joining game
 Entering a train with 1 station or no stations puts the train in manual mode
 Find my car alert - Ctrl-shift-j
 Small fixes smaller tree hitbox
+Last planner is recalled
 
 2.6.0:
 Blueprinter automatic planner expanded

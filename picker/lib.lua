@@ -181,11 +181,12 @@ lib.planners = {
     ["unit-remote-control"] = true,
 }
 
-function lib.get_next_planner(player)
+function lib.get_next_planner(player, last_planner)
     local stack = player.cursor_stack
 
     if (not stack.valid_for_read ) then
-        return player.clean_cursor() and lib.get_planner(player, "blueprint")
+        local planner = lib.planners[last_planner] or "blueprint"
+        return player.clean_cursor() and lib.get_planner(player, planner)
     elseif stack.valid_for_read then
         local name = stack.name
         if lib.planners[name] then

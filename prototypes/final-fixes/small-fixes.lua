@@ -11,11 +11,6 @@ if settings["picker-fast-replace-ug"].value then
         ug.fast_replaceable_group = "transport-belt"
     end
 end
-if settings["picker-fast-replace-ug"].value then
-    for _, ug in pairs(data.raw["splitter"]) do
-        ug.fast_replaceable_group = "transport-belt"
-    end
-end
 -------------------------------------------------------------------------------
 --[[Renamer Override]]--
 -------------------------------------------------------------------------------

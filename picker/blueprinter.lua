@@ -2,7 +2,7 @@
 --[[Picker Blueprinter]]--
 -------------------------------------------------------------------------------
 --Mirroring and Upgradeing code from "Foreman", by "Choumiko"
-
+local Player = require("stdlib.player")
 local Position = require("stdlib.area.position")
 local Area = require("stdlib.area.area")
 local Entity = require("stdlib.entity.entity")
@@ -55,7 +55,7 @@ script.on_event("picker-inventory-editor", open_held_item_inventory)
 --[[Make Simple Blueprint]]--
 -------------------------------------------------------------------------------
 local function make_simple_blueprint(event)
-    local player = game.players[event.player_index]
+    local player, pdata = Player.get(event.player_index)
     if player.controller_type ~= defines.controllers.ghost then
         if player.selected and not (player.selected.type == "resource" or player.selected.has_flag("not-blueprintable")) then
             local entity = player.selected
@@ -80,7 +80,7 @@ local function make_simple_blueprint(event)
                 player.print({"picker.msg-cant-insert-blueprint"})
             end
         elseif not player.selected or (player.selected and (player.selected.type == "resource" or player.selected.has_flag("not-blueprintable"))) then
-            lib.get_next_planner(player)
+            pdata.last_planner = lib.get_next_planner(player, pdata.last_planner) and player.cursor_stack.name
         end
     end
 end
