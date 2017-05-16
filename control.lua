@@ -2,6 +2,7 @@ MOD = {}
 MOD.name = "PickerExtended"
 MOD.if_name = "picker"
 MOD.interfaces = {}
+MOD.config = require("config")
 
 require("stdlib.table")
 require("stdlib.string")
@@ -39,6 +40,11 @@ local function set_join_options(event)
 end
 Event.register(defines.events.on_player_joined_game, set_join_options)
 
+if MOD.config.DEBUG then
+    log(MOD.name .. " Debug mode enabled")
+    require("stdlib/debug/quickstart")
+end
+
 -------------------------------------------------------------------------------
 --[[Picker]]--
 -------------------------------------------------------------------------------
@@ -64,6 +70,8 @@ require("picker.pastesettings") --needs on/off user config
 require("picker.lights")
 require("picker.filterfill")
 require("picker.vehicles")
+require("picker.usedfor")
+require("picker.helmod")
 
 -------------------------------------------------------------------------------
 --[[Remote Interfaces]]--
@@ -71,5 +79,6 @@ require("picker.vehicles")
 MOD.interfaces["write_global"] = function()
     game.write_file("Picker/global.lua", serpent.block(global, {comment=false, nocode=true}), false)
 end
+MOD.interfaces["console"] = require("stdlib.debug.console")
 
 remote.add_interface(MOD.if_name, MOD.interfaces)

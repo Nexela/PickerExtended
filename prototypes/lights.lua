@@ -1,4 +1,4 @@
-local Prototype = require("stdlib.data.prototype")
+local Prototype = require("stdlib.prototype.prototype")
 -------------------------------------------------------------------------------
 --[[Flashlight Toggle]]--
 -------------------------------------------------------------------------------

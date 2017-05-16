@@ -25,6 +25,6 @@ data:extend{
     {
         type = "custom-input",
         name = "dolly-rotate-rectangle",
-        key_sequence = "CONTROL + ALT + R",
+        key_sequence = "PAD 0",
     }
 }

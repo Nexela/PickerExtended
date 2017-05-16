@@ -91,3 +91,39 @@ if settings.startup["picker-hide-mod-names"].value then
         height = 0
     }
 end
+
+-------------------------------------------------------------------------------
+--[[What is it used for]]--
+-------------------------------------------------------------------------------
+style.small_spacing_scroll_pane_style =
+{
+    type = "scroll_pane_style",
+    parent = "scroll_pane_style",
+    top_padding = 2,
+    left_padding = 0,
+    right_padding = 0,
+    flow_style = {"slot_table_spacing_flow_style"}
+}
+style.row_table_style =
+{
+    type = "table_style",
+    cell_padding = 5,
+    horizontal_spacing=0,
+    vertical_spacing=0,
+    odd_row_graphical_set =
+    {
+        type = "composition",
+        filename = "__core__/graphics/gui.png",
+        priority = "extra-high-no-scale",
+        corner_size = {3, 3},
+        position = {8, 0}
+    },
+    even_row_graphical_set =
+    {
+        type = "composition",
+        filename = "__core__/graphics/gui.png",
+        priority = "extra-high-no-scale",
+        corner_size = {3, 3},
+        position = {8, 0}
+    }
+}

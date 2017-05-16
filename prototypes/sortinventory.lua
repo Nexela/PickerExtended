@@ -1,4 +1,4 @@
-local Prototype = require("stdlib.data.prototype")
+local Prototype = require("stdlib.prototype.prototype")
 local input_inventory_sort = {
     type = "custom-input",
     name = "picker-manual-inventory-sort",

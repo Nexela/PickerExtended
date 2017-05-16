@@ -1,3 +1,11 @@
+-------------------------------------------------------------------------------
+--[[DATA.LUA]]--
+-------------------------------------------------------------------------------
+local PICKER = require("config")
+
+-------------------------------------------------------------------------------
+--[[Table Mutates]]--
+-------------------------------------------------------------------------------
 require("stdlib.table")
 require("stdlib.string")
 require("stdlib.defines.colors")
@@ -17,3 +25,8 @@ require("prototypes/zapper")
 require("prototypes/sortinventory")
 require("prototypes/orphans")
 require("prototypes/lights")
+
+if PICKER.DEBUG then
+    local developer = require("stdlib/prototype/prototypes/developer")
+    developer.make_chunk_markers("Nanobots")
+end

@@ -15,12 +15,12 @@ local function quick_ug_belt(event)
     local entity = event.created_entity
 
     if entity.valid and entity.type == "underground-belt" and entity.neighbours[1] and not (event.revived or event.instant_blueprint) then
-        local opts = player.mod_settings
-        if opts["picker-quick-ug-mode"].value ~= "off" then
+        local opts = player.mod_settings["picker-quick-ug-mode"].value
+        if opts ~= "off" then
 
             local nb = entity.neighbours[1]
             local belt_type = "transport-belt"
-            local belts
+            local belts, distance
 
             --Get the belts between the undergrounds
             if entity.direction == defines.direction.north or entity.direction == defines.direction.west then
@@ -28,13 +28,20 @@ local function quick_ug_belt(event)
                     type = belt_type,
                     area = {{entity.position.x, entity.position.y}, {nb.position.x, nb.position.y}}
                 }
+                distance = Position.distance(entity.position, nb.position) - 1
             else
                 belts = entity.surface.find_entities_filtered{
                     type = belt_type,
                     area = {{nb.position.x, nb.position.y}, {entity.position.x, entity.position.y}}
                 }
+                distance = Position.distance(entity.position, nb.position) - 1
             end
-            if belts and not (opts["picker-quick-ug-mode"].value == "safe" and table.any(belts, function(b) return b.direction ~= entity.direction end)) then
+            local _not_same_dir = function (belt)  return belt.direction ~= entity.direction end
+
+
+
+            local safe = (opts == "safe" and #belts == distance and table.any(belts, _not_same_dir)) or (opts == "medium" and table.any(belts, _not_same_dir))
+            if belts and not safe then
                 local stacks, counts = {}, {}
                 for _, belt in ipairs(belts) do
                     if belt.direction == entity.direction then

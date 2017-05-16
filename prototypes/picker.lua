@@ -66,8 +66,14 @@ data:extend{
     },
     {
         type = "custom-input",
-        name = "picker-quick-picker",
+        name = "picker-used-for",
         key_sequence = "CONTROL + SHIFT + ENTER",
+        consuming = "all"
+    },
+    {
+        type = "custom-input",
+        name = "picker-quick-picker",
+        key_sequence = "CONTROL + ALT + ENTER",
         consuming = "all"
     },
     {

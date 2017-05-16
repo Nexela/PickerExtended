@@ -28,7 +28,15 @@ data:extend{
         name = "picker-item-zapper",
         setting_type = "runtime-per-user",
         default_value = "blueprint blueprint-book deconstruction-planner zone-planner unit-remote-control",
+        allow_blank = true,
         order = "picker-z[zapper]-z",
+    },
+    {
+        type = "bool-setting",
+        name = "picker-item-zapper-all",
+        setting_type = "runtime-per-user",
+        default_value = false,
+        order = "picker-z[zapper]-y",
     },
     {
         type = "bool-setting",
@@ -70,7 +78,7 @@ data:extend{
         name = "picker-quick-ug-mode",
         setting_type = "runtime-per-user",
         default_value = "safe",
-        allowed_values = {"off", "safe", "aggresive"},
+        allowed_values = {"off", "safe", "medium", "aggresive"},
         order = "picker-c[quick-ug]-b",
     },
     {

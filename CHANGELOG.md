@@ -1,5 +1,6 @@
 TODO:
 picker fast replace stuff
+picker used for
 
 2.6.1:
 Only change inventory size if less than inventory size
@@ -13,6 +14,9 @@ Entering a train with 1 station or no stations puts the train in manual mode
 Find my car alert - Ctrl-shift-j
 Small fixes smaller tree hitbox
 Last planner is recalled
+Shift-Clicking on entities in helmod side panel will put the item in your had if you have it
+Clicking on entities in helmod side panel will make a pipette blueprint of the entitie with recipe and modules.
+Can Zap everything.
 
 2.6.0:
 Blueprinter automatic planner expanded
