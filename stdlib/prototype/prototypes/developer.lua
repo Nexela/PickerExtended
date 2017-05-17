@@ -12,21 +12,21 @@ function developer.make_chunk_markers(name)
             pictures =
             {
                 {
-                    filename = "__"..name.."__/stdlib/debug/debug-chunk-marker.png",
+                    filename = "__"..name.."__/stdlib/prototype/prototypes/debug-chunk-marker.png",
                     priority = "extra-high-no-scale",
                     width = 64,
                     height = 64,
                     shift = {0, 0}
                 },
                 {
-                    filename = "__"..name.."__/stdlib/debug/debug-chunk-marker-horizontal.png",
+                    filename = "__"..name.."__/stdlib/prototype/prototypes/debug-chunk-marker-horizontal.png",
                     priority = "extra-high-no-scale",
                     width = 64,
                     height = 64,
                     shift = {0, 0}
                 },
                 {
-                    filename = "__"..name.."__/stdlib/debug/debug-chunk-marker-vertical.png",
+                    filename = "__"..name.."__/stdlib/prototype/prototypes/debug-chunk-marker-vertical.png",
                     priority = "extra-high-no-scale",
                     width = 64,
                     height = 64,
