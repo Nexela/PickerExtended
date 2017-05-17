@@ -28,5 +28,5 @@ require("prototypes/lights")
 
 if PICKER.DEBUG then
     local developer = require("stdlib/prototype/prototypes/developer")
-    developer.make_chunk_markers("Nanobots")
+    developer.make_chunk_markers("PickerExtended")
 end
