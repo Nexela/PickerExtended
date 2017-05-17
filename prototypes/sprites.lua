@@ -133,7 +133,7 @@ data:extend{
     --[[Use For]]
     {
         type = "sprite",
-        name = "looking-glass",
+        name = "picker-looking-glass",
         filename = "__core__/graphics/search-icon.png",
         priority = "extra-high-no-scale",
         width = 32,
@@ -142,7 +142,7 @@ data:extend{
     },
     {
         type = "sprite",
-        name = "questionmark",
+        name = "picker-questionmark",
         filename = "__core__/graphics/questionmark.png",
         priority = "extra-high-no-scale",
         width = 64,
@@ -151,7 +151,7 @@ data:extend{
     },
     {
         type = "sprite",
-        name = "arrow-right",
+        name = "picker-arrow-right",
         filename = "__core__/graphics/goto-icon.png",
         priority = "extra-high-no-scale",
         width = 32,
@@ -160,7 +160,7 @@ data:extend{
     },
     {
         type = "sprite",
-        name = "arrow-left",
+        name = "picker-arrow-left",
         filename = "__PickerExtended__/graphics/arrow_left.png",
         priority = "extra-high-no-scale",
         width = 32,
@@ -169,7 +169,7 @@ data:extend{
     },
     {
         type = "sprite",
-        name = "arrow-bar",
+        name = "picker-arrow-bar",
         filename = "__PickerExtended__/graphics/arrow_bar.png",
         priority = "extra-high-no-scale",
         width = 32,
@@ -178,7 +178,7 @@ data:extend{
     },
     {
         type = "sprite",
-        name = "close",
+        name = "picker-close",
         filename = "__PickerExtended__/graphics/close.png",
         priority = "extra-high-no-scale",
         width = 64,
