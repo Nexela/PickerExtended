@@ -17,6 +17,7 @@ Last planner is recalled
 Shift-Clicking on entities in helmod side panel will put the item in your had if you have it
 Clicking on entities in helmod side panel will make a pipette blueprint of the entitie with recipe and modules.
 Can Zap everything.
+Seperated out the planners to its own keybind, can still be stacked.
 
 2.6.0:
 Blueprinter automatic planner expanded

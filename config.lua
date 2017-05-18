@@ -2,7 +2,7 @@
 --[[MOD CONFIG]]--
 -------------------------------------------------------------------------------
 local PICKER = {}
-PICKER.DEBUG = false
+PICKER.DEBUG = true
 
 --These settings only affect debug mode, no need to change them
 PICKER.quickstart = {

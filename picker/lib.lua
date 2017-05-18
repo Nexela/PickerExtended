@@ -55,6 +55,10 @@ function lib.is_beltbrush_bp(stack)
     return stack.valid_for_read and stack.name == "blueprint" and stack.label and stack.label:find("Belt Brush")
 end
 
+function lib.is_pipette_bp(stack)
+    return stack.valid_for_read and stack.name == "blueprint" and stack.label and stack.label:find("^Pipette Blueprint")
+end
+
 function lib.stack_name(slot, name, is_bp_setup)
     if slot and slot.valid and slot.valid_for_read then
         local stack

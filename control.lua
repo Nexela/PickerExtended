@@ -51,6 +51,7 @@ end
 require("picker.adjustment-pad")
 require("picker.reviver")
 require("picker.blueprinter")
+require("picker.planners")
 --require("picker.deconstructor")
 require("picker.dollies")
 require("picker.minimap")

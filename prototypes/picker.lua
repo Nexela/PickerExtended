@@ -20,7 +20,13 @@ data:extend{
         type = "custom-input",
         name = "picker-make-ghost",
         key_sequence = "CONTROL + Q",
-        consuming = "all"
+        consuming = "none"
+    },
+    {
+        type = "custom-input",
+        name = "picker-next-planner",
+        key_sequence = "CONTROL + Q",
+        consuming = "none"
     },
     {
         type = "custom-input",
