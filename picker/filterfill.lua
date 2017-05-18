@@ -212,12 +212,12 @@ Gui.on_click("filterfill_requests_btn_bp", blueprint_requests)
 local function check_for_filterable_inventory(event)
     local player = game.players[event.player_index]
     local frame = get_or_create_filterfill_gui(player)
-    if player.opened and not frame.style.visible then
+    if player.opened then
         frame["filterfill_requests"].style.visible = player.opened.prototype.logistic_mode == "requester"
         frame["filterfill_filters"].style.visible = player.opened.get_output_inventory() and player.opened.get_output_inventory().supports_filters()
         frame.style.visible = frame["filterfill_filters"].style.visible or frame["filterfill_requests"].style.visible
     elseif not player.opened then
-        frame.destroy()
+        frame.style.visible = false
     end
 end
 Event.register(defines.events.on_selected_entity_changed, check_for_filterable_inventory)

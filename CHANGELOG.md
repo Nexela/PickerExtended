@@ -18,6 +18,9 @@ Shift-Clicking on entities in helmod side panel will put the item in your had if
 Clicking on entities in helmod side panel will make a pipette blueprint of the entitie with recipe and modules.
 Can Zap everything.
 Seperated out the planners to its own keybind, can still be stacked.
+Performance Improvments
+Underground belt brush cycles between maximum and minimum distance belts.
+STDLIB updates
 
 2.6.0:
 Blueprinter automatic planner expanded

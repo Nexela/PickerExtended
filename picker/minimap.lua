@@ -3,13 +3,16 @@
 -------------------------------------------------------------------------------
 local function picker_hide_minimap(event)
     local player = game.players[event.player_index]
-    if player.mod_settings["picker-hide-minimap"].value then
-        if not player.opened and player.selected and player.selected.type == "logistic-container" and player.game_view_settings.show_minimap then
+    if not player.opened and player.selected and player.selected.type == "logistic-container" and player.game_view_settings.show_minimap then
+        if player.mod_settings["picker-hide-minimap"].value then
             player.game_view_settings.show_minimap = false
-        elseif not player.game_view_settings.show_minimap and not (player.selected and player.selected.type == "logistic-container") then
+        end
+    elseif not player.game_view_settings.show_minimap and not (player.selected and player.selected.type == "logistic-container") then
+        if player.mod_settings["picker-hide-minimap"].value then
             player.game_view_settings.show_minimap = true
         end
     end
+
 end
 Event.register(defines.events.on_selected_entity_changed, picker_hide_minimap)
 

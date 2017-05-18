@@ -108,6 +108,84 @@ end
 -------------------------------------------------------------------------------
 --[[Automatic Corners]]--
 -------------------------------------------------------------------------------
+local function build_corner_brush(stack, belt, lanes)
+    if lanes >= 1 and lanes <= 32 then
+        local new_ents = {}
+        local next_id = 1
+
+        local dir = belt.direction or 0
+
+        local function next_dir()
+            return dir == 0 and 6 or dir - 2
+        end
+
+        local function get_dir(x, y)
+            if y+.5 - lanes + x+.5 <= 1 then
+                return next_dir()
+            else
+                return dir
+            end
+        end
+
+        for x = .5, lanes, 1 do
+            for y = .5, lanes, 1 do
+                next_id = next_id + 1
+                new_ents[#new_ents + 1] = {
+                    entity_number = next_id,
+                    name = belt.name,
+                    position = {x = x, y = y},
+                    direction = get_dir(x, y)
+                }
+            end
+        end
+        table.each(new_ents, function(ent) ent.position = Position.translate(ent.position, defines.direction.northwest, math.ceil(lanes/2)) end)
+        stack.set_blueprint_entities(new_ents)
+        stack.label = "Belt Brush Corner Left "..lanes
+    end
+end
+
+local function build_ug_brush(stack, ug, lanes, distance)
+    if lanes >= 1 and lanes <= 32 then
+        local name = ug.name
+        local direction = ug.direction
+        local type = ug.type
+
+        local opposite_type = {
+            ["input"] = "output",
+            ["output"] = "input"
+        }
+
+        local new_ents = {}
+        local next_id = 0
+        local get_next_id = function() next_id = next_id + 1 return next_id end
+        local max = game.entity_prototypes[name].max_underground_distance
+        max = distance and distance < max and distance or max
+
+        local label = distance and "Min" or "Max"
+
+        for x = 0.5, lanes, 1 do
+            new_ents[#new_ents + 1] = {
+                entity_number = get_next_id(),
+                name = name,
+                direction = direction,
+                type = type,
+                position = {x, -0.5}
+            }
+            new_ents[#new_ents + 1] = {
+                entity_number = get_next_id(),
+                name = name,
+                direction = direction,
+                type = opposite_type[type],
+                position = {x, -(0.5 + max)}
+            }
+        end
+        table.each(new_ents, function(ent) ent.position = Position.translate(ent.position, defines.direction.west, math.ceil(lanes/2)) end)
+        table.each(new_ents, function(ent) ent.position = Position.translate(ent.position, defines.direction.south, math.ceil(max/2)) end)
+        stack.set_blueprint_entities(new_ents)
+        stack.label = "Belt Brush Underground "..label.." "..lanes
+    end
+end
+
 -- Build corners based on brushed width on key press
 -- pressing a second time will mirror the corner
 -- pressing a third time will revert to brush width
@@ -118,51 +196,24 @@ local function beltbrush_corners(event)
         local stored = tonumber(Pad.get_or_create_adjustment_pad(player, "beltbrush")["beltbrush_text_box"].text)
         local bp_ents = stack.get_blueprint_entities()
         local belt = table.find(bp_ents, function(v) return game.entity_prototypes[v.name].type == "transport-belt" end)
-        belt = belt and belt.name
-        if not stack.label:find("Corner") then
+        local ug = table.find(bp_ents, function(v) return game.entity_prototypes[v.name].type == "underground-belt" end)
 
-            if belt then
-                local lanes = #bp_ents
-                if lanes == stored then
-                    local new_ents = {}
-                    local next_id = 1
+        if not (stack.label:find("Corner") or stack.label:find("Underground")) then
 
-                    local dir = bp_ents[1].direction or 0
-
-                    local function next_dir()
-                        return dir == 0 and 6 or dir - 2
-                    end
-
-                    local function get_dir(x, y)
-                        if y - lanes + x <= 1 then
-                            return next_dir()
-                        else
-                            return dir
-                        end
-                    end
-
-                    for x = 1, lanes do
-                        for y = 1, lanes do
-                            next_id = next_id + 1
-                            new_ents[#new_ents + 1] = {
-                                entity_number = next_id,
-                                name = belt,
-                                position = {x = x, y = y},
-                                direction = get_dir(x, y)
-                            }
-                        end
-                    end
-                    table.each(new_ents, function(ent) ent.position = Position.translate(ent.position, defines.direction.northwest, math.ceil(lanes/2)-1) end)
-                    stack.set_blueprint_entities(new_ents)
-                    stack.label = "Belt Brush Corner Left "..lanes
-                end
-
+            if belt and belt.name then
+                build_corner_brush(stack, belt, stored)
+            elseif ug and ug.name then
+                build_ug_brush(stack, ug, stored)
             end
         elseif stack.label:find("Belt Brush Corner Left") then
             Event.dispatch({name = Event.mirror, player_index = player.index, corner = true})
             stack.label = "Belt Brush Corner Right "..stack.label:match("%d+")
         elseif stack.label:find("Belt Brush Corner Right") then
-            build_beltbrush(stack, belt, stack.label:match("%d+"))
+            build_beltbrush(stack, belt.name, tonumber(stack.label:match("%d+")))
+        elseif stack.label:find("Belt Brush Underground Max") then
+            build_ug_brush(stack, ug, tonumber(stack.label:match("%d+")), 5)
+        elseif stack.label:find("Belt Brush Underground Min") then
+            build_beltbrush(stack, ug.name, tonumber(stack.label:match("%d+")))
         end
     end
 end

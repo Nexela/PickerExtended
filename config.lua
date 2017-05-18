@@ -20,6 +20,7 @@ PICKER.quickstart = {
     disable_rso_chunk = true,
     floor_tile = "lab-dark-1",
     floor_tile_alt = "lab-dark-2",
+    ore_patches = true,
     make_train = true,
     area_box = {{-250, -250}, {250, 250}},
     chunk_bounds = true,

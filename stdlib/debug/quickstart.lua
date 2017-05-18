@@ -71,6 +71,29 @@ function quickstart.on_player_created(event)
             end
         end
 
+        if QS.get("ore_patches", true) then
+            --Top left
+            for x, y in Area.iterate({{-31.5, -31.5}, {-25.5,-25.5}}) do
+                surface.create_entity{name="coal", position={x, y}, amount = 2500}
+            end
+            ---Top Right
+            for x, y in Area.iterate({{25.5, -31.5}, {31.5, -25.5}}) do
+                surface.create_entity{name="iron-ore", position={x, y}, amount = 2500}
+            end
+            --Bottom Right
+            for x, y in Area.iterate({{25.5,25.5}, {31.5,31.5}}) do
+                surface.create_entity{name="copper-ore", position={x, y}, amount = 2500}
+            end
+            --Bottom Left
+            for x, y in Area.iterate({{-31.5, 25.5}, {-25.5, 31.5}}) do
+                surface.create_entity{name="stone", position={x, y}, amount = 2500}
+            end
+            surface.create_entity{name = "crude-oil", position = {-30.5, 1.5}, amount = 32000}
+            surface.create_entity{name = "crude-oil", position = {-30.5, -1.5}, amount = 32000}
+            surface.create_entity{name = "crude-oil", position = {30.5, 1.5}, amount = 32000}
+            surface.create_entity{name = "crude-oil", position = {30.5, -1.5}, amount = 32000}
+        end
+
         if QS.get("floor_tile", false) then
             local tiles = {}
             local floor_tile = QS.get("floor_tile")
@@ -169,10 +192,16 @@ function quickstart.on_player_created(event)
         end
 
         if QS.get("setup_power", false) and game.active_mods["creative-mode"] then
-            surface.create_entity{name="creative-mode_energy-source", position={-1, -33}, force=player.force}
-            surface.create_entity{name="creative-mode_super-substation", position={1, -33}, force=player.force}
-            --surface.create_entity{name="creative-mode_super-radar", position={3.5, -33.5}, force=player.force}
-            --surface.create_entity{name="creative-mode_super-roboport", position={-4, -34}, force=player.force}
+            if game.item_prototypes["creative-mode_energy-source"] then
+            local es = surface.create_entity{name="creative-mode_energy-source", position={-1, -33}, force=player.force}
+            script.raise_event(defines.events.on_built_entity, {created_entity = es, player_index = player.index})
+            local sb = surface.create_entity{name="creative-mode_super-substation", position={1, -33}, force=player.force}
+            script.raise_event(defines.events.on_built_entity, {created_entity = sb, player_index = player.index})
+            local radar = surface.create_entity{name="creative-mode_super-radar", position={3.5, -33.5}, force=player.force}
+            script.raise_event(defines.events.on_built_entity, {created_entity = radar, player_index = player.index})
+            local rb = surface.create_entity{name="creative-mode_super-roboport", position={-4, -34}, force=player.force}
+            script.raise_event(defines.events.on_built_entity, {created_entity = rb, player_index = player.index})
+            end
         end
     end
 end
