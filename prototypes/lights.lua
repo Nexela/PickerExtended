@@ -8,7 +8,7 @@ data:extend{
         type = "explosion",
         name = "flashlight-button-press",
         flags = {"not-on-map"},
-        animations = {Prototype.empty_animation},
+        animations = {Prototype.empty_animation()},
         light = {intensity = 0, size = 0},
         sound =
         {

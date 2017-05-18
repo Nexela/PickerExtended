@@ -2,10 +2,11 @@
 --[[MOD CONFIG]]--
 -------------------------------------------------------------------------------
 local PICKER = {}
-PICKER.DEBUG = true
+PICKER.DEBUG = false
 
 --These settings only affect debug mode, no need to change them
 PICKER.quickstart = {
+    mod_name = "PickerExtended",
     clear_items = true,
     power_armor = "power-armor-mk2",
     equipment = {
@@ -19,7 +20,6 @@ PICKER.quickstart = {
     disable_rso_chunk = true,
     floor_tile = "lab-dark-1",
     floor_tile_alt = "lab-dark-2",
-    mod_name = "PickerExtended",
     make_train = true,
     area_box = {{-250, -250}, {250, 250}},
     chunk_bounds = true,

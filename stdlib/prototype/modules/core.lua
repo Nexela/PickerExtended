@@ -1,24 +1,28 @@
 local Core = {}
 
 --Quick to use empty sprite
-Core.empty_sprite ={
-    filename = "__core__/graphics/empty.png",
-    priority = "extra-high",
-    width = 1,
-    height = 1
-}
+function Core.empty_sprite()
+    return {
+        filename = "__core__/graphics/empty.png",
+        priority = "extra-high",
+        width = 1,
+        height = 1
+    }
+end
 
 --Quick to use empty animation
-Core.empty_animation = {
-    filename = Core.empty_sprite.filename,
-    width = Core.empty_sprite.width,
-    height = Core.empty_sprite.height,
-    line_length = 1,
-    frame_count = 1,
-    shift = { 0, 0},
-    animation_speed = 1,
-    direction_count=1
-}
+function Core.empty_animation()
+    return {
+        filename = Core.empty_sprite().filename,
+        width = Core.empty_sprite().width,
+        height = Core.empty_sprite().height,
+        line_length = 1,
+        frame_count = 1,
+        shift = { 0, 0},
+        animation_speed = 1,
+        direction_count=1
+    }
+end
 
 -- render layers
 ----"tile-transition", "resource", "decorative", "remnants", "floor", "transport-belt-endings", "corpse", "floor-mechanics", "item", "lower-object", "object", "higher-object-above",

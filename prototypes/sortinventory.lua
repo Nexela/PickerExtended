@@ -15,7 +15,7 @@ local container = {
     collision_mask = {},
     max_health = 10000,
     inventory_size = 0,
-    picture = Prototype.empty_animation,
+    picture = Prototype.empty_animation(),
     circuit_wire_max_distance = 0
 }
 
