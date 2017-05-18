@@ -186,6 +186,37 @@ local function build_ug_brush(stack, ug, lanes, distance)
     end
 end
 
+local function build_ptg_brush(stack, ptg, lanes)
+    if lanes >= 1 and lanes <= 32 then
+        local name = ptg.name
+        local direction = ptg.direction
+        local new_ents = {}
+        local max = game.entity_prototypes[name].max_underground_distance
+        local next_id = 0
+        local get_next_id = function() next_id = next_id + 1 return next_id end
+
+        for x = 0.5, lanes, 1 do
+            new_ents[#new_ents + 1] = {
+                entity_number = get_next_id(),
+                name = name,
+                direction = direction,
+                position = {x, 0.5}
+            }
+            new_ents[#new_ents + 1] = {
+                entity_number = get_next_id(),
+                name = name,
+                direction = Position.opposite_direction(direction),
+                position = {x, (0.5 + max)}
+            }
+        end
+
+        table.each(new_ents, function(ent) ent.position = Position.translate(ent.position, defines.direction.west, math.ceil(lanes/2)) end)
+        table.each(new_ents, function(ent) ent.position = Position.translate(ent.position, defines.direction.north, math.ceil(max/2)) end)
+        stack.set_blueprint_entities(new_ents)
+        stack.label = "Belt Brush Pipe to Ground "..lanes
+    end
+end
+
 -- Build corners based on brushed width on key press
 -- pressing a second time will mirror the corner
 -- pressing a third time will revert to brush width
@@ -197,13 +228,16 @@ local function beltbrush_corners(event)
         local bp_ents = stack.get_blueprint_entities()
         local belt = table.find(bp_ents, function(v) return game.entity_prototypes[v.name].type == "transport-belt" end)
         local ug = table.find(bp_ents, function(v) return game.entity_prototypes[v.name].type == "underground-belt" end)
+        local ptg = table.find(bp_ents, function(v) return game.entity_prototypes[v.name].type == "pipe-to-ground" end)
 
-        if not (stack.label:find("Corner") or stack.label:find("Underground")) then
+        if not (stack.label:find("Corner") or stack.label:find("Underground") or stack.label:find("Pipe to Ground")) then
 
             if belt and belt.name then
                 build_corner_brush(stack, belt, stored)
             elseif ug and ug.name then
                 build_ug_brush(stack, ug, stored)
+            elseif ptg and ptg.name then
+                build_ptg_brush(stack, ptg, stored)
             end
         elseif stack.label:find("Belt Brush Corner Left") then
             Event.dispatch({name = Event.mirror, player_index = player.index, corner = true})
@@ -214,6 +248,8 @@ local function beltbrush_corners(event)
             build_ug_brush(stack, ug, tonumber(stack.label:match("%d+")), 5)
         elseif stack.label:find("Belt Brush Underground Min") then
             build_beltbrush(stack, ug.name, tonumber(stack.label:match("%d+")))
+        elseif stack.label:find("Belt Brush Pipe to Ground") then
+            build_beltbrush(stack, ptg.name, tonumber(stack.label:match("%d+")))
         end
     end
 end
@@ -264,27 +300,30 @@ script.on_event("picker-beltbrush-balancers", beltbrush_balancers)
 
 -- When a blueprint is placed check to see if it is a beltbrush bp and if it is destroy matched ghosts underneath.
 local function placed_blueprint(event)
-    local player = game.players[event.player_index]
+    local player, pdata = Player.get(event.player_index)
     local stack = lib.stack_name(player.cursor_stack, "blueprint", true)
-    if stack and lib.is_beltbrush_bp(stack) and stack.label:find("balancers") then
+    if stack and lib.is_beltbrush_bp(stack) and (pdata.last_ghost_check or 0) <= event.tick - 2 then --and not stack.label:find("Belt Brush %d+") then
         local corners = {lx=0, ly=0, rx=0, ry=0}
         --Create a bounding box from the blueprint entities.
         table.each(stack.get_blueprint_entities(),
             function(v)
-                if v.position.x > 0 and v.position.x > corners.rx then corners.rx = v.position.x
-                elseif v.position.x <= 0 and v.position.x < corners.lx then corners.lx = v.position.x end
-                if v.position.y > 0 and v.position.y > corners.ry then corners.ry = v.position.y
-                elseif v.position.y <= 0 and v.position.y < corners.ly then corners.ly = v.position.y end
+                if v.position.x > 0 and v.position.x > corners.rx then corners.rx = v.position.x + .5
+                elseif v.position.x <= 0 and v.position.x < corners.lx then corners.lx = v.position.x - .5 end
+                if v.position.y > 0 and v.position.y > corners.ry then corners.ry = v.position.y + .5
+                elseif v.position.y <= 0 and v.position.y < corners.ly then corners.ly = v.position.y -.5 end
             end
         )
+
         --For all ghosts in the bounding box destroy them if they match revivables.
+        local position = {math.floor(event.position.x) + .5, math.floor(event.position.y) + .5}
         table.each(
             player.surface.find_entities_filtered{
                 name="entity-ghost",
-                area = Area.offset({{corners.lx, corners.ly},{corners.rx, corners.ry}}, event.position)
+                area = Area.offset({{corners.lx, corners.ly},{corners.rx, corners.ry}}, position)
             },
             function(v) if match_to_revive[v.ghost_type] then v.destroy() end end
         )
+        pdata.last_ghost_check = event.tick
     end
 end
 Event.register(defines.events.on_put_item, placed_blueprint)
