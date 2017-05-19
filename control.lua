@@ -21,6 +21,10 @@ Event.register(Event.core_events.configuration_changed,
             global._changes = global._changes or {}
             global._changes[event.data.mod_changes[MOD.name].new_version] = event.data.mod_changes[MOD.name].old_version or "0.0.0"
             Player.init()
+            for _, player in pairs(game.players) do
+                local gui = player.gui.center["picker_quick_picker"]
+                if gui then gui.destroy() end
+            end
         end
     end
 )

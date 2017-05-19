@@ -78,12 +78,6 @@ data:extend{
     },
     {
         type = "custom-input",
-        name = "picker-quick-picker",
-        key_sequence = "CONTROL + ALT + ENTER",
-        consuming = "all"
-    },
-    {
-        type = "custom-input",
         name = "picker-inventory-editor",
         key_sequence = "CONTROL + SHIFT + GRAVE",
         consuming = "all"

@@ -9,10 +9,8 @@ local function pick_helmod_pin(event)
     string.gsub(event.match, "PlannerPinPanel_recipe_block_%d+=(.+)=(.+)", function(a, b) recipe_name = a item_name = b end)
     local item = game.item_prototypes[item_name]
     local items = {}
-    --factory-modulesiron-gear-wheel
     local module = event.element.parent["factory-modules"..recipe_name]
     if module then
-        --game.print(serpent.block(module.children_names, {comment=false, sparse=false}))
         for _, child in pairs(module.children) do
             local name = child.sprite and child.sprite:gsub("item/(.+)", "%1")
             if name and game.item_prototypes[name] then
@@ -49,7 +47,6 @@ local function pick_helmod_pin(event)
                     }
                 }
                 bp.set_blueprint_entities(bp_ents)
-                --bp.create_blueprint{surface = player.surface, force = player.force, area = area, always_include_tiles = false}
                 return bp.is_blueprint_setup() and bp
             end
         end

@@ -25,6 +25,7 @@ Picker Dollies can't move players
 Belt Brush underground distance can be cycled with CTRL-Shift-R
 Belt Brush pipes can make max distance pipes with CTROL-SHIFT-R
 Belt Brush cascading undergrounds can be made with CTRL-SHIFT-B, cycled with the same
+Instant blueprint of any entity in game is availble in the blueprint toolbar with an empty blueprint
 
 2.6.0:
 Blueprinter automatic planner expanded

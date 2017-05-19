@@ -2,7 +2,6 @@
 --[[Helper Functions]]--
 -------------------------------------------------------------------------------
 local lib = {}
---local mod_gui = require("mod-gui")
 local Position = require("stdlib.area.position")
 local INVENTORIES = {defines.inventory.player_quickbar, defines.inventory.player_main, defines.inventory.god_quickbar, defines.inventory.god_main}
 
