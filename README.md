@@ -13,11 +13,14 @@ Hover over entities and use the Picker dolly keybinds to move entities around. E
 ![Dollies in Action](https://github.com/Nexela/PickerExtended/blob/master/web/picker-combinator-dolly.gif)
 
 ### Picker Entity Blueprinter
-Hover over an entity and take a quick blueprint of everything in its selection area with CONTROL+Q. Blueprints are created automatically if you don't have an existing Pipette Blueprint in your inventory. Modules and recipes are stored in the blueprint. Now you can quickly blueprint your moduled beacon for fast placing! Blue print mirroing is Availble by holding a blueprint and pressing ALT-R, Blueprint upgrading is available using the toolbar that shows up whenever you are holding a blueprint. Quickly Edit the current blueprint or deconstruction planner in your hand with CONTROL+SHIFT+~, Pick any item in the game to make a blueprint of using the blueprint toolbar.
+Hover over an entity and take a quick blueprint of everything in its selection area with CONTROL+Q. Blueprints are created automatically if you don't have an existing Pipette Blueprint in your inventory. Modules and recipes are stored in the blueprint. Now you can quickly blueprint your moduled beacon for fast placing! Blue print mirroing is Availble by holding a blueprint and pressing ALT+R, Blueprint upgrading is available using the toolbar that shows up whenever you are holding a blueprint. Quickly Edit the current blueprint or deconstruction planner in your hand with CONTROL+SHIFT+~, Pick any item in the game to make a blueprint of using the blueprint toolbar.
 
 CONTROL+Q with nothing selected will cycle through the available planners (blueprint, deconstruction, upgrade, etc). If you don't have the planner in your inventory and the required research has been met the planner will be automatically created.
 
 Picking entities in the Helmod side panel will create a quick blueprint of the entity, recipe and modules listed.
+
+### Picker additional Planners
+Screenshot Planner for taking screenshots of an area, Ore eraser planner count and erase ores (If you are an admin). Upgrade planner converted to a picker planer and has the recipe hidden.
 
 ![Blueprinter in Action](https://github.com/Nexela/PickerExtended/blob/master/web/picker-blueprinter.gif)
 

@@ -118,3 +118,11 @@ if settings["picker-roundup"].value then
         data.raw["tile"]["concrete"].decorative_removal_probability = 1
     end
 end
+
+-------------------------------------------------------------------------------
+--[[Planner Cleaner]]--
+-------------------------------------------------------------------------------
+if data.raw.recipe["upgrade-builder"] then
+    data.raw.recipe["upgrade-builder"].hidden = true
+    data.raw["selection-tool"]["upgrade-builder"].flags = {"hidden"}
+end

@@ -104,4 +104,26 @@ data:extend{
         default_value = true,
         order = "picker-e[automatic-trains]-a",
     },
+    {
+        type = "bool-setting",
+        name = "picker-camera-gui",
+        setting_type = "runtime-per-user",
+        default_value = false,
+        order = "picker-f[screenshot]-a"
+    },
+    {
+        type = "bool-setting",
+        name = "picker-camera-aa",
+        setting_type = "runtime-per-user",
+        default_value = false,
+        order = "picker-f[screenshot]-b"
+    },
+    {
+        type = "double-setting",
+        name = "picker-camera-zoom",
+        setting_type = "runtime-per-user",
+        default_value = 1,
+        minimum_value = 0,
+        order = "picker-f[screenshot]-c"
+    },
 }

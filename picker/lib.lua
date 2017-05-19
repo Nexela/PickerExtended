@@ -182,6 +182,9 @@ lib.planners = {
     ["upgrade-builder"] = true,
     ["zone-scanner"] = true,
     ["unit-remote-control"] = true,
+    ["picker-ore-eraser"] = true,
+    ["picker-tape-measure"] = true,
+    ["picker-camera"] = true,
 }
 
 function lib.get_next_planner(player, last_planner)

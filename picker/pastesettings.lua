@@ -104,7 +104,8 @@ local function on_entity_settings_pasted(event)
     and(event.source.prototype.collision_box and event.source.prototype.collision_box.x == event.source.prototype.collision_box.y)
     and event.destination.supports_direction and (event.destination.fluidbox and #event.destination.fluidbox > 0)
     and (event.destination.prototype.collision_box and event.destination.prototype.collision_box.x == event.destination.prototype.collision_box.y)
-    and event.source.prototype.fast_replaceable_group == event.destination.prototype.fast_replaceable_group then
+    and event.source.prototype.fast_replaceable_group == "assembling-machine"
+    and event.destination.prototype.fast_replaceable_group == "assembling-machine" then
         event.destination.direction = event.source.direction
     end
 end

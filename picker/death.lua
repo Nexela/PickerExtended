@@ -2,6 +2,7 @@
 --[[Death Events]]--
 -------------------------------------------------------------------------------
 -- Death Notice based on "Death Notice", by "Oniell NZ", "martynmnz@yahoo.co.nz"
+ --Images from: "Hazzard's Gravestones", by "Hazzard"
 local function make_death_marker(event)
     local player = game.players[event.player_index]
     local tag = {
