@@ -27,6 +27,7 @@ PICKER.quickstart = {
     center_map_tag = true,
     setup_power = true,
     stacks = {
+        "picker-tape-measure",
         "creative-mode_item-source",
         "creative-mode_fluid-source",
         "creative-mode_energy-source",

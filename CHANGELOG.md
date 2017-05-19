@@ -21,6 +21,10 @@ Seperated out the planners to its own keybind, can still be stacked.
 Performance Improvments
 Underground belt brush cycles between maximum and minimum distance belts.
 STDLIB updates
+Picker Dollies can't move players
+Belt Brush underground distance can be cycled with CTRL-Shift-R
+Belt Brush pipes can make max distance pipes with CTROL-SHIFT-R
+Belt Brush cascading undergrounds can be made with CTRL-SHIFT-B, cycled with the same
 
 2.6.0:
 Blueprinter automatic planner expanded

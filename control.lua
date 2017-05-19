@@ -50,6 +50,7 @@ end
 -------------------------------------------------------------------------------
 require("picker.adjustment-pad")
 require("picker.reviver")
+require("picker.tapemeasure")
 require("picker.blueprinter")
 require("picker.planners")
 --require("picker.deconstructor")

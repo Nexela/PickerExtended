@@ -38,10 +38,14 @@ local function quick_ug_belt(event)
             end
             local _not_same_dir = function (belt)  return belt.direction ~= entity.direction end
 
+            local cont = true
+            if opts == "safe" then
+                cont = #belts == distance and not table.any(belts, _not_same_dir)
+            elseif opts == "medium" then
+                cont = not table.any(belts, _not_same_dir)
+            end
 
-
-            local safe = (opts == "safe" and #belts == distance and table.any(belts, _not_same_dir)) or (opts == "medium" and table.any(belts, _not_same_dir))
-            if belts and not safe then
+            if belts and cont then
                 local stacks, counts = {}, {}
                 for _, belt in ipairs(belts) do
                     if belt.direction == entity.direction then

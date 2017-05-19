@@ -196,6 +196,7 @@ end
 -- @return string representation of pos
 function Position.tostring(pos)
     fail_if_missing(pos, "missing position argument")
+
     if #pos == 2 then
         return "Position {x = " .. pos[1] .. ", y = " .. pos[2] .. "}"
     else
@@ -219,6 +220,22 @@ function Position.increment(position, inc_x, inc_y)
     end
 end
 
+--- Returns a position centered on the tile
+-- @param pos the position to center
+-- @treturn a centered position table
+function Position.center(pos)
+    fail_if_missing(pos, "missing position argument")
+
+    local x, y
+    if #pos == 2 then
+         x, y = pos[1], pos[2]
+    else
+        x, y = pos.x, pos.y
+    end
+    x = x >= 0 and math.floor(x) + 0.5 or math.ceil(x) - 0.5
+    y = y >= 0 and math.floor(y) + 0.5 or math.ceil(y) - 0.5
+    return {x = x, y = y}
+end
 
 local opposites = {
     [defines.direction.north] = defines.direction.south,

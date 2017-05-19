@@ -18,6 +18,7 @@ local blacklist = {
     ["entity-ghost"] = true,
     ["tile-ghost"] = true,
     ["item-request-proxy"] = true,
+    ["character"] = true
 }
 
 local input_to_direction = {

@@ -144,7 +144,7 @@ local function build_corner_brush(stack, belt, lanes)
     end
 end
 
-local function build_ug_brush(stack, ug, lanes, distance)
+local function build_ug_brush(stack, ug, lanes)
     if lanes >= 1 and lanes <= 32 then
         local name = ug.name
         local direction = ug.direction
@@ -155,34 +155,39 @@ local function build_ug_brush(stack, ug, lanes, distance)
             ["output"] = "input"
         }
 
-        local new_ents = {}
-        local next_id = 0
-        local get_next_id = function() next_id = next_id + 1 return next_id end
-        local max = game.entity_prototypes[name].max_underground_distance
-        max = distance and distance < max and distance or max
+        local distance = tonumber(stack.label:match("Belt Brush Underground %d+x(%d+)"))
+        local max = game.entity_prototypes[ug.name].max_underground_distance
+        max = distance or max
+        if max > 0 then
+            local new_ents = {}
+            local next_id = 0
+            local get_next_id = function() next_id = next_id + 1 return next_id end
+            --local max = game.entity_prototypes[name].max_underground_distance
+            --max = distance and distance < max and distance or max
 
-        local label = distance and "Min" or "Max"
-
-        for x = 0.5, lanes, 1 do
-            new_ents[#new_ents + 1] = {
-                entity_number = get_next_id(),
-                name = name,
-                direction = direction,
-                type = type,
-                position = {x, -0.5}
-            }
-            new_ents[#new_ents + 1] = {
-                entity_number = get_next_id(),
-                name = name,
-                direction = direction,
-                type = opposite_type[type],
-                position = {x, -(0.5 + max)}
-            }
+            for x = 0.5, lanes, 1 do
+                new_ents[#new_ents + 1] = {
+                    entity_number = get_next_id(),
+                    name = name,
+                    direction = direction,
+                    type = type,
+                    position = {x, -0.5}
+                }
+                new_ents[#new_ents + 1] = {
+                    entity_number = get_next_id(),
+                    name = name,
+                    direction = direction,
+                    type = opposite_type[type],
+                    position = {x, -(0.5 + max)}
+                }
+            end
+            table.each(new_ents, function(ent) ent.position = Position.translate(ent.position, defines.direction.west, math.ceil(lanes/2)) end)
+            table.each(new_ents, function(ent) ent.position = Position.translate(ent.position, defines.direction.south, math.ceil(max/2)) end)
+            stack.set_blueprint_entities(new_ents)
+            stack.label = "Belt Brush Underground "..lanes.."x"..(max-1)
+        else
+            build_beltbrush(stack, ug.name, lanes)
         end
-        table.each(new_ents, function(ent) ent.position = Position.translate(ent.position, defines.direction.west, math.ceil(lanes/2)) end)
-        table.each(new_ents, function(ent) ent.position = Position.translate(ent.position, defines.direction.south, math.ceil(max/2)) end)
-        stack.set_blueprint_entities(new_ents)
-        stack.label = "Belt Brush Underground "..label.." "..lanes
     end
 end
 
@@ -244,10 +249,8 @@ local function beltbrush_corners(event)
             stack.label = "Belt Brush Corner Right "..stack.label:match("%d+")
         elseif stack.label:find("Belt Brush Corner Right") then
             build_beltbrush(stack, belt.name, tonumber(stack.label:match("%d+")))
-        elseif stack.label:find("Belt Brush Underground Max") then
-            build_ug_brush(stack, ug, tonumber(stack.label:match("%d+")), 5)
-        elseif stack.label:find("Belt Brush Underground Min") then
-            build_beltbrush(stack, ug.name, tonumber(stack.label:match("%d+")))
+        elseif stack.label:find("Belt Brush Underground") then
+            build_ug_brush(stack, ug, tonumber(stack.label:match("%d+")))
         elseif stack.label:find("Belt Brush Pipe to Ground") then
             build_beltbrush(stack, ptg.name, tonumber(stack.label:match("%d+")))
         end
@@ -258,6 +261,50 @@ script.on_event("picker-beltbrush-corners", beltbrush_corners)
 -------------------------------------------------------------------------------
 --[[Automatic Balancers]]--
 -------------------------------------------------------------------------------
+local function build_cascading_underground(stack, ug, lanes)
+    if lanes >= 1 and lanes <= 32 then
+        local next_id = 0
+        local get_next_id = function() next_id = next_id + 1 return next_id end
+        local casc = {}
+
+        local distance = tonumber(stack.label:match("Belt Brush Cascade %d+x(%d+)"))
+        local max = game.entity_prototypes[ug.name].max_underground_distance
+        max = distance or max
+
+        if max > 0 then
+        local skip = lanes +.5
+        for y = .5, (lanes * max) + max, max+1 do
+            for x = .5, lanes + 0.5, 1 do
+                if x < skip then
+                    casc[#casc+1] = {
+                        entity_number = get_next_id(),
+                        name = ug.name,
+                        direction = 4,
+                        type = "input",
+                        position = {x, y}
+                    }
+
+                    casc[#casc+1] = {
+                        entity_number = get_next_id(),
+                        name = ug.name,
+                        direction = 4,
+                        type = "output",
+                        position = {x, y + max}
+                    }
+                end
+            end
+            skip = skip - 1
+        end
+        table.each(casc, function(ent) ent.position = Position.translate(ent.position, defines.direction.west, math.ceil(lanes/2)) end)
+        table.each(casc, function(ent) ent.position = Position.translate(ent.position, defines.direction.north, math.ceil(max/2)) end)
+        stack.set_blueprint_entities(casc)
+        stack.label = "Belt Brush Cascade "..lanes.."x"..(max-1)
+    else
+        build_beltbrush(stack, ug.name, lanes)
+    end
+    end
+end
+
 -- Build balaners based on brush width on key press.
 -- Subsequent key presses will cycle through the availble balancers
 local function beltbrush_balancers(event)
@@ -265,12 +312,12 @@ local function beltbrush_balancers(event)
     if lib.is_beltbrush_bp(player.cursor_stack) then
 
         local stack = player.cursor_stack
-
+        local lanes = tonumber(Pad.get_or_create_adjustment_pad(player, "beltbrush")["beltbrush_text_box"].text)
         local bp = stack.get_blueprint_entities()
         local belt = table.find(bp, function(v) return game.entity_prototypes[v.name].type == "transport-belt" end)
+        local ug = table.find(bp, function(v) return game.entity_prototypes[v.name].type == "underground-belt" end)
         belt = belt and belt.name
         if belt then
-            local lanes = tonumber(Pad.get_or_create_adjustment_pad(player, "beltbrush")["beltbrush_text_box"].text)
             local kind = belt:gsub("transport%-belt", "")
             local current = stack.label:gsub("Belt Brush Balancers %d+x", "")
 
@@ -280,10 +327,12 @@ local function beltbrush_balancers(event)
             if lanes then
                 local ents
 
+                local i = 0
                 repeat
                     ents = table.deepcopy(balancers[lanes.."x"..width])
                     width = (not ents and ((width <= 1 and 32) or (width - 1))) or width
-                until ents or width == lanes
+                    i = i + 1
+                until ents or width == lanes or i == 100
 
                 if ents and not (width == lanes and stack.label:find("Belt Brush Balancers")) then
                     table.each(ents, function(v) v.name = kind..v.name end)
@@ -293,11 +342,16 @@ local function beltbrush_balancers(event)
                     build_beltbrush(stack, belt, lanes)
                 end
             end
+        elseif ug and ug.name then
+            build_cascading_underground(stack, ug, lanes)
         end
     end
 end
 script.on_event("picker-beltbrush-balancers", beltbrush_balancers)
 
+-------------------------------------------------------------------------------
+--[[Allow Upgrades]]--
+-------------------------------------------------------------------------------
 -- When a blueprint is placed check to see if it is a beltbrush bp and if it is destroy matched ghosts underneath.
 local function placed_blueprint(event)
     local player, pdata = Player.get(event.player_index)

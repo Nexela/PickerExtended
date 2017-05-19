@@ -18,6 +18,7 @@ require("prototypes/adjustment-pad")
 require("prototypes/styles")
 require("prototypes/sprites")
 
+require("prototypes/tapemeasure")
 require("prototypes/picker")
 require("prototypes/renamer")
 require("prototypes/dollies")
