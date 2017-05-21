@@ -94,6 +94,9 @@ function quickstart.on_player_created(event)
             surface.create_entity{name = "crude-oil", position = {-35.5, -1.5}, amount = 32000}
             surface.create_entity{name = "crude-oil", position = {35.5, 1.5}, amount = 32000}
             surface.create_entity{name = "crude-oil", position = {35.5, -1.5}, amount = 32000}
+
+            surface.create_entity{name = "offshore-pump", position = {1, 33.5}, force = force}
+            surface.create_entity{name = "offshore-pump", position = {-1, 33.5}, force = force}
         end
 
         if QS.get("floor_tile", false) then
@@ -195,13 +198,13 @@ function quickstart.on_player_created(event)
 
         if QS.get("setup_power", false) and game.active_mods["creative-mode"] then
             if game.item_prototypes["creative-mode_energy-source"] then
-                local es = surface.create_entity{name="creative-mode_energy-source", position={-1, -34}, force=player.force}
+                local es = surface.create_entity{name="creative-mode_energy-source", position={-1, -34}, force=force}
                 script.raise_event(defines.events.on_built_entity, {created_entity = es, player_index = player.index})
-                local sb = surface.create_entity{name="creative-mode_super-substation", position={1, -34}, force=player.force}
+                local sb = surface.create_entity{name="creative-mode_super-substation", position={1, -34}, force=force}
                 script.raise_event(defines.events.on_built_entity, {created_entity = sb, player_index = player.index})
-                local radar = surface.create_entity{name="creative-mode_super-radar", position={3.5, -34.5}, force=player.force}
+                local radar = surface.create_entity{name="creative-mode_super-radar", position={3.5, -34.5}, force=force}
                 script.raise_event(defines.events.on_built_entity, {created_entity = radar, player_index = player.index})
-                local rb = surface.create_entity{name="creative-mode_super-roboport", position={-4, -35}, force=player.force}
+                local rb = surface.create_entity{name="creative-mode_super-roboport", position={-4, -35}, force=force}
                 script.raise_event(defines.events.on_built_entity, {created_entity = rb, player_index = player.index})
             end
         end
