@@ -6,10 +6,10 @@ local function wheres_my_car(event)
         local car = player.selected
         if global.unlocked_cars[car.unit_number] then
             global.unlocked_cars[car.unit_number] = nil
-            player.surface.create_entity{name="flying-text", text = {"vehicles.locked-car"}, color = defines.colors.red, position = car.position}
+            player.surface.create_entity{name="flying-text", text = {"vehicles.locked-car"}, color = defines.color.red, position = car.position}
         else
             global.unlocked_cars[car.unit_number] = true
-            player.surface.create_entity{name="flying-text", text = {"vehicles.unlocked-car"}, color = defines.colors.green, position = car.position}
+            player.surface.create_entity{name="flying-text", text = {"vehicles.unlocked-car"}, color = defines.color.green, position = car.position}
         end
     elseif pdata.last_car and pdata.last_car.valid then
         player.add_custom_alert(pdata.last_car, {type="item", name = pdata.last_car.name}, {"vehicles.dude-wheres-my-car"}, true)
@@ -26,7 +26,7 @@ local function car_thief(event)
             car.passenger = nil
             player.teleport(player.position)
             local text = {"vehicles.car-thief", car.name, car.last_user.name}
-            player.surface.create_entity{name="flying-text", text = text, color = defines.colors.yellow, position = player.position}
+            player.surface.create_entity{name="flying-text", text = text, color = defines.color.yellow, position = player.position}
         else
             pdata.last_car = car
         end

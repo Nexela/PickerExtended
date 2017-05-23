@@ -157,4 +157,18 @@ data:extend{
         default_value = false,
         order = "picker-g[fast-replace]-b"
     },
+    {
+        type = "bool-setting",
+        name = "picker-smaller-gui-borders",
+        setting_type = "startup",
+        default_value = true,
+        order = "picker-g[small-borders]-b"
+    },
+    {
+        type = "bool-setting",
+        name = "picker-small-unplugged-icon",
+        setting_type = "startup",
+        default_value = true,
+        order = "picker-g[small-power]-b"
+    },
 }

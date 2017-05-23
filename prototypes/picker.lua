@@ -87,6 +87,12 @@ data:extend{
         name = "picker-dude-wheres-my-car",
         key_sequence = "CONTROL + SHIFT + J",
         consuming = "none"
+    },
+    {
+        type = "custom-input",
+        name = "picker-zapper",
+        key_sequence = "z",
+        consuming = "none"
     }
 }
 

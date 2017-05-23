@@ -102,3 +102,5 @@ A quick increase/decrease pad using the +/- keys or the buttons on the gui. Mods
 -   Inventory size, Set the starting size of the players inventory
 -   Cheaty Lights added in for youtube/twitch videos. Turned off by default.
 -   Alt-entity-info is enabled by default when joining a game. there is a per player setting to disable.
+-   Add option to make some guis have smaller borders  (Ungirthy borders mod)
+-   Add option to make no power icon smaller (Less unplugged mod)

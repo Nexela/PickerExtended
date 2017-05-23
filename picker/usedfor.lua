@@ -3,6 +3,8 @@
 -------------------------------------------------------------------------------
 --local lib = require("picker.lib")
 
+--luacheck: ignore
+
 local _find_item = function(v, k, text) return k:lower():find(text) and not v.has_flag("hidden") and v or nil end
 local _find_fluid = function(v, k, text) return k:lower():find(text) and v or nil end
 

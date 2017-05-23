@@ -27,7 +27,7 @@ local function on_player_driving_changed_state(event)
         --Set train to manual
         if #lib.get_passengers(train, player) == 1 and available_train(train) then
             player.vehicle.train.manual_mode = true
-            player.vehicle.surface.create_entity{name="flying-text", text = {"vehicles.manual-mode"}, position=player.vehicle.position, color=defines.colors.green}
+            player.vehicle.surface.create_entity{name="flying-text", text = {"vehicles.manual-mode"}, position=player.vehicle.position, color=defines.color.green}
         end
     end
 end
@@ -40,7 +40,7 @@ script.on_event("toggle-train-control",
             if player.vehicle and lib.get_train_from_vehicle(player.vehicle) then
                 player.vehicle.train.manual_mode = not player.vehicle.train.manual_mode
                 local text = player.vehicle.train.manual_mode and {"vehicles.manual-mode"} or {"vehicles.automatic-mode"}
-                player.vehicle.surface.create_entity{name="flying-text", text = text, position=player.vehicle.position, color=defines.colors.green}
+                player.vehicle.surface.create_entity{name="flying-text", text = text, position=player.vehicle.position, color=defines.color.green}
             end
         end
     end

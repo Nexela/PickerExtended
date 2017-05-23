@@ -6,7 +6,7 @@ MOD.config = require("config")
 
 require("stdlib.table")
 require("stdlib.string")
-require("stdlib.defines.colors")
+require("stdlib.defines.color")
 require("stdlib.defines.time")
 require("stdlib.event.event")
 require("stdlib.event.gui")
@@ -77,7 +77,7 @@ require("picker.pastesettings") --needs on/off user config
 require("picker.lights")
 require("picker.filterfill")
 require("picker.vehicles")
-require("picker.usedfor")
+--require("picker.usedfor")
 require("picker.helmod")
 
 -------------------------------------------------------------------------------

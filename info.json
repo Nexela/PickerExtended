@@ -1,11 +1,11 @@
 {
   "name": "PickerExtended",
-  "version": "2.6.0",
+  "version": "2.6.1",
   "factorio_version": "0.15",
   "title": "Picker Extended Version",
   "author": "Tinyboss, Nexela",
   "contact": "nexela@gmail.com",
-  "dependencies": ["? FactoReach", "? long-reach", "? long-reach-fix", "? Squeak Through"],
+  "dependencies": ["base >= 0.15.13", "? FactoReach", "? long-reach", "? long-reach-fix", "? Squeak Through"],
   "homepage": "https://forums.factorio.com/viewtopic.php?f=93&t=14695",
   "description": "Enhances the players pipette tool with features such as quick blueprints, quick planners, ghost reviving, entity moving, orphan finding and more"
 }

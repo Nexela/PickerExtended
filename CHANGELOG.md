@@ -6,7 +6,7 @@ picker used for
 Only change inventory size if less than inventory size
 Fast replace UG belts defaults to false
 Switch to sprite buttons
-Orphans are a little less aggressive
+Orphans are a little less aggressive and removed when the neighbour is placed
 Autosorting limits put in place
 Hotkey to toggle train to manual mode J
 Option to enable alt-mode when joining game
@@ -27,6 +27,10 @@ Belt Brush pipes can make max distance pipes with CTROL-SHIFT-R
 Belt Brush cascading undergrounds can be made with CTRL-SHIFT-B, cycled with the same
 Instant blueprint of any entity in game is availble in the blueprint toolbar with an empty blueprint
 Add screenshot camera, ore eraser
+Fix neighbours bug introduced by .15.13, Closes #31
+Item request proxys don't block dollies, #23
+Dollies move items out of the way.
+Dollies "store" the entity being moved so your mouse doesn't have to stay over it
 
 2.6.0:
 Blueprinter automatic planner expanded

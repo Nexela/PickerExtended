@@ -27,11 +27,12 @@ local function find_orphans(event)
     local cursor_type = player.cursor_stack and player.cursor_stack.valid_for_read and player.cursor_stack.prototype.place_result and types[player.cursor_stack.prototype.place_result.type]
     if (player.selected and types[player.selected.type]) or cursor_type then
         if event.tick > (pdata._next_check or 0) and player.mod_settings["picker-find-orphans"].value then
-            local type = player.selected and types[player.selected.type] or cursor_type
+            local etype = player.selected and types[player.selected.type] or cursor_type
             local ent = player.selected or player
-            local filter = {area=Position.expand_to_area(ent.position, 64), type = type, force = player.force}
+            local filter = {area=Position.expand_to_area(ent.position, 64), type = etype, force = player.force}
             for _, entity in pairs (ent.surface.find_entities_filtered(filter)) do
-                if #entity.neighbours < 1 and not _find_mark(entity) then
+                local not_con = not entity.neighbours or entity.neighbours and not entity.neighbours.type and #entity.neighbours < 1
+                if not_con and not _find_mark(entity) then
                     entity.surface.create_entity{name = "picker-orphan-mark", position = entity.position}
                 end
             end
@@ -43,8 +44,10 @@ Event.register({defines.events.on_selected_entity_changed, defines.events.on_pla
 
 local function orphan_builder(event)
     local _, pdata = Player.get(event.player_index)
-    if ugs[event.created_entity.type] then
-        table.each(event.created_entity.neighbours,
+    if ugs[event.created_entity.type] and event.created_entity.neighbours then
+        local ents = event.created_entity.neighbours
+        local neighbours = type(ents) == "table" and not ents.type and ents or {ents}
+        table.each(neighbours,
             function(nb)
                 if #event.created_entity.neighbours > 0 then
                     local mark = _find_mark(nb)

@@ -2,8 +2,8 @@
 --[[Planners]]--
 -------------------------------------------------------------------------------
 local Player = require("stdlib.player")
-local Area = require("stdlib.area.area")
-local Entity = require("stdlib.entity.entity")
+--local Area = require("stdlib.area.area")
+--local Entity = require("stdlib.entity.entity")
 local lib = require("picker.lib")
 
 -------------------------------------------------------------------------------

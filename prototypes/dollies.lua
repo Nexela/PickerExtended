@@ -1,6 +1,7 @@
 -------------------------------------------------------------------------------
 --[[Combinator Dollies]]--
 -------------------------------------------------------------------------------
+local Prototype = require("stdlib.prototype.prototype")
 data:extend{
     {
         type = "custom-input",
@@ -24,7 +25,23 @@ data:extend{
     },
     {
         type = "custom-input",
-        name = "dolly-rotate-rectangle",
+        name = "dolly-rotate-saved",
         key_sequence = "PAD 0",
+    },
+    {
+        type = "custom-input",
+        name = "dolly-rotate-rectangle",
+        key_sequence = "PAD DELETE",
     }
 }
+
+local sound = {
+    type = "explosion",
+    name = "picker-cant-move",
+    animations = {Prototype.empty_animation()},
+    sound = {
+        filename = "__core__/sound/cannot-build.ogg",
+        volume = .75
+    },
+}
+data:extend{sound}
