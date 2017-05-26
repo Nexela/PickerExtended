@@ -5,7 +5,6 @@
 
 local Player = require("stdlib.player")
 local Area = require("stdlib.area.area")
-local Entity = require("stdlib.entity.entity")
 local Position = require("stdlib.area.position")
 local lib = require("picker.lib")
 Event.mirror = script.generate_event_name()
@@ -57,7 +56,7 @@ local function make_simple_blueprint(event)
                     if entity.force == player.force and lib.damaged(entity) and lib.get_planner(player, "repair-tool") then
                         return
                     else
-                        local area = Entity.to_collision_area(entity)
+                        local area = Area.to_collision_area(entity)
                         if Area.size(area) > 0 then
                             local bp = lib.get_planner(player, "blueprint", "Pipette Blueprint")
                             if bp then

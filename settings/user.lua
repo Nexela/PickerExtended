@@ -126,4 +126,18 @@ data:extend{
         minimum_value = 0,
         order = "picker-f[screenshot]-c"
     },
+    {
+        type = "bool-setting",
+        name = "picker-planners-remember",
+        setting_type = "runtime-per-user",
+        default_value = true,
+        order = "picker-g[planner]-a",
+    },
+    {
+        type = "string-setting",
+        name = "picker-planners-list",
+        setting_type = "runtime-per-user",
+        default_value = "blueprint deconstruction-planner upgrade-builder picker-screenshot-camera picker-ore-eraser",
+        order = "picker-g[planners]-b",
+    }
 }

@@ -3,7 +3,6 @@
 -------------------------------------------------------------------------------
 local Player = require("stdlib.player")
 local Area = require("stdlib.area.area")
-local Entity = require("stdlib.entity.entity")
 local Position = require("stdlib.area.position")
 local lib = require("picker.lib")
 
@@ -71,6 +70,7 @@ local function move_combinator(event)
         if player.can_reach_entity(entity) then
             --Direction to move the source
             local direction = event.direction or input_to_direction[event.input_name]
+            --The entities direction
             local ent_direction = entity.direction
             --Distance to move the source, defaults to 1
             local distance = event.distance or 1
@@ -82,6 +82,7 @@ local function move_combinator(event)
 
             --Wire distance for the source
             local source_distance = _get_distance(entity)
+
             --returns true if the wires can't reach
             local _cant_reach = function (neighbours)
                 return table.any(neighbours,
@@ -92,19 +93,27 @@ local function move_combinator(event)
                 )
             end
 
-            local function teleport_and_update(ent, pos, proxy, items, raise)
+            local out_of_the_way = Position.translate(entity.position, Position.opposite_direction(direction), 20)
+
+            local sel_area = Area.to_selection_area(entity)
+            local item_area = Area.translate(Area.to_collision_area(entity), direction, distance)
+            local update = entity.surface.find_entities_filtered{area = Area.expand(sel_area, 32), force=entity.force}
+            local items_on_ground = entity.surface.find_entities_filtered{type = "item-entity", area = item_area}
+            local proxy = entity.surface.find_entities_filtered{name = "item-request-proxy", area = sel_area, force = player.force}[1]
+
+            --Update everything after teleporting
+            local function teleport_and_update(ent, pos, raise)
                 if ent.last_user then ent.last_user = player end
                 ent.teleport(pos)
-                table.each(items,
+                table.each(items_on_ground,
                     function(item)
                         if item.valid then
                             item.teleport(entity.surface.find_non_colliding_position("item-on-ground", ent.position, 0, .20))
                         end
                     end
                 )
-                if proxy then proxy.teleport(ent.position) end
-                ent.active = false
-                ent.active = true
+                if proxy and proxy.valid then proxy.teleport(ent.position) end
+                table.each(update, function(e) e.update_connections() end)
                 if raise then
                     script.raise_event(Event.dolly_moved, {player_index = player.index, moved_entity = ent, start_pos = start_pos})
                 else
@@ -112,12 +121,6 @@ local function move_combinator(event)
                 end
                 return raise
             end
-
-            local item_area = Area.translate(Entity.to_collision_area(entity), direction, distance)
-            local items_on_ground = entity.surface.find_entities_filtered{type="item-entity", area=item_area}
-            local sel_area = Entity.to_selection_area(entity)
-            local out_of_the_way = Position.translate(entity.position, Position.opposite_direction(direction), 20)
-            local proxy = entity.surface.find_entities_filtered{name = "item-request-proxy", area = sel_area, force = player.force}[1]
 
             --teleport the entity out of the way.
             if entity.teleport(out_of_the_way) then
@@ -128,33 +131,35 @@ local function move_combinator(event)
                 end
 
                 table.each(items_on_ground, function(item) item.teleport(out_of_the_way) end)
+
                 pdata.dolly = entity
                 pdata.dolly_tick = event.tick
                 entity.direction = ent_direction
+
                 if entity.surface.can_place_entity{name = entity.name, position = target_pos, direction = ent_direction, force = entity.force} then
                     --We can place the entity here, check for wire distance
                     if entity.circuit_connected_entities then
                         --Move Poles
                         if entity.type == "electric-pole" and not table.any(entity.neighbours, _cant_reach) then
-                            return teleport_and_update(entity, target_pos, proxy, items_on_ground, true)
+                            return teleport_and_update(entity, target_pos, true)
                             --Move Wires
                         elseif entity.type ~= "electric-pole" and not table.any(entity.circuit_connected_entities, _cant_reach) then
                             if entity.type == "mining-drill" and lib.find_resources(entity) == 0 then
                                 local name = entity.mining_target and entity.mining_target.localised_name or {"picker-dollies.generic-ore-patch"}
                                 player.print({"picker-dollies.off-ore-patch", entity.localised_name, name})
-                                return teleport_and_update(entity, start_pos, proxy, items_on_ground, false)
+                                return teleport_and_update(entity, start_pos, false)
                             else
-                                return teleport_and_update(entity, target_pos, proxy, items_on_ground, true)
+                                return teleport_and_update(entity, target_pos, true)
                             end
                         else
                             player.print({"picker-dollies.wires-maxed"})
-                            return teleport_and_update(entity, start_pos, proxy, items_on_ground, false)
+                            return teleport_and_update(entity, start_pos, false)
                         end
                     else --All others
-                        return teleport_and_update(entity, target_pos, proxy, items_on_ground, true)
+                        return teleport_and_update(entity, target_pos, true)
                     end
                 else --Ent can't won't fit, restore position.
-                    return teleport_and_update(entity, start_pos, proxy, items_on_ground, false)
+                    return teleport_and_update(entity, start_pos, false)
                 end
             else --Entity can't be teleported
                 player.print({"picker-dollies.cant-be-teleported", entity.localised_name})

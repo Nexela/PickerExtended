@@ -171,4 +171,29 @@ data:extend{
         default_value = true,
         order = "picker-g[small-power]-b"
     },
+    {
+        type = "string-setting",
+        name = "picker-iondicators-line",
+        setting_type = "startup",
+        default_value = "vanilla",
+        allowed_values = {"vanilla", "green", "yellow", "purple", "blue"},
+        order = "picker-g[iondicators]-a"
+    },
+    {
+        type = "string-setting",
+        name = "picker-iondicators-arrow",
+        setting_type = "startup",
+        default_value = "vanilla",
+        allowed_values = {"vanilla", "green", "yellow", "purple", "blue"},
+        order = "picker-g[iondicators]-b"
+    },
+    {
+        type = "int-setting",
+        name = "picker-tile-stack",
+        setting_type = "startup",
+        default_value = 100,
+        minimum_value = 1,
+        maximum_value = 100000,
+        order = "picker-g[tiles]-b"
+    },
 }

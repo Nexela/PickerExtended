@@ -3,6 +3,7 @@
 -------------------------------------------------------------------------------
 local settings = settings["startup"]
 local player = data.raw["player"]["player"]
+local utility_sprites = data.raw["utility-sprites"].default
 -------------------------------------------------------------------------------
 --[[Fast Replace UG belts]]--
 -------------------------------------------------------------------------------
@@ -132,7 +133,6 @@ end
 -------------------------------------------------------------------------------
 --Code and Gfx from "Ion's Tweaks: Less Unplugged", by "author": "KingIonTrueLove"
 if settings["picker-small-unplugged-icon"].value then
-    local utility_sprites = data.raw["utility-sprites"].default
     utility_sprites.electricity_icon_unplugged.filename = "__PickerExtended__/graphics/electricity-icon-unplugged.png"
 end
 
@@ -164,4 +164,28 @@ if settings["picker-smaller-gui-borders"].value then
 
     style.scroll_pane_style.horizontal_scroll_bar_spacing = 5
     style.scroll_pane_style.vertical_scroll_bar_spacing = 3
+end
+
+-------------------------------------------------------------------------------
+--[[Iondicators]]--
+-------------------------------------------------------------------------------
+--GFX From "Iondicators" by "KingIonTrueLove" https://mods.factorio.com/mods/ion_cannon_1
+local ion_line = settings["picker-iondicators-line"].value
+local ion_arrow = settings["picker-iondicators-arrow"].value
+if ion_line == "green" or ion_line == "yellow" or ion_line == "blue" or ion_line == "purple" then
+    utility_sprites.indication_line.filename = "__PickerExtended__/graphics/iondicators/"..ion_line.."-indication-line.png"
+end
+if ion_arrow == "green" or ion_arrow == "yellow" or ion_arrow == "blue" or ion_arrow == "purple" then
+    utility_sprites.indication_arrow.filename = "__PickerExtended__/graphics/iondicators/"..ion_arrow.."-indication-arrow.png"
+end
+
+-------------------------------------------------------------------------------
+--[[Tile stack sizes]]--
+-------------------------------------------------------------------------------
+local tile_size = settings["picker-tile-stack"].value
+for _, tile in pairs(data.raw.item) do
+    local is_tile = tile.place_as_tile
+    if is_tile then
+        tile.stack_size = tile_size
+    end
 end
