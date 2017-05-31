@@ -2,7 +2,6 @@
 --[[Item Zapper]]--
 -------------------------------------------------------------------------------
 local Player = require("stdlib.player")
-local lib = require("picker.lib")
 
 local function zapper(event)
     local player, pdata = Player.get(event.player_index)
