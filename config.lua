@@ -27,12 +27,14 @@ PICKER.quickstart = {
     center_map_tag = true,
     setup_power = true,
     stacks = {
+        "construction-robot",
+    },
+    quickbar = {
         "picker-tape-measure",
         "creative-mode_item-source",
         "creative-mode_fluid-source",
         "creative-mode_energy-source",
         "creative-mode_super-substation",
-        "construction-robot",
         "creative-mode_magic-wand-modifier",
         "creative-mode_super-roboport",
     }

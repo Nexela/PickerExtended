@@ -10,4 +10,12 @@ for _, variation in pairs(sound_drop.sound.variations) do
     variation.filename = "__base__/sound/fight/laser-1.ogg"
     variation.volume = .5
 end
-data:extend{sound_drop}
+
+local hotkey = {
+    type = "custom-input",
+    name = "picker-zapper",
+    key_sequence = "z",
+    consuming = "none"
+}
+
+data:extend{sound_drop, hotkey}

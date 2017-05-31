@@ -24,12 +24,6 @@ data:extend{
     },
     {
         type = "custom-input",
-        name = "picker-next-planner",
-        key_sequence = "CONTROL + Q",
-        consuming = "none"
-    },
-    {
-        type = "custom-input",
         name = "picker-copy-chest",
         key_sequence = "CONTROL + V",
         consuming = "all"
@@ -78,22 +72,10 @@ data:extend{
     },
     {
         type = "custom-input",
-        name = "picker-inventory-editor",
-        key_sequence = "CONTROL + SHIFT + GRAVE",
-        consuming = "all"
-    },
-    {
-        type = "custom-input",
         name = "picker-dude-wheres-my-car",
         key_sequence = "CONTROL + SHIFT + J",
         consuming = "none"
     },
-    {
-        type = "custom-input",
-        name = "picker-zapper",
-        key_sequence = "z",
-        consuming = "none"
-    }
 }
 
 local text ={

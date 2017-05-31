@@ -124,6 +124,13 @@ data:extend{
     },
     {
         type = "bool-setting",
+        name = "picker-hide-planners",
+        setting_type = "startup",
+        default_value = true,
+        order = "picker-e[hide-planners]-b"
+    },
+    {
+        type = "bool-setting",
         name = "picker-brighter-lights-player",
         setting_type = "startup",
         default_value = false,

@@ -60,4 +60,25 @@ local camera = {
     alt_selection_cursor_box_type = "pair"
 }
 
-data:extend{tape, eraser, camera}
+local hotkey = {
+    type = "custom-input",
+    name = "picker-planner-menu",
+    key_sequence = "SHIFT + B",
+    consuming = "none"
+}
+
+local hotkey2 = {
+    type = "custom-input",
+    name = "picker-next-planner",
+    key_sequence = "CONTROL + Q",
+    consuming = "none"
+}
+
+local hotkey3 = {
+    type = "custom-input",
+    name = "picker-inventory-editor",
+    key_sequence = "CONTROL + SHIFT + GRAVE",
+    consuming = "all"
+}
+
+data:extend{tape, eraser, camera, hotkey, hotkey2, hotkey3}

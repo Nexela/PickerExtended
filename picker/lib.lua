@@ -175,35 +175,6 @@ function lib.satisfy_requests(entity, player, proxy)
     return new_requests
 end
 
-lib.planners = {
-    ["blueprint"] = true,
-    ["deconstruction-planner"] = true,
-    ["resource-monitor"] = true,
-    ["upgrade-builder"] = true,
-    ["zone-scanner"] = true,
-    ["unit-remote-control"] = true,
-    ["picker-ore-eraser"] = true,
-    ["picker-tape-measure"] = true,
-    ["picker-camera"] = true,
-}
-
-function lib.get_next_planner(player, last_planner)
-    local stack = player.cursor_stack
-
-    if (not stack.valid_for_read ) then
-        local planner = lib.planners[last_planner] and last_planner or "blueprint"
-        return player.clean_cursor() and lib.get_planner(player, planner)
-    elseif stack.valid_for_read then
-        local name = stack.name
-        if lib.planners[name] then
-            repeat
-                name = next(lib.planners, name)
-            until name and game.item_prototypes[name] and not (player.force.recipes[name] and not player.force.recipes[name].enabled)
-            return player.clean_cursor() and lib.get_planner(player, name)
-        end
-    end
-end
-
 function lib.get_planner(player, planner, label)
     local found
     for _, idx in pairs(INVENTORIES) do
@@ -222,7 +193,7 @@ function lib.get_planner(player, planner, label)
                                     return player.cursor_stack
                                 end
                             end
-                        elseif lib.planners[planner] and game.item_prototypes[planner] then
+                        elseif global.planners[planner] and game.item_prototypes[planner] then
                             if player.cursor_stack.set_stack(slot) then
                                 slot.clear()
                                 return player.cursor_stack
@@ -242,7 +213,7 @@ function lib.get_planner(player, planner, label)
         found.clear()
         return player.cursor_stack
     else
-        return game.item_prototypes[planner] and player.cursor_stack.set_stack(planner) and player.cursor_stack
+        return planner and game.item_prototypes[planner] and player.cursor_stack.set_stack(planner) and player.cursor_stack
     end
 end
 

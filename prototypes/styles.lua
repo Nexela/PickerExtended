@@ -48,6 +48,47 @@ style.picker_buttons = {
             filename = "__core__/sound/gui-click.ogg",
             volume = 1
         }
+    },
+    right_click_sound = {
+        {
+            filename = "__core__/sound/gui-click.ogg",
+            volume = 1
+        }
+    }
+}
+style.picker_buttons_med = {
+    type="button_style",
+    parent="picker_buttons",
+    maximal_height = 48,
+    minimal_height = 48,
+    maximal_width = 48,
+    minimal_width = 48,
+}
+style.picker_buttons_big = {
+    type="button_style",
+    parent="picker_buttons",
+    maximal_height = 64,
+    minimal_height = 64,
+    maximal_width = 64,
+    minimal_width = 64,
+}
+
+style.picker_buttons_med_off = {
+    type = "button_style",
+    parent = "picker_buttons_med",
+    default_graphical_set = {
+        corner_size = {
+            3,
+            3
+        },
+        filename = "__core__/graphics/gui.png",
+        load_in_minimal_mode = true,
+        position = {
+            16,
+            16
+        },
+        priority = "extra-high-no-scale",
+        type = "composition"
     }
 }
 

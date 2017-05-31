@@ -29,7 +29,7 @@ local function get_or_create_blueprint_gui(player)
 end
 
 local function show_bp_tools(event)
-    local player = game.players[event.player_index]
+    local player, pdata = Player.get(event.player_index)
     local bp = lib.stack_name(player.cursor_stack, "blueprint")
     local frame = get_or_create_blueprint_gui(player) --.style.visible = bp and true or false
     if bp and not lib.is_beltbrush_bp(bp) then
@@ -37,11 +37,43 @@ local function show_bp_tools(event)
         frame["picker_bp_tools_table"]["picker_bp_tools_to"].elem_value = nil
         frame["picker_bp_tools_table"]["picker_bp_tools_from"].elem_value = nil
     else
-        --frame.destroy()
         frame.style.visible = false
     end
+    pdata.last_put = nil
 end
 Event.register(defines.events.on_player_cursor_stack_changed, show_bp_tools)
+
+local function last_built(event)
+    local player, pdata = Player.get(event.player_index)
+    if not player.cursor_stack.valid_for_read and player.mod_settings["picker-blueprint-last"].value and pdata.last_put then
+        local entity = event.created_entity
+        local area = Area.shrink(Area.to_collision_area(entity), .25)
+        if Area.size(area) > 0 then
+            local bp = lib.get_planner(player, "blueprint", "Pipette Blueprint")
+            bp.create_blueprint{
+                surface = entity.surface,
+                force = player.force,
+                area = area,
+                always_include_tiles = false
+            }
+            bp.label = "Pipette Blueprint"
+            bp.allow_manual_label_change = false
+        end
+    end
+    pdata.last_put = nil
+end
+Event.register(defines.events.on_built_entity, last_built)
+
+local function last_item(event)
+    local player, pdata = Player.get(event.player_index)
+    if player.cursor_stack.valid_for_read then
+        local stack = player.cursor_stack
+        if stack.count == 1 and stack.prototype.place_result then
+            pdata.last_put = stack.prototype.place_result
+        end
+    end
+end
+Event.register(defines.events.on_put_item, last_item)
 
 -------------------------------------------------------------------------------
 --[[Make Simple Blueprint]]--
@@ -50,7 +82,7 @@ local function make_simple_blueprint(event)
     local player, pdata = Player.get(event.player_index)
     if player.controller_type ~= defines.controllers.ghost then
         if player.selected and not (player.selected.type == "resource" or player.selected.has_flag("not-blueprintable")) then
-            if not (player.cursor_stack.valid_for_read and lib.planners[player.cursor_stack.name]) then
+            if not (player.cursor_stack.valid_for_read and global.planners[player.cursor_stack.name]) then
                 local entity = player.selected
                 if player.clean_cursor() then
                     if entity.force == player.force and lib.damaged(entity) and lib.get_planner(player, "repair-tool") then

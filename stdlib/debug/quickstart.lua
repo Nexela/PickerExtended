@@ -31,23 +31,33 @@ function quickstart.on_player_created(event)
         end
 
         local simple_stacks = QS.get("stacks", {})
+        local qb_stacks = QS.get("quickbar", {})
+        local inv = player.get_inventory(player.character and defines.inventory.player_main or defines.inventory.god_main)
+        local qb = player.get_inventory(player.character and defines.inventory.player_quickbar or defines.inventory.god_quickbar)
 
         for _, item in pairs(simple_stacks) do
             if game.item_prototypes[item] then
-                player.insert(item)
+                inv.insert(item)
+            end
+        end
+        for _, item in pairs(qb_stacks) do
+            if game.item_prototypes[item] then
+                qb.insert(item)
             end
         end
 
         local power_armor = QS.get("power_armor", "fake")
         if game.item_prototypes[power_armor] then
             --Put on power armor, install equipment
-            local inv = player.get_inventory(defines.inventory.player_armor)
-            if inv then
-                inv.insert(power_armor)
-                local armor = inv[1].grid
-                for _, eq in pairs(QS.get("equipment", {"fusion-reactor-equipment"})) do
-                    if game.equipment_prototypes[eq] then
-                        armor.put{name = eq}
+            local armor = player.get_inventory(defines.inventory.player_armor)
+            if armor then
+                armor.insert(power_armor)
+                local grid = armor[1].grid
+                if grid then
+                    for _, eq in pairs(QS.get("equipment", {"fusion-reactor-equipment"})) do
+                        if game.equipment_prototypes[eq] then
+                            grid.put{name = eq}
+                        end
                     end
                 end
             end

@@ -123,9 +123,18 @@ end
 -------------------------------------------------------------------------------
 --[[Planner Cleaner]]--
 -------------------------------------------------------------------------------
-if data.raw.recipe["upgrade-builder"] then
-    data.raw.recipe["upgrade-builder"].hidden = true
-    data.raw["selection-tool"]["upgrade-builder"].flags = {"hidden"}
+if settings["picker-hide-planners"].value then
+    for _, item in pairs(data.raw["selection-tool"]) do
+        if data.raw.recipe[item.name] then
+            data.raw.recipe[item.name].hidden = true
+        end
+        item.flags = {"hidden"}
+    end
+    local rm = data.raw["item"]["resource-monitor"]
+    if rm then
+        rm.flags = {"hidden"}
+        data.raw.recipe[rm.name].hidden = true
+    end
 end
 
 -------------------------------------------------------------------------------
@@ -189,3 +198,14 @@ for _, tile in pairs(data.raw.item) do
         tile.stack_size = tile_size
     end
 end
+
+-------------------------------------------------------------------------------
+--[[Style Crap]]--
+-------------------------------------------------------------------------------
+-- local styles = {}
+-- for name, style in pairs(data.raw["gui-style"].default) do
+--     if style.type and style.type == "button_style" then
+--         styles[name] = style
+--     end
+-- end
+-- log(serpent.block(styles, {comment=false}))

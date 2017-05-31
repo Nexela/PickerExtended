@@ -39,7 +39,7 @@ local function cleanup_blueprints(event)
     local player = game.players[event.player_index]
     local index = (player.character and inv_map[event.name]) or inv_map_god[event.name]
     local inventory = player.get_inventory(index)
-    for planner in pairs(lib.planners) do
+    for planner in pairs(global.planners) do
         local bp = game.item_prototypes[planner] and inventory.find_item_stack(planner)
         if bp then
             local settings = player.mod_settings

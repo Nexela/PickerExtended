@@ -3,6 +3,7 @@ MOD.name = "PickerExtended"
 MOD.if_name = "picker"
 MOD.interfaces = {}
 MOD.config = require("config")
+MOD.commands = {}
 
 require("stdlib.table")
 require("stdlib.string")
@@ -89,3 +90,4 @@ end
 MOD.interfaces["console"] = require("stdlib.debug.console")
 
 remote.add_interface(MOD.if_name, MOD.interfaces)
+--commands.add_command("picker", "Picker Command", function(event) game.print(serpent.block(event, {comment=false})) end)
