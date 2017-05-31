@@ -5,8 +5,8 @@ local Pad = {}
 local lib = require("picker.lib")
 
 Event.adjustment_pad = script.generate_event_name()
-script.on_event("adjustment-pad-increase", function(event) script.raise_event(Event.adjustment_pad, event) end)
-script.on_event("adjustment-pad-decrease", function(event) script.raise_event(Event.adjustment_pad, event) end)
+Event.register("adjustment-pad-increase", function(event) script.raise_event(Event.adjustment_pad, event) end)
+Event.register("adjustment-pad-decrease", function(event) script.raise_event(Event.adjustment_pad, event) end)
 
 function Pad.remove_gui(player, frame_name, flow_name)
     flow_name = flow_name or "picker"

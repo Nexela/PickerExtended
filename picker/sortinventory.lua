@@ -129,8 +129,12 @@ local function sort_opened_inventory(data)
     local orders = {}
     local filters
 
-    local a = 0
-    if data.auto_sort and table.each(inventory.get_contents(), function () a = a + 1 return a > 20 end) then return end
+
+    if data.auto_sort then
+        local a = 0
+        table.each(inventory.get_contents(), function () a = a + 1 if a > 20 then return a end end)
+        if a > 20 then return end
+    end
 
     local proxy = player.surface.create_entity{name = "picker-proxy-chest", position = player.position}
     proxy.operable = false
@@ -250,8 +254,10 @@ local sortable_entities = {
     ["cargo-wagon"] = true,
 }
 local function sort_inventory(event)
-    local player = Player.get(event.player_index)
+    local player, pdata = Player.get(event.player_index)
     if player.opened and sortable_entities[player.opened.type] then
+        if event.auto_sort and pdata.last_sort == player.opened then return end
+        pdata.last_sort = player.opened
         sort_opened_inventory{
             auto_sort = event.auto_sort,
             player_index = event.player_index,
@@ -260,6 +266,8 @@ local function sort_inventory(event)
             or player.opened.get_inventory(defines.inventory.cargo_wagon)
             or player.opened.get_inventory(defines.inventory.chest),
         }
+    elseif not player.opened then
+        pdata.last_sort = nil
     end
 end
 script.on_event("picker-manual-inventory-sort", sort_inventory)

@@ -82,7 +82,7 @@ end
 -- @see https://forums.factorio.com/viewtopic.php?t=32039#p202158 Invalid Event Objects
 function Event.dispatch(event)
     if event then
-        local name = event.input_name or event.name
+        local name = event.name and Event._registry[event.name] and event.name or event.input_name or event.name
 
         if Event._registry[name] then
             local force_crc = Event.force_crc

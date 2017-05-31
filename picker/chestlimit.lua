@@ -43,7 +43,7 @@ local function increase_decrease_reprogrammer(event, change)
     end
 end
 
-local function adjust_pad(event)
+local function adjust_limit_pad(event)
     local player = Player.get(event.player_index)
     if get_match(player.cursor_stack) and Pad.get_or_create_adjustment_pad(player, "chestlimit") then
         if event.input_name == "adjustment-pad-increase" then
@@ -53,7 +53,7 @@ local function adjust_pad(event)
         end
     end
 end
-Event.register(Event.adjustment_pad, adjust_pad)
+Event.register(Event.adjustment_pad, adjust_limit_pad)
 
 Gui.on_text_changed("chestlimit_text_box", function (event) increase_decrease_reprogrammer(event, 0) end)
 Gui.on_click("chestlimit_btn_up", function (event) increase_decrease_reprogrammer(event, 1) end)

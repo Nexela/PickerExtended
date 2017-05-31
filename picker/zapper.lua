@@ -12,7 +12,7 @@ local function zapper(event)
     local all, list = player.mod_settings["picker-item-zapper-all"].value, player.mod_settings["picker-item-zapper"].value
 
 
-    if all or (list and table.any(list:split(" "), _zappable)) then
+    if all or global.planners[name] or (list and table.any(list:split(" "), _zappable)) then
         if (pdata.last_dropped or 0) + 45 < game.tick then
             pdata.last_dropped = game.tick
             event.entity.surface.create_entity{name="drop-planner", position = event.entity.position}

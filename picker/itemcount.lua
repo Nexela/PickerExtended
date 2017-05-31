@@ -8,7 +8,7 @@ local function get_or_create_itemcount_gui(player)
         gui.style.font = "default-bold"
     end
     local enabled = player.mod_settings["picker-itemcount"].value
-    gui.style.visible = enabled and player.cursor_stack.valid_for_read and #gui.parent.children == 1
+    gui.style.visible = enabled and player.cursor_stack.valid_for_read
     return gui
 end
 

@@ -27,7 +27,7 @@ data:extend{
         type = "string-setting",
         name = "picker-item-zapper",
         setting_type = "runtime-per-user",
-        default_value = "blueprint blueprint-book deconstruction-planner zone-planner unit-remote-control",
+        default_value = "blueprint-book pistol",
         allow_blank = true,
         order = "picker-z[zapper]-z",
     },

@@ -2,6 +2,16 @@ TODO:
 picker fast replace stuff
 picker used for
 
+2.7.1
+small bug fixes with autosort, itemcount and hotkey events
+zapper now zapps all selection tools and other planners by default
+
+2.7.0
+Fix Images in readme
+Add Planner Cycler
+Add Last Item Blueprint, Closes #30
+Add Iondicators and other QOL tweaks
+
 2.6.1:
 Only change inventory size if less than inventory size
 Fast replace UG belts defaults to false
