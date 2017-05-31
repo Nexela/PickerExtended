@@ -23,7 +23,7 @@ local function get_or_create_planner_flow(player, destroy)
         return flow.destroy()
     elseif not flow then
         local planners = global.planners
-        pdata.planners = {}
+        pdata.planners = pdata.planners or {}
 
         flow = player.gui.center.add{type = "flow", name = "picker_planner_flow", direction = 'vertical'}
         local frame = flow.add{type = 'frame', name = 'picker_planner_frame', direction = 'vertical', caption = {'planner-menu.header'}}
@@ -32,14 +32,20 @@ local function get_or_create_planner_flow(player, destroy)
         scroll.style.maximal_height = 110
         local table = scroll.add{type = 'table', name = 'picker_planner_table', colspan = 6}
         for planner in pairs(planners) do
+            if pdata.planners[planner] == false then
+                if not game.item_prototypes[planner] then
+                    pdata.planners[planner] = nil
+                end
+            else
+                pdata.planners[planner] = true
+            end
             table.add{
                 type = 'sprite-button',
                 name = 'picker_planner_table_sprite_'..planner,
                 sprite = 'item/'..planner,
-                style = 'picker_buttons_med',
+                style = pdata.planners[planner] and 'picker_buttons_med' or 'picker_buttons_med_off',
                 tooltip = {'planner-menu.button', {'item-name.'..planner}}
             }
-            pdata.planners[planner] = true
         end
     end
     return flow
@@ -128,7 +134,7 @@ end
 script.on_event("picker-next-planner", cycle_planners)
 
 local function planners_changed()
-    global.planners = global.planners or {}
+    global.planners = {}
     for _, item in pairs(game.item_prototypes) do
         if item.type == "blueprint" or item.type == "deconstruction-item" or item.type == "selection-tool" or item.name == "resource-monitor" then
             if not item.name:find("dummy") then
@@ -138,14 +144,7 @@ local function planners_changed()
     end
     for _, player in pairs(game.players) do
         local gui = player.gui.center["picker_planner_flow"]
-        if gui then
-            for _, child in pairs(gui["picker_planner_frame"]["picker_planner_scroll"]["picker_planner_table"].children) do
-                local match = child.name:match('^picker_planner_table_sprite_(.*)')
-                if match and not game.item_prototypes[match] then
-                    child.destroy()
-                end
-            end
-        end
+        if gui then gui.destroy() end
     end
 end
 Event.register(Event.core_events.configuration_changed, planners_changed)

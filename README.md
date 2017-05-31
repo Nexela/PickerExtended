@@ -20,12 +20,13 @@ CONTROL+Q with nothing selected will cycle through the available planners (bluep
 Picking entities in the Helmod side panel will create a quick blueprint of the entity, recipe and modules listed.
 
 ### Picker additional Planners
-Screenshot Planner for taking screenshots of an area, Ore eraser planner count and erase ores (If you are an admin). Upgrade planner converted to a picker planer and has the recipe hidden.
+Screenshot Planner for taking screenshots of an area, Ore eraser planner count and erase ores (If you are an admin). Upgrade planner converted to a picker planer and has the recipe hidden. Open the planner menu with SHIFT-B to quickly grab any available planner, or cycle through all planners with
+CTRL+Q
 
 ![Blueprinter in Action](https://github.com/Nexela/PickerExtended/raw/master/web/picker-blueprinter.gif)
 
 ### Picker Crafter
-Alt-Q on an entity and picker will try to craft that entity if you have the items in your inventory. Can be bound to Q for even quicker crafting access.
+Alt+Q on an entity and picker will try to craft that entity if you have the items in your inventory. Can be bound to Q for even quicker crafting access.
 
 ### Picker Zapper
 Have an inventory full of pesky blueprints? Try dropping them on the ground by using the drop item keybind (default Z) and they will be zapped away into the nether. There is also a per player option to keep your main inventory free of blueprints and deconstruction planners. There is also a per player toggle to zap everythingin the inventory that is dropped with Z
