@@ -68,7 +68,7 @@ local function last_item(event)
     local player, pdata = Player.get(event.player_index)
     if player.cursor_stack.valid_for_read then
         local stack = player.cursor_stack
-        if stack.count == 1 and stack.prototype.place_result then
+        if stack.count == 1 and stack.prototype.place_result and player.get_item_count(stack.name) == 1 then
             pdata.last_put = stack.prototype.place_result
         end
     end
