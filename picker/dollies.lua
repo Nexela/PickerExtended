@@ -169,7 +169,7 @@ local function move_combinator(event)
         end
     end
 end
-script.on_event({"dolly-move-north", "dolly-move-east", "dolly-move-south", "dolly-move-west"}, move_combinator)
+Event.register({"dolly-move-north", "dolly-move-east", "dolly-move-south", "dolly-move-west"}, move_combinator)
 
 local function try_rotate_combinator(event)
     local player, pdata = Player.get(event.player_index)
@@ -208,7 +208,7 @@ local function try_rotate_combinator(event)
         end
     end
 end
-script.on_event("dolly-rotate-rectangle", try_rotate_combinator)
+Event.register("dolly-rotate-rectangle", try_rotate_combinator)
 
 local function rotate_saved_dolly(event)
     local _, pdata = Player.get(event.player_index)
@@ -229,7 +229,7 @@ local function rotate_saved_dolly(event)
         end
     end
 end
-script.on_event("dolly-rotate-saved", rotate_saved_dolly)
+Event.register("dolly-rotate-saved", rotate_saved_dolly)
 
 
 return move_combinator

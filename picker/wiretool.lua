@@ -19,7 +19,7 @@ local function cut_wires(event)
         end
     end
 end
-script.on_event("picker-wire-cutter", cut_wires)
+Event.register("picker-wire-cutter", cut_wires)
 
 local wire_types = {
     "red-wire",
@@ -63,4 +63,4 @@ local function pick_wires(event)
         end
     end
 end
-script.on_event("picker-wire-picker", pick_wires)
+Event.register("picker-wire-picker", pick_wires)

@@ -58,6 +58,8 @@ local function last_built(event)
             }
             bp.label = "Pipette Blueprint"
             bp.allow_manual_label_change = false
+            local bp_ents = bp.get_blueprint_entities()
+            if not bp_ents or bp_ents[1].name ~= pdata.last_put.name then bp.clear() end
         end
     end
     pdata.last_put = nil
@@ -66,9 +68,12 @@ Event.register(defines.events.on_built_entity, last_built)
 
 local function last_item(event)
     local player, pdata = Player.get(event.player_index)
-    if player.cursor_stack.valid_for_read then
+    if player.cursor_stack and player.cursor_stack.valid_for_read then
         local stack = player.cursor_stack
-        if stack.count == 1 and stack.prototype.place_result and player.get_item_count(stack.name) == 1 then
+        if stack.count == 1
+        and stack.prototype.place_result
+        and not stack.prototype.place_result.has_flag('not-blueprintable')
+        and player.get_item_count(stack.name) == 1 then
             pdata.last_put = stack.prototype.place_result
         end
     end
@@ -117,7 +122,7 @@ local function make_simple_blueprint(event)
         end
     end
 end
-script.on_event("picker-make-ghost", make_simple_blueprint)
+Event.register("picker-make-ghost", make_simple_blueprint)
 
 -------------------------------------------------------------------------------
 --[[Update BP Entities]]--
@@ -289,5 +294,5 @@ local function mirror_blueprint (event)
     end
 end
 Gui.on_click("picker_bp_tools_mirror", mirror_blueprint)
-script.on_event("picker-mirror-blueprint", mirror_blueprint)
+Event.register("picker-mirror-blueprint", mirror_blueprint)
 Event.register(Event.mirror, mirror_blueprint)

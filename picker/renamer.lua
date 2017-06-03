@@ -42,6 +42,6 @@ local function picker_rename(event)
         end
     end
 end
-script.on_event("picker-rename", picker_rename)
+Event.register("picker-rename", picker_rename)
 
 return picker_rename

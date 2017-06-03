@@ -41,4 +41,4 @@ local function call_a_plumber(event)
         end
     end
 end
-script.on_event("picker-pipe-cleaner", call_a_plumber)
+Event.register("picker-pipe-cleaner", call_a_plumber)

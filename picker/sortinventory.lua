@@ -270,7 +270,7 @@ local function sort_inventory(event)
         pdata.last_sort = nil
     end
 end
-script.on_event("picker-manual-inventory-sort", sort_inventory)
+Event.register("picker-manual-inventory-sort", sort_inventory)
 
 local function auto_sort_inventory(event)
     if settings.get_player_settings(event.player_index)["picker-auto-sort-inventory"].value then

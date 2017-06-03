@@ -33,7 +33,7 @@ local function on_player_driving_changed_state(event)
 end
 Event.register(defines.events.on_player_driving_changed_state, on_player_driving_changed_state)
 
-script.on_event("toggle-train-control",
+Event.register("toggle-train-control",
     function(event)
         if not game.active_mods["FARL"] then
             local player = game.players[event.player_index]
@@ -59,4 +59,4 @@ local function wheres_my_car(event)
         player.add_custom_alert(pdata.last_car, {type="item", name = pdata.last_car.name}, {"vehicles.dude-wheres-my-car"}, true)
     end
 end
-script.on_event({"picker-dude-wheres-my-car", defines.events.on_player_driving_changed_state}, wheres_my_car)
+Event.register({"picker-dude-wheres-my-car", defines.events.on_player_driving_changed_state}, wheres_my_car)

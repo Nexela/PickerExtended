@@ -12,4 +12,4 @@ local function picker_crafter(event)
         end
     end
 end
-script.on_event("picker-crafter", picker_crafter)
+Event.register("picker-crafter", picker_crafter)

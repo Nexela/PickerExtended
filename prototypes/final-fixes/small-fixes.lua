@@ -198,14 +198,3 @@ for _, tile in pairs(data.raw.item) do
         tile.stack_size = tile_size
     end
 end
-
--------------------------------------------------------------------------------
---[[Style Crap]]--
--------------------------------------------------------------------------------
--- local styles = {}
--- for name, style in pairs(data.raw["gui-style"].default) do
---     if style.type and style.type == "button_style" then
---         styles[name] = style
---     end
--- end
--- log(serpent.block(styles, {comment=false}))

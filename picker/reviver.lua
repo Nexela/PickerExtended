@@ -43,6 +43,6 @@ local function picker_revive_selected(event)
         end
     end
 end
-script.on_event("picker-select", picker_revive_selected)
+Event.register("picker-select", picker_revive_selected)
 
 return picker_revive_selected

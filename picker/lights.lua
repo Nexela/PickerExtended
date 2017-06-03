@@ -39,4 +39,4 @@ local function toggle_flashlight(event)
         end
     end
 end
-script.on_event("picker-flashlight-toggle", toggle_flashlight)
+Event.register("picker-flashlight-toggle", toggle_flashlight)

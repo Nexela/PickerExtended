@@ -120,7 +120,7 @@ local function open_held_item_inventory(event)
         player.opened = player.cursor_stack
     end
 end
-script.on_event("picker-inventory-editor", open_held_item_inventory)
+Event.register("picker-inventory-editor", open_held_item_inventory)
 
 local function cycle_planners(event)
     local player, pdata = Player.get(event.player_index)
@@ -131,7 +131,7 @@ local function cycle_planners(event)
         pdata.new_simple = false
     end
 end
-script.on_event("picker-next-planner", cycle_planners)
+Event.register("picker-next-planner", cycle_planners)
 
 local function planners_changed()
     global.planners = {}

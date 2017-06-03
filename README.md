@@ -103,5 +103,7 @@ A quick increase/decrease pad using the +/- keys or the buttons on the gui. Mods
 -   Inventory size, Set the starting size of the players inventory
 -   Cheaty Lights added in for youtube/twitch videos. Turned off by default.
 -   Alt-entity-info is enabled by default when joining a game. there is a per player setting to disable.
--   Add option to make some guis have smaller borders  (Ungirthy borders mod)
--   Add option to make no power icon smaller (Less unplugged mod)
+-   Intergrate <https://mods.factorio.com/mods/KingIonTrueLove> and <https://mods.factorio.com/mods/ion_cannon_1>
+-   Add option to make some guis have smaller borders  (Ion's UI Tweaks: Smaller Borders)
+-   Add option to make no power icon smaller (Ion's UI Tweaks, Less Unplugged)
+-   Add options to change inserter arrow colors (Iondicators)

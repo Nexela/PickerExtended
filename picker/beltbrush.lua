@@ -256,7 +256,7 @@ local function beltbrush_corners(event)
         end
     end
 end
-script.on_event("picker-beltbrush-corners", beltbrush_corners)
+Event.register("picker-beltbrush-corners", beltbrush_corners)
 
 -------------------------------------------------------------------------------
 --[[Automatic Balancers]]--
@@ -347,7 +347,7 @@ local function beltbrush_balancers(event)
         end
     end
 end
-script.on_event("picker-beltbrush-balancers", beltbrush_balancers)
+Event.register("picker-beltbrush-balancers", beltbrush_balancers)
 
 -------------------------------------------------------------------------------
 --[[Allow Upgrades]]--

@@ -223,5 +223,5 @@ local function what_is_it_used_for(event)
     local player = game.players[event.player_index]
     get_or_create_used_for_flow(player, true)
 end
-script.on_event("picker-used-for", what_is_it_used_for)
+Event.register("picker-used-for", what_is_it_used_for)
 Gui.on_click("^uff_header_close$", what_is_it_used_for)

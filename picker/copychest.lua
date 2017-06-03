@@ -42,4 +42,4 @@ local function copy_chest(event)
         pdata.copy_chest = nil
     end
 end
-script.on_event("picker-copy-chest", copy_chest)
+Event.register("picker-copy-chest", copy_chest)

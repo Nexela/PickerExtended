@@ -53,8 +53,8 @@ function Position.add(pos1, pos2)
     fail_if_missing(pos1, 'missing first position argument')
     fail_if_missing(pos2, 'missing second position argument')
 
-    pos1 = Position.to_table(pos1)
-    pos2 = Position.to_table(pos2)
+    -- pos1 = Position.to_table(pos1)
+    -- pos2 = Position.to_table(pos2)
     return { x = pos1.x + pos2.x, y = pos1.y + pos2.y}
 end
 
@@ -245,10 +245,6 @@ function Position.increment(position, inc_x, inc_y)
         return {x = x, y = y}
     end
 end
-
-
-
-
 
 --- Returns a position centered on the tile
 -- @tparam LuaPosition pos the position to center

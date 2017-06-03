@@ -82,12 +82,12 @@ end
 -- @see https://forums.factorio.com/viewtopic.php?t=32039#p202158 Invalid Event Objects
 function Event.dispatch(event)
     if event then
-        local name = event.name and Event._registry[event.name] and event.name or event.input_name or event.name
+        local _registry = event.name and Event._registry[event.name] or event.input_name and Event._registry[event.input_name]
 
-        if Event._registry[name] then
+        if _registry then
             local force_crc = Event.force_crc
 
-            for idx, handler in ipairs(Event._registry[name]) do
+            for idx, handler in ipairs(_registry) do
 
                 -- Check for userdata and stop processing further handlers if not valid
                 for _, val in pairs(event) do
@@ -122,7 +122,7 @@ function Event.dispatch(event)
                 end
 
                 -- if present stop further handlers for this event
-                if event.stop_processing then --#87
+                if event.stop_processing then
                     return
                 end
             end
