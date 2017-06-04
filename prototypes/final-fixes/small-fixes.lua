@@ -194,7 +194,7 @@ end
 local tile_size = settings["picker-tile-stack"].value
 for _, tile in pairs(data.raw.item) do
     local is_tile = tile.place_as_tile
-    if is_tile then
+    if is_tile and tile.stack_size < tile_size then
         tile.stack_size = tile_size
     end
 end
