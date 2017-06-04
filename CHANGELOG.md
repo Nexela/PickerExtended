@@ -2,6 +2,12 @@ TODO:
 picker fast replace stuff
 picker used for
 
+2.7.3
+Forgot to uncomment something!
+
+2.7.2
+bug fixes with area.to_xxx_area
+
 2.7.1
 small bug fixes with autosort, itemcount and hotkey events
 zapper now zapps all selection tools and other planners by default

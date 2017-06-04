@@ -28,6 +28,13 @@ function Color.to_table(c_arr)
     return c_arr
 end
 
+function Color.from_rgb(r, g, b)
+    r = r or 0
+    g = g or 0
+    b = b or 0
+    return {r = r/255, g = g/255, b = b/255}
+end
+
 --- Return a color table with alpha added from a hexadecimal string.
 -- @tparam string hex hexadecimal colour string (#ffffff, not #fff)
 -- @tparam[opt=1] number alpha alpha value, from 0 to 1]
