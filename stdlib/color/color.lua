@@ -28,6 +28,11 @@ function Color.to_table(c_arr)
     return c_arr
 end
 
+--- Converts a color in the rgb format to a color table
+-- @tparam[opt=0] int r 0-255 red
+-- @tparam[opt=0] int g 0-255 green
+-- @tparam[opt=0] int b 0-255 blue
+-- @treturn LuaColor
 function Color.from_rgb(r, g, b)
     r = r or 0
     g = g or 0

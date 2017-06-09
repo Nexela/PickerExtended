@@ -6,7 +6,7 @@
 --Modified from "Copy Assembler Pipe Direction", by "IronCartographer",
 --https://mods.factorio.com/mods/IronCartographer/CopyAssemblerPipeDirection
 
-local Player = require("stdlib/player")
+local Player = require("stdlib.event.player")
 
 --Called before settings are pasted, Allows us to retrieve the existing stored request slots
 local function on_pre_entity_settings_pasted(event)

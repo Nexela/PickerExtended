@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------
 --[[Belt Brush]]--
 -------------------------------------------------------------------------------
-local Player = require("stdlib.player")
+local Player = require("stdlib.event.player")
 local Position = require("stdlib.area.position")
 local Area = require("stdlib.area.area")
 local Pad = require("picker.adjustment-pad")

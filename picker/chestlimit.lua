@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------
 --[[Chest Limiter]]--
 -------------------------------------------------------------------------------
-local Player = require("stdlib/player")
+local Player = require("stdlib.event.player")
 local Pad = require("picker.adjustment-pad")
 
 local match_to_item = {

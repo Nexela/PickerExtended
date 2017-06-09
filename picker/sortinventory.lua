@@ -4,7 +4,7 @@
 --Modified from "Manual Inventory Sort" by "theRustyKnife"
 --https://mods.factorio.com/mods/theRustyKnife/manual-inventory-sort
 
-local Player = require("stdlib/player")
+local Player = require("stdlib.event.player")
 
 -------------------------------------------------------------------------------
 --[[Helpers]]--

@@ -10,18 +10,18 @@ require("stdlib.string")
 require("stdlib.defines.color")
 require("stdlib.defines.time")
 require("stdlib.event.event")
+require("stdlib.event.player")
+require("stdlib.event.force")
 require("stdlib.event.gui")
 
 -------------------------------------------------------------------------------
 --[[INIT]]--
 -------------------------------------------------------------------------------
-local Player = require("stdlib.player")
 Event.register(Event.core_events.configuration_changed,
     function (event)
         if event.data and event.data.mod_changes and event.data.mod_changes[MOD.name] then
             global._changes = global._changes or {}
             global._changes[event.data.mod_changes[MOD.name].new_version] = event.data.mod_changes[MOD.name].old_version or "0.0.0"
-            Player.init()
             for _, player in pairs(game.players) do
                 local gui = player.gui.center["picker_quick_picker"]
                 if gui then gui.destroy() end
@@ -33,7 +33,6 @@ Event.register(Event.core_events.configuration_changed,
 Event.register(Event.core_events.init, function()
         global._changes = {}
         global._changes[game.active_mods[MOD.name]] = "0.0.0"
-        Player.init()
     end
 )
 

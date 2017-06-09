@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------
 --[[Picker Dolly]]--
 -------------------------------------------------------------------------------
-local Player = require("stdlib.player")
+local Player = require("stdlib.event.player")
 local Area = require("stdlib.area.area")
 local Position = require("stdlib.area.position")
 local lib = require("picker.lib")
@@ -9,8 +9,13 @@ local lib = require("picker.lib")
 Event.dolly_moved = script.generate_event_name()
 MOD.interfaces["dolly_moved_entity_id"] = function() return Event.dolly_moved end
 --[[
-Event = {player_index = player_index, moved_entity = entity}
---In your mods on_load and on_init
+Event table returned with the event
+    player_index = player_index, --The index of the player who moved the entity
+    moved_entity = entity, --The entity that was moved
+    start_pos = position --The position that the entity was moved from
+}
+--In your mods on_load and on_init, create an event handler for the dolly_moved_entity_id
+--Adding the event registration in on_load and on_init you will not have to add picker as an optional dependency
 if remote.interfaces["picker"] and remote.interfaces["picker"]["dolly_moved_entity_id"] then
     script.on_event(remote.call("picker", "dolly_moved_entity_id"), function_to_update_positions)
 end
@@ -28,6 +33,9 @@ local function blacklist(entity)
         ["tile-ghost"] = true,
         ["player"] = true,
         ["resource"] = true,
+        ["car"] = true,
+        ["construction-robot"] = true,
+        ["logisitic-rotbot"] = true,
     }
     return names[entity.name] or types[entity.type]
 end
@@ -97,6 +105,10 @@ local function move_combinator(event)
 
             local sel_area = Area.to_selection_area(entity)
             local item_area = Area.translate(Area.to_collision_area(entity), direction, distance)
+
+            if Area.size(sel_area) <= 0 then sel_area = Area.expand(sel_area, .01) end
+            if Area.size(item_area) <= 0 then item_area = Area.expand(item_area, .01) end
+
             local update = entity.surface.find_entities_filtered{area = Area.expand(sel_area, 32), force=entity.force}
             local items_on_ground = entity.surface.find_entities_filtered{type = "item-entity", area = item_area}
             local proxy = entity.surface.find_entities_filtered{name = "item-request-proxy", area = sel_area, force = player.force}[1]
@@ -174,7 +186,7 @@ Event.register({"dolly-move-north", "dolly-move-east", "dolly-move-south", "doll
 local function try_rotate_combinator(event)
     local player, pdata = Player.get(event.player_index)
     local entity
-    if player.selected and player.selected.force == player.force and oblong_combinators[player.selected.name] then
+    if player.selected and player.selected.force == player.force then
         entity = player.selected
     elseif pdata.dolly and pdata.dolly.valid then
         if event.tick <= pdata.dolly_tick + defines.time.second * 10 then
@@ -184,7 +196,7 @@ local function try_rotate_combinator(event)
         end
     end
 
-    if entity then
+    if entity and oblong_combinators[entity.name] then
         if player.can_reach_entity(entity) then
             pdata.dolly = entity
             local diags = {
@@ -211,9 +223,11 @@ end
 Event.register("dolly-rotate-rectangle", try_rotate_combinator)
 
 local function rotate_saved_dolly(event)
-    local _, pdata = Player.get(event.player_index)
+    local player, pdata = Player.get(event.player_index)
     local entity
-    if pdata.dolly and pdata.dolly.valid then
+    if player.selected and player.selected.force == player.force then
+        entity = player.selected
+    elseif pdata.dolly and pdata.dolly.valid then
         if event.tick <= pdata.dolly_tick + defines.time.second * 10 then
             entity = pdata.dolly
         else
@@ -221,6 +235,7 @@ local function rotate_saved_dolly(event)
         end
     end
     if entity and entity.supports_direction then
+        pdata.dolly = entity
         local _, w, h = Area.size(entity.prototype.collision_box)
         if w == h then
             entity.direction = Position.next_direction(entity.direction)

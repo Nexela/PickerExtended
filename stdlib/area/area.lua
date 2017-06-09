@@ -173,7 +173,7 @@ end
 --- Translates an area in the given direction
 -- @tparam LuaBoundingBox area the area to translate
 -- @tparam defines.direction direction in which to translate
--- @tparam[opt=1] number distance distance of the translation
+-- @tparam number distance distance of the translation
 -- @treturn LuaBoundingBox a new translated area
 function Area.translate(area, direction, distance)
     fail_if_missing(area, 'missing area argument')
@@ -225,7 +225,7 @@ end
 
 --- Iterates an area in a spiral inner-most to outer-most fashion.
 -- @usage for x, y in Area.spiral_iterate({{-2, -1}, {2, 1}}) do
--- print('(' .. x .. ', ' .. y .. ')')
+--   print('(' .. x .. ', ' .. y .. ')')
 -- end
 -- prints: (0, 0) (1, 0) (1, 1) (0, 1) (-1, 1) (-1, 0) (-1, -1) (0, -1) (1, -1) (2, -1) (2, 0) (2, 1) (-2, 1) (-2, 0) (-2, -1)
 -- @tparam LuaBoundingBox area the area
@@ -338,9 +338,8 @@ function Area.to_collision_area(entity)
 
     local pos = entity.position
     local bb = entity.prototype.collision_box
-
-
-    if entity.direction ~= defines.direction.north then
+    if entity.direction and (entity.direction == defines.direction.west or entity.direction == defines.direction.east) then
+        --Let area.rotate determine if the box is rotatable, no point in duplicated code for it.
         return Area.rotate(Area.offset(bb, pos))
     end
     return Area.offset(bb, pos)
@@ -351,11 +350,11 @@ end
 -- @treturn LuaBoundingBox
 function Area.to_selection_area(entity)
     fail_if_missing(entity, "missing entity argument")
-
     local pos = entity.position
     local bb = entity.prototype.selection_box
 
-    if entity.direction ~= defines.direction.north then
+    if entity.direction and (entity.direction == defines.direction.west or entity.direction == defines.direction.east) then
+        --Let area.rotate determine if the box is rotatable, no point in duplicated code for it.
         return Area.rotate(Area.offset(bb, pos))
     end
     return Area.offset(bb, pos)

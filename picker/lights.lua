@@ -1,4 +1,4 @@
-local Player = require("stdlib.player")
+local Player = require("stdlib.event.player")
 -------------------------------------------------------------------------------
 --[[Lights]]--
 -------------------------------------------------------------------------------
@@ -7,7 +7,7 @@ local atan2 , pi , floor = math.atan2, math.pi, math.floor
 
 local function orient_players( event )
     local player, pdata = Player.get(event.player_index)
-    if (pdata.last_sel_tick or 0) <= (game.tick - 30) and player.selected and player.character and not player.vehicle and not player.walking_state.walking then
+    if (pdata.last_sel_tick or 0) <= (game.tick - 10) and player.selected and player.character and not player.vehicle and not player.walking_state.walking then
         if player.mod_settings["picker-search-light"].value then
             --Code optimization by GotLag
             local dx = player.position.x - player.selected.position.x

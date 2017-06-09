@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------
 --[[Copy Chest]]--
 -------------------------------------------------------------------------------
-local Player = require("stdlib.player")
+local Player = require("stdlib.event.player")
 local chest_types = {
     ["container"] = true,
     ["logistic-container"] = true

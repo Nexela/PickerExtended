@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------
 --[[Deconstruction Planner Tools]]--
 -------------------------------------------------------------------------------
-local Player = require("stdlib.player")
+local Player = require("stdlib.event.player")
 local lib = require("picker.lib")
 
 local function get_or_create_deconstructor_gui(player)

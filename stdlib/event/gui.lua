@@ -72,7 +72,7 @@ function Event.Gui.dispatch(event)
                     event.text = gui_element_text
                 local success, err = pcall(handler, event)
                 if not success then
-                    Game.print_all(err)
+                    game.print(err)
                 end
             end
         end

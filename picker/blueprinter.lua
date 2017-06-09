@@ -3,7 +3,7 @@
 -------------------------------------------------------------------------------
 --Mirroring and Upgradeing code from "Foreman", by "Choumiko"
 
-local Player = require("stdlib.player")
+local Player = require("stdlib.event.player")
 local Area = require("stdlib.area.area")
 local Position = require("stdlib.area.position")
 local lib = require("picker.lib")
