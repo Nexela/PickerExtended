@@ -126,7 +126,7 @@ data:extend{
         type = "bool-setting",
         name = "picker-hide-planners",
         setting_type = "startup",
-        default_value = true,
+        default_value = false,
         order = "picker-e[hide-planners]-b"
     },
     {
@@ -202,5 +202,14 @@ data:extend{
         minimum_value = 1,
         maximum_value = 100000,
         order = "picker-g[tiles]-b"
+    },
+    {
+        type = "int-setting",
+        name = "picker-notes-slot-count",
+        setting_type = "startup",
+        default_value = 51,
+        maximum_value = 200,
+        minimum_value = 1,
+        order = "picker-e[notes]-a"
     },
 }

@@ -331,3 +331,44 @@ function table.remove_keys(tbl, keys)
     end
     return tbl
 end
+
+--- Returns the number of keys in a table, if func is passed only count keys when the function is true.
+-- @tparam table tbl to count keys
+-- @tparam[opt] function func to incremement counter
+-- @param[optchain] ... additional arguments passed to the function
+-- @treturn number The number of keys matching the function or the number of all keys if func isn't passed
+-- @treturn number The total number of keys
+-- @usage local a = { 1, 2, 3, 4, 5}
+-- table.count_keys(a) -- produces: 5, 5
+-- @usage local a = {1, 2, 3, 4, 5}
+-- table.count_keys(a, function(v, k) return k % 2 == 1 end) -- produces: 3, 5
+function table.count_keys(tbl, func, ...)
+    if type(tbl) ~= 'table' then return 0, 0 end
+    local count, total = 0, 0
+    for k, v in pairs(tbl) do
+        total = total + 1
+        if func then
+            if func(v, k, ...) then
+                count = count + 1
+            end
+        else
+            count = count + 1
+        end
+    end
+    return count, total
+end
+
+--- Returns an inverted (value = key) copy of the given table. If the values are not unique, the assigned key depends on the order of pairs().
+-- @usage local a = {k1 = 'foo', k2 = 'bar'}
+--table.invert(a) --returns {'foo' = k1, 'bar' = k2}
+-- @usage local b = {k1 = 'foo', k2 = 'bar', k3 = 'bar'}
+--table.invert(b) --returns {'foo' = k1, 'bar' = ?}
+-- @tparam table tbl the table to invert
+-- @treturn table a new table with inverted mapping
+function table.invert(tbl)
+    local inverted = {}
+    for k,v in pairs(tbl) do
+        inverted[v] = k
+    end
+    return inverted
+end

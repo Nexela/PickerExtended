@@ -79,6 +79,7 @@ require("picker.filterfill")
 require("picker.vehicles")
 --require("picker.usedfor")
 require("picker.helmod")
+require("picker.notes")
 
 -------------------------------------------------------------------------------
 --[[Remote Interfaces]]--

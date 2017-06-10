@@ -12,7 +12,6 @@ local function picker_hide_minimap(event)
             player.game_view_settings.show_minimap = true
         end
     end
-
 end
 Event.register(defines.events.on_selected_entity_changed, picker_hide_minimap)
 
