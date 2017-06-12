@@ -24,7 +24,7 @@ local function copy_chest(event)
                 --clone inventory 1 to inventory 2
                 local src_inv = src.get_inventory(defines.inventory.chest)
                 local dest_inv = dest.get_inventory(defines.inventory.chest)
-                if src_inv then
+                if src_inv and src_inv ~= dest_inv then
                     for i = 1, #src_inv do
                         local stack = src_inv[i]
                         if stack and stack.valid_for_read then
