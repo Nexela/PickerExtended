@@ -95,6 +95,10 @@ A quick increase/decrease pad using the +/- keys or the buttons on the gui. Mods
 
 ![Picker Adjustment Pad in Action](https://github.com/Nexela/PickerExtended/raw/master/web/picker-adjustment-pad.gif)
 
+### NEW Picker Sticky Notes
+Sticky notes are now a part of Picker Extended, Leave notes everywhere! Originally developed by BinbinHfr, taken over by NiftyManiac. <https://forums.factorio.com/viewtopic.php?f=92&t=30980&p=195631>
+![Picker Notes](https://github.com/Nexela/PickerExtended/raw/master/web/stickynotes.png)
+
 ### Picker Small Fixes
 -   Picker Reacher, Comes default with modestly increased reach distances. Along with startup mod options to easily change them to suit your needs.
 -   Construction and Logistic robots can't be plucked from the air. Comes with startup option to enable/disable this feature.  Also fixes bots going to quickbar by default.

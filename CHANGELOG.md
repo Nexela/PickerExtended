@@ -2,6 +2,11 @@ TODO:
 picker fast replace stuff
 picker used for
 
+2.8.0
+Add Picker notes based on sticky notes
+Bug fixes
+Add more types to hide minimap
+
 2.7.3
 Forgot to uncomment something!
 

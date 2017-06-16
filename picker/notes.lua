@@ -67,7 +67,7 @@ local function menu_note( player, pdata, open_or_close )
             frame = flow.add{type = "frame", name = "frm_stknt", caption = {"notes-gui.title", note.n}, style = "frame_stknt_style", direction = "vertical"}
 
             local table_main = frame.add{type = "table", name = "tab_stknt_main", colspan = 1, style = "picker_table"}
-            table_main.add{type = "textfield", name = "txt_stknt", text = note.text, style = "textfield_stknt_style"}
+            table_main.add{type = "text-box", name = "txt_stknt", text = note.text, style = "textbox_stknt_style", word_wrap = true}
 
             if not settings.global["picker-notes-use-color-picker"].value then
                 local table_colors = table_main.add{type = "table", name = "tab_stknt_colors", style = "picker_table", colspan = 10}
@@ -896,4 +896,8 @@ function interfaces.modify_note(entity,par)
     end
 end
 
-remote.add_interface("StickyNotes", interfaces)
+--Add to picker and StickyNotes interface
+for name, func in pairs(interfaces) do
+    MOD.interfaces[name] = func
+end
+if not remote.interfaces["StickyNotes"] then remote.add_interface("StickyNotes", interfaces) end

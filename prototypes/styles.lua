@@ -268,6 +268,32 @@ style.textfield_stknt_style =
     },
 }
 
+style.textbox_stknt_style =
+{
+    type = "textbox_style",
+    font="font_bold_stknt",
+    --align = "left",
+    font_color = {},
+    default_font_color={r=1, g=1, b=1},
+    hovered_font_color={r=1, g=1, b=1},
+    selection_background_color= {r=0.66, g=0.7, b=0.83},
+    top_padding = 0,
+    bottom_padding = 0,
+    left_padding = 1,
+    right_padding = 5,
+    minimal_width = 275,
+    minimal_height = 75,
+    maximal_width = 275,
+    graphical_set =
+    {
+        type = "composition",
+        filename = "__core__/graphics/gui.png",
+        priority = "extra-high-no-scale",
+        corner_size = {3, 3},
+        position = {16, 0}
+    },
+}
+
 style.button_stknt_style =
 {
     type="button_style",

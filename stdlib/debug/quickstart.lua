@@ -194,8 +194,6 @@ function quickstart.on_player_created(event)
                     train.manual_mode = false
                 end
             end
-            --x=22, 15, 8, y=39, o=.25
-
         end
 
         if QS.get("center_map_tag", false) then
