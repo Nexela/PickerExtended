@@ -5,7 +5,6 @@
 
 require 'stdlib/event/event'
 local fail_if_missing = require 'stdlib/core'['fail_if_missing']
-local Game = require('stdlib/game')
 
 Event.Gui = {
     _registry = {},

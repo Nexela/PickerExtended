@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------
 --[[Picker Hide Minimap]]--
 -------------------------------------------------------------------------------
-local hide_types = table.arr_to_bool{"logistic-container", "electrical-pole", "roboport"}
+local hide_types = table.arr_to_bool{"logistic-container", "electric-pole", "roboport"}
 
 local function picker_hide_minimap(event)
     local player = game.players[event.player_index]
