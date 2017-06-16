@@ -786,12 +786,22 @@ end
 Event.register(Event.core_events.load, on_load)
 
 local function on_init()
-    global.notes_by_invis = global.notes_by_invis or {}
-    global.notes_by_target = global.notes_by_target or {}
-    global.n_note = global.n_note or 0
+    global.notes_by_invis = {}
+    global.notes_by_target = {}
+    global.n_note = 0
     register_conditionals()
 end
 Event.register(Event.core_events.init, on_init)
+
+local function on_configuration_changed(event)
+    if event.mod_changes and event.mod_changes["PickerExtended"] then
+        global.notes_by_invis = global.notes_by_invis or {}
+        global.notes_by_invis = global.notes_by_invis or {}
+        global.notes_by_target = global.notes_by_target or {}
+        global.n_note = global.n_note or 0
+    end
+end
+Event.register(Event.core_events.configuration_changed, on_configuration_changed)
 
 -------------------------------------------------------------------------------
 --[[Interface]]--

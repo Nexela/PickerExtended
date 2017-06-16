@@ -90,11 +90,6 @@ Removes belts between newly placed underground belts if they are going the same 
 ### Picker Vehicles
 Hotkey to create an alert with the location of the last car you were in CTRL+SHIFT+J, Toggle trains between manual and automatic with J, Smart train toggling. Trains you enter that have 1 or fewer stations will be put into manual mode.
 
-### Picker Adjustment Pad
-A quick increase/decrease pad using the +/- keys or the buttons on the gui. Mods can quickly create their own adjustment pad using a remote call to get or create the window and listening for the pad changed event.
-
-![Picker Adjustment Pad in Action](https://github.com/Nexela/PickerExtended/raw/master/web/picker-adjustment-pad.gif)
-
 ### NEW Picker Sticky Notes
 Sticky notes are now a part of Picker Extended, Leave notes everywhere! Originally developed by BinbinHfr, taken over by NiftyManiac. <https://forums.factorio.com/viewtopic.php?f=92&t=30980&p=195631>
 ![Picker Notes](https://github.com/Nexela/PickerExtended/raw/master/web/stickynotes.png)

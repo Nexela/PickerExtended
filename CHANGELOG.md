@@ -2,6 +2,9 @@ TODO:
 picker fast replace stuff
 picker used for
 
+2.8.1
+Forgot to do initial note config changed
+
 2.8.0
 Add Picker notes based on sticky notes
 Bug fixes
