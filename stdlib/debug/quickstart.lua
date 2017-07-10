@@ -6,8 +6,8 @@ local tracks = require("stdlib.debug.train-tracks")
 local QS = Config.new((MOD and MOD.config and MOD.config.quickstart) or {})
 
 if remote.interfaces["quickstart-script"] then
-    if game then game.print("Existing quickstart script - "..remote.call("quickstart-script", "creative_mode_quickstart_registered_to")) end
-    return remote.call("quickstart-script", "registered_to")
+    --if game then game.print("Existing quickstart script - "..remote.call("quickstart-script", "creative_mode_quickstart_registered_to")) end
+    return -- remote.call("quickstart-script", "registered_to")
 end
 
 local qs_interface = {}
