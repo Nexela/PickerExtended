@@ -63,7 +63,7 @@ function lib.stack_name(slot, name, is_bp_setup)
         local stack
         if slot.name == name then
             stack = slot
-        elseif slot.name == name.."-book" then
+        elseif slot.type == "blueprint-book" then
             local inv = slot.get_inventory(defines.inventory.item_main)
             local index = slot.active_index
             stack = inv and index and inv[index].valid_for_read and inv[index]

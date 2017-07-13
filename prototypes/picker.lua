@@ -20,61 +20,51 @@ data:extend{
         type = "custom-input",
         name = "picker-make-ghost",
         key_sequence = "CONTROL + Q",
-        consuming = "none"
     },
     {
         type = "custom-input",
         name = "picker-copy-chest",
         key_sequence = "CONTROL + V",
-        consuming = "all"
     },
     {
         type = "custom-input",
         name = "picker-pipe-cleaner",
         key_sequence = "CONTROL + DELETE",
-        consuming = "none"
     },
     {
         type = "custom-input",
         name = "picker-wire-cutter",
         key_sequence = "CONTROL + DELETE",
-        consuming = "none"
     },
     {
         type = "custom-input",
         name = "picker-wire-picker",
         key_sequence = "SHIFT + Q",
-        consuming = "none"
     },
     {
         type = "custom-input",
         name = "picker-beltbrush-corners",
         key_sequence = "CONTROL + SHIFT + R",
-        consuming = "none"
     },
     {
         type = "custom-input",
         name = "picker-beltbrush-balancers",
         key_sequence = "CONTROL + SHIFT + B",
-        consuming = "all"
     },
     {
         type = "custom-input",
         name = "picker-mirror-blueprint",
         key_sequence = "ALT + R",
-        consuming = "all"
     },
     {
         type = "custom-input",
         name = "picker-used-for",
         key_sequence = "CONTROL + SHIFT + ENTER",
-        consuming = "all"
     },
     {
         type = "custom-input",
         name = "picker-dude-wheres-my-car",
         key_sequence = "CONTROL + SHIFT + J",
-        consuming = "none"
     },
 }
 

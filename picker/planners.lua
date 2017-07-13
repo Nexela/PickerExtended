@@ -44,7 +44,7 @@ local function get_or_create_planner_flow(player, destroy)
                 name = 'picker_planner_table_sprite_'..planner,
                 sprite = 'item/'..planner,
                 style = pdata.planners[planner] and 'picker_buttons_med' or 'picker_buttons_med_off',
-                tooltip = {'planner-menu.button', {'item-name.'..planner}}
+                tooltip = {'planner-menu.button', game.item_prototypes[planner].localised_name}
             }
         end
     end
@@ -136,7 +136,7 @@ Event.register("picker-next-planner", cycle_planners)
 local function planners_changed()
     global.planners = {}
     for _, item in pairs(game.item_prototypes) do
-        if item.type == "blueprint" or item.type == "deconstruction-item" or item.type == "selection-tool" or item.name == "resource-monitor" then
+        if item.type == "blueprint-book" or item.type == "blueprint" or item.type == "deconstruction-item" or item.type == "selection-tool" or item.name == "resource-monitor" then
             if not item.name:find("dummy") then
                 global.planners[item.name] = true
             end

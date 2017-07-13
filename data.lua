@@ -1,7 +1,6 @@
 -------------------------------------------------------------------------------
 --[[DATA.LUA]]--
 -------------------------------------------------------------------------------
-local PICKER = require("config")
 
 -------------------------------------------------------------------------------
 --[[Table Mutates]]--
@@ -14,19 +13,23 @@ require("stdlib.defines.time")
 -------------------------------------------------------------------------------
 --[[Picker]]--
 -------------------------------------------------------------------------------
+local PICKER = require("config")
+
 require("prototypes.adjustment-pad")
 require("prototypes.styles")
 require("prototypes.sprites")
 
 require("prototypes.picker")
+require("prototypes.eqkeys")
 require("prototypes.tools")
 require("prototypes.renamer")
 require("prototypes.dollies")
 require("prototypes.zapper")
 require("prototypes.sortinventory")
 require("prototypes.orphans")
-require("prototypes.lights")
+require("prototypes.flashlight")
 require("prototypes.notes")
+require("prototypes.coloredbooks")
 
 if PICKER.DEBUG then
     local developer = require("stdlib.prototype.prototypes.developer")
