@@ -25,6 +25,16 @@ local function zapper(event)
 end
 Event.register(defines.events.on_player_dropped_item, zapper)
 
+local function zap_key(event)
+    local player = Player.get(event.player_index)
+    if player.cursor_stack and player.cursor_stack.valid_for_read
+    	and (player.cursor_stack.type=="blueprint" 
+    		or player.cursor_stack.type=="blueprint-book") then
+    			player.cursor_stack.clear()
+    end
+end
+Event.register("picker-zapper", zap_key)
+
 local inv_map = {
     [defines.events.on_player_main_inventory_changed] = defines.inventory.player_main,
     [defines.events.on_player_quickbar_inventory_changed] = defines.inventory.player_quickbar
