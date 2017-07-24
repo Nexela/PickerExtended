@@ -337,7 +337,11 @@ function Area.to_collision_area(entity)
     fail_if_missing(entity, "missing entity argument")
 
     local pos = entity.position
-    local bb = entity.prototype.collision_box
+    local pr = entity.prototype
+    if (entity.name == "entity-ghost" or entity.name == "tile-ghost") then
+    	 pr = entity.ghost_prototype or entity.prototype
+   	end
+    local bb = pr.collision_box
     if entity.direction and (entity.direction == defines.direction.west or entity.direction == defines.direction.east) then
         --Let area.rotate determine if the box is rotatable, no point in duplicated code for it.
         return Area.rotate(Area.offset(bb, pos))

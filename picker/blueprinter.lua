@@ -83,9 +83,9 @@ Event.register(defines.events.on_put_item, last_item)
 -------------------------------------------------------------------------------
 --[[Make Simple Blueprint]]--
 -------------------------------------------------------------------------------
-local function make_simple_blueprint(event)
-    local player, pdata = Player.get(event.player_index)
-    if player.controller_type ~= defines.controllers.ghost then
+
+local function create_blueprint_internal(player,pdata)
+	    if player.controller_type ~= defines.controllers.ghost then
         if player.selected and not (player.selected.type == "resource" or player.selected.has_flag("not-blueprintable")) then
             if not (player.cursor_stack.valid_for_read and global.planners[player.cursor_stack.name]) then
                 local entity = player.selected
@@ -94,25 +94,26 @@ local function make_simple_blueprint(event)
                         return
                     else
                         local area = Area.to_collision_area(entity)
-                        if Area.size(area) > 0 then
-                            local bp = lib.get_planner(player, "blueprint", "Pipette Blueprint")
-                            if bp then
-                                bp.clear_blueprint()
-                                bp.label = "Pipette Blueprint"
-                                bp.allow_manual_label_change = false
-                                bp.create_blueprint{
-                                    surface = entity.surface,
-                                    force = player.force,
-                                    area = area,
-                                    always_include_tiles = false
-                                }
-                                pdata.new_simple = true
-                                if bp.is_blueprint_setup() then
-                                    local frame = get_or_create_blueprint_gui(player)
-                                    frame["picker_bp_tools_table"]["picker_bp_tools_from"].elem_value = entity.name
-                                    --return bp.is_blueprint_setup() and bp
-                                end
-                            end
+                        if Area.size(area) > 0 then                        	
+													local bp = lib.get_planner(player, "blueprint", "Pipette Blueprint")
+													if bp then
+													    bp.clear_blueprint()
+													    bp.label = "Pipette Blueprint"
+													    bp.allow_manual_label_change = false
+													    bp.create_blueprint{
+													        surface = entity.surface,
+													        force = player.force,
+													        area = area,
+													        always_include_tiles = false
+													    }
+													    pdata.new_simple = true
+													    if bp.is_blueprint_setup() then
+													        local frame = get_or_create_blueprint_gui(player)
+													        frame["picker_bp_tools_table"]["picker_bp_tools_from"].elem_value = entity.name
+													        --return bp.is_blueprint_setup() and bp
+													    end
+													    pdata.create_pipette_bp_next_tick = entity
+													end
                         end
                     end
                 else
@@ -121,8 +122,16 @@ local function make_simple_blueprint(event)
             end
         end
     end
+
+end
+local function make_simple_blueprint(event)
+    local player, pdata = Player.get(event.player_index)
+    
+		create_blueprint_internal(player, pdata)
 end
 Event.register("picker-make-ghost", make_simple_blueprint)
+
+
 
 -------------------------------------------------------------------------------
 --[[Update BP Entities]]--
@@ -296,3 +305,16 @@ end
 Gui.on_click("picker_bp_tools_mirror", mirror_blueprint)
 Event.register("picker-mirror-blueprint", mirror_blueprint)
 Event.register(Event.mirror, mirror_blueprint)
+
+local function create_blueprint_internal_tick(event)
+		for _,p in pairs(game.players) do
+	    local player,pdata = Player.get(p.index)
+	    -- because cleared with Q
+	    if pdata.create_pipette_bp_next_tick and not player.cursor_stack.valid_for_read then
+	    	create_blueprint_internal(player, pdata)
+	    end
+	    pdata.create_pipette_bp_next_tick = nil
+	  end
+end
+
+Event.register(defines.events.on_tick, create_blueprint_internal_tick)
