@@ -11,6 +11,7 @@ if not data.raw["custom-input"]["equipment-toggle-personal-roboport"] then
         t.take_result = t.take_result or t.name
         t.name = "picker-disabled-" .. t.name
         t.construction_radius = 0
+        t.robot_limit = 0
         equipment[#equipment + 1] = t
     end
     for _, v in pairs(data.raw["movement-bonus-equipment"]) do

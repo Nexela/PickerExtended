@@ -8,7 +8,6 @@ data:extend{
         type = "custom-input",
         name = "picker-notes",
         key_sequence = "ALT + W",
-        consuming = "script-only"
     },
 }
 
