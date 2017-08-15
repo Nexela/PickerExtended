@@ -86,6 +86,7 @@ require("picker.filterfill")
 require("picker.vehicles")
 require("picker.helmod")
 --require("picker.usedfor") --Built in what is it used for.
+--require("picker.pingmap")
 require("picker.notes")
 require("picker.coloredbooks")
 require("picker.switchgun")
@@ -96,7 +97,7 @@ require("picker.switchgun")
 MOD.interfaces["write_global"] = function()
     game.write_file("Picker/global.lua", serpent.block(global, {comment=false, nocode=true}), false)
 end
-MOD.interfaces["console"] = require("stdlib.debug.console")
+MOD.interfaces["console"] = require("stdlib.utils.console")
 
 remote.add_interface(MOD.if_name, MOD.interfaces)
 --commands.add_command("picker", "Picker Command", function(event) game.print(serpent.block(event, {comment=false})) end)
