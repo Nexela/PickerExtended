@@ -10,7 +10,7 @@ local lib = require("picker.lib")
 Event.mirror = script.generate_event_name()
 
 -------------------------------------------------------------------------------
---[[BP Tools]]--
+--[[BP Tools]]-- Creates the BP tools frame
 -------------------------------------------------------------------------------
 local function get_or_create_blueprint_gui(player)
     local flow = lib.get_or_create_main_left_flow(player, "picker")
@@ -43,6 +43,10 @@ local function show_bp_tools(event)
 end
 Event.register(defines.events.on_player_cursor_stack_changed, show_bp_tools)
 
+-------------------------------------------------------------------------------
+--[[Blueprint when running out of items]]-- --TODO not needed in .16?
+-------------------------------------------------------------------------------
+--Creates a blueprint item in your hand of the last thing you built if you run out of items.
 local function last_built(event)
     local player, pdata = Player.get(event.player_index)
     if not player.cursor_stack.valid_for_read and player.mod_settings["picker-blueprint-last"].value and pdata.last_put then
@@ -83,6 +87,7 @@ Event.register(defines.events.on_put_item, last_item)
 -------------------------------------------------------------------------------
 --[[Make Simple Blueprint]]--
 -------------------------------------------------------------------------------
+--Makes a simple blueprint of the selected entity, including recipes/modules
 local function make_simple_blueprint(event)
     local player, pdata = Player.get(event.player_index)
     if player.controller_type ~= defines.controllers.ghost then
@@ -125,7 +130,7 @@ end
 Event.register("picker-make-ghost", make_simple_blueprint)
 
 -------------------------------------------------------------------------------
---[[Update BP Entities]]--
+--[[Update BP Entities]]-- Update blueprint entities
 -------------------------------------------------------------------------------
 local function update_blueprint(event)
     local player = game.players[event.player_index]
@@ -154,11 +159,9 @@ end
 Gui.on_click("picker_bp_tools_update", update_blueprint)
 
 -------------------------------------------------------------------------------
---[[Quick Picker]]--
+--[[Quick Pick Blueprint]]-- Makes a quick blueprint from the entity selector gui TODO not needed in .16?
 -------------------------------------------------------------------------------
--------------------------------------------------------------------------------
---[[Quick Pick Blueprint]]--
--------------------------------------------------------------------------------
+
 local function create_quick_pick_blueprint(event)
     local player = game.players[event.player_index]
     local stack = lib.stack_name(player.cursor_stack, "blueprint")
@@ -195,7 +198,7 @@ end
 Gui.on_elem_changed("picker_bp_tools_from", create_quick_pick_blueprint)
 
 -------------------------------------------------------------------------------
---[[Mirroring]]--
+--[[Mirroring]]-- Mirrors the current blueprint held in the hand
 -------------------------------------------------------------------------------
 local function get_mirrored_blueprint(blueprint)
     local curves, others, stops, signals, tanks = 9, 0, 4, 4, 2

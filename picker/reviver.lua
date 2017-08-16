@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
---[[Reviver]]--
+--[[Reviver]]-- Revives the selected entity
 -------------------------------------------------------------------------------
 local Position = require("stdlib.area.position")
-local lib = require("picker/lib")
+local lib = require("picker.lib")
 
 local function picker_revive_selected(event)
     local player = game.players[event.player_index]
