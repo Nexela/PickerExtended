@@ -2,10 +2,7 @@
 --[[Picker Extended]]--
 -------------------------------------------------------------------------------
 
-require("stdlib.table")
-require("stdlib.string")
-require("stdlib.defines.color")
-require("stdlib.defines.time")
+require("stdlib.core")
 
 MOD = {}
 MOD.name = "PickerExtended"
@@ -51,7 +48,7 @@ Event.register(defines.events.on_player_joined_game, set_join_options)
 
 if MOD.config.DEBUG then
     log(MOD.name .. " Debug mode enabled")
-    require("stdlib/utils/quickstart")
+    require("stdlib/utils/scripts/quickstart")
 end
 
 -------------------------------------------------------------------------------
@@ -96,7 +93,7 @@ require("picker.switchgun")
 MOD.interfaces["write_global"] = function()
     game.write_file("Picker/global.lua", serpent.block(global, {comment=false, nocode=true}), false)
 end
-MOD.interfaces["console"] = require("stdlib.utils.console")
+MOD.interfaces["console"] = require("stdlib.utils.scripts.console")
 
 remote.add_interface(MOD.if_name, MOD.interfaces)
 --commands.add_command("picker", "Picker Command", function(event) game.print(serpent.block(event, {comment=false})) end)

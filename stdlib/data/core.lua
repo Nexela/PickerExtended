@@ -1,7 +1,7 @@
-local Core = {}
+local Core = require 'stdlib/core'
 
 --Quick to use empty sprite
-function Core.empty_sprite()
+function Core.empty_picture()
     return {
         filename = "__core__/graphics/empty.png",
         priority = "extra-high",
@@ -11,11 +11,12 @@ function Core.empty_sprite()
 end
 
 --Quick to use empty animation
-function Core.empty_animation()
+function Core.empty_pictures()
+    local empty = Core.empty_picture()
     return {
-        filename = Core.empty_sprite().filename,
-        width = Core.empty_sprite().width,
-        height = Core.empty_sprite().height,
+        filename = empty.filename,
+        width = empty.width,
+        height = empty.height,
         line_length = 1,
         frame_count = 1,
         shift = { 0, 0},
@@ -24,6 +25,32 @@ function Core.empty_animation()
     }
 end
 
+function Core.empty_animations()
+    return {
+        Core.empty_pictures()
+    }
+end
+
+function Core.empty_connection_points(count)
+    local points = {}
+    for i = 1, count or 1, 1 do
+        points[i] = {
+            shadow =
+            {
+                copper = {0, 0},
+                green = {0, 0},
+                red = {0, 0}
+            },
+            wire =
+            {
+                copper = {0, 0},
+                green = {0, 0},
+                red = {0, 0}
+            }
+        }
+    end
+    return points
+end
 -- render layers
 ----"tile-transition", "resource", "decorative", "remnants", "floor", "transport-belt-endings", "corpse", "floor-mechanics", "item", "lower-object", "object", "higher-object-above",
 ----"higher-object-under", "wires", "lower-radius-visualization", "radius-visualization", "entity-info-icon", "explosion", "projectile", "smoke", "air-object", "air-entity-info-con",

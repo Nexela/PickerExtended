@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------
 --[[StickyNotes]]--
 -------------------------------------------------------------------------------
-local Prototype = require("stdlib.prototype.prototype")
+local Data = require("stdlib.data.data")
 
 data:extend{
     {
@@ -64,7 +64,7 @@ local sticky_note_item = {
     stack_size = 100
 }
 
-local sticky_note = Prototype.duplicate( "container", "wooden-chest", "sticky-note", true)
+local sticky_note = Data.duplicate( "container", "wooden-chest", "sticky-note", true)
 sticky_note.icon = "__PickerExtended__/graphics/sticky-note.png"
 sticky_note.picture =
 {
@@ -107,7 +107,7 @@ local sticky_sign_item = {
     stack_size = 100
 }
 
-local sticky_sign = Prototype.duplicate( "container", "wooden-chest", "sticky-sign", true )
+local sticky_sign = Data.duplicate( "container", "wooden-chest", "sticky-sign", true )
 sticky_sign.icon = "__PickerExtended__/graphics/sign-icon.png"
 sticky_sign.picture =
 {
@@ -147,17 +147,17 @@ local invis_note = {
     item_slot_count = settings.startup["picker-notes-slot-count"].value,
     sprites =
     {
-        north = Prototype.empty_sprite(),
-        east = Prototype.empty_sprite(),
-        south = Prototype.empty_sprite(),
-        west = Prototype.empty_sprite(),
+        north = Data.empty_picture(),
+        east = Data.empty_picture(),
+        south = Data.empty_picture(),
+        west = Data.empty_picture(),
     },
     activity_led_sprites =
     {
-        north = Prototype.empty_sprite(),
-        east = Prototype.empty_sprite(),
-        south = Prototype.empty_sprite(),
-        west = Prototype.empty_sprite()
+        north = Data.empty_picture(),
+        east = Data.empty_picture(),
+        south = Data.empty_picture(),
+        west = Data.empty_picture()
     },
     activity_led_light_offsets = {{0, 0}, {0, 0}, {0, 0}, {0, 0}},
     circuit_wire_max_distance = 0,
@@ -182,7 +182,7 @@ local invis_note = {
     }
 }
 
-local sticky_text = Prototype.duplicate("flying-text", "flying-text", "sticky-text")
+local sticky_text = Data.duplicate("flying-text", "flying-text", "sticky-text")
 sticky_text.icon = "__PickerExtended__/graphics/sign-icon.png"
 sticky_text.speed = 0
 sticky_text.time_to_live = 300

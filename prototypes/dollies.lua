@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------
 --[[Combinator Dollies]]--
 -------------------------------------------------------------------------------
-local Prototype = require("stdlib.prototype.prototype")
+local Data = require("stdlib.data.data")
 data:extend{
     {
         type = "custom-input",
@@ -35,13 +35,4 @@ data:extend{
     }
 }
 
-local sound = {
-    type = "explosion",
-    name = "picker-cant-move",
-    animations = {Prototype.empty_animation()},
-    sound = {
-        filename = "__core__/sound/cannot-build.ogg",
-        volume = .75
-    },
-}
-data:extend{sound}
+Data.create_sound("picker-cant-move", "__core__/sound/cannot-build.ogg", .75)

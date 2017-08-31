@@ -1,4 +1,4 @@
-local Prototype = require("stdlib.prototype.prototype")
+local Data = require("stdlib.data.data")
 -------------------------------------------------------------------------------
 --[[Flashlight Toggle]]--
 -------------------------------------------------------------------------------
@@ -8,7 +8,7 @@ data:extend{
         type = "explosion",
         name = "flashlight-button-press",
         flags = {"not-on-map"},
-        animations = {Prototype.empty_animation()},
+        animations = Data.empty_animations(),
         light = {intensity = 0, size = 0},
         sound =
         {

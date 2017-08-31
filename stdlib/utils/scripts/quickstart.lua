@@ -1,13 +1,7 @@
-require("stdlib.event.event")
-require("stdlib.config.config")
-local Area = require("stdlib.area.area")
-
-local function prequire_table(m)
-    local ok, err = pcall(require, m)
-    if ok and type(err) == "table" then
-        return err
-    end
-end
+local Core = require 'stdlib/core'
+require 'stdlib/event/event'
+local Config = require 'stdlib.config.config'
+local Area = require 'stdlib.area.area'
 
 if not remote.interfaces["quickstart-script"] then
     local qs_interface = {}
@@ -22,7 +16,7 @@ else
     return
 end
 
-local QS = Config.new(prequire_table("config-quickstart") or {})
+local QS = Config.new(Core.prequire("config-quickstart") or {})
 local quickstart = {}
 
 function quickstart.on_player_created(event)
@@ -170,20 +164,20 @@ function quickstart.on_player_created(event)
                     a = surface.create_entity{name="debug-chunk-marker", position={0,-i}}
                     a.graphics_variation = 3
                 end
-                local tiles = {}
-                for i = .5, 32.5, 1 do
-                    tiles[#tiles + 1] = {name = "hazard-concrete-left", position = {i, 32.5}}
-                    tiles[#tiles + 1] = {name = "hazard-concrete-right", position = {-i, 32.5}}
-                    tiles[#tiles + 1] = {name = "hazard-concrete-left", position = {i, -32.5}}
-                    tiles[#tiles + 1] = {name = "hazard-concrete-right", position = {-i, -32.5}}
-
-                    tiles[#tiles + 1] = {name = "hazard-concrete-left", position = {32.5, i}}
-                    tiles[#tiles + 1] = {name = "hazard-concrete-left", position = {32.5, -i}}
-                    tiles[#tiles + 1] = {name = "hazard-concrete-right", position = {-32.5, i}}
-                    tiles[#tiles + 1] = {name = "hazard-concrete-right", position = {-32.5, -i}}
-                end
-                surface.set_tiles(tiles)
             end
+            local tiles = {}
+            for i = .5, 32.5, 1 do
+                tiles[#tiles + 1] = {name = "hazard-concrete-left", position = {i, 32.5}}
+                tiles[#tiles + 1] = {name = "hazard-concrete-right", position = {-i, 32.5}}
+                tiles[#tiles + 1] = {name = "hazard-concrete-left", position = {i, -32.5}}
+                tiles[#tiles + 1] = {name = "hazard-concrete-right", position = {-i, -32.5}}
+
+                tiles[#tiles + 1] = {name = "hazard-concrete-left", position = {32.5, i}}
+                tiles[#tiles + 1] = {name = "hazard-concrete-left", position = {32.5, -i}}
+                tiles[#tiles + 1] = {name = "hazard-concrete-right", position = {-32.5, i}}
+                tiles[#tiles + 1] = {name = "hazard-concrete-right", position = {-32.5, -i}}
+            end
+            surface.set_tiles(tiles)
         end
 
         if QS.get("starter_tracks", false) then
@@ -244,17 +238,24 @@ function quickstart.on_player_created(event)
             Event.register(defines.events.on_chunk_generated, create_center_map_tag)
         end
 
-        if QS.get("setup_power", false) and game.active_mods["creative-mode"] then
-            if game.item_prototypes["creative-mode_energy-source"] then
-                local es = surface.create_entity{name="creative-mode_energy-source", position={-1, -34}, force=force}
+        if QS.get("setup_power", false) then
+            if game.entity_prototypes["debug-energy-interface"] then
+                local es = surface.create_entity{name="debug-energy-interface", position={0, 0}, force=force}
+                es.destructible = false
                 script.raise_event(defines.events.on_built_entity, {created_entity = es, player_index = player.index})
-                local sb = surface.create_entity{name="creative-mode_super-substation", position={1, -34}, force=force}
-                script.raise_event(defines.events.on_built_entity, {created_entity = sb, player_index = player.index})
-                local radar = surface.create_entity{name="creative-mode_super-radar", position={3.5, -34.5}, force=force}
-                script.raise_event(defines.events.on_built_entity, {created_entity = radar, player_index = player.index})
-                local rb = surface.create_entity{name="creative-mode_super-roboport", position={-4, -35}, force=force}
-                script.raise_event(defines.events.on_built_entity, {created_entity = rb, player_index = player.index})
             end
+            if game.entity_prototypes["debug-substation"] then
+                local sb = surface.create_entity{name="debug-substation", position={0, 0}, force=force}
+                sb.destructible = false
+                script.raise_event(defines.events.on_built_entity, {created_entity = sb, player_index = player.index})
+            end
+        end
+
+        if QS.get("setup_creative_mode", false) and game.active_mods["creative-mode"] then
+            local radar = surface.create_entity{name="creative-mode_super-radar", position={3.5, -34.5}, force=force}
+            script.raise_event(defines.events.on_built_entity, {created_entity = radar, player_index = player.index})
+            local rb = surface.create_entity{name="creative-mode_super-roboport", position={-4, -35}, force=force}
+            script.raise_event(defines.events.on_built_entity, {created_entity = rb, player_index = player.index})
         end
     end
 end

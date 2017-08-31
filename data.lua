@@ -5,16 +5,11 @@
 -------------------------------------------------------------------------------
 --[[Table Mutates]]--
 -------------------------------------------------------------------------------
-require("stdlib.table")
-require("stdlib.string")
-require("stdlib.defines.color")
-require("stdlib.defines.time")
+require("stdlib/core")
 
 -------------------------------------------------------------------------------
 --[[Picker]]--
 -------------------------------------------------------------------------------
-local PICKER = require("config")
-
 require("prototypes.adjustment-pad")
 require("prototypes.styles")
 require("prototypes.sprites")
@@ -30,8 +25,3 @@ require("prototypes.orphans")
 require("prototypes.flashlight")
 require("prototypes.notes")
 require("prototypes.coloredbooks")
-
-if PICKER.DEBUG then
-    local developer = require("stdlib.prototype.prototypes.developer")
-    developer.make_chunk_markers("PickerExtended")
-end

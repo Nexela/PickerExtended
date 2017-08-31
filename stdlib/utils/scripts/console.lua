@@ -1,13 +1,15 @@
 --- Debug console.
--- Creates a textfield allowing you to run commands directly in your mods enviorment.
--- <br>Requires use of the stdlib event system for gui interaction.
--- <br>Console Code from adil modified for use with stdlib.
+-- Creates a textfield allowing you to run commands directly in your mod's enviorment.
+-- <p>This module requires the use of stdlib's @{Event} module for GUI interactions.
+-- <p>This module was originally the ***Console*** code from a modder named ***adil***, which has been modified for use with stdlib.
 -- @module Console
--- @usage remote.add_interface("my_interface", {show=require('stdlib/utils/console')})
+-- @usage
+-- remote.add_interface("my_interface", {show = require("stdlib/utils/scripts/console")})
 -- /c remote.call("my_interface", "show", game.player)
--- --In the window that appears you can run lua code directly on your mod, including global, any globals.
+-- --In the window that appears you can run lua code directly on your mod, including globals.
 
-require("stdlib.event.gui")
+local Core = require 'stdlib/core'
+require 'stdlib/event/gui'
 
 local make_globals_for_use_in_console = {
     "game", "area.area", "area.position", "area.tile", "area.surface", "area.chunk", "color.color",
@@ -19,8 +21,8 @@ for _, req in pairs (make_globals_for_use_in_console) do
 end
 
 --TODO fix for .16 when script.mod_name is implemented
-local ok, mod_name = pcall(function() return script.mod_name end)
-local prefix = (ok and mod_name) or (MOD and MOD.console_prefix) or "console"
+local prefix = Core.get_mod_name(MOD and MOD.console_prefix or "stdlib")
+
 local names = {
     frame = prefix..'_console',
     scroll = prefix..'_console_scroll',
@@ -61,7 +63,6 @@ local function create_gui(player)
         create_gui_player(player)
     end
 end
-
 
 local function enter(event)
     local p = game.players[event.player_index]
