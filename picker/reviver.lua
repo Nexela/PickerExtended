@@ -4,6 +4,11 @@
 local Position = require("stdlib.area.position")
 local lib = require("picker.lib")
 
+--as of 08/30 this is mostly incorporated into base.
+--Modules are still not revived,
+--items on ground are not picked up
+--tile proxys are not selected  Should be added to pippette to put in hand
+
 local function picker_revive_selected(event)
     local player = game.players[event.player_index]
     if player.selected and player.controller_type ~= defines.controllers.ghost then
@@ -43,6 +48,6 @@ local function picker_revive_selected(event)
         end
     end
 end
-Event.register("picker-select", picker_revive_selected)
+--Event.register("picker-select", picker_revive_selected)
 
 return picker_revive_selected

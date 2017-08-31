@@ -9,7 +9,6 @@
 
 local colors = require("config").colored_books
 
-
 local function make_icons(color)
     return {
         {
@@ -29,13 +28,14 @@ default_book.icons = make_icons({r=0.3, g=0.75, b=1.0, a=1.0})
 
 --Add in the aditional colors
 if settings.startup["picker-colored-books"].value then
-for name, color in pairs(colors) do
-    local book = table.deepcopy(data.raw["blueprint-book"]["blueprint-book"])
-    book.name = name.."-book"
-    book.icons = make_icons(color)
-    book.localised_name = {"item-name.colored-book", {"colors."..name}}
-    data:extend{book}
-end
+    for name, color in pairs(colors) do
+        local book = table.deepcopy(data.raw["blueprint-book"]["blueprint-book"])
+        book.name = name.."-book"
+        book.icons = make_icons(color)
+        book.localised_name = {"item-name.colored-book", {"colors."..name}}
+        book.show_in_library = false
+        data:extend{book}
+    end
 end
 
 data:extend{

@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------------
---[[Sort Inventory]]--
+--[[Sort Inventory]]-- TODO this needs work
 -------------------------------------------------------------------------------
 --Modified from "Manual Inventory Sort" by "theRustyKnife"
 --https://mods.factorio.com/mods/theRustyKnife/manual-inventory-sort

@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------------
---[[Picker Hide Minimap]]--
+--[[Picker Hide Minimap]]-- TODO add hotkeys to enable/disable map and other elements
 -------------------------------------------------------------------------------
 local hide_types = table.arr_to_bool{"logistic-container", "electric-pole", "roboport"}
 

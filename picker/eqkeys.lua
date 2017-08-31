@@ -69,6 +69,7 @@ Event.armor_hotkeys["toggle-equipment-movement-bonus"] = function (event) toggle
 Event.armor_hotkeys["toggle-equipment-roboport"] = function (event) toggle_armor_modules(event, "equipment-bot-chip-all", get_eq_type_names("roboport-equipment")) end
 Event.armor_hotkeys["toggle-equipment-night-vision"] = function (event) toggle_armor_modules(event, "equipment-bot-chip-all", get_eq_type_names("night-vision-equipment")) end
 Event.armor_hotkeys["toggle-equipment-belt-immunity"] = function(event) toggle_armor_modules(event, "equipment-bot-chip-all", get_eq_type_names("belt-immunity-equipment")) end
+--Nanobots toggles
 Event.armor_hotkeys["toggle-equipment-bot-chip-all"] = function (event) toggle_armor_modules(event, "equipment-bot-chip-all", get_eq_type_names("active-defense-equipment")) end
 Event.armor_hotkeys["toggle-equipment-bot-chip-trees"] = function (event) toggle_armor_modules(event, "equipment-bot-chip-trees") end
 Event.armor_hotkeys["toggle-equipment-bot-chip-items"] = function (event) toggle_armor_modules(event, "equipment-bot-chip-items") end

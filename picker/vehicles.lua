@@ -22,7 +22,7 @@ end
 
 local function on_player_driving_changed_state(event)
     local player = game.players[event.player_index]
-    if player.vehicle and lib.get_train_from_vehicle(player.vehicle) and player.mod_settings["picker-auto-manual-train"].value then
+    if player.vehicle and player.vehicle.train and player.mod_settings["picker-auto-manual-train"].value then
         local train = player.vehicle.train
         --Set train to manual
         if #lib.get_passengers(train, player) == 1 and available_train(train) then
@@ -37,7 +37,7 @@ Event.register("toggle-train-control",
     function(event)
         if not game.active_mods["FARL"] then
             local player = game.players[event.player_index]
-            if player.vehicle and lib.get_train_from_vehicle(player.vehicle) then
+            if player.vehicle and player.vehicle.train then
                 player.vehicle.train.manual_mode = not player.vehicle.train.manual_mode
                 local text = player.vehicle.train.manual_mode and {"vehicles.manual-mode"} or {"vehicles.automatic-mode"}
                 player.vehicle.surface.create_entity{name="flying-text", text = text, position=player.vehicle.position, color=defines.color.green}

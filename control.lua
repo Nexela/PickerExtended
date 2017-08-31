@@ -51,7 +51,7 @@ Event.register(defines.events.on_player_joined_game, set_join_options)
 
 if MOD.config.DEBUG then
     log(MOD.name .. " Debug mode enabled")
-    require("stdlib/debug/quickstart")
+    require("stdlib/utils/quickstart")
 end
 
 -------------------------------------------------------------------------------
@@ -79,7 +79,6 @@ require("picker.wiretool")
 require("picker.pipecleaner")
 require("picker.orphans")
 require("picker.beltbrush")
-require("picker.belttools")
 require("picker.pastesettings") --needs on/off user config
 require("picker.flashlight")
 require("picker.filterfill")

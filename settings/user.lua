@@ -74,14 +74,6 @@ data:extend{
         order = "picker-b[find-orphans]-a",
     },
     {
-        type = "string-setting",
-        name = "picker-quick-ug-mode",
-        setting_type = "runtime-per-user",
-        default_value = "safe",
-        allowed_values = {"off", "safe", "medium", "aggresive"},
-        order = "picker-c[quick-ug]-b",
-    },
-    {
         type = "double-setting",
         name = "picker-player-paste-modifier",
         setting_type = "runtime-per-user",

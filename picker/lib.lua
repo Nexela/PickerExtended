@@ -17,11 +17,11 @@ function lib.get_or_create_main_left_flow(player, flow_name)
     return main_flow
 end
 
---vehicle.train errors if vehicle is not a train type.
-function lib.get_train_from_vehicle(vehicle)
-    local ok, result = pcall(function(e) return e.train end, vehicle)
-    if ok then return result end
-end
+-- --vehicle.train errors if vehicle is not a train type.
+-- function lib.get_train_from_vehicle(vehicle)
+--     local ok, result = pcall(function(e) return e.train end, vehicle)
+--     if ok then return result end
+-- end
 
 -- Return a table containing all passengers on the train
 function lib.get_passengers(train, player)

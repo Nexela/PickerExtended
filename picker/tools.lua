@@ -49,14 +49,12 @@ local function erase_ores(event)
                 end
             end
         end
-        --local increment = Position.increment({player.position.x-3.5, player.position.y-1})
         for _, ore in pairs(list) do
             local args = {"ore-eraser.message"}
             args[#args+1] = do_destroy and {"ore-eraser.destroyed"} or {"ore-eraser.count"}
             args[#args+1] = ore.amount
             args[#args+1] = ore.localised_name
             args[#args+1] = ore.count
-            --player.surface.create_entity{name="picker-flying-text", position=increment(0, .5), text = args}
             player.print(args)
         end
     end

@@ -114,7 +114,7 @@ Event.register(defines.events.on_entity_settings_pasted, on_entity_settings_past
 Event.register(defines.events.on_pre_entity_settings_pasted, on_pre_entity_settings_pasted)
 
 -------------------------------------------------------------------------------
---[[Comparator]]--
+--[[Comparator]]-- TODO possibly not needed for .16
 -------------------------------------------------------------------------------
 --Set the default inserter comparator to < for circuit and logistics
 local function set_default_comparator(event)

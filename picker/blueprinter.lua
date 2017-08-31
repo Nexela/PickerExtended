@@ -161,7 +161,6 @@ Gui.on_click("picker_bp_tools_update", update_blueprint)
 -------------------------------------------------------------------------------
 --[[Quick Pick Blueprint]]-- Makes a quick blueprint from the entity selector gui TODO not needed in .16?
 -------------------------------------------------------------------------------
-
 local function create_quick_pick_blueprint(event)
     local player = game.players[event.player_index]
     local stack = lib.stack_name(player.cursor_stack, "blueprint")

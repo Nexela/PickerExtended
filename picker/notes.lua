@@ -447,7 +447,6 @@ local function on_creation( event )
     if ent.name == "entity-ghost" and ent.ghost_name == "invis-note" then
         local revived, rev_ent = ent.revive()
         if revived then
-            --debug_print("Revived invis-note")
             ent = rev_ent
         end
     end
@@ -472,7 +471,6 @@ local function on_creation( event )
         if not note_target then
             note_targets = ent.surface.find_entities_filtered{position = ent.position, force = ent.force}
             for _, target in pairs(note_targets) do
-                --debug_print("target"..target.name)
                 if target.prototype.has_flag("player-creation") then
                     if target.valid and get_note(target) == nil then
                         note_target = target
@@ -595,6 +593,7 @@ Gui.on_click("but_stknt_delete",
         end
     end
 )
+
 Gui.on_click("but_stknt_col_(.*)",
     function(event)
         local _, pdata = Player.get(event.player_index)
@@ -796,7 +795,6 @@ Event.register(Event.core_events.init, on_init)
 local function on_configuration_changed(event)
     if event.mod_changes and event.mod_changes["PickerExtended"] then
         global.notes_by_invis = global.notes_by_invis or {}
-        global.notes_by_invis = global.notes_by_invis or {}
         global.notes_by_target = global.notes_by_target or {}
         global.n_note = global.n_note or 0
     end
@@ -859,6 +857,7 @@ end
 local isset = function(val)
     return val and true or val==false
 end
+
 local writable_fields={--[fieldname]=function(value,note), functions should perform check of the passed values and transformations as needed
     text = function(note,t)
         note.text=t and tostring(t):sub(1, max_chars)

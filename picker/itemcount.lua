@@ -16,7 +16,7 @@ local function get_itemcount_counts(event)
     local player = game.players[event.player_index]
     local stack = player.cursor_stack and player.cursor_stack.valid_for_read and player.cursor_stack
     local gui = get_or_create_itemcount_gui(player)
-    if stack then
+    if stack and stack.prototype.stackable then
         local inventory_count = player.get_item_count(stack.name)
         local vehicle_count
         if player.vehicle and player.vehicle.get_inventory(defines.inventory.car_trunk) then
@@ -24,7 +24,7 @@ local function get_itemcount_counts(event)
         end
         gui.caption = inventory_count .. (vehicle_count and (" ("..vehicle_count..")") or "")
     else
-        gui.caption = 0
+        gui.caption = ""
     end
 end
 

@@ -1,30 +1,46 @@
 require("stdlib.event.event")
 require("stdlib.config.config")
 local Area = require("stdlib.area.area")
-local tracks = require("stdlib.debug.train-tracks")
 
-local QS = Config.new((MOD and MOD.config and MOD.config.quickstart) or {})
-
-if remote.interfaces["quickstart-script"] then
-    --if game then game.print("Existing quickstart script - "..remote.call("quickstart-script", "creative_mode_quickstart_registered_to")) end
-    return -- remote.call("quickstart-script", "registered_to")
+local function prequire_table(m)
+    local ok, err = pcall(require, m)
+    if ok and type(err) == "table" then
+        return err
+    end
 end
 
-local qs_interface = {}
-qs_interface.creative_mode_quickstart_registerd_to = function()
-    game.print(QS.get("mod_name", "not-set"))
-    return QS.get("mod_name", "not-set")
+if not remote.interfaces["quickstart-script"] then
+    local qs_interface = {}
+    qs_interface.registered_to = function()
+        if game then game.print(script.mod_name) end
+        return script.mod_name
+    end
+    qs_interface.creative_mode_quickstart_registerd_to = qs_interface.registered_to
+    remote.add_interface("quickstart-script", qs_interface)
+else
+    -- quickstart-script has already been registered, lets not clobber things
+    return
 end
-qs_interface.registered_to = function()
-    return (MOD and MOD.name) or QS.get("mod_name", "not-set")
-end
-remote.add_interface("quickstart-script", qs_interface)
 
+local QS = Config.new(prequire_table("config-quickstart") or {})
 local quickstart = {}
 
 function quickstart.on_player_created(event)
-    if #game.players == 1 then
+    if #game.players == 1 and event.player_index == 1 then
         local player = game.players[event.player_index]
+        local surface = player.surface
+        local force = player.force
+
+        local area = QS.get("area_box", {{-100, -100}, {100, 100}})
+        player.force.chart(surface, area)
+
+        if QS.get("cheat_mode", false) then
+            player.cheat_mode = true
+            player.force.research_all_technologies()
+            player.character_running_speed_modifier = 2
+            player.character_reach_distance_bonus = 100
+            player.character_build_distance_bonus = 100
+        end
 
         if QS.get("clear_items", false) then
             player.clear_items_inside()
@@ -47,32 +63,26 @@ function quickstart.on_player_created(event)
         end
 
         local power_armor = QS.get("power_armor", "fake")
-        if game.item_prototypes[power_armor] then
+        if player.character and game.item_prototypes[power_armor] then
             --Put on power armor, install equipment
-            local armor = player.get_inventory(defines.inventory.player_armor)
-            if armor then
-                armor.insert(power_armor)
-                local grid = armor[1].grid
-                if grid then
-                    for _, eq in pairs(QS.get("equipment", {"fusion-reactor-equipment"})) do
-                        if game.equipment_prototypes[eq] then
-                            grid.put{name = eq}
-                        end
+            player.get_inventory(defines.inventory.player_armor).insert(power_armor)
+            local grid = player.character.grid
+            if grid then
+                for _, eq in pairs(QS.get("equipment", {"fusion-reactor-equipment"})) do
+                    if game.equipment_prototypes[eq] then
+                        grid.put{name = eq}
                     end
                 end
             end
         end
 
-        local surface = player.surface
-        local force = player.force
-        local area = QS.get("area_box", {{-100, -100}, {100, 100}})
-        player.force.chart(surface, area)
-
-        if QS.get("disable_rso_starting", false) and remote.interfaces["RSO"] and remote.interfaces["RSO"]["disableStartingArea"] then
-            remote.call("RSO", "disableStartingArea")
-        end
-        if QS.get("disable_rso_chunk", false) and remote.interfaces["RSO"] and remote.interfaces["RSO"]["disableChunkHandler"] then
-            remote.call("RSO", "disableChunkHandler")
+        if remote.interfaces["RSO"] then
+            if QS.get("disable_rso_starting", false) and remote.interfaces["RSO"]["disableStartingArea"] then
+                remote.call("RSO", "disableStartingArea")
+            end
+            if QS.get("disable_rso_chunk", false) and remote.interfaces["RSO"]["disableChunkHandler"] then
+                remote.call("RSO", "disableChunkHandler")
+            end
         end
 
         if QS.get("destroy_everything", false) then
@@ -81,6 +91,29 @@ function quickstart.on_player_created(event)
                     entity.destroy()
                 end
             end
+        end
+
+        if QS.get("floor_tile", false) then
+            local tiles = {}
+            local floor_tile = QS.get("floor_tile")
+            local floor_tile_alt = QS.get("floor_tile_alt", floor_tile)
+            for x, y in Area.spiral_iterate(area) do
+                if y % 2 == 0 then
+                    if x % 2 == 0 then
+                        tiles[#tiles + 1] = {name = floor_tile, position = {x = x, y = y}}
+                    else
+                        tiles[#tiles+1] = {name = floor_tile_alt, position = {x = x, y = y}}
+                    end
+                else
+                    if x % 2 ~= 0 then
+                        tiles[#tiles+1] = {name = floor_tile, position = {x = x, y = y}}
+                    else
+                        tiles[#tiles+1] = {name = floor_tile_alt, position = {x = x, y = y}}
+                    end
+                end
+            end
+            surface.set_tiles(tiles, true)
+            surface.destroy_decoratives(area)
         end
 
         if QS.get("ore_patches", true) then
@@ -105,31 +138,22 @@ function quickstart.on_player_created(event)
             surface.create_entity{name = "crude-oil", position = {35.5, 1.5}, amount = 32000}
             surface.create_entity{name = "crude-oil", position = {35.5, -1.5}, amount = 32000}
 
-            surface.create_entity{name = "offshore-pump", position = {1, 33.5}, force = force}
-            surface.create_entity{name = "offshore-pump", position = {-1, 33.5}, force = force}
-        end
-
-        if QS.get("floor_tile", false) then
-            local tiles = {}
-            local floor_tile = QS.get("floor_tile")
-            local floor_tile_alt = QS.get("floor_tile_alt", floor_tile)
-            for x, y in Area.spiral_iterate(area) do
-                if y % 2 == 0 then
-                    if x % 2 == 0 then
-                        tiles[#tiles+1]={name=floor_tile, position={x=x, y=y}}
-                    else
-                        tiles[#tiles+1]={name=floor_tile_alt, position={x=x, y=y}}
-                    end
-                else
-                    if x % 2 ~= 0 then
-                        tiles[#tiles+1]={name=floor_tile, position={x=x, y=y}}
-                    else
-                        tiles[#tiles+1]={name=floor_tile_alt, position={x=x, y=y}}
+            local water_tiles = {}
+            for x = 27.5 , -27.5, -1 do
+                for y = 45.5, 50.5, 1 do
+                    if x < -4 or x > 4 then
+                        water_tiles[#water_tiles + 1] = {
+                            name = "water",
+                            position = {x = x, y = y}
+                        }
                     end
                 end
             end
-            surface.set_tiles(tiles, true)
-            surface.destroy_decoratives(area)
+            surface.set_tiles(water_tiles, false)
+            surface.create_entity{name = "offshore-pump", position = {4.5, 44.5}, force = force, direction = defines.direction.south}
+            surface.create_entity{name = "offshore-pump", position = {-4.5, 44.5}, force = force, direction = defines.direction.south}
+            surface.create_entity{name = "offshore-pump", position = {27.5, 44.5}, force = force, direction = defines.direction.south}
+            surface.create_entity{name = "offshore-pump", position = {-27.5, 44.5}, force = force, direction = defines.direction.south}
         end
 
         if QS.get("chunk_bounds", false) then
@@ -163,6 +187,13 @@ function quickstart.on_player_created(event)
         end
 
         if QS.get("starter_tracks", false) then
+
+            -- Create proxy blueprint from string, read in the entities and remove it.
+            local bp = surface.create_entity{name = "item-on-ground", position = {0,0}, force = force, stack = "blueprint"}
+            bp.stack.import_stack(quickstart.trackstring)
+            local tracks = bp.stack.get_blueprint_entities()
+            bp.destroy()
+
             for _, track in pairs(tracks) do
                 local pos = {track.position.x + 1, track.position.y + 1}
                 local ent = surface.create_entity{name=track.name, position=pos, direction=track.direction, force=force}
@@ -174,13 +205,14 @@ function quickstart.on_player_created(event)
                 end
 
             end
+
             if QS.get("make_train", false) then
                 local loco = surface.create_entity{name="locomotive", position={20, 39}, orientation=0.25, direction=2, force=force}
                 loco.orientation = .25
                 loco.get_fuel_inventory().insert({name = "rocket-fuel", count = 30})
                 local cwag = surface.create_entity{name="cargo-wagon", position={13, 39}, orientation=0.25, direction=2, force=force}
                 cwag.orientation = .25
-                local fwag = surface.create_entity{name="fluid-wagon", position={6, 39}, orientation=0.25, direction=2, force=force}
+                local fwag = surface.create_entity{name="fluid-wagon", position={7, 39}, orientation=0.25, direction=2, force=force}
                 fwag.orientation = .25
 
                 local train = loco and loco.train
@@ -197,11 +229,19 @@ function quickstart.on_player_created(event)
         end
 
         if QS.get("center_map_tag", false) then
-            local tag = {
-                position = {0, 0},
-                icon = {type = "virtual", name = "signal-0"},
-            }
-            force.add_chart_tag(surface, tag)
+            local function create_center_map_tag()
+                local tag = {
+                    position = {0, 0},
+                    text = "Center",
+                    icon = {type = "virtual", name = "signal-0"},
+                    last_user = player
+                }
+                if force.add_chart_tag(surface, tag) then
+                    Event.remove(defines.events.on_chunk_generated, create_center_map_tag)
+                end
+            end
+            --Not completely MP Safe
+            Event.register(defines.events.on_chunk_generated, create_center_map_tag)
         end
 
         if QS.get("setup_power", false) and game.active_mods["creative-mode"] then
@@ -219,5 +259,19 @@ function quickstart.on_player_created(event)
     end
 end
 Event.register(defines.events.on_player_created, quickstart.on_player_created)
+
+quickstart.trackstring = [[
+0eNqdmt1u2kAUhF+l2muIvLveP677BL2tqgoSK7VEDAITNYry7rUDRYWMy0zuAOHPZ33m7O7Z8atZrQ/Ndtd2vVm8mvZ+0+3N4vur2beP3XI9/ta/bBuzMG3fP
+JmZ6ZZP47fdsl2bt5lpu4fmt1nYtx8z03R927fN8fr3Ly8/u8PTqtkNf7i4cn6iz8x2sx+u2XTjjQbO3KW7MDMvw6fa3oXhBg/trrk//sO9zT5w3ZnbD+Buvu8
+3W4SNJ6i7REaA9Gfk/WH33DzM38f6ken9kenLbWZ9Zu7HOB9/9VNUl0+RVrcHH3hq5KmRp9Y8NfFUx1MzT614aqGpVsiWrXiskC5reayQL+t4rJAw63mskDHLF
+5iSMb7AlITxBabkSygwgUoXmJIsur6ESB1dXcJDdXRtCfl3dGUJUnV0XSll5eiyUuYAR5eVMmE5uqyU2dXRZaUsBY4uK2XZcnxdCdnydGEp2wFPV5aydfGO27u
+Nd0dbN4+Y/IrlT6H6eIlNCEuXlq8x1SJqYDev5QT1BDSSTzWdmYjCL1D1SfQuQxBdPD7/l1O4nsSXvy3J2JxcPq4a7fUrfaARBVhbeaCYwzVJN4Lx+qhqCKrlU
+WFO0ANyEBTlgDDnEwKvIEgXOOYUOSALKyVUakATHKsHBMUYnBwQ5uiitlCMQRb1BEcXtYViDLKoJzi6qC0UY5BFPcHRRQ21GGVNY4wuaajEKCsaY3RBQx1GWc8
+Y84k5GnL0KRpiZDFDCUZVypgiCxmOKak6xhRZxjDfSVUxpsgihrWQVA1jiixhOE8kVcGYIgsYT6JJVfAERpYwXmSyquEJjCxivAhnVcUTGFnGeJOSVR1PYGQh4
+01cVpU8gZGljDe5WZXyBEafjaEGizwdY4zlfK36eJAzdEg329Li5BFCWRevjhBjatIRHH3AIycM3TciycLGHW5RhT2BSdoRjLdE7rJ0AnONDAhZ1GMtX9+m2qr
+S3FOfbh+V2cpKx3rXTGzGOfH87Xr4HlK9avT6zARbq04vhw2q1ctho+r1ctikmr0cNqtuL4ctqttLYRUTWUiZYiILKVNMZCFlgoksZEzwkJWEBdHt5ahRdHs5a
+tLcXg6aNbeXgxbN7aWgvIUs5J+3kAWp8hayUlaChyykSvCQlVwF0e3lqFF0ezlqEt1ejppFt5ejFtHtpaiChyxky3NN0ilQ7u0kx3UlYy9yDLRcW4JxfBXy/WX
+JxT/vVs7Merlq1sNvX5vV4fHLt4G+H359bnb742U52VKnmOqhIfwDr9+U4w==
+]]
 
 return quickstart
