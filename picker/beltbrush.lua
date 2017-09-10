@@ -162,8 +162,6 @@ local function build_ug_brush(stack, ug, lanes)
             local new_ents = {}
             local next_id = 0
             local get_next_id = function() next_id = next_id + 1 return next_id end
-            --local max = game.entity_prototypes[name].max_underground_distance
-            --max = distance and distance < max and distance or max
 
             for x = 0.5, lanes, 1 do
                 new_ents[#new_ents + 1] = {

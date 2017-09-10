@@ -1,6 +1,8 @@
 -------------------------------------------------------------------------------
 --[[StickyNotes]]--
 -------------------------------------------------------------------------------
+if not settings.startup["picker-use-notes"].value then return end
+
 local Data = require("stdlib.data.data")
 
 data:extend{

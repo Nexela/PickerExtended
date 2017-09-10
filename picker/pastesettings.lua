@@ -112,23 +112,3 @@ end
 
 Event.register(defines.events.on_entity_settings_pasted, on_entity_settings_pasted)
 Event.register(defines.events.on_pre_entity_settings_pasted, on_pre_entity_settings_pasted)
-
--------------------------------------------------------------------------------
---[[Comparator]]-- TODO possibly not needed for .16
--------------------------------------------------------------------------------
---Set the default inserter comparator to < for circuit and logistics
-local function set_default_comparator(event)
-    local entity = event.created_entity and event.created_entity.valid and event.created_entity
-    local behavior = entity and entity.type == "inserter" and entity.get_or_create_control_behavior()
-    if behavior then
-        local circuit = behavior.circuit_condition
-        if not circuit.condition.first_signal.name and circuit.condition.constant == 0  then
-            behavior.circuit_condition = {condition = {comparator = "<"}}
-        end
-        local logic = behavior.logistic_condition
-        if not logic.condition.first_signal.name and logic.condition.constant == 0 then
-            behavior.logistic_condition = {condition = {comparator = "<"}}
-        end
-    end
-end
-Event.register({defines.events.on_built_entity, defines.events.on_robot_built_entity}, set_default_comparator)

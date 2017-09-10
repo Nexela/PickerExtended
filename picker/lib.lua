@@ -164,10 +164,13 @@ function lib.satisfy_requests(entity, player, proxy)
     end
     local pinv = player.get_inventory(defines.inventory.player_main) or player.get_inventory(defines.inventory.god_main)
     local new_requests = {}
+    local pos = Position.increment(entity.position, 0, -0.35)
     for name, count in pairs(proxy.item_requests) do
         local removed = player.cheat_mode and count or (entity and entity.can_insert(name) and pinv.remove({name = name, count = count})) or 0
         if removed > 0 then
             entity.insert({name = name, count = removed})
+            local txt = {"", -removed, " ", {"item-name."..name}, " ("..player.get_item_count(name)..")"}
+            entity.surface.create_entity{name= "picker-flying-text", text = txt, position = pos() ,color = defines.color.white}
         end
         local balance = count - removed
         new_requests[name] = balance > 0 and balance or nil

@@ -72,7 +72,7 @@ local text ={
     type = "flying-text",
     name = "picker-flying-text",
     flags = {"placeable-off-grid", "not-on-map"},
-    time_to_live = 60,
+    time_to_live = 150,
     speed = 0.05
 }
 data:extend{text}

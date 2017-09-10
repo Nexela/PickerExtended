@@ -31,7 +31,7 @@ end
 local function show_bp_tools(event)
     local player, pdata = Player.get(event.player_index)
     local bp = lib.stack_name(player.cursor_stack, "blueprint")
-    local frame = get_or_create_blueprint_gui(player) --.style.visible = bp and true or false
+    local frame = get_or_create_blueprint_gui(player)
     if bp and not lib.is_beltbrush_bp(bp) then
         frame.style.visible = true
         frame["picker_bp_tools_table"]["picker_bp_tools_to"].elem_value = nil
@@ -68,7 +68,7 @@ local function last_built(event)
     end
     pdata.last_put = nil
 end
-Event.register(defines.events.on_built_entity, last_built)
+--Event.register(defines.events.on_built_entity, last_built)
 
 local function last_item(event)
     local player, pdata = Player.get(event.player_index)
@@ -82,7 +82,7 @@ local function last_item(event)
         end
     end
 end
-Event.register(defines.events.on_put_item, last_item)
+--Event.register(defines.events.on_put_item, last_item)
 
 -------------------------------------------------------------------------------
 --[[Make Simple Blueprint]]--

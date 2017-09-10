@@ -19,8 +19,8 @@ if not data.raw["custom-input"] or not data.raw["custom-input"]["toggle-train-co
     }
 end
 
-local PICKER = require("config")
-if PICKER.DEBUG then
+local DEBUG = settings.startup["picker-debug"] and settings.startup["picker-debug"].value or false
+if DEBUG then
     local developer = require("stdlib.data.developer.developer")
     developer.make_chunk_markers("PickerExtended")
 end

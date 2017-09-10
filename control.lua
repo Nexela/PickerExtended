@@ -10,6 +10,7 @@ MOD.if_name = "picker"
 MOD.interfaces = {}
 MOD.config = require("config")
 MOD.commands = {}
+MOD.DEBUG = settings.startup["picker-debug"] and settings.startup["picker-debug"].value or false
 
 require("stdlib.event.event")
 require("stdlib.event.player")
@@ -46,7 +47,7 @@ local function set_join_options(event)
 end
 Event.register(defines.events.on_player_joined_game, set_join_options)
 
-if MOD.config.DEBUG then
+if MOD.DEBUG then
     log(MOD.name .. " Debug mode enabled")
     require("stdlib/utils/scripts/quickstart")
 end
@@ -76,13 +77,12 @@ require("picker.wiretool")
 require("picker.pipecleaner")
 require("picker.orphans")
 require("picker.beltbrush")
-require("picker.pastesettings") --needs on/off user config
+--require("picker.pastesettings") --needs on/off user config
 require("picker.flashlight")
 require("picker.filterfill")
 require("picker.vehicles")
 require("picker.helmod")
 --require("picker.usedfor") --Built in what is it used for.
---require("picker.pingmap")
 require("picker.notes")
 require("picker.coloredbooks")
 require("picker.switchgun")
@@ -96,4 +96,3 @@ end
 MOD.interfaces["console"] = require("stdlib.utils.scripts.console")
 
 remote.add_interface(MOD.if_name, MOD.interfaces)
---commands.add_command("picker", "Picker Command", function(event) game.print(serpent.block(event, {comment=false})) end)

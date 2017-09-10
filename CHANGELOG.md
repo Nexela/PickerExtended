@@ -1,7 +1,3 @@
-TODO:
-picker fast replace stuff
-picker used for
-
 3.0.0
 Remove small tweaks to seperate mod
 

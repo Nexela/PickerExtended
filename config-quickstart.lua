@@ -1,4 +1,5 @@
--- Used for debugging
+-- Settings used for the quickstart script,
+-- if an item doesn't exist it is ignored.
 return {
     cheat_mode = true,
     clear_items = true,
