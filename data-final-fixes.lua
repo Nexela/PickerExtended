@@ -22,5 +22,5 @@ end
 local DEBUG = settings.startup["picker-debug"] and settings.startup["picker-debug"].value or false
 if DEBUG then
     local developer = require("stdlib.data.developer.developer")
-    developer.make_chunk_markers("PickerExtended")
+    developer.make_test_entities("PickerExtended")
 end
