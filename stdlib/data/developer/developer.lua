@@ -8,7 +8,7 @@ setmetatable(Developer, {__index=Data})
 local function make_no_controls()
     local controls = {}
     for name in pairs(data.raw["autoplace-control"]) do
-        controls[name] = {size = "very-small", frequency = "none", richness = "very-small"}
+        controls[name] = {size = "none", frequency = "very-low", richness = "very-low"}
     end
     return controls
 end
@@ -105,8 +105,10 @@ function Developer.make_test_entities(name)
         order = "z",
         basic_settings = {
             terrain_segmentation = "none",
-            water = "none",
+            water = "very-low",
             autoplace_controls = make_no_controls(),
+            height = 128,
+            width = 128,
         }
     }
 end
