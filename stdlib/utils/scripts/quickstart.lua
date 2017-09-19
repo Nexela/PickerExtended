@@ -5,12 +5,12 @@
 -- @script quickstart
 -- @usage
 -- if DEBUG then
---   require 'stdlib/utils/scripts/quickstart'
+--   require('stdlib/utils/scripts/quickstart')
 -- end
 
-local Core = require 'stdlib/core'
-require 'stdlib/event/event'
-local Area = require 'stdlib/area/area'
+local Core = require('stdlib/core')
+require('stdlib/event/event')
+local Area = require('stdlib/area/area')
 
 if not remote.interfaces["quickstart-script"] then
     local qs_interface = {}
@@ -41,9 +41,11 @@ function quickstart.on_player_created(event)
         if QS.get("cheat_mode", false) then
             player.cheat_mode = true
             player.force.research_all_technologies()
-            player.character_running_speed_modifier = 2
-            player.character_reach_distance_bonus = 100
-            player.character_build_distance_bonus = 100
+            if player.character then
+                player.character_running_speed_modifier = 2
+                player.character_reach_distance_bonus = 100
+                player.character_build_distance_bonus = 100
+            end
         end
 
         if QS.get("clear_items", false) then
@@ -55,14 +57,16 @@ function quickstart.on_player_created(event)
         local inv = player.get_inventory(player.character and defines.inventory.player_main or defines.inventory.god_main)
         local qb = player.get_inventory(player.character and defines.inventory.player_quickbar or defines.inventory.god_quickbar)
 
-        for _, item in pairs(simple_stacks) do
-            if game.item_prototypes[item] then
-                inv.insert(item)
+        if inv then
+            for _, item in pairs(simple_stacks) do
+                if game.item_prototypes[item] then
+                    inv.insert(item)
+                end
             end
-        end
-        for _, item in pairs(qb_stacks) do
-            if game.item_prototypes[item] then
-                qb.insert(item)
+            for _, item in pairs(qb_stacks) do
+                if game.item_prototypes[item] then
+                    qb.insert(item)
+                end
             end
         end
 

@@ -1,9 +1,10 @@
 --- Developer
 -- @script Developer
 
-local Data = require 'stdlib/data/data'
 local Developer = {}
-setmetatable(Developer, {__index=Data})
+setmetatable(Developer, {__index = require("stdlib/data/core")})
+
+local Data = require("stdlib/data/data")
 
 local function make_no_controls()
     local controls = {}
@@ -17,7 +18,7 @@ end
 -- @tparam string name The name of your mod
 -- @usage
 -- --data.lua
--- local Developer = require 'stdlib/data/develper/developer'
+-- local Developer = require('stdlib/data/develper/developer')
 -- Developer.make_test_entities("ModName")
 function Developer.make_test_entities(name)
     if not data.raw["simple-entity"]["debug-chunk-marker"] then
@@ -60,7 +61,7 @@ function Developer.make_test_entities(name)
     end
 
     if not data.raw["electric-energy-interface"]["debug-energy-interface"] then
-        local power = Developer.duplicate("electric-energy-interface", "electric-energy-interface", "debug-energy-interface")
+        local power = Data.duplicate("electric-energy-interface", "electric-energy-interface", "debug-energy-interface")
         power.flags = {"placeable-off-grid"}
         power.localised_name = "Debug power source"
         power.icon = data.raw["item"]["electric-energy-interface"].icon
@@ -76,7 +77,7 @@ function Developer.make_test_entities(name)
     end
 
     if not data.raw["electric-pole"]["debug-substation"] then
-        local pole = Developer.duplicate("electric-pole", "substation", "debug-substation")
+        local pole = Data.duplicate("electric-pole", "substation", "debug-substation")
         pole.localised_name = "Debug power substation"
         pole.flags = {"placeable-off-grid"}
         pole.icon = data.raw["item"]["substation"].icon

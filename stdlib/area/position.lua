@@ -6,9 +6,10 @@
 -- @see Concepts.Position
 -- @see defines.direction
 
-local Core = require 'stdlib/core'
+Position = {_module_name = "Position"} --luacheck: allow defined top
+setmetatable(Position, {__index = require('stdlib/core')})
 
-Position = {} --luacheck: allow defined top
+local fail_if_missing = Position.fail_if_missing
 
 --- By default position tables are mutated in place set this to true to make the tables immutable.
 Position.immutable = false
@@ -20,28 +21,18 @@ Position.epsilon = 1.19e-07
 
 --- Returns a correctly formated position object.
 -- @usage Position.new({0, 0}) -- returns {x = 0, y = 0}
--- @tparam array pos_arr the position to convert
--- @tparam[opt=false] boolean copy return a new copy
+-- @tparam Concepts.Position pos the position table or array to convert
+-- @tparam[opt=false] boolean new_copy return a new copy
 -- @treturn Concepts.Position itself or a new correctly formated position with metatable
-function Position.new(pos_arr, copy)
-    Core.fail_if_missing(pos_arr, 'missing position argument')
+function Position.new(pos, new_copy)
+    fail_if_missing(pos, 'missing position argument')
 
-    if not copy and getmetatable(pos_arr) == Position._mt then
-        return pos_arr
+    if not (new_copy or Position.immutable) and getmetatable(pos) == Position._mt then
+        return pos
     end
 
-    local pos
-    if #pos_arr == 2 then
-        pos = { x = pos_arr[1], y = pos_arr[2] }
-    else
-        pos = {x = pos_arr.x, y = pos_arr.y}
-    end
-
-    return setmetatable(pos, Position._mt)
-end
-
-function Position.empty()
-    return Position.construct(0, 0)
+    local new_pos = { x = pos.x or pos[1], y = pos.y or pos[2] }
+    return setmetatable(new_pos, Position._mt)
 end
 
 --- Creates a position that is a copy of the given position.
@@ -60,10 +51,14 @@ Position.to_table = Position.new
 -- @tparam number x x-position
 -- @tparam number y y-position
 -- @treturn Concepts.Position
-function Position.construct(x, y)
-    Core.fail_if_missing(x, 'missing x position argument')
-    Core.fail_if_missing(y, 'missing y position argument')
+function Position.construct(...)
+    local args = {...}
 
+    --self was passed as first argument
+    local t = (type(args[1]) == "table" and 1) or 0
+
+    local x = args[1+t] or 0
+    local y = args[2+t] or 0
     return Position.new({ x = x, y = y })
 end
 
@@ -77,11 +72,11 @@ end
 
 --- Adds two positions.
 -- @tparam Concepts.Position pos1 the first position
--- @tparam Concepts.Position pos2 the second position
+-- @tparam Concepts.Position pos2 the second position or vector
 -- @treturn Concepts.Position a new position &rarr; { x = pos1.x + pos2.x, y = pos1.y + pos2.y}
-function Position.add(pos1, pos2)
+function Position.add(pos1, ...)
     pos1 = Position.new(pos1)
-    pos2 = Position.new(pos2)
+    local pos2 = Position(...)
 
     return Position.new({x = pos1.x + pos2.x, y = pos1.y + pos2.y})
 end
@@ -90,9 +85,9 @@ end
 -- @tparam Concepts.Position pos1 the first position
 -- @tparam Concepts.Position pos2 the second position
 -- @treturn Concepts.Position a new position &rarr; { x = pos1.x - pos2.x, y = pos1.y - pos2.y }
-function Position.subtract(pos1, pos2)
+function Position.subtract(pos1, ...)
     pos1 = Position.new(pos1)
-    pos2 = Position.new(pos2)
+    local pos2 = Position(...)
 
     return Position.new({x = pos1.x - pos2.x, y = pos1.y - pos2.y})
 end
@@ -131,8 +126,8 @@ end
 -- @tparam number y the amount to offset the position on the y-axis
 -- @treturn Concepts.Position a new position, offset by the x,y coordinates
 function Position.offset(pos, x, y)
-    Core.fail_if_missing(x, 'missing x-coordinate value')
-    Core.fail_if_missing(y, 'missing y-coordinate value')
+    fail_if_missing(x, 'missing x-coordinate value')
+    fail_if_missing(y, 'missing y-coordinate value')
     pos = Position.new(pos)
 
     pos.x = pos.x + x
@@ -146,8 +141,8 @@ end
 -- @tparam number distance distance of the translation
 -- @treturn Concepts.Position a new translated position
 function Position.translate(pos, direction, distance)
-    Core.fail_if_missing(direction, 'missing direction argument')
-    Core.fail_if_missing(distance, 'missing distance argument')
+    fail_if_missing(direction, 'missing direction argument')
+    fail_if_missing(distance, 'missing distance argument')
     pos = Position.new(pos)
 
     if direction == defines.direction.north then
@@ -184,12 +179,13 @@ end
 -- @treturn Concepts.BoundingBox the area
 function Position.expand_to_area(pos, radius)
     pos = Position.new(pos)
-    Core.fail_if_missing(radius, 'missing radius argument')
+    fail_if_missing(radius, 'missing radius argument')
+    local Area = require("stdlib/area/area")
 
     local left_top = Position.new({pos.x - radius, pos.y - radius})
     local right_bottom = Position.new({pos.x + radius, pos.y + radius})
     --some way to return Area.new?
-    return { left_top = left_top, right_bottom = right_bottom }
+    return Area({ left_top = left_top, right_bottom = right_bottom })
 end
 
 --- Calculates the Euclidean distance squared between two positions, useful when sqrt is not needed.
@@ -314,10 +310,18 @@ end
 -- @tparam[opt=false] boolean eight_way true to get the next direction in 8-way (note: not many prototypes support 8-way)
 -- @treturn defines.direction the next direction
 function Position.next_direction(direction, reverse, eight_way)
-    Core.fail_if_missing(direction, 'missing starting direction')
+    fail_if_missing(direction, 'missing starting direction')
 
     local next_dir = direction + (eight_way and ((reverse and -1) or 1) or ((reverse and -2) or 2))
     return (next_dir > 7 and next_dir-next_dir) or (reverse and next_dir < 0 and 8 + next_dir) or next_dir
+end
+
+--- Set the metatable on a stored area without returning a new area. Usefull for restoring
+-- metatables to saved areas in global
+-- @tparam Concepts.Position position
+-- @treturn position with metatable set
+function Position.setmetatable(position)
+    return Position._setmetatable(position, Position._mt)
 end
 
 --- Position tables are returned with these metamethods attached
@@ -330,7 +334,7 @@ Position._mt = {
     __eq = Position.equals, -- Are two positions the same.
     __lt = Position.less_than, -- Is position1 less than position2.
     __le = Position.less_than_eq, -- Is position1 less than or equal to position2.
-    __concat = Core._concat, -- calls tostring on both sides of concact.
+    __concat = Position._concat, -- calls tostring on both sides of concact.
     __call = Position.copy
 }
 
@@ -342,4 +346,4 @@ local function _call(_, ...)
     end
 end
 
-return setmetatable(Position, Core._protect("Position", _call))
+return Position:_protect(_call)

@@ -4,9 +4,9 @@
 -- @module Queue
 -- @usage local Queue = require('stdlib/queue/queue')
 
-local Core = require 'stdlib/core'
-
-Queue = {} --luacheck: allow defined top
+Queue = {_module_name = "Queue"} --luacheck: allow defined top
+setmetatable(Queue, {__index = require('stdlib/core')})
+local fail_if_missing = Queue.fail_if_missing
 
 --- Constructs a new Queue object.
 -- @return (<span class="types">@{Queue}</span>) a new, empty queue
@@ -35,7 +35,7 @@ end
 -- @param queue (<span class="types">@{Queue}</span>) the queue to push an element to
 -- @tparam Mixed value the element to push
 function Queue.push_first(queue, value)
-    Core.fail_if_missing(value)
+    fail_if_missing(value)
 
     local first = queue.first - 1
     queue.first = first
@@ -47,7 +47,7 @@ end
 -- @param queue (<span class="types">@{Queue}</span>) the queue to push an element to
 -- @tparam Mixed value the element to push
 function Queue.push_last(queue, value)
-    Core.fail_if_missing(value)
+    fail_if_missing(value)
 
     local last = queue.last + 1
     queue.last = last
@@ -108,7 +108,7 @@ Queue.pop = Queue.pop_first
 
 --- Shortcut for @{Queue.peek_first}
 -- @function Queue.peek
-Queue.peek = Queue.peek_fist
+Queue.peek = Queue.peek_first
 
 --- Returns true if the given queue is empty.
 -- @param queue (<span class="types">@{Queue}</span>) the queue to check
@@ -133,4 +133,4 @@ Queue._mt = {
     __len = Queue.count,
 }
 
-return setmetatable(Queue, Core._protect("Queue", Queue.new))
+return Queue:_protect()

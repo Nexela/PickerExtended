@@ -6,37 +6,33 @@
 -- @see Concepts.BoundingBox
 -- @see Concepts.Position
 
-local Core = require 'stdlib/core'
-local Position = require 'stdlib/area/position'
+Area = {_module_name = "Area"} --luacheck: allow defined top
+setmetatable(Area, {__index = require('stdlib/core')})
 
-Area = {} --luacheck: allow defined top
+local fail_if_missing = Area.fail_if_missing
+local Position = require('stdlib/area/position')
 
 --- By default area tables are mutated in place set this to true to make the tables immutable.
 Area.immutable = false
 
 --- Converts an area in either array or table format to an area with a metatable.
 -- Returns itself if it already has a metatable
--- @tparam Concepts.BoundingBox area_arr the area to convert
--- @tparam boolean copy
+-- @tparam Concepts.BoundingBox area the area to convert
+-- @tparam boolean new_copy return a new copy
 -- @treturn Concepts.BoundingBox a converted area
-function Area.new(area_arr, copy)
-    Core.fail_if_missing(area_arr, 'missing area value')
+function Area.new(area, new_copy)
+    fail_if_missing(area, 'missing area value')
 
-    if not (copy or Area.immutable) and getmetatable(area_arr) == Area._mt then
-        return area_arr
+    if not (new_copy or Area.immutable) and getmetatable(area) == Area._mt then
+        return area
     end
 
-    local area
-    if #area_arr == 2 then
-        area = {left_top = Position.new(area_arr[1], copy), right_bottom = Position.new(area_arr[2], copy)}
-    elseif area_arr['left_top'] then
-        area = {left_top = Position.new(area_arr.left_top, copy), right_bottom = Position.new(area_arr.right_bottom, copy)}
-    else
-        error("malformed area")
-    end
-    area.orientation = area_arr.orientation
+    local left_top = Position.new(area.left_top or area[1], true)
+    local right_bottom = Position.new(area.right_bottom or area[2], true)
+    local new_area = {left_top = left_top, right_bottom = right_bottom}
+    new_area.orientation = area.orientation
 
-    return setmetatable(area, Area._mt)
+    return setmetatable(new_area, Area._mt)
 end
 
 --- Deprecated
@@ -45,22 +41,22 @@ end
 Area.to_table = Area.new
 
 --- Creates an area from the two positions p1 and p2.
--- @tparam number x1 x-position of left_top, first position
--- @tparam number y1 y-position of left_top, first position
--- @tparam number x2 x-position of right_bottom, second position
--- @tparam number y2 y-position of right_bottom, second position
+-- @tparam[opt=0] number x1 x-position of left_top, first position
+-- @tparam[opt=0] number y1 y-position of left_top, first position
+-- @tparam[opt=0] number x2 x-position of right_bottom, second position
+-- @tparam[opt=0] number y2 y-position of right_bottom, second position
 -- @treturn Concepts.BoundingBox the area in a table format
 function Area.construct(...)
+
     local args = {...}
-    if #args < 4 then error("Wrong # of arguments", 2) end
 
-    local a = (type(args[1]) == "table" and 1) or 0
+    --self was passed as first argument
+    local t = (type(args[1]) == "table" and 1) or 0
 
-    return Area.new{ left_top = {x = args[1+a], y = args[2+a]}, right_bottom = {x = args[3+a], y = args[4+a]} }
-end
+    local lt_x, lt_y = args[1+t] or 0, args[2+t] or 0
+    local rb_x, rb_y = args[3+t] or 0, args[4+t]
 
-function Area.empty()
-    return Area.construct(0, 0, 0, 0)
+    return Area.new{{lt_x, lt_y}, {rb_x, rb_y}}
 end
 
 --- Creates an area that is a copy of the given area.
@@ -71,7 +67,7 @@ function Area.copy(area)
 end
 
 local function validate_vector(amount)
-    Core.fail_if_missing(amount, 'Missing amount to shrink by')
+    fail_if_missing(amount, 'Missing amount to shrink by')
 
     if type(amount) == 'number' then
         if amount < 0 then error('Can not shrink or expand area by a negative amount!', 2) end
@@ -128,7 +124,7 @@ end
 -- @treturn Concepts.BoundingBox the adjusted bounding box
 function Area.adjust(area, vector)
     area = Area.new(area)
-    Core.fail_if_missing(vector, 'missing vector value')
+    fail_if_missing(vector, 'missing vector value')
 
     --shrink or expand on x vector
     if assert(vector[1], 'x vector missing') > 0 then
@@ -185,7 +181,7 @@ end
 -- @treturn Concepts.BoundingBox the area translated
 function Area.translate(area, direction, distance)
     area = Area.new(area)
-    Core.fail_if_missing(direction, 'missing direction argument')
+    fail_if_missing(direction, 'missing direction argument')
     distance = distance or 1
 
     area.left_top = Position.translate(area.left_top, direction, distance)
@@ -320,6 +316,19 @@ function Area.less_than(area1, area2)
     return Area.size(area1) < Area.size(area2)
 end
 
+--- Is area1 smaller in size than area2
+-- @tparam Concepts.BoundingBox area1
+-- @tparam Concepts.BoundingBox area2
+-- @treturn boolean is area1 less than or equal to area2 in size
+-- @local
+function Area.less_than_eq(area1, area2)
+    if not area1 or not area2 then return false end
+    area1 = Area.new(area1)
+    area2 = Area.new(area2)
+
+    return Area.size(area1) <= Area.size(area2)
+end
+
 --- Tests if a position {x, y} is located in an area (including the border).
 -- @tparam Concepts.BoundingBox area the search area
 -- @tparam Concepts.Position pos the position to check
@@ -439,7 +448,7 @@ end
 -------------------------------------------------------------------------------
 
 local function to_bounding_box_area(entity, box)
-    Core.fail_if_missing(entity, "missing entity argument")
+    fail_if_missing(entity, "missing entity argument")
 
     local pos = entity.position
     local bb = entity.prototype[box]
@@ -465,6 +474,14 @@ function Area.to_selection_area(entity)
     return to_bounding_box_area(entity, "selection_box")
 end
 
+--- Set the metatable on a stored area without returning a new area. Usefull for restoring
+-- metatables to saved areas in global
+-- @tparam Concepts.BoundingBox area
+-- @treturn area with metatable set
+function Area.setmetatable(area)
+    return Area._setmetatable(area, Area._mt)
+end
+
 --- Area tables are returned with these Metamethods attached.
 -- @table Metamethods
 Area._mt = {
@@ -475,8 +492,8 @@ Area._mt = {
     __eq = Area.equals, -- Is the size of area1 the same as area2.
     __lt = Area.less_than, --is the size of area1 less than area2.
     __len = Area.size, -- The size of the area.
-    __concat = Core._concat, -- calls tostring on both sides of concact.
-    __call = Area.copy
+    __concat = Area._concat, -- calls tostring on both sides of concact.
+    __call = Area.copy -- Return a new copy
 }
 
 local function _call(_, ...)
@@ -487,4 +504,4 @@ local function _call(_, ...)
     end
 end
 
-return setmetatable(Area, Core._protect("Area", _call))
+return Area:_protect(_call)
