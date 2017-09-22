@@ -32,7 +32,7 @@ local function show_bp_tools(event)
     local player, pdata = Player.get(event.player_index)
     local bp = lib.stack_name(player.cursor_stack, "blueprint")
     local frame = get_or_create_blueprint_gui(player)
-    if bp and not lib.is_beltbrush_bp(bp) then
+    if bp and not lib.is_named_bp(bp, "Belt brush") then
         frame.style.visible = true
         frame["picker_bp_tools_table"]["picker_bp_tools_to"].elem_value = nil
         frame["picker_bp_tools_table"]["picker_bp_tools_from"].elem_value = nil
@@ -164,7 +164,7 @@ Gui.on_click("picker_bp_tools_update", update_blueprint)
 local function create_quick_pick_blueprint(event)
     local player = game.players[event.player_index]
     local stack = lib.stack_name(player.cursor_stack, "blueprint")
-    if event.element.elem_value and stack and (not stack.is_blueprint_setup() or lib.is_pipette_bp(stack)) then
+    if event.element.elem_value and stack and (not stack.is_blueprint_setup() or lib.is_named_bp(stack, "Pipette Blueprint")) then
         local _valid_entities = function(v)
             if v.place_result then
                 return v.place_result.name == event.element.elem_value and not v.place_result.has_flag("not-blueprintable")

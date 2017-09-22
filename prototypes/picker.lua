@@ -66,6 +66,11 @@ data:extend{
         name = "picker-dude-wheres-my-car",
         key_sequence = "CONTROL + SHIFT + J",
     },
+    {
+        type = "custom-input",
+        name = "picker-toggle-train-control",
+        key_sequence = "J"
+    },
 }
 
 local text ={

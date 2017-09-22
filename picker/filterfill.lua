@@ -48,9 +48,9 @@ local function filterfill_all(event)
     if player.opened then
         -- Get the contents of the player's cursor stack, or the first cell
         local inventory = player.opened.get_output_inventory()
-        local desired = (player.cursor_stack.valid_for_read and player.cursor_stack.name) or lib.get_item_or_filter_at_position(inventory, 1)
+        local desired = (player.cursor_stack.valid_for_read and player.cursor_stack.name) or lib.get_item_or_filter(inventory, 1)
         for i = 1, #inventory do
-            local current = not event.shift and lib.get_item_or_filter_at_position(inventory, i)
+            local current = not event.shift and lib.get_item_or_filter(inventory, i)
             inventory.set_filter(i, current or desired or nil)
         end
     end
@@ -65,11 +65,11 @@ local function filterfill_down(event)
         local size = #inventory
         local rows = math.ceil(size / INVENTORY_COLUMNS)
         for c = 1, INVENTORY_COLUMNS do
-            local desired = lib.get_item_or_filter_at_position(inventory, c)
+            local desired = lib.get_item_or_filter(inventory, c)
             for r = 1, rows do
                 local i = c + (r - 1) * INVENTORY_COLUMNS
                 if i <= size then
-                    desired = lib.get_item_or_filter_at_position(inventory, i) or desired
+                    desired = lib.get_item_or_filter(inventory, i) or desired
                     inventory.set_filter(i, desired or nil)
                 end
             end
@@ -87,11 +87,11 @@ local function filterfill_right(event)
         local rows = math.ceil(size / INVENTORY_COLUMNS)
         --local desired
         for r = 1, rows do
-            local desired = lib.get_item_or_filter_at_position(inventory, 1 + (r - 1) * INVENTORY_COLUMNS)
+            local desired = lib.get_item_or_filter(inventory, 1 + (r - 1) * INVENTORY_COLUMNS)
             for c = 1, INVENTORY_COLUMNS do
                 local i = c + (r - 1) * INVENTORY_COLUMNS
                 if i <= size then
-                    desired = lib.get_item_or_filter_at_position(inventory, i) or desired
+                    desired = lib.get_item_or_filter(inventory, i) or desired
                     inventory.set_filter(i, desired or nil)
                 end
             end
@@ -106,7 +106,7 @@ local function filterfill_set_all(event)
     if player.opened then
         local inventory = player.opened.get_output_inventory()
         for i = 1, #inventory do
-            local desired = lib.get_item_at_position(inventory, i)
+            local desired = lib.get_item_or_filter(inventory, i, true)
             inventory.set_filter(i, desired or nil)
         end
     end
@@ -213,8 +213,11 @@ local function check_for_filterable_inventory(event)
     local player = game.players[event.player_index]
     local frame = get_or_create_filterfill_gui(player)
     if player.opened and player.opened.prototype then
-        frame["filterfill_requests"].style.visible = player.opened.prototype.logistic_mode == "requester"
-        frame["filterfill_filters"].style.visible = player.opened.get_output_inventory() and player.opened.get_output_inventory().supports_filters()
+        local inv = player.opened.get_output_inventory()
+        local requester = player.opened.type == "logistic-container" and player.opened.prototype.logistic_mode == "requester"
+
+        frame["filterfill_requests"].style.visible = requester
+        frame["filterfill_filters"].style.visible = inv and inv.supports_filters()
         frame.style.visible = frame["filterfill_filters"].style.visible or frame["filterfill_requests"].style.visible
     elseif not player.opened then
         frame.style.visible = false

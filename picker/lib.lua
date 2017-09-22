@@ -17,45 +17,15 @@ function lib.get_or_create_main_left_flow(player, flow_name)
     return main_flow
 end
 
--- --vehicle.train errors if vehicle is not a train type.
--- function lib.get_train_from_vehicle(vehicle)
---     local ok, result = pcall(function(e) return e.train end, vehicle)
---     if ok then return result end
--- end
-
--- Return a table containing all passengers on the train
-function lib.get_passengers(train, player)
-    local player_is_passenger
-    local passengers = table.filter(train.carriages,
-        function(carriage)
-            if player and carriage.passenger and carriage.passenger == player then
-                player_is_passenger = true
-            end
-            return carriage.passenger
-        end
-    )
-    return passengers, player_is_passenger
-end
-
--- Gets the name of the item at the given position, or nil if there
--- is no item at that position
-function lib.get_item_at_position(inventory, n)
-    return inventory[n].valid_for_read and inventory[n].name
-end
-
 -- Returns either the item at a position, or the filter
 -- at the position if there isn't an item there
-function lib.get_item_or_filter_at_position(inventory, n)
-    local filter = inventory.get_filter(n)
-    return filter or lib.get_item_at_position(inventory, n)
+function lib.get_item_or_filter(inventory, n, item_only, filter_only)
+    local filter = not item_only and  inventory.get_filter(n)
+    return filter or (not filter_only and inventory[n].valid_for_read and inventory[n].name) or nil
 end
 
-function lib.is_beltbrush_bp(stack)
-    return stack.valid_for_read and stack.name == "blueprint" and stack.label and stack.label:find("Belt Brush")
-end
-
-function lib.is_pipette_bp(stack)
-    return stack.valid_for_read and stack.name == "blueprint" and stack.label and stack.label:find("^Pipette Blueprint")
+function lib.is_named_bp(stack, name)
+    return stack.valid_for_read and stack.name == "blueprint" and stack.label and stack.label:find("^"..name)
 end
 
 function lib.stack_name(slot, name, is_bp_setup)
@@ -191,20 +161,17 @@ function lib.get_planner(player, planner, label)
                             if not slot.is_blueprint_setup() then
                                 found = slot
                             elseif (label and slot.is_blueprint_setup() and slot.label and slot.label:find(label)) then
-                                if player.cursor_stack.set_stack(slot) then
-                                    slot.clear()
+                                if player.cursor_stack.swap_stack(slot) then
                                     return player.cursor_stack
                                 end
                             end
                         elseif global.planners[planner] and game.item_prototypes[planner] then
-                            if player.cursor_stack.set_stack(slot) then
-                                slot.clear()
+                            if player.cursor_stack.swap_stack(slot) then
                                 return player.cursor_stack
                             end
                         end
                     elseif planner == "repair-tool" and slot.type == "repair-tool" then
-                        if player.cursor_stack.set_stack(slot) then
-                            slot.clear()
+                        if player.cursor_stack.swap_stack(slot) then
                             return player.cursor_stack
                         end
                     end
@@ -212,12 +179,21 @@ function lib.get_planner(player, planner, label)
             end
         end
     end
-    if found and player.cursor_stack.set_stack(found) then
-        found.clear()
+    if found and player.cursor_stack.swap_stack(found) then
         return player.cursor_stack
     else
         return planner and game.item_prototypes[planner] and player.cursor_stack.set_stack(planner) and player.cursor_stack
     end
+end
+
+function lib.is_circuit_connected(entity)
+    return entity.circuit_connected_entities and (next(entity.circuit_connected_entities.red) or next(entity.circuit_connected_entities.green))
+end
+function lib.has_fluidbox(entity)
+    return entity.fluidbox and #entity.fluidbox > 0
+end
+function lib.can_decon(entity)
+    return entity.minable and entity.prototype.selectable_in_game and not entity.has_flag("not-deconstructable")
 end
 
 return lib

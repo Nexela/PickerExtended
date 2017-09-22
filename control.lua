@@ -58,6 +58,7 @@ end
 require("picker.adjustment-pad")
 require("picker.eqkeys") --Equipment hotkeys and gui from nanobots
 
+require("picker.autodeconstruct")
 require("picker.reviver")
 require("picker.tools")
 require("picker.blueprinter")
