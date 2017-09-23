@@ -42,4 +42,11 @@ data:extend{
         default_value = true,
         order = "picker-autodeconstruct-b"
     },
+    {
+        type = "bool-setting",
+        name = "picker-train-honk",
+        setting_type = "runtime-global",
+        default_value = true,
+        order = "picker-honk-a"
+    },
 }
