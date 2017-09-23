@@ -14,8 +14,7 @@ end
 local hotkey = {
     type = "custom-input",
     name = "picker-zapper",
-    key_sequence = "z",
-    consuming = "none"
+    key_sequence = "CONTROL + Z",
 }
 
 data:extend{sound_drop, hotkey}

@@ -24,14 +24,6 @@ data:extend{
         order = "picker-z[zapper]-c",
     },
     {
-        type = "string-setting",
-        name = "picker-item-zapper",
-        setting_type = "runtime-per-user",
-        default_value = "blueprint-book pistol",
-        allow_blank = true,
-        order = "picker-z[zapper]-z",
-    },
-    {
         type = "bool-setting",
         name = "picker-item-zapper-all",
         setting_type = "runtime-per-user",
