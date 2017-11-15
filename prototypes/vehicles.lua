@@ -23,5 +23,5 @@ data:extend {
     }
 }
 
-Data.create_sound("deltic-start", "__PickerExtended__/sounds/deltic_honk_1.ogg", 1.2)
-Data.create_sound("deltic-stop", "__PickerExtended__/sounds/deltic_honk_2.ogg", 1.2)
+Data.create_sound("deltic-start", "__PickerExtended__/sounds/deltic_honk_1.ogg")
+Data.create_sound("deltic-stop", "__PickerExtended__/sounds/deltic_honk_2.ogg")

@@ -1,0 +1,42 @@
+---------------------------------------------------------------------------------------------------
+Version: 3.0.0
+Date: ??????
+  Major Features:
+    - Moved data only tweaks to seperate mod. "Picker Tweaks"
+    - Using 0.16.0 API
+    - Update STDLIB to 0.9.0
+  Bugfixes:
+    - Many bugfixes.
+  Optimisations:
+    - Many code optimisations.
+---------------------------------------------------------------------------------------------------
+Version: 1.0.0
+Date: ??????
+  Features:
+    - Sticky Notes.
+    - Quick Blueprinter.
+    - Map Ping.
+    - Adjustment Pad.
+    - Belt Brush.
+    - Chest Limiter.
+    - Colored BP books.
+    - Chest Copier.
+    - Crafter.
+    - Death Marker.
+    - Dollies.
+    - Equipment Hotkeys.
+    - Filter Fill.
+    - Flashlight Toggle.
+    - Helmod Quick BP.
+    - Minimap autohide.
+    - Orphan Finder.
+    - Pipe Cleaner.
+    - Paste Settings.
+    - Planners.
+    - Renamer.
+    - Revivier.
+    - Inventory Sort.
+    - Switch Gun while Driving.
+    - Tools.
+    - What is it used for.
+    - Vehicles.

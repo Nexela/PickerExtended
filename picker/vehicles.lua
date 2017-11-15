@@ -102,7 +102,7 @@ local function attempt_honk(event)
                 entity = event.train.locomotives.back_movers[#event.train.locomotives.back_movers]
             end
             global.recently_honked[event.train.id] = event.tick + HONK_COOLDOWN
-            return entity and lib.play_sound(honk, entity)
+            return entity and entity.surface.play_sound({path = honk, position = entity.position, volume = 1})
         end
     end
 end
@@ -111,10 +111,12 @@ Event.register(defines.events.on_train_changed_state, attempt_honk)
 local function manual_honk(event)
     local player = game.players[event.player_index]
     if player.vehicle and player.vehicle.type == "locomotive" and player.vehicle.train.manual_mode then
-        if player.vehicle.train.speed == 0 then
-            lib.play_sound("deltic-start", player)
+        local train = player.vehicle.train
+        local loco = player.vehicle
+        if train.speed == 0 then
+            loco.surface.play_sound({path = "deltic-start", position = loco.position, volume = 1})
         else
-            lib.play_sound("deltic-stop", player)
+            loco.surface.play_sound({path = "deltic-stop", position = loco.position, volume = 1})
         end
     end
 end

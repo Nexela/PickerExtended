@@ -1,23 +1,19 @@
 -------------------------------------------------------------------------------
---[[STYLES and BUTTON SPRITES]]--
+--[[STYLES and BUTTON SPRITES]] --
 -------------------------------------------------------------------------------
 local style = data.raw["gui-style"].default
 
--------------------------------------------------------------------------------
---[[Frames]]--
--------------------------------------------------------------------------------
+--[[Frames]]
 style.picker_frame = {
     type = "frame_style",
     parent = "frame_style",
     top_padding = 0,
     bottom_padding = 0,
     right_padding = 0,
-    left_padding = 0,
+    left_padding = 0
 }
 
--------------------------------------------------------------------------------
---[[Tables]]--
--------------------------------------------------------------------------------
+--[[Tables]]
 style.picker_table = {
     type = "table_style",
     parent = "table_style",
@@ -27,14 +23,13 @@ style.picker_table = {
     left_padding = 0,
     cell_spacing = 0,
     horizontal_spacing = 0,
-    vertical_spacing = 0,
+    vertical_spacing = 0
 }
--------------------------------------------------------------------------------
---[[32x32 Button Styles]]--
--------------------------------------------------------------------------------
+
+--[[32x32 Button Styles]]
 style.picker_buttons = {
-    type="button_style",
-    parent="button_style",
+    type = "button_style",
+    parent = "button_style",
     maximal_height = 33,
     minimal_height = 33,
     maximal_width = 33,
@@ -56,21 +51,23 @@ style.picker_buttons = {
         }
     }
 }
+
 style.picker_buttons_med = {
-    type="button_style",
-    parent="picker_buttons",
+    type = "button_style",
+    parent = "picker_buttons",
     maximal_height = 48,
     minimal_height = 48,
     maximal_width = 48,
-    minimal_width = 48,
+    minimal_width = 48
 }
+
 style.picker_buttons_big = {
-    type="button_style",
-    parent="picker_buttons",
+    type = "button_style",
+    parent = "picker_buttons",
     maximal_height = 64,
     minimal_height = 64,
     maximal_width = 64,
-    minimal_width = 64,
+    minimal_width = 64
 }
 
 style.picker_buttons_med_off = {
@@ -92,10 +89,7 @@ style.picker_buttons_med_off = {
     }
 }
 
--------------------------------------------------------------------------------
---[[Filterfill Tables]]--
--------------------------------------------------------------------------------
-
+--[[Filterfill Tables]]
 style.filterfill_requests = {
     type = "table_style",
     parent = "picker_table"
@@ -105,11 +99,8 @@ style.filterfill_filters = {
     parent = "picker_table"
 }
 
--------------------------------------------------------------------------------
---[[What is it used for]]--
--------------------------------------------------------------------------------
-style.small_spacing_scroll_pane_style =
-{
+--[[What is it used for]]
+style.small_spacing_scroll_pane_style = {
     type = "scroll_pane_style",
     parent = "scroll_pane_style",
     top_padding = 2,
@@ -117,22 +108,19 @@ style.small_spacing_scroll_pane_style =
     right_padding = 0,
     flow_style = {"slot_table_spacing_flow_style"}
 }
-style.row_table_style =
-{
+style.row_table_style = {
     type = "table_style",
     cell_padding = 5,
-    horizontal_spacing=0,
-    vertical_spacing=0,
-    odd_row_graphical_set =
-    {
+    horizontal_spacing = 0,
+    vertical_spacing = 0,
+    odd_row_graphical_set = {
         type = "composition",
         filename = "__core__/graphics/gui.png",
         priority = "extra-high-no-scale",
         corner_size = {3, 3},
         position = {8, 0}
     },
-    even_row_graphical_set =
-    {
+    even_row_graphical_set = {
         type = "composition",
         filename = "__core__/graphics/gui.png",
         priority = "extra-high-no-scale",
@@ -141,10 +129,8 @@ style.row_table_style =
     }
 }
 
--------------------------------------------------------------------------------
---[[Sticky Notes]]--
--------------------------------------------------------------------------------
-data:extend{
+--[[Sticky Notes]]
+data:extend {
     {
         type = "font",
         name = "font_stknt",
@@ -158,97 +144,86 @@ data:extend{
         from = "default-bold",
         border = false,
         size = 15
-    },
+    }
 }
 
-style.frame_stknt_style =
-{
-    type="frame_style",
-    parent="frame_style",
+style.frame_stknt_style = {
+    type = "frame_style",
+    parent = "frame_style",
     top_padding = 0,
     right_padding = 0,
     bottom_padding = 0,
     left_padding = 0,
     resize_row_to_width = true,
-    resize_to_row_height = false,
+    resize_to_row_height = false
     -- max_on_row = 1,
 }
 
-style.flow_stknt_style =
-{
+style.flow_stknt_style = {
     type = "flow_style",
-
     top_padding = 0,
     bottom_padding = 0,
     left_padding = 0,
     right_padding = 0,
-
     horizontal_spacing = 2,
     vertical_spacing = 2,
     resize_row_to_width = true,
     resize_to_row_height = false,
     max_on_row = 1,
-
-    graphical_set = { type = "none" },
+    graphical_set = {type = "none"}
 }
 
-style.label_stknt_style =
-{
-    type="label_style",
-    parent="label_style",
-    font="font_stknt",
+style.label_stknt_style = {
+    type = "label_style",
+    parent = "label_style",
+    font = "font_stknt",
     align = "left",
-    default_font_color={r=1, g=1, b=1},
-    hovered_font_color={r=1, g=1, b=1},
+    default_font_color = {r = 1, g = 1, b = 1},
+    hovered_font_color = {r = 1, g = 1, b = 1},
     top_padding = 1,
     right_padding = 1,
     bottom_padding = 0,
-    left_padding = 1,
+    left_padding = 1
 }
 
-style.label_bold_stknt_style =
-{
-    type="label_style",
-    parent="label_stknt_style",
-    font="font_bold_stknt",
-    default_font_color={r=1, g=1, b=0.5},
-    hovered_font_color={r=1, g=1, b=0.5},
+style.label_bold_stknt_style = {
+    type = "label_style",
+    parent = "label_stknt_style",
+    font = "font_bold_stknt",
+    default_font_color = {r = 1, g = 1, b = 0.5},
+    hovered_font_color = {r = 1, g = 1, b = 0.5}
 }
 
-style.textfield_stknt_style =
-{
+style.textfield_stknt_style = {
     type = "textfield_style",
-    font="font_bold_stknt",
+    font = "font_bold_stknt",
     align = "left",
     font_color = {},
-    default_font_color={r=1, g=1, b=1},
-    hovered_font_color={r=1, g=1, b=1},
-    selection_background_color= {r=0.66, g=0.7, b=0.83},
+    default_font_color = {r = 1, g = 1, b = 1},
+    hovered_font_color = {r = 1, g = 1, b = 1},
+    selection_background_color = {r = 0.66, g = 0.7, b = 0.83},
     top_padding = 0,
     bottom_padding = 0,
     left_padding = 1,
     right_padding = 5,
     minimal_width = 300,
     maximal_width = 600,
-    graphical_set =
-    {
+    graphical_set = {
         type = "composition",
         filename = "__core__/graphics/gui.png",
         priority = "extra-high-no-scale",
         corner_size = {3, 3},
         position = {16, 0}
-    },
+    }
 }
 
-style.textbox_stknt_style =
-{
+style.textbox_stknt_style = {
     type = "textbox_style",
-    font="font_bold_stknt",
-    --align = "left",
+    font = "font_bold_stknt",
     font_color = {},
-    default_font_color={r=1, g=1, b=1},
-    hovered_font_color={r=1, g=1, b=1},
-    selection_background_color= {r=0.66, g=0.7, b=0.83},
+    default_font_color = {r = 1, g = 1, b = 1},
+    hovered_font_color = {r = 1, g = 1, b = 1},
+    selection_background_color = {r = 0.66, g = 0.7, b = 0.83},
     top_padding = 0,
     bottom_padding = 0,
     left_padding = 1,
@@ -256,47 +231,43 @@ style.textbox_stknt_style =
     minimal_width = 275,
     minimal_height = 75,
     maximal_width = 275,
-    graphical_set =
-    {
+    graphical_set = {
         type = "composition",
         filename = "__core__/graphics/gui.png",
         priority = "extra-high-no-scale",
         corner_size = {3, 3},
         position = {16, 0}
-    },
+    }
 }
 
-style.button_stknt_style =
-{
-    type="button_style",
-    parent="button_style",
-    font="font_bold_stknt",
+style.button_stknt_style = {
+    type = "button_style",
+    parent = "button_style",
+    font = "font_bold_stknt",
     align = "center",
-    default_font_color={r=1, g=1, b=1},
-    hovered_font_color={r=1, g=1, b=1},
+    default_font_color = {r = 1, g = 1, b = 1},
+    hovered_font_color = {r = 1, g = 1, b = 1},
     top_padding = 0,
     right_padding = 0,
     bottom_padding = 0,
     left_padding = 0,
-    left_click_sound =
-    {
+    left_click_sound = {
         {
             filename = "__core__/sound/gui-click.ogg",
             volume = 1
         }
-    },
+    }
 }
 
-style.checkbox_stknt_style =
-{
+style.checkbox_stknt_style = {
     type = "checkbox_style",
-    parent="checkbox_style",
+    parent = "checkbox_style",
     font = "font_bold_stknt",
-    font_color = {r=1, g=1, b=1},
+    font_color = {r = 1, g = 1, b = 1},
     top_padding = 0,
     bottom_padding = 0,
     left_padding = 0,
-    right_padding = 2,
+    right_padding = 2
     -- minimal_height = 32,
     -- maximal_height = 32,
 }

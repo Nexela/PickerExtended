@@ -39,7 +39,7 @@ local function ping_it(event)
             if other.surface == player.surface then
                 if other.is_alert_enabled(defines.alert_type.custom) then
                     other.add_custom_alert(alert, {type="item", name = "picker-ping-tool"}, {"ping-map.here", player.name}, true)
-                    other.surface.create_entity{name = "ping-sound-"..math.random(3), position = other.position}
+                    other.play_sound({path = "picker-map-ping-"..math.random(1,3), position = other.position, volume = 1})
                 end
             end
         end

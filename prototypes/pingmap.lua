@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------------
---[[Map Ping]]--
+--[[Map Ping]] --
 -------------------------------------------------------------------------------
 local Data = require("stdlib/data/data")
 
@@ -12,8 +12,8 @@ local item = {
     stack_size = 1,
     subgroup = "tool",
     order = "c[automated-construction]-p[ping]",
-    selection_color = { r = 0, g = 1, b = 0 },
-    alt_selection_color = { r = 0, g = 1, b = 0 },
+    selection_color = {r = 0, g = 1, b = 0},
+    alt_selection_color = {r = 0, g = 1, b = 0},
     selection_mode = {"tiles"},
     alt_selection_mode = {"tiles"},
     selection_cursor_box_type = "copy",
@@ -28,29 +28,26 @@ local entity = {
     icon = "__PickerExtended__/graphics/pingtool.png",
     flags = {"not-on-map", "placeable-off-grid"},
     show_when_smoke_off = true,
-    animation =
-    {
-        layers =
-        {
+    animation = {
+        layers = {
             {
                 width = 256,
                 height = 256,
-                flags = { "compressed" },
+                flags = {"compressed"},
                 priority = "low",
                 frame_count = 128,
                 shift = {0, 0},
                 animation_speed = 1,
-                stripes =
-                {
+                stripes = {
                     {
                         filename = "__PickerExtended__/graphics/pingsplosion1.png",
                         width_in_frames = 8,
-                        height_in_frames = 8,
+                        height_in_frames = 8
                     },
                     {
                         filename = "__PickerExtended__/graphics/pingsplosion2.png",
                         width_in_frames = 8,
-                        height_in_frames = 8,
+                        height_in_frames = 8
                     }
                 }
             }
@@ -61,13 +58,11 @@ local entity = {
     cyclic = true,
     duration = defines.time.second * 10,
     fade_away_duration = (defines.time.second * 10) / 4,
-    --duration = settings.startup["map-ping-duration-ticks"].value,
-    --fade_away_duration = settings.startup["map-ping-duration-ticks"].value / 4,
-    spread_duration = 10,
+    spread_duration = 10
 }
 
-Data.create_sound("ping-sound-1", "__PickerExtended__/sounds/ping1.ogg", .75)
-Data.create_sound("ping-sound-2", "__PickerExtended__/sounds/ping2.ogg", .75)
-Data.create_sound("ping-sound-3", "__PickerExtended__/sounds/ping3.ogg", .75)
+Data.create_sound("picker-map-ping-1", "__PickerExtended__/sounds/ping1.ogg")
+Data.create_sound("picker-map-ping-2", "__PickerExtended__/sounds/ping2.ogg")
+Data.create_sound("picker-map-ping-3", "__PickerExtended__/sounds/ping3.ogg")
 
-data:extend{item, entity}
+data:extend {item, entity}

@@ -129,7 +129,7 @@ local function move_combinator(event)
                 if raise then
                     script.raise_event(Event.dolly_moved, {player_index = player.index, moved_entity = ent, start_pos = start_pos})
                 else
-                    player.surface.create_entity{name = "picker-cant-move", position=player.position}
+                    player.play_sound({path = "utility/cannot_build", position = player.position, volume = 1})
                 end
                 return raise
             end
@@ -177,7 +177,7 @@ local function move_combinator(event)
                 player.print({"picker-dollies.cant-be-teleported", entity.localised_name})
             end
         else
-            player.surface.create_entity{name = "picker-cant-move", position=player.position}
+            player.play_sound({path = "utility/cannot_build", position = player.position, volume = 1})
         end
     end
 end

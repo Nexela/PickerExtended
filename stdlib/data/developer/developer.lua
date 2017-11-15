@@ -86,8 +86,8 @@ function Developer.make_test_entities(name)
         pole.selection_box = {{-0.5, -0.5}, {0.0, 0.5}}
         pole.collision_mask = {}
         pole.pictures = Developer.empty_pictures()
-        pole.maximum_wire_distance = 100
-        pole.supply_area_distance = 50
+        pole.maximum_wire_distance = 64
+        pole.supply_area_distance = 64
         pole.connection_points = Developer.empty_connection_points(1)
         pole.vehicle_impact_sound = nil
         pole.working_sound = nil
@@ -105,8 +105,8 @@ function Developer.make_test_entities(name)
         localised_description = "Default settings for a debug world",
         order = "z",
         basic_settings = {
-            terrain_segmentation = "none",
-            water = "very-low",
+            terrain_segmentation = "very-low",
+            water = "none",
             autoplace_controls = make_no_controls(),
             height = 128,
             width = 128,

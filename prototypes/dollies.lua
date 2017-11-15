@@ -1,7 +1,6 @@
 -------------------------------------------------------------------------------
 --[[Combinator Dollies]]--
 -------------------------------------------------------------------------------
-local Data = require("stdlib.data.data")
 data:extend{
     {
         type = "custom-input",
@@ -34,5 +33,3 @@ data:extend{
         key_sequence = "PAD DELETE",
     }
 }
-
-Data.create_sound("picker-cant-move", "__core__/sound/cannot-build.ogg", .75)

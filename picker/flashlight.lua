@@ -31,12 +31,11 @@ local function toggle_flashlight(event)
         if pdata.flashlight_off then
             pdata.flashlight_off = nil
             player.character.enable_flashlight()
-            player.surface.create_entity({name = "flashlight-button-press", position = player.position})
         else
             pdata.flashlight_off = true
             player.character.disable_flashlight()
-            player.surface.create_entity({name = "flashlight-button-press", position = player.position})
         end
+        player.play_sound({path = "utility/wire_connect_pole", position = player.position, volume = 1})
     end
 end
 Event.register("picker-flashlight-toggle", toggle_flashlight)
