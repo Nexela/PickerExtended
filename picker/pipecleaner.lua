@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------------
---[[Pipe Cleaner]]--
+--[[Pipe Cleaner]] --
 -------------------------------------------------------------------------------
 --Loosley based on pipe manager by KeyboardHack
 
@@ -24,7 +24,9 @@ local function call_a_plumber(event)
                     for i = 1, #drain do
                         if drain[i] and drain[i].type and drain[i].type == clog then
                             drain[i] = nil
-                            table.each(drain.get_connections(i), function(v)
+                            table.each(
+                                drain.get_connections(i),
+                                function(v)
                                     if not rootered[v.owner.unit_number] then
                                         toilets[v.owner.unit_number] = v
                                     end
@@ -33,7 +35,9 @@ local function call_a_plumber(event)
                         end
                     end
                     toilets[index] = nil
-                    if drain.owner.last_user then drain.owner.last_user = plumber end
+                    if drain.owner.last_user then
+                        drain.owner.last_user = plumber
+                    end
                 end
             until not index
         elseif #plumber.selected.fluidbox > 0 then

@@ -47,7 +47,7 @@ Event.register(defines.events.on_player_cursor_stack_changed, show_bp_tools)
 --[[Blueprint when running out of items]]-- --TODO not needed in .16?
 -------------------------------------------------------------------------------
 --Creates a blueprint item in your hand of the last thing you built if you run out of items.
-local function last_built(event)
+local function last_built_(event)
     local player, pdata = Player.get(event.player_index)
     if not player.cursor_stack.valid_for_read and player.mod_settings["picker-blueprint-last"].value and pdata.last_put then
         local entity = event.created_entity
@@ -70,7 +70,7 @@ local function last_built(event)
 end
 --Event.register(defines.events.on_built_entity, last_built)
 
-local function last_item(event)
+local function last_item_(event)
     local player, pdata = Player.get(event.player_index)
     if player.cursor_stack and player.cursor_stack.valid_for_read then
         local stack = player.cursor_stack

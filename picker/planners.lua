@@ -147,5 +147,4 @@ local function planners_changed()
         if gui then gui.destroy() end
     end
 end
-Event.register(Event.core_events.configuration_changed, planners_changed)
-Event.register(Event.core_events.init, planners_changed)
+Event.register(Event.core_events.init_and_config, planners_changed)

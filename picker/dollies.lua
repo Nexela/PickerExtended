@@ -103,13 +103,10 @@ local function move_combinator(event)
 
             local out_of_the_way = Position.translate(entity.position, Position.opposite_direction(direction), 20)
 
-            local sel_area = Area.to_selection_area(entity)
-            local item_area = Area.translate(Area.to_collision_area(entity), direction, distance)
+            local sel_area = Area(entity.selection_box)
+            local item_area = Area(entity.bounding_box):non_zero():translate(direction, distance)
 
-            if Area.size(sel_area) <= 0 then sel_area = Area.expand(sel_area, .01) end
-            if Area.size(item_area) <= 0 then item_area = Area.expand(item_area, .01) end
-
-            local update = entity.surface.find_entities_filtered{area = Area.expand(sel_area, 32), force=entity.force}
+            local update = entity.surface.find_entities_filtered{area = sel_area:copy():expand(32), force = entity.force}
             local items_on_ground = entity.surface.find_entities_filtered{type = "item-entity", area = item_area}
             local proxy = entity.surface.find_entities_filtered{name = "item-request-proxy", area = sel_area, force = player.force}[1]
 
@@ -236,7 +233,7 @@ local function rotate_saved_dolly(event)
     end
     if entity and entity.supports_direction then
         pdata.dolly = entity
-        local _, w, h = Area.size(entity.prototype.collision_box)
+        local _, w, h = Area(entity.prototype.collision_box):size()
         if w == h then
             entity.direction = Position.next_direction(entity.direction)
         else

@@ -79,6 +79,17 @@ local function validate_vector(amount)
     end
 end
 
+--- Return a non zero sized area by expanding if needed
+-- @tparam Concepts.BoundingBox area the area to check
+-- @tparam number|Concepts.Vector amount the amount to expand
+-- @treturn Concepts.BoundingBox the area
+function Area.non_zero(area, amount)
+    area = Area.new(area)
+    amount = amount or .01
+
+    return Area.size(area) == 0 and Area.expand(area, amount) or area
+end
+
 --- Shrinks the area by the given amount.
 -- The area shrinks inwards from top-left towards the bottom-right, and from bottom-right towards the top-left.
 -- @tparam Concepts.BoundingBox area the area to shrink
