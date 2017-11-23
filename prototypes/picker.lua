@@ -54,6 +54,21 @@ data:extend{
         name = "picker-used-for",
         key_sequence = "CONTROL + SHIFT + ENTER",
     },
+    {
+        type = "custom-input",
+        name = "picker-reverse-belts",
+        key_sequence = "ALT + R",
+    },
+    {
+        type = "custom-input",
+        name = "picker-manual-inventory-sort",
+        key_sequence = "SHIFT + E",
+    },
+    {
+        type = "custom-input",
+        name = "picker-flashlight-toggle",
+        key_sequence = "KEY68"
+    }
 }
 
 local text ={

@@ -136,9 +136,13 @@ local function sort_opened_inventory(data)
         if a > 20 then return end
     end
 
-    local proxy = player.surface.create_entity{name = "picker-proxy-chest", position = player.position}
-    proxy.operable = false
-    proxy.destructible = false
+    local proxy = player.surface.create_entity{
+        name="character-corpse",
+        position = player.position,
+        force = player.force,
+        inventory_size = #inventory
+    }
+
     local proxy_inv = proxy.get_inventory(defines.inventory.chest)
 
     if filtered then -- figure out which slots have what filters

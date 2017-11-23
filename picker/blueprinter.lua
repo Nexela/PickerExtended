@@ -51,7 +51,7 @@ local function last_built_(event)
     local player, pdata = Player.get(event.player_index)
     if not player.cursor_stack.valid_for_read and player.mod_settings["picker-blueprint-last"].value and pdata.last_put then
         local entity = event.created_entity
-        local area = Area.shrink(Area.to_collision_area(entity), .25)
+        local area = Area.shrink(entity.bounding_box, .25)
         if Area.size(area) > 0 then
             local bp = lib.get_planner(player, "blueprint", "Pipette Blueprint")
             bp.create_blueprint{
@@ -98,7 +98,7 @@ local function make_simple_blueprint(event)
                     if entity.force == player.force and lib.damaged(entity) and lib.get_planner(player, "repair-tool") then
                         return
                     else
-                        local area = Area.to_collision_area(entity)
+                        local area = Area(entity.bounding_box)
                         if Area.size(area) > 0 then
                             local bp = lib.get_planner(player, "blueprint", "Pipette Blueprint")
                             if bp then

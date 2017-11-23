@@ -78,6 +78,7 @@ require("picker.wiretool")
 require("picker.pipecleaner")
 require("picker.orphans")
 require("picker.beltbrush")
+require("picker.beltreverser")
 --require("picker.pastesettings") --needs on/off user config
 require("picker.flashlight")
 require("picker.filterfill")

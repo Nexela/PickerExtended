@@ -91,12 +91,7 @@ local function wheres_my_car(event)
     elseif player.selected and player.selected.type == "car" then
         pdata.last_car = player.selected
     elseif event.input_name and pdata.last_car and pdata.last_car.valid then
-        player.add_custom_alert(
-            pdata.last_car,
-            {type = "item", name = pdata.last_car.name},
-            {"vehicles.dude-wheres-my-car"},
-            true
-        )
+        player.add_custom_alert(pdata.last_car, {type = "item", name = pdata.last_car.name}, {"vehicles.dude-wheres-my-car"}, true)
     end
 end
 Event.register({"picker-dude-wheres-my-car", defines.events.on_player_driving_changed_state}, wheres_my_car)
@@ -129,21 +124,23 @@ Event.register(defines.events.on_train_changed_state, attempt_honk)
 local function manual_honk(event)
     local player = game.players[event.player_index]
     if player.vehicle then
-        if player.vehicle.type == "locomotive" and player.vehicle.train.manual_mode then
-            local train = player.vehicle.train
-            local loco = player.vehicle
-            if train.speed == 0 then
-                loco.surface.play_sound {
-                    path = "deltic-start",
-                    position = loco.position,
-                    volume = 1
-                }
-            else
-                loco.surface.play_sound {
-                    path = "deltic-stop",
-                    position = loco.position,
-                    volume = 1
-                }
+        if player.vehicle.type == "locomotive" then
+            if player.vehicle.train.manual_mode then
+                local train = player.vehicle.train
+                local loco = player.vehicle
+                if train.speed == 0 then
+                    loco.surface.play_sound {
+                        path = "deltic-start",
+                        position = loco.position,
+                        volume = 1
+                    }
+                else
+                    loco.surface.play_sound {
+                        path = "deltic-stop",
+                        position = loco.position,
+                        volume = 1
+                    }
+                end
             end
         else
             local veh = player.vehicle

@@ -93,6 +93,27 @@ function Data.extract_monolith(filename, x, y, w, h)
     }
 end
 
+--Entity!
+function Data.create_sound_old(name, file_or_sound_table, volume)
+    Data.fail_if_missing(name)
+    Data.fail_if_missing(file_or_sound_table)
+    local sound = {
+        type = "explosion",
+        name = name,
+        animations = Data.empty_animations()
+    }
+
+    if type(file_or_sound_table) == "table" then
+        sound.sound = file_or_sound_table
+    else
+        sound.sound = {
+            filename = file_or_sound_table,
+            volume = volume or 1
+        }
+    end
+    data:extend{sound}
+end
+
 function Data.create_sound(name, file)
     Data.fail_if_missing(name)
     Data.fail_if_missing(file)

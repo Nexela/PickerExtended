@@ -5,6 +5,7 @@ Date: ??????
     - Moved data only tweaks to seperate mod. "Picker Tweaks"
     - Using 0.16.0 API
     - Update STDLIB to 0.9.0
+    - Added in belt reverser hotkey
   Bugfixes:
     - Many bugfixes.
   Optimisations:

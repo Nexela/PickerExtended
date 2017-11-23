@@ -57,7 +57,7 @@ function Developer.make_test_entities(name)
                 }
             }
         }
-        data:extend{markers}
+        Data:extend{markers}
     end
 
     if not data.raw["electric-energy-interface"]["debug-energy-interface"] then
@@ -73,7 +73,7 @@ function Developer.make_test_entities(name)
         power.vehicle_impact_sound = nil
         power.working_sound = nil
 
-        data:extend{power}
+        Data:extend{power}
     end
 
     if not data.raw["electric-pole"]["debug-substation"] then
@@ -92,7 +92,7 @@ function Developer.make_test_entities(name)
         pole.vehicle_impact_sound = nil
         pole.working_sound = nil
 
-        data:extend{pole}
+        Data:extend{pole}
     end
 
     data.raw.tile["lab-dark-1"].map_color = {r=100, g=100, b=100}

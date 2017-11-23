@@ -1,4 +1,3 @@
-require("prototypes/final-fixes/sortinventory")
 require("prototypes/final-fixes/makedisabledeq")
 require("prototypes/final-fixes/disablecontrols")
 
