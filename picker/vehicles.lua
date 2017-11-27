@@ -1,6 +1,24 @@
---[vehicle.lua]] -- Vehicle related scripts.
+--[[
+    vehicles.lua
+    Adds honking for trains and vehicles
+    Adds vehicle snapping for cars and tanks
+    Adds goto selected station hotkey when inside a train
+    Adds toggle train mode hotkey
+    Adds automatic train mode toggling
+]]
 
 local Player = require("stdlib.event.player")
+
+--[[
+	"name": "DelticHonk",
+	"title": "Deltic Honk",
+	"author": "Michael Cowgill (ChurchOrganist)",
+	"contact": "jmcowgill@gmail.com",
+	"description": [[
+        blatant hack of Gotlag's original Honk mod which changes the sounds to Deltic horns.
+        Trains honk when stopping. And starting. And on command.
+    ]]
+--]]
 
 local HONK_COOLDOWN = 120
 
@@ -162,7 +180,43 @@ local function manual_honk(event)
 end
 Event.register("picker-honk", manual_honk)
 
-local function init()
-    global.recently_honked = global.recently_honked or {}
+--[[
+  "name": "VehicleSnap",
+  "author": "Zaflis",
+  "homepage": "https://forums.factorio.com/viewtopic.php?f=92&t=25501",
+  "description": "Snaps movement angle when driving cars or tanks.",
+--]]
+-- snap amount is the amount of different angles car can drive on,
+-- (360 / vehiclesnap_amount) is the difference between 2 axis
+-- car will slowly turn towards such angle axis
+local SNAP_AMOUNT = 16
+
+local function snap_vehicle(event)
+    local player, pdata = Player.get(event.player_index)
+    if player and player.vehicle and not player.vehicle.train and player.vehicle.speed > 0.1 then
+        local o = player.vehicle.orientation
+        local last_o = pdata._last_orientation
+        if last_o and pdata.snap ~= false and math.abs(o - last_o) < 0.001 then
+            local snap_o = math.floor(o * SNAP_AMOUNT + 0.5) / SNAP_AMOUNT
+            -- Interpolate with 80% current and 20% target orientation
+            o = (o * 4.0 + snap_o) * 0.2
+            player.vehicle.orientation = o
+        end
+        pdata._last_orientation = o
+    end
 end
-Event.register(Event.core_events.init_and_config, init)
+Event.register(defines.events.on_player_changed_position, snap_vehicle)
+
+local function toggle_snap(command)
+    local player, pdata = Player.get(command.player_index)
+    pdata.snap = not pdata.snap
+    player.print({"", tostring(pdata.snap)})
+end
+commands.add_command("snap", "snapdriving", toggle_snap)
+
+-- INIT -----------------------------------------------------------------------
+local function init_and_config()
+    global.recently_honked = global.recently_honked or {}
+    Player.add_data_all({snap = true})
+end
+Event.register(Event.core_events.init_and_config, init_and_config)
