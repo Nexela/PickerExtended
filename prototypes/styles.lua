@@ -6,7 +6,7 @@ local style = data.raw["gui-style"].default
 --[[Frames]]
 style.picker_frame = {
     type = "frame_style",
-    parent = "frame_style",
+    parent = "frame",
     top_padding = 0,
     bottom_padding = 0,
     right_padding = 0,
@@ -16,7 +16,7 @@ style.picker_frame = {
 --[[Tables]]
 style.picker_table = {
     type = "table_style",
-    parent = "table_style",
+    parent = "table",
     top_padding = 0,
     bottom_padding = 0,
     right_padding = 0,
@@ -29,7 +29,7 @@ style.picker_table = {
 --[[32x32 Button Styles]]
 style.picker_buttons = {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     maximal_height = 33,
     minimal_height = 33,
     maximal_width = 33,
@@ -102,11 +102,11 @@ style.filterfill_filters = {
 --[[What is it used for]]
 style.small_spacing_scroll_pane_style = {
     type = "scroll_pane_style",
-    parent = "scroll_pane_style",
+    parent = "scroll_pane",
     top_padding = 2,
     left_padding = 0,
     right_padding = 0,
-    flow_style = {"slot_table_spacing_flow_style"}
+    flow_style = {"slot_table_spacing_flow"}
 }
 style.row_table_style = {
     type = "table_style",
@@ -149,7 +149,7 @@ data:extend {
 
 style.frame_stknt_style = {
     type = "frame_style",
-    parent = "frame_style",
+    parent = "frame",
     top_padding = 0,
     right_padding = 0,
     bottom_padding = 0,
@@ -175,7 +175,7 @@ style.flow_stknt_style = {
 
 style.label_stknt_style = {
     type = "label_style",
-    parent = "label_style",
+    parent = "label",
     font = "font_stknt",
     align = "left",
     default_font_color = {r = 1, g = 1, b = 1},
@@ -242,7 +242,7 @@ style.textbox_stknt_style = {
 
 style.button_stknt_style = {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     font = "font_bold_stknt",
     align = "center",
     default_font_color = {r = 1, g = 1, b = 1},
@@ -261,7 +261,7 @@ style.button_stknt_style = {
 
 style.checkbox_stknt_style = {
     type = "checkbox_style",
-    parent = "checkbox_style",
+    parent = "checkbox",
     font = "font_bold_stknt",
     font_color = {r = 1, g = 1, b = 1},
     top_padding = 0,

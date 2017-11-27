@@ -45,7 +45,7 @@ local function menu_note(player, pdata, open_or_close)
                 player.gui.left.add {
                 type = "flow",
                 name = "flow_stknt",
-                style = "achievements_flow_style",
+                style = "achievements_flow",
                 direction = "horizontal"
             }
             frame =

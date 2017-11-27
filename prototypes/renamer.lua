@@ -18,10 +18,10 @@ data:extend{
 -------------------------------------------------------------------------------
 --[[Styles]]--
 -------------------------------------------------------------------------------
-data.raw["gui-style"].default["picker-rename-button-style"] =
+data.raw["gui-style"].default["picker-rename-button"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     font = "picker-rename-button",
     align = "center",
     top_padding = 2,

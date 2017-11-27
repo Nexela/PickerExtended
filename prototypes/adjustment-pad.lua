@@ -33,7 +33,7 @@ local style = data.raw["gui-style"].default
 
 style.adjustment_pad_frame_style = {
     type = "frame_style",
-    parent = "frame_style",
+    parent = "frame",
     maximal_height = 33,
     minimal_height = 33,
     top_padding = 0,
@@ -44,15 +44,15 @@ style.adjustment_pad_frame_style = {
 
 style.adjustment_pad_label_style = {
     type = "label_style",
-    parent = "label_style",
-    font = "default-listbox",
+    parent = "label",
+    --font = "default-listbox",
     maximal_width = 90,
     minimal_width = 90
 }
 
 style.adjustment_pad_text_style = {
     type = "textfield_style",
-    parent = "textfield_style",
+    parent = "textfield",
     maximal_width = 42,
     minimal_width = 42,
     maximal_height = 24,
@@ -62,7 +62,7 @@ style.adjustment_pad_text_style = {
 
 style.adjustment_pad_table_style = {
     type = "table_style",
-    parent = "table_style",
+    parent = "table",
     cell_spacing = 0,
     top_padding = 0,
     left_padding = 0,
@@ -74,7 +74,7 @@ style.adjustment_pad_table_style = {
 
 style.adjustment_pad_btn_small_style = {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     maximal_height = 14,
     minimal_height = 14,
     maximal_width = 20,
@@ -163,7 +163,7 @@ style.adjustment_pad_btn_dn = {
 
 style.adjustment_pad_btn_reset = {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     maximal_height = 28,
     minimal_height = 28,
     maximal_width = 20,

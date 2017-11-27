@@ -106,7 +106,7 @@ local function get_or_create_used_for_flow(player, destroy)
         search_table.style.visible = false
 
         --[[Info Table]]
-        local main_table = frame.add{type = "table", name = "uff_table_main", colspan = 4, style = "slot_table_style"}
+        local main_table = frame.add{type = "table", name = "uff_table_main", colspan = 4, style = "slot_table"}
         main_table.add{type="label", name = "uff_main_ingredient_in", caption={"used-for.ingredient_in"}}
         main_table.add{type="label", name = "uff_main_product_of", caption={"used-for.product_of"}}
         main_table.add{type="label", name = "uff_main_mined_from", caption={"used-for.mined_from"}}

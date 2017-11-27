@@ -19,7 +19,7 @@ function lib.get_or_create_main_left_flow(player, flow_name)
             type = "flow",
             name = flow_name .. "_main_flow",
             direction = "vertical",
-            style = "slot_table_spacing_flow_style"
+            style = "slot_table_spacing_vertical_flow"
         }
         main_flow.style.top_padding = 4
         main_flow.style.right_padding = 0
