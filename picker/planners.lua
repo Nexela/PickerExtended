@@ -20,7 +20,8 @@ local function get_or_create_planner_flow(player, destroy)
     local pdata = global.players[player.index]
     local flow = player.gui.center["picker_planner_flow"]
     if flow and destroy then
-        return flow.destroy()
+        flow.destroy()
+        return
     elseif not flow then
         local planners = global.planners
         pdata.planners = pdata.planners or {}
