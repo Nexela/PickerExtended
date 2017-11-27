@@ -13,7 +13,7 @@ local function call_a_plumber(event)
         local toilets = {}
         toilets[plumber.selected.unit_number] = plumber.selected.fluidbox
 
-        local clog = #plumber.selected.fluidbox > 0 and plumber.selected.fluidbox[1] and plumber.selected.fluidbox[1].type
+        local clog = #plumber.selected.fluidbox > 0 and plumber.selected.fluidbox[1] and plumber.selected.fluidbox[1].name
         if clog then
             plumber.print({"pipecleaner.cleaning-clogs", game.fluid_prototypes[clog].localised_name})
 
@@ -22,7 +22,7 @@ local function call_a_plumber(event)
                 if index then
                     rootered[index] = drain
                     for i = 1, #drain do
-                        if drain[i] and drain[i].type and drain[i].type == clog then
+                        if drain[i] and drain[i].name and drain[i].name == clog then
                             drain[i] = nil
                             table.each(
                                 drain.get_connections(i),
