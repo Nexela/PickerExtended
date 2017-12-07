@@ -19,7 +19,7 @@ local function get_or_create_filterfill_gui(player, destroy)
     elseif not filter_frame then
         filter_frame = flow.add{type = "frame", name = "filterfill_frame", direction="horizontal", style = "picker_frame"}
 
-        local requests = filter_frame.add{type = "table", name = "filterfill_requests", colspan = 6, style = "picker_table"}
+        local requests = filter_frame.add{type = "table", name = "filterfill_requests", column_count = 6, style = "picker_table"}
         requests.add{type = "sprite-button", name = "filterfill_requests_btn_bp", sprite = "picker-request-bp", tooltip = {"filterfill.btn-bp"}, style = "picker_buttons"}
         requests.add{type = "sprite-button", name = "filterfill_requests_btn_2x", sprite = "picker-request-2x", tooltip = {"filterfill.btn-2x"}, style = "picker_buttons"}
         requests.add{type = "sprite-button", name = "filterfill_requests_btn_5x", sprite = "picker-request-5x", tooltip = {"filterfill.btn-5x"}, style = "picker_buttons"}
@@ -27,7 +27,7 @@ local function get_or_create_filterfill_gui(player, destroy)
         requests.add{type = "sprite-button", name = "filterfill_requests_btn_max", sprite = "picker-request-max", tooltip = {"filterfill.btn-max"}, style = "picker_buttons"}
         requests.add{type = "sprite-button", name = "filterfill_requests_btn_0x", sprite = "picker-request-clear", tooltip = {"filterfill.btn-clear"}, style = "picker_buttons"}
 
-        local filters = filter_frame.add{type = "table", name = "filterfill_filters", colspan = 5, style = "picker_table"}
+        local filters = filter_frame.add{type = "table", name = "filterfill_filters", column_count = 5, style = "picker_table"}
         filters.add{type = "sprite-button", name = "filterfill_filters_btn_all", sprite = "picker-filters-all", tooltip = {"filterfill.btn-all"}, style = "picker_buttons"}
         filters.add{type = "sprite-button", name = "filterfill_filters_btn_down", sprite = "picker-filters-down", tooltip = {"filterfill.btn-down"}, style = "picker_buttons"}
         filters.add{type = "sprite-button", name = "filterfill_filters_btn_right", sprite = "picker-filters-right", tooltip = {"filterfill.btn-right"}, style = "picker_buttons"}

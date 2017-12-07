@@ -31,7 +31,7 @@ local function get_or_create_planner_flow(player, destroy)
         local scroll = frame.add{type = 'scroll-pane', name = 'picker_planner_scroll'}
         scroll.horizontal_scroll_policy = 'never'
         scroll.style.maximal_height = 110
-        local table = scroll.add{type = 'table', name = 'picker_planner_table', colspan = 6}
+        local table = scroll.add{type = 'table', name = 'picker_planner_table', column_count = 6}
         for planner in pairs(planners) do
             if pdata.planners[planner] == false then
                 if not game.item_prototypes[planner] then

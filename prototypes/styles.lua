@@ -106,7 +106,7 @@ style.small_spacing_scroll_pane_style = {
     top_padding = 2,
     left_padding = 0,
     right_padding = 0,
-    flow_style = {"slot_table_spacing_flow"}
+    --flow_style = "slot_table_spacing_flow"
 }
 style.row_table_style = {
     type = "table_style",

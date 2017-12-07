@@ -61,7 +61,7 @@ local function menu_note(player, pdata, open_or_close)
                 frame.add {
                 type = "table",
                 name = "tab_stknt_main",
-                colspan = 1,
+                column_count = 1,
                 style = "picker_table"
             }
             local txt_box = table_main.add {
@@ -78,7 +78,7 @@ local function menu_note(player, pdata, open_or_close)
                     type = "table",
                     name = "tab_stknt_colors",
                     style = "picker_table",
-                    colspan = 10
+                    column_count = 10
                 }
                 for name, color in pairs(defines.color) do
                     color_button =
@@ -96,7 +96,7 @@ local function menu_note(player, pdata, open_or_close)
                 table_main.add {
                 type = "table",
                 name = "tab_stknt_check",
-                colspan = 2,
+                column_count = 2,
                 style = "picker_table"
             }
             table_checks.add {
@@ -136,7 +136,7 @@ local function menu_note(player, pdata, open_or_close)
                 table_main.add {
                 type = "table",
                 name = "tab_stknt_but",
-                colspan = 6,
+                column_count = 6,
                 style = "picker_table"
             }
             table_but.add {

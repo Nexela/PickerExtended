@@ -19,7 +19,7 @@ local function get_or_create_blueprint_gui(player)
     if not bpframe then
         bpframe = flow.add{type = "frame", name = "picker_bp_tools", direction="horizontal", style = "picker_frame"}
 
-        local bptable = bpframe.add{type = "table", name = "picker_bp_tools_table", colspan = 4, style = "picker_table"}
+        local bptable = bpframe.add{type = "table", name = "picker_bp_tools_table", column_count = 4, style = "picker_table"}
         bptable.add{type = "sprite-button", name = "picker_bp_tools_mirror", sprite = "picker-mirror-sprite", style = "picker_buttons", tooltip = {"blueprinter.btn-mirror"}}
         bptable.add{type = "choose-elem-button", name = "picker_bp_tools_from", elem_type = "entity", style = "picker_buttons", tooltip = {"blueprinter.btn-from"}}
         bptable.add{type = "choose-elem-button", name = "picker_bp_tools_to", elem_type = "entity", style = "picker_buttons", tooltip = {"blueprinter.btn-to"}}

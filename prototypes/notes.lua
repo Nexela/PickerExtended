@@ -18,6 +18,7 @@ local invis_note_item ={
     type = "item",
     name = "invis-note",
     icon = "__PickerExtended__/graphics/sticky-note.png",
+    icon_size = 32,
     flags = { "hidden" },
     subgroup = "circuit-network",
     place_result="invis-note",
@@ -29,6 +30,7 @@ local invis_note = {
     type = "constant-combinator",
     name = "invis-note",
     icon = "__PickerExtended__/graphics/sticky-note.png",
+    icon_size = 32,
     flags = {"player-creation", "placeable-off-grid", "not-repairable", "not-on-map"},
     max_health = 1,
     collision_mask = {"not-colliding-with-itself"},
@@ -72,6 +74,7 @@ local invis_note = {
 
 local sticky_text = Data.duplicate("flying-text", "flying-text", "sticky-text")
 sticky_text.icon = "__PickerExtended__/graphics/sticky-note.png"
+sticky_text.icon_size = 32
 sticky_text.speed = 0
 sticky_text.time_to_live = 300
 

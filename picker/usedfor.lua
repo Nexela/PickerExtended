@@ -87,7 +87,7 @@ local function get_or_create_used_for_flow(player, destroy)
         frame.style.maximal_width = 430
 
         --[[Header]]
-        local table = frame.add{type = "table", name = "uff_table_header", colspan = 5}
+        local table = frame.add{type = "table", name = "uff_table_header", column_count = 5}
         local label = table.add{type = "label", name = "uff_header_label", caption = "What is it used for:"}
         local search = table.add{type = "textfield", name = "uff_header_search", text = ""}
         local choose = table.add{type = "choose-elem-button", name = "uff_header_item", elem_type = "item", item = held, style = "picker_buttons"}
@@ -95,18 +95,18 @@ local function get_or_create_used_for_flow(player, destroy)
         local close = table.add{type = "sprite-button", name = "uff_header_close", sprite="picker-close", style = "picker_buttons", tooltip = {"used-for.close"}}
 
         --[[Search Table]]
-        local search_table = frame.add{type = "table", name = "uff_table_search", colspan = 1}
+        local search_table = frame.add{type = "table", name = "uff_table_search", column_count = 1}
         local search_frame = search_table.add{type = "frame", name = "uff_table_search_frame", direction = "horizontal"}
         search_frame.style.minimal_width = 410
         -- search_frame.style.maximal_height = 120
         local search_scroll = search_frame.add{type = "scroll-pane", name = "uff_table_search_scroll"}
         search_scroll.style.maximal_width = 390
         search_scroll.style.maximal_height = 110
-        local items_table = search_scroll.add{type = "table", name = "uff_table_search_scroll_items", colspan = 10}
+        local items_table = search_scroll.add{type = "table", name = "uff_table_search_scroll_items", column_count = 10}
         search_table.style.visible = false
 
         --[[Info Table]]
-        local main_table = frame.add{type = "table", name = "uff_table_main", colspan = 4, style = "slot_table"}
+        local main_table = frame.add{type = "table", name = "uff_table_main", column_count = 4, style = "slot_table"}
         main_table.add{type="label", name = "uff_main_ingredient_in", caption={"used-for.ingredient_in"}}
         main_table.add{type="label", name = "uff_main_product_of", caption={"used-for.product_of"}}
         main_table.add{type="label", name = "uff_main_mined_from", caption={"used-for.mined_from"}}

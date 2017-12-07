@@ -13,9 +13,9 @@ MOD.commands = {}
 MOD.DEBUG = settings.startup["picker-debug"] and settings.startup["picker-debug"].value or false
 
 require("stdlib.event.event")
-require("stdlib.event.player")
-require("stdlib.event.force")
 require("stdlib.event.gui")
+local Player = require("stdlib.event.player")
+local Force = require("stdlib.event.force")
 
 -------------------------------------------------------------------------------
 --[[INIT]]--
@@ -36,8 +36,13 @@ Event.register(Event.core_events.configuration_changed,
 Event.register(Event.core_events.init, function()
         global._changes = {}
         global._changes[game.active_mods[MOD.name]] = "0.0.0"
+        Player.init()
+        Force.init()
     end
 )
+
+Player.register_events()
+Force.register_events()
 
 local function set_join_options(event)
     local player = game.players[event.player_index]

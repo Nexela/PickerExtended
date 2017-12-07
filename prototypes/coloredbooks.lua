@@ -13,9 +13,11 @@ local function make_icons(color)
     return {
         {
             icon = "__PickerExtended__/graphics/blueprint-book.png",
+            icon_size = 32,
         },
         {
             icon = "__PickerExtended__/graphics/blueprint-book-layer.png",
+            icon_size = 32,
             tint = color
         }
     }
@@ -32,6 +34,7 @@ if settings.startup["picker-colored-books"].value then
         local book = table.deepcopy(data.raw["blueprint-book"]["blueprint-book"])
         book.name = name.."-book"
         book.icons = make_icons(color)
+        book.icon_size = 32
         book.localised_name = {"item-name.colored-book", {"colors."..name}}
         book.show_in_library = false
         data:extend{book}

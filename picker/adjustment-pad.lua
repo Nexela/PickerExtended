@@ -25,7 +25,7 @@ function Pad.get_or_create_adjustment_pad(player, name, flow_name) -- return gui
         gui.add{type="label", name=name.."_label", caption={name.."-gui.label-caption"}, tooltip={name.."-tooltip.label-caption"}, style="adjustment_pad_label_style"}
         gui.add{type="textfield", name = name.."_text_box", text=0, style="adjustment_pad_text_style"}
         --Up/Down buttons
-        local table = gui.add{type="table", name = name.."_table", colspan=1, style="adjustment_pad_table_style"}
+        local table = gui.add{type="table", name = name.."_table", column_count=1, style="adjustment_pad_table_style"}
         table.add{type="button", name=name.."_btn_up", style="adjustment_pad_btn_up"}
         table.add{type="button", name=name.."_btn_dn", style="adjustment_pad_btn_dn"}
         --Reset button

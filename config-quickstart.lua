@@ -6,6 +6,7 @@ return {
     power_armor = "power-armor-mk2",
     equipment = {
         "creative-mode_super-fusion-reactor-equipment",
+        "fusion-reactor-equipment",
         "personal-roboport-mk2-equipment",
         "belt-immunity-equipment"
     },
@@ -23,6 +24,7 @@ return {
     setup_power = true,
     stacks = {
         "construction-robot",
+        "steel-axe"
     },
     quickbar = {
         "creative-mode_item-source",
