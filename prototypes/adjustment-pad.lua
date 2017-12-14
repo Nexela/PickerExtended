@@ -10,13 +10,13 @@ data:extend {
         type = "custom-input",
         name = "adjustment-pad-increase",
         key_sequence = "PAD +",
-        consuming = "none"
+        linked_game_control = "larger-terrain-building-area"
     },
     {
         type = "custom-input",
         name = "adjustment-pad-decrease",
         key_sequence = "PAD -",
-        consuming = "none"
+        linked_game_control = "smaller-terrain-building-area"
     }
 }
 

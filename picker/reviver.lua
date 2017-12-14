@@ -13,25 +13,11 @@ local lib = require("picker.lib")
 local function revive_it(event)
     local placed = event.created_entity
     if not lib.ghosts[placed.name] and Area(placed.selection_box):size() > 0 then
-        local player, _ = Player.get(event.player_index)
-
-        -- if pdata.revive_recipe and placed.type == "assembling-machine" then
-        --     placed.recipe = pdata.revive_recipe
-        -- end
-        -- pdata.revive_recipe = nil
+        local player = Player.get(event.player_index)
         lib.satisfy_requests(player, placed)
     end
 end
 Event.register(defines.events.on_built_entity, revive_it)
-
-local function save_it(event)
-    local player, pdata = Player.get(event.player_index)
-    local ghost = player.surface.find_entity("entity-ghost", event.position)
-    if ghost and ghost.ghost_type == "assembling-machine" and ghost.recipe then
-        pdata.revive_recipe = ghost.recipe
-    end
-end
-Event.register(defines.events.on_put_item, save_it)
 
 local function picker_revive_selected(event)
     local player = game.players[event.player_index]

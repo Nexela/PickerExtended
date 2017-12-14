@@ -25,7 +25,6 @@ if remote.interfaces["picker"] and remote.interfaces["picker"]["dolly_moved_enti
     script.on_event(remote.call("picker", "dolly_moved_entity_id"), function_to_update_positions)
 end
 --]]
-
 local function blacklist(entity)
     local types = {
         --["entity-ghost"] = true,
@@ -168,7 +167,10 @@ local function move_combinator(event)
                 pdata.dolly_tick = event.tick
                 entity.direction = ent_direction
 
-                if entity.surface.can_place_entity {name = entity.name, position = target_pos, direction = ent_direction, force = entity.force} then
+                local ghost = entity.name == "entity-ghost" and entity.ghost_name
+
+                local params = {name = ghost or entity.name, position = target_pos, direction = ent_direction, force = entity.force}
+                if entity.surface.can_place_entity(params) and not entity.surface.find_entity("entity-ghost", target_pos) then
                     --We can place the entity here, check for wire distance
                     if entity.circuit_connected_entities then
                         --Move Poles
@@ -203,8 +205,6 @@ local function move_combinator(event)
 end
 Event.register({"dolly-move-north", "dolly-move-east", "dolly-move-south", "dolly-move-west"}, move_combinator)
 
-
-
 local function try_rotate_combinator(event)
     local player, pdata = Player.get(event.player_index)
     local entity = get_saved_entity(player, pdata, event.tick)
@@ -235,8 +235,6 @@ local function try_rotate_combinator(event)
 end
 Event.register("dolly-rotate-rectangle", try_rotate_combinator)
 
-
-
 local function rotate_saved_dolly(event)
     local player, pdata = Player.get(event.player_index)
     local entity = get_saved_entity(player, pdata, event.tick)
@@ -247,5 +245,41 @@ local function rotate_saved_dolly(event)
     end
 end
 Event.register("dolly-rotate-saved", rotate_saved_dolly)
+
+
+--   "name": "ghost-pipette",
+--   "title": "Ghost Pipette",
+--   "author": "blueblue",
+--   "contact": "deep.blueeee@yahoo.de",
+--   "description": "Adds ghost-related functionality like pipette, rotation, selection.",
+local function rotate_ghost(event)
+    local player, pdata = Player.get(event.player_index)
+    local ghost = get_saved_entity(player, pdata, event.tick)
+    if ghost and ghost.name == "entity-ghost" then
+        local left = event.input_name == "picker-rotate-ghost-reverse"
+        local prototype = game.entity_prototypes[ghost.ghost_name]
+        local value = prototype.has_flag("building-direction-8-way") and 1 or 2
+
+        if prototype.type == "offshore-pump" then
+            return
+        end
+
+        if value ~= 1 then
+            local box = prototype.collision_box
+            local lt = box.left_top
+            local rb = box.right_bottom
+            local dx = rb.x - lt.x
+            local dy = rb.y - lt.y
+            if dx ~= dy and dx <= 2 and dy <= 2 then
+                value = 4
+            elseif dx ~= dy then
+                return
+            end
+        end
+        ghost.direction = (ghost.direction + ((left and -value) or value)) % 8
+        pdata.dolly = ghost
+    end
+end
+Event.register({"dolly-rotate-ghost", "dolly-rotate-ghost-reverse"}, rotate_ghost)
 
 return move_combinator
