@@ -29,7 +29,7 @@ local function get_or_create_planner_flow(player, destroy)
         flow = player.gui.center.add{type = "flow", name = "picker_planner_flow", direction = 'vertical'}
         local frame = flow.add{type = 'frame', name = 'picker_planner_frame', direction = 'vertical', caption = {'planner-menu.header'}}
         local scroll = frame.add{type = 'scroll-pane', name = 'picker_planner_scroll'}
-        scroll.horizontal_scroll_policy = 'never'
+        --scroll.horizontal_scroll_policy = 'never'
         scroll.style.maximal_height = 110
         local table = scroll.add{type = 'table', name = 'picker_planner_table', column_count = 6}
         for planner in pairs(planners) do
