@@ -207,28 +207,30 @@ Event.register({"dolly-move-north", "dolly-move-east", "dolly-move-south", "doll
 
 local function try_rotate_combinator(event)
     local player, pdata = Player.get(event.player_index)
-    local entity = get_saved_entity(player, pdata, event.tick)
+    if not player.cursor_stack.valid_for_read then
+        local entity = get_saved_entity(player, pdata, event.tick)
 
-    if entity and oblong_combinators[entity.name] then
-        if player.can_reach_entity(entity) then
-            pdata.dolly = entity
-            local diags = {
-                [defines.direction.north] = defines.direction.northeast,
-                [defines.direction.south] = defines.direction.northeast,
-                [defines.direction.west] = defines.direction.southwest,
-                [defines.direction.east] = defines.direction.southwest
-            }
+        if entity and oblong_combinators[entity.name] then
+            if player.can_reach_entity(entity) then
+                pdata.dolly = entity
+                local diags = {
+                    [defines.direction.north] = defines.direction.northeast,
+                    [defines.direction.south] = defines.direction.northeast,
+                    [defines.direction.west] = defines.direction.southwest,
+                    [defines.direction.east] = defines.direction.southwest
+                }
 
-            event.start_pos = entity.position
-            event.start_direction = entity.direction
+                event.start_pos = entity.position
+                event.start_direction = entity.direction
 
-            event.distance = .5
-            entity.direction = entity.direction == 6 and 0 or entity.direction + 2
+                event.distance = .5
+                entity.direction = entity.direction == 6 and 0 or entity.direction + 2
 
-            event.direction = diags[entity.direction]
+                event.direction = diags[entity.direction]
 
-            if not move_combinator(event) then
-                entity.direction = event.start_direction
+                if not move_combinator(event) then
+                    entity.direction = event.start_direction
+                end
             end
         end
     end
@@ -246,7 +248,6 @@ local function rotate_saved_dolly(event)
 end
 Event.register("dolly-rotate-saved", rotate_saved_dolly)
 
-
 --   "name": "ghost-pipette",
 --   "title": "Ghost Pipette",
 --   "author": "blueblue",
@@ -254,30 +255,32 @@ Event.register("dolly-rotate-saved", rotate_saved_dolly)
 --   "description": "Adds ghost-related functionality like pipette, rotation, selection.",
 local function rotate_ghost(event)
     local player, pdata = Player.get(event.player_index)
-    local ghost = get_saved_entity(player, pdata, event.tick)
-    if ghost and ghost.name == "entity-ghost" then
-        local left = event.input_name == "picker-rotate-ghost-reverse"
-        local prototype = game.entity_prototypes[ghost.ghost_name]
-        local value = prototype.has_flag("building-direction-8-way") and 1 or 2
+    if not player.cursor_stack.valid_for_read then
+        local ghost = get_saved_entity(player, pdata, event.tick)
+        if ghost and ghost.name == "entity-ghost" then
+            local left = event.input_name == "picker-rotate-ghost-reverse"
+            local prototype = game.entity_prototypes[ghost.ghost_name]
+            local value = prototype.has_flag("building-direction-8-way") and 1 or 2
 
-        if prototype.type == "offshore-pump" then
-            return
-        end
-
-        if value ~= 1 then
-            local box = prototype.collision_box
-            local lt = box.left_top
-            local rb = box.right_bottom
-            local dx = rb.x - lt.x
-            local dy = rb.y - lt.y
-            if dx ~= dy and dx <= 2 and dy <= 2 then
-                value = 4
-            elseif dx ~= dy then
+            if prototype.type == "offshore-pump" then
                 return
             end
+
+            if value ~= 1 then
+                local box = prototype.collision_box
+                local lt = box.left_top
+                local rb = box.right_bottom
+                local dx = rb.x - lt.x
+                local dy = rb.y - lt.y
+                if dx ~= dy and dx <= 2 and dy <= 2 then
+                    value = 4
+                elseif dx ~= dy then
+                    return
+                end
+            end
+            ghost.direction = (ghost.direction + ((left and -value) or value)) % 8
+            pdata.dolly = ghost
         end
-        ghost.direction = (ghost.direction + ((left and -value) or value)) % 8
-        pdata.dolly = ghost
     end
 end
 Event.register({"dolly-rotate-ghost", "dolly-rotate-ghost-reverse"}, rotate_ghost)
