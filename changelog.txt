@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.0.1
+Date: ??????
+  Bugfixes:
+    - No longer rotate entities when holding an item in your hand.
+    - Remove uneeded code on planner menu.
+    - Fix nil error
+---------------------------------------------------------------------------------------------------
 Version: 3.0.0
 Date: ??????
   Features:
