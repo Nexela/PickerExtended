@@ -58,7 +58,7 @@ local function get_saved_entity(player, pdata, tick)
     if player.selected and player.selected.force == player.force and not blacklist(player.selected) then
         return player.selected
     elseif pdata.dolly and pdata.dolly.valid then
-        if tick <= pdata.dolly_tick + defines.time.second * 5 then
+        if tick <= (pdata.dolly_tick or 0)  + defines.time.second * 5 then
             return pdata.dolly
         else
             pdata.dolly = nil
