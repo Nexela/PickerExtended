@@ -89,7 +89,7 @@ nodebug:
 	echo No Config Files
 
 check:
-	@luacheck .
+	@luacheck . -q --codes
 
 package: package-copy $(OUT_FILES) nodebug
 	@cp -r stdlib $(BUILD_DIR)/$(OUTPUT_NAME)/stdlib
