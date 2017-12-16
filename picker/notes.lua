@@ -45,8 +45,8 @@ local function menu_note(player, pdata, open_or_close)
                 player.gui.left.add {
                 type = "flow",
                 name = "flow_stknt",
-                style = "achievements_flow",
-                direction = "horizontal"
+                style = "achievements_vertical_flow",
+                direction = "vertical"
             }
             frame =
                 flow.add {
@@ -176,8 +176,9 @@ local function display_mapmark(note, on_or_off)
         note.mapmark = nil
 
         if on_or_off and note.invis_note and note.invis_note.valid then
+            local icon = game.item_prototypes["sticky-note"]
             local tag = {
-                icon = {type = "item", name = "sticky-note"},
+                icon = icon and {type = "item", name = "sticky-note"} or nil,
                 position = note.invis_note.position,
                 text = note.text,
                 last_user = note.last_user,
@@ -566,7 +567,7 @@ local function on_destruction(event)
         destroy_note(note)
     end
 end
-Event.register({defines.events.on_entity_died, defines.events.on_robot_pre_mined, defines.events.on_preplayer_mined_item}, on_destruction)
+Event.register({defines.events.on_entity_died, defines.events.on_robot_pre_mined, defines.events.on_pre_player_mined_item}, on_destruction)
 
 --------------------------------------------------------------------------------------
 local function on_marked_for_deconstruction(event)
