@@ -176,9 +176,8 @@ local function display_mapmark(note, on_or_off)
         note.mapmark = nil
 
         if on_or_off and note.invis_note and note.invis_note.valid then
-            local icon = game.item_prototypes["sticky-note"]
             local tag = {
-                icon = icon and {type = "item", name = "sticky-note"} or nil,
+                icon = {type = "item", name = "invis-note"},
                 position = note.invis_note.position,
                 text = note.text,
                 last_user = note.last_user,
@@ -656,7 +655,7 @@ Gui.on_click(
     end
 )
 
-Gui.on_click(
+Gui.on_checked_state_changed(
     "chk_stknt_autoshow",
     function(event)
         local _, pdata = Player.get(event.player_index)
@@ -673,7 +672,7 @@ Gui.on_click(
     end
 )
 
-Gui.on_click(
+Gui.on_checked_state_changed(
     "chk_stknt_mapmark",
     function(event)
         local _, pdata = Player.get(event.player_index)
@@ -689,7 +688,7 @@ Gui.on_click(
     end
 )
 
-Gui.on_click(
+Gui.on_checked_state_changed(
     "chk_stknt_locked_force",
     function(event)
         local _, pdata = Player.get(event.player_index)
@@ -699,7 +698,7 @@ Gui.on_click(
     end
 )
 
-Gui.on_click(
+Gui.on_checked_state_changed(
     "chk_stknt_locked_admin",
     function(event)
         local player, pdata = Player.get(event.player_index)
