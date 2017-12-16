@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.0.2
+Date: ??????
+  Bugfixes:
+    - Fix rotating for real this time. (reverse saved rotate disabled due to factorio bug in .16.3)
+    - Fix sticky-sign/note error.
+    - Fix notes gui error.
+---------------------------------------------------------------------------------------------------
 Version: 3.0.1
 Date: ??????
   Bugfixes:
