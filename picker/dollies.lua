@@ -58,7 +58,7 @@ local function get_saved_entity(player, pdata, tick)
     if player.selected and player.selected.force == player.force and not blacklist(player.selected) then
         return player.selected
     elseif pdata.dolly and pdata.dolly.valid then
-        if tick <= (pdata.dolly_tick or 0)  + defines.time.second * 5 then
+        if tick <= (pdata.dolly_tick or 0) + defines.time.second * 5 then
             return pdata.dolly
         else
             pdata.dolly = nil
@@ -239,14 +239,18 @@ Event.register("dolly-rotate-rectangle", try_rotate_combinator)
 
 local function rotate_saved_dolly(event)
     local player, pdata = Player.get(event.player_index)
-    local entity = get_saved_entity(player, pdata, event.tick)
+    if not player.cursor_stack.valid_for_read and not player.selected then
+        --local left = event.input_name == "dolly-rotate-saved-reverse"
+        local entity = get_saved_entity(player, pdata, event.tick)
 
-    if entity and entity.supports_direction then
-        pdata.dolly = entity
-        entity.rotate()
+        if entity and entity.supports_direction then
+            pdata.dolly = entity
+            --entity.rotate{by_player = game.players[player.index + 1], reverse = left and true}
+            entity.rotate()
+        end
     end
 end
-Event.register("dolly-rotate-saved", rotate_saved_dolly)
+Event.register({"dolly-rotate-saved", "dolly-rotate-saved-reverse"}, rotate_saved_dolly)
 
 --   "name": "ghost-pipette",
 --   "title": "Ghost Pipette",
