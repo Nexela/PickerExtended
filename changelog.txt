@@ -1,6 +1,9 @@
 ---------------------------------------------------------------------------------------------------
 Version: 3.0.3
 Date: ??????
+  Changes:
+    - Better GUI support in some spots.
+    - Per User setting added for simple quick entity blueprinting
   Bugfixes:
     - Fix another notes gui error. #66
     - Fix Area tostring error in stdlib. Rotype
