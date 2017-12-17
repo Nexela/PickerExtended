@@ -3,6 +3,7 @@ Version: 3.0.3
 Date: ??????
   Bugfixes:
     - Fix another notes gui error. #66
+    - Fix Area tostring error in stdlib. Rotype
 ---------------------------------------------------------------------------------------------------
 Version: 3.0.2
 Date: ??????
