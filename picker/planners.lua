@@ -20,8 +20,7 @@ local function get_or_create_planner_flow(player, destroy)
     local pdata = global.players[player.index]
     local flow = player.gui.center["picker_planner_flow"]
     if flow and destroy then
-        flow.destroy()
-        return
+        return flow.destroy()
     elseif not flow then
         local planners = global.planners
         pdata.planners = pdata.planners or {}
@@ -29,7 +28,6 @@ local function get_or_create_planner_flow(player, destroy)
         flow = player.gui.center.add{type = "flow", name = "picker_planner_flow", direction = 'vertical'}
         local frame = flow.add{type = 'frame', name = 'picker_planner_frame', direction = 'vertical', caption = {'planner-menu.header'}}
         local scroll = frame.add{type = 'scroll-pane', name = 'picker_planner_scroll'}
-        --scroll.horizontal_scroll_policy = 'never'
         scroll.style.maximal_height = 110
         local table = scroll.add{type = 'table', name = 'picker_planner_table', column_count = 6}
         for planner in pairs(planners) do
@@ -72,12 +70,22 @@ local function planner_clicked(event)
 end
 Gui.on_click('picker_planner_table_sprite_(.*)', planner_clicked)
 
+
+local function close_planner_menu(event)
+    if event.element and event.element.name == "picker_planner_flow" then
+        event.element.style.visible = false
+    end
+end
+Event.register(defines.events.on_gui_closed, close_planner_menu)
+
 local function open_or_close_planner_menu(event)
     local player = game.players[event.player_index]
     local flow = get_or_create_planner_flow(player)
     flow.style.visible = not flow.style.visible
+    player.opened = flow.style.visible and flow or nil
 end
 Event.register("picker-planner-menu", open_or_close_planner_menu)
+
 
 -------------------------------------------------------------------------------
 --[[Next Planner]]--
