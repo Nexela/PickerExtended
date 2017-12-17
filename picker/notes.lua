@@ -29,9 +29,14 @@ end
 -- GUI Layout -----------------------------------------------------------------
 local function menu_note(player, pdata, open_or_close)
     if open_or_close == nil then
-        open_or_close = (player.gui.left.flow_stknt == nil)
+        open_or_close = (player.gui.center.flow_stknt == nil)
     end
 
+    if player.gui.center.flow_stknt then
+        player.gui.center.flow_stknt.destroy()
+    end
+
+    --Remove after .16 support
     if player.gui.left.flow_stknt then
         player.gui.left.flow_stknt.destroy()
     end
@@ -42,7 +47,7 @@ local function menu_note(player, pdata, open_or_close)
 
         if note then
             flow =
-                player.gui.left.add {
+                player.gui.center.add {
                 type = "flow",
                 name = "flow_stknt",
                 style = "achievements_vertical_flow",
@@ -64,7 +69,8 @@ local function menu_note(player, pdata, open_or_close)
                 column_count = 1,
                 style = "picker_table"
             }
-            local txt_box = table_main.add {
+            local txt_box =
+                table_main.add {
                 type = "text-box",
                 name = "txt_stknt",
                 text = note.text,
@@ -130,7 +136,7 @@ local function menu_note(player, pdata, open_or_close)
                     state = note.locked_admin,
                     tooltip = {"notes-gui-tt.locked-admin"},
                     style = "checkbox_stknt_style"
-            }.enabled = player.admin
+                }.enabled = player.admin
 
             local table_but =
                 table_main.add {
@@ -163,6 +169,7 @@ local function menu_note(player, pdata, open_or_close)
                 }
             end
             txt_box.focus()
+            player.opened = flow
         end
     end
 end
@@ -608,13 +615,12 @@ Gui.on_text_changed(
     end
 )
 
-Gui.on_click(
-    "but_stknt_close",
-    function(event)
+local function close_note(event)
+    if event.element and (event.element.name == "flow_stknt" or event.element.name == "but_stknt_close") then
         local player, pdata = Player.get(event.player_index)
         local note = pdata.note_sel
         if note then
-            if #event.element.parent.parent["txt_stknt"].text == 0 then
+            if #player.gui.center.flow_stknt.frm_stknt.tab_stknt_main.txt_stknt.text == 0 then
                 destroy_note(note)
             end
             note.editer = nil
@@ -622,7 +628,9 @@ Gui.on_click(
         menu_note(player, pdata, false)
         pdata.note_sel = nil
     end
-)
+end
+Gui.on_click("but_stknt_close", close_note)
+Event.register(defines.events.on_gui_closed, close_note)
 
 Gui.on_click(
     "but_stknt_delete",
@@ -722,7 +730,7 @@ Gui.on_click(
     function(event)
         local player, pdata = Player.get(event.player_index)
         -- open color picker.
-        local flow = player.gui.left.flow_stknt
+        local flow = player.gui.center.flow_stknt
         if flow then
             if flow[color_picker_name] then
                 flow[color_picker_name].destroy()
