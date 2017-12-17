@@ -1,5 +1,12 @@
 data:extend{
     {
+        type = "bool-setting",
+        name = "picker-simple-blueprint",
+        setting_type = "runtime-per-user",
+        default_value = true,
+        order = "picker-a[blueprint]-a",
+    },
+    {
         type = "string-setting",
         name = "picker-no-blueprint-inv",
         setting_type = "runtime-per-user",
@@ -112,7 +119,7 @@ data:extend{
         type = "bool-setting",
         name = "picker-blueprint-last",
         setting_type = "runtime-per-user",
-        default_value = true,
+        default_value = false,
         order = "picker-g[last-put]-a",
     },
 }

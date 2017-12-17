@@ -44,10 +44,10 @@ end
 Event.register(defines.events.on_player_cursor_stack_changed, show_bp_tools)
 
 -------------------------------------------------------------------------------
---[[Blueprint when running out of items]]-- --TODO not needed in .16?
+--[[Blueprint when running out of items]]-- --TODO not needed in .17?
 -------------------------------------------------------------------------------
 --Creates a blueprint item in your hand of the last thing you built if you run out of items.
-local function last_built_(event)
+local function last_built(event)
     local player, pdata = Player.get(event.player_index)
     if not player.cursor_stack.valid_for_read and player.mod_settings["picker-blueprint-last"].value and pdata.last_put then
         local entity = event.created_entity
@@ -68,9 +68,9 @@ local function last_built_(event)
     end
     pdata.last_put = nil
 end
---Event.register(defines.events.on_built_entity, last_built)
+Event.register(defines.events.on_built_entity, last_built)
 
-local function last_item_(event)
+local function last_item(event)
     local player, pdata = Player.get(event.player_index)
     if player.cursor_stack and player.cursor_stack.valid_for_read then
         local stack = player.cursor_stack
@@ -82,7 +82,7 @@ local function last_item_(event)
         end
     end
 end
---Event.register(defines.events.on_put_item, last_item)
+Event.register(defines.events.on_put_item, last_item)
 
 -------------------------------------------------------------------------------
 --[[Make Simple Blueprint]]--
@@ -90,7 +90,7 @@ end
 --Makes a simple blueprint of the selected entity, including recipes/modules
 local function make_simple_blueprint(event)
     local player, pdata = Player.get(event.player_index)
-    if player.controller_type ~= defines.controllers.ghost then
+    if player.controller_type ~= defines.controllers.ghost and player.mod_settings["picker-simple-blueprint"].value then
         if player.selected and not (player.selected.type == "resource" or player.selected.has_flag("not-blueprintable")) then
             if not (player.cursor_stack.valid_for_read and global.planners[player.cursor_stack.name]) then
                 local entity = player.selected
@@ -99,7 +99,7 @@ local function make_simple_blueprint(event)
                         return
                     else
                         local area = Area(entity.bounding_box)
-                        if Area.size(area) > 0 then
+                        if area:size() > 0 then
                             local bp = lib.get_planner(player, "blueprint", "Pipette Blueprint")
                             if bp then
                                 bp.clear_blueprint()
@@ -115,7 +115,6 @@ local function make_simple_blueprint(event)
                                 if bp.is_blueprint_setup() then
                                     local frame = get_or_create_blueprint_gui(player)
                                     frame["picker_bp_tools_table"]["picker_bp_tools_from"].elem_value = entity.name
-                                    --return bp.is_blueprint_setup() and bp
                                 end
                             end
                         end
