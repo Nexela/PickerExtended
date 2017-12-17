@@ -240,12 +240,11 @@ Event.register("dolly-rotate-rectangle", try_rotate_combinator)
 local function rotate_saved_dolly(event)
     local player, pdata = Player.get(event.player_index)
     if not player.cursor_stack.valid_for_read and not player.selected then
-        --local left = event.input_name == "dolly-rotate-saved-reverse"
         local entity = get_saved_entity(player, pdata, event.tick)
 
         if entity and entity.supports_direction then
             pdata.dolly = entity
-            --entity.rotate{by_player = game.players[player.index + 1], reverse = left and true}
+            --entity.rotate{reverse = event.input_name == "dolly-rotate-saved-reverse"} --Factorio Bug
             entity.rotate()
         end
     end
