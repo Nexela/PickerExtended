@@ -156,14 +156,15 @@ Gui.on_click("filterfill_requests_btn_max", requests_fill)
 
 local function multiply_filter(event)
     local player = game.players[event.player_index]
-    if player.opened then
+    local opened = player.opened
+    if opened then
         local factor = tonumber(event.element.name:match("%d+"))
-        for i = 1, player.opened.request_slot_count do
-            local existing = player.opened.get_request_slot(i)
+        for i = 1, opened.request_slot_count do
+            local existing = opened.get_request_slot(i)
             if existing and factor > 0 then
-                player.opened.set_request_slot({ name = existing.name, count = math.floor(existing.count * factor) }, i)
+                opened.set_request_slot({ name = existing.name, count = math.floor(existing.count * factor) }, i)
             else
-                player.opened.clear_request_slot(i)
+                opened.clear_request_slot(i)
             end
         end
     end
@@ -212,7 +213,7 @@ Gui.on_click("filterfill_requests_btn_bp", blueprint_requests)
 local function check_for_filterable_inventory(event)
     local player = game.players[event.player_index]
     local frame = get_or_create_filterfill_gui(player)
-    if player.opened and player.opened.prototype then
+    if player.opened and event.gui_type == defines.gui_type.entity then
         local inv = player.opened.get_output_inventory()
         local requester = player.opened.type == "logistic-container" and player.opened.prototype.logistic_mode == "requester"
 
@@ -223,4 +224,4 @@ local function check_for_filterable_inventory(event)
         frame.style.visible = false
     end
 end
-Event.register(defines.events.on_selected_entity_changed, check_for_filterable_inventory)
+Event.register({defines.events.on_gui_opened, defines.events.on_gui_closed}, check_for_filterable_inventory)
