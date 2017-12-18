@@ -244,8 +244,7 @@ local function rotate_saved_dolly(event)
 
         if entity and entity.supports_direction then
             pdata.dolly = entity
-            --entity.rotate{reverse = event.input_name == "dolly-rotate-saved-reverse"} --Factorio Bug
-            entity.rotate()
+            entity.rotate{reverse = event.input_name == "dolly-rotate-saved-reverse", by_player = player}
         end
     end
 end

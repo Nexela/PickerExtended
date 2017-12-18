@@ -3,6 +3,7 @@ Version: 3.0.4
 Date: ??????
   Bugfixes:
     - Include changelog in release. #68
+    - Reverse rotating saved dollies is now possible. Factorio Bug
 ---------------------------------------------------------------------------------------------------
 Version: 3.0.3
 Date: ??????
