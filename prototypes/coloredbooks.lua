@@ -6,7 +6,7 @@
 -- "title": "Colored Blueprint Books Redux",
 -- "author": "Blank",
 -- "description": "This mod allows the user to change the color of a blueprint book.",
-
+local Item = require("stdlib.data.item")
 local colors = require("config").colored_books
 
 local function make_icons(color)
@@ -24,9 +24,10 @@ local function make_icons(color)
 end
 
 --Change the default book to support colors
-local default_book = data.raw["blueprint-book"]["blueprint-book"]
+local default_book = Item(data.raw["blueprint-book"]["blueprint-book"])
 default_book.icon = nil
 default_book.icons = make_icons({r=0.3, g=0.75, b=1.0, a=1.0})
+default_book:add_flag("hidden")
 
 --Add in the aditional colors
 if settings.startup["picker-colored-books"].value then
