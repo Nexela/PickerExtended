@@ -4,6 +4,7 @@ Date: ??????
   Bugfixes:
     - Include changelog in release. #68
     - Reverse rotating saved dollies is now possible. Factorio Bug
+    - Fix map ping item description.
 ---------------------------------------------------------------------------------------------------
 Version: 3.0.3
 Date: ??????
