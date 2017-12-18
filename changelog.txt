@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.0.4
+Date: ??????
+  Bugfixes:
+    - Include changelog in release. #68
+---------------------------------------------------------------------------------------------------
 Version: 3.0.3
 Date: ??????
   Changes:
@@ -26,39 +31,16 @@ Version: 3.0.0
 Date: ??????
   Features:
     - Moved data only tweaks to seperate mod. "Picker Tweaks"
-    - Using 0.16.0 API
-    - Update STDLIB to 0.9.0
-    - Added in belt reverser
-    - Ghosts can be rotated (using rotate and reverse rotate key)
-    - Added Deltic Honk, Tank Honk, and Car Honk
-    - Added Auto Deconstruct of finished miners
-    - Added Vehicle Snapping  /snap to toggle snapping on and off
-    - Added Map Ping
-    - Using the smart pipette on items on ground will pick them up
-    - using the smart pipette on item request proxies will attempt to fill them from your inventory
-  Changes:
-    - Saved dollies are rotated with the rotate and reverse rotate keys (default R and SHIFT + R)
-    - Adjustment Pad keybinds are now tied to terrain increase and decrease size keys
-    - Sticky Note related technologies and prototypes have been moved to "Picker Tweaks"
-  Bugfixes:
-    - Many bugfixes.
-  Optimisations:
-    - Many code optimisations.
----------------------------------------------------------------------------------------------------
-Version: 1.0.0
-Date: ??????
-  Features:
-    - Sticky Notes.
-    - Quick Blueprinter.
-    - Map Ping.
-    - Adjustment Pad.
-    - Belt Brush.
-    - Chest Limiter.
+    - Sticky Notes.  Add notes on any entity with ALT - W.
+    - Quick Blueprinter. Makes a quick blueprint of any selected Entity with CTRL - Q
+    - Map Ping. Pings the map when the map ping selection tool is used.
+    - Adjustment Pad. Custom adjustment pad used for changing item values,  + and - are bound to terrain size keys.
+    - Belt Brush. Quickly paint multi wide paths of belts/underground belts/pipes, Also has built in balancers, corners, and cascading belts.
+    - Chest Limiter. Uses the adjustment pad to always set the limit (red bar) on a built chest
     - Colored BP books.
     - Chest Copier.
     - Crafter.
-    - Death Marker.
-    - Dollies.
+    - Dollies. Move and reorganize your factory without picking things up.
     - Equipment Hotkeys.
     - Filter Fill.
     - Flashlight Toggle.
@@ -71,7 +53,28 @@ Date: ??????
     - Renamer.
     - Revivier.
     - Inventory Sort.
-    - Switch Gun while Driving.
-    - Tools.
-    - What is it used for.
-    - Vehicles.
+    - Switch player Gun while Driving.
+    - Tools. Selection tools for measuring areas, taking pictures, counting/removing ores
+    - Vehicles Honking
+    - Vehicles Snapping
+  Changes:
+    - Using 0.16.0 API
+    - Update STDLIB to 0.9.0
+    - Added in belt reverser
+    - Ghosts can be rotated (using rotate and reverse rotate key)
+    - Added Deltic Honk, Tank Honk, and Car Honk
+    - Added Auto Deconstruct of finished miners
+    - Added Vehicle Snapping  /snap to toggle snapping on and off
+    - Added Map Ping
+    - Using the smart pipette on items on ground will pick them up
+    - using the smart pipette on item request proxies will attempt to fill them from your inventory
+    - Saved dollies are rotated with the rotate and reverse rotate keys (default R and SHIFT + R)
+    - Adjustment Pad keybinds are now tied to terrain increase and decrease size keys
+    - Sticky Note related technologies and prototypes have been moved to "Picker Tweaks"
+  Bugfixes:
+    - Many bugfixes.
+  Optimisations:
+    - Many code optimisations.
+---------------------------------------------------------------------------------------------------
+Version: 1.0.0
+Date: ??????

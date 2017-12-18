@@ -19,16 +19,7 @@ OUT_FILES := $(SED_FILES:%=$(OUTPUT_DIR)/%)
 SED_EXPRS := -e 's/{{MOD_NAME}}/$(PACKAGE_NAME)/g'
 SED_EXPRS += -e 's/{{VERSION}}/$(VERSION_STRING)/g'
 
-all: release
-
-release: clean package
-
-git: tag
-	git checkout master
-	git merge develop master
-	git checkout develop
-	git push --all
-	git push --tags
+all: clean package
 
 package-copy: $(PKG_DIRS) $(PKG_FILES)
 	@mkdir -p $(OUTPUT_DIR)
@@ -47,7 +38,7 @@ $(OUTPUT_DIR)/%: %
 
 tag:
 	git add .
-	git commit -m "Preparing Release $(VERSION_STRING)"
+	git commit -m "Preparing Release v$(VERSION_STRING)"
 	git tag -f v$(VERSION_STRING)
 
 optimize:
@@ -58,7 +49,7 @@ optimize:
 
 #Remove debug switches from config file if present
 nodebug:
-	@[ -e ./$(CONFIG)/config.lua ] && \
+	@[ -e $(CONFIG) ] && \
 	echo Removing debug switches from config.lua && \
 	sed -i 's/^\(.*DEBUG.*=\).*/\1 false/' $(CONFIG) && \
 	sed -i 's/^\(.*LOGLEVEL.*=\).*/\1 0/' $(CONFIG) && \
@@ -68,10 +59,10 @@ nodebug:
 #Run luacheck on files in build directiory
 check:
 	@wget -q --no-check-certificate -O ./$(BUILD_DIR)/.luacheckrc https://raw.githubusercontent.com/Nexela/Factorio-luacheckrc/master/.luacheckrc
-	#sed -i 's/exclude_files/_exclude_files_/' ./$(BUILD_DIR)/.luacheckrc
-	luacheck ./$(OUTPUT_DIR)/ --codes --config ./$(BUILD_DIR)/.luacheckrc --include-files "**/.*/*"
+	@sed -i 's/exclude_files/_SKIP_/' ./$(BUILD_DIR)/.luacheckrc
+	@luacheck ./$(OUTPUT_DIR) -q --codes --config ./$(BUILD_DIR)/.luacheckrc
 
-package: package-copy $(OUT_FILES) check nodebug
+package: package-copy $(OUT_FILES) check nodebug optimize
 	@cp -r stdlib $(BUILD_DIR)/$(OUTPUT_NAME)/stdlib
 	@cd $(BUILD_DIR) && zip -rq $(OUTPUT_NAME).zip $(OUTPUT_NAME)
 	@echo $(OUTPUT_NAME).zip ready
