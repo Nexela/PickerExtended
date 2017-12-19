@@ -5,9 +5,6 @@ Date: ??????
     - Include changelog in release. #68
     - Reverse rotating saved dollies is now possible. Factorio Bug
     - Fix map ping item description.
-  Changes:
-    - Beltbrush shift placing will not build from inventory
-    - Beltbrush now cancles if building_while_moving
 ---------------------------------------------------------------------------------------------------
 Version: 3.0.3
 Date: ??????
