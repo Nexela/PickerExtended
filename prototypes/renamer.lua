@@ -1,26 +1,24 @@
 -------------------------------------------------------------------------------
---[[Renamer]]--
+--[[Renamer]] --
 -------------------------------------------------------------------------------
-data:extend{
-    {
-        type = "custom-input",
-        name = "picker-rename",
-        key_sequence = "CONTROL + R",
-        consuming = "all"
-    },
-    {
-        type = "font",
-        name = "picker-rename-button",
-        from = "default-bold",
-        size = 14
-    }
+local Data = require("stdlib.data.data")
+Data {
+    type = "custom-input",
+    name = "picker-rename",
+    key_sequence = "CONTROL + R",
+    consuming = "all"
 }
--------------------------------------------------------------------------------
---[[Styles]]--
--------------------------------------------------------------------------------
-data.raw["gui-style"].default["picker-rename-button"] =
-{
+
+Data {
+    type = "font",
+    name = "picker-rename-button",
+    from = "default-bold",
+    size = 14
+}
+
+Data.new_style {
     type = "button_style",
+    name = "picker-rename-button",
     parent = "button",
     font = "picker-rename-button",
     align = "center",

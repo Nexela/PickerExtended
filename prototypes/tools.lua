@@ -1,7 +1,8 @@
--------------------------------------------------------------------------------
---[[Tape Measure]]-- Quick way to get bounding box sizes and distances.
--------------------------------------------------------------------------------
-local tape = {
+local Data = require("stdlib.data.data")
+local Entity = require("stdlib.data.entity")
+
+-- Tape Measure -- Quick way to get bounding box sizes and distances.
+Entity {
     type = "selection-tool",
     name = "picker-tape-measure",
     icon = "__PickerExtended__/graphics/tape-measure.png",
@@ -11,8 +12,8 @@ local tape = {
     order = "c[automated-construction]-a[tape-measure]",
     stack_size = 1,
     stackable = false,
-    selection_color = { r = 0, g = 1, b = 0 },
-    alt_selection_color = { r = 0, g = 1, b = 0 },
+    selection_color = {r = 0, g = 1, b = 0},
+    alt_selection_color = {r = 0, g = 1, b = 0},
     selection_mode = {"tiles"},
     alt_selection_mode = {"tiles"},
     selection_cursor_box_type = "copy",
@@ -21,10 +22,8 @@ local tape = {
     show_in_library = true
 }
 
--------------------------------------------------------------------------------
---[[Eraser]]--
--------------------------------------------------------------------------------
-local eraser = {
+-- Eraser
+Entity {
     type = "selection-tool",
     name = "picker-ore-eraser",
     icon = "__PickerExtended__/graphics/ore-eraser.png",
@@ -34,8 +33,8 @@ local eraser = {
     order = "c[automated-construction]-b[ore-eraser]",
     stack_size = 1,
     stackable = false,
-    selection_color = { r = 0, g = 1, b = 0 },
-    alt_selection_color = { r = 0, g = 0, b = 1 },
+    selection_color = {r = 0, g = 1, b = 0},
+    alt_selection_color = {r = 0, g = 0, b = 1},
     selection_mode = {"any-entity"},
     alt_selection_mode = {"any-entity"},
     selection_cursor_box_type = "pair",
@@ -43,11 +42,8 @@ local eraser = {
     show_in_library = true
 }
 
--------------------------------------------------------------------------------
---[[Screen Shot Camera]]--
--------------------------------------------------------------------------------
---Graphics by Factorio forum/mod portal user YuokiTani
-local camera = {
+-- Screen Shot Camera --Graphics by Factorio forum/mod portal user YuokiTani
+ Entity {
     type = "selection-tool",
     name = "picker-camera",
     icon = "__PickerExtended__/graphics/camera.png",
@@ -65,25 +61,23 @@ local camera = {
     show_in_library = true
 }
 
-local hotkey = {
+Data {
     type = "custom-input",
     name = "picker-planner-menu",
     key_sequence = "SHIFT + B",
     consuming = "none"
 }
 
-local hotkey2 = {
+Data {
     type = "custom-input",
     name = "picker-next-planner",
     key_sequence = "CONTROL + Q",
     consuming = "none"
 }
 
-local hotkey3 = {
+Data {
     type = "custom-input",
     name = "picker-inventory-editor",
     key_sequence = "CONTROL + SHIFT + GRAVE",
     consuming = "all"
 }
-
-data:extend{tape, eraser, camera, hotkey, hotkey2, hotkey3}

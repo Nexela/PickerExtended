@@ -2,8 +2,10 @@
 --[[Map Ping]] --
 -------------------------------------------------------------------------------
 local Data = require("stdlib/data/data")
+local Item = require("stdlib/data/item")
+local Entity = require("stdlib/data/entity")
 
-local item = {
+Item {
     type = "selection-tool",
     name = "picker-ping-tool",
     icon = "__PickerExtended__/graphics/pingtool.png",
@@ -23,7 +25,7 @@ local item = {
     show_in_library = true
 }
 
-local entity = {
+Entity {
     type = "smoke-with-trigger",
     name = "picker-map-ping-explosion",
     icon = "__PickerExtended__/graphics/pingtool.png",
@@ -63,8 +65,6 @@ local entity = {
     spread_duration = 10
 }
 
-Data.create_sound("picker-map-ping-1", "__PickerExtended__/sounds/ping1.ogg")
-Data.create_sound("picker-map-ping-2", "__PickerExtended__/sounds/ping2.ogg")
-Data.create_sound("picker-map-ping-3", "__PickerExtended__/sounds/ping3.ogg")
-
-data:extend {item, entity}
+Data.new_sound("picker-map-ping-1", "__PickerExtended__/sounds/ping1.ogg")
+Data.new_sound("picker-map-ping-2", "__PickerExtended__/sounds/ping2.ogg")
+Data.new_sound("picker-map-ping-3", "__PickerExtended__/sounds/ping3.ogg")

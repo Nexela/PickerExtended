@@ -1,32 +1,33 @@
 -------------------------------------------------------------------------------
---[[StickyNotes]]--
+--[[StickyNotes]] --
 -------------------------------------------------------------------------------
-if not settings.startup["picker-use-notes"].value then return end
+if not settings.startup["picker-use-notes"].value then
+    return
+end
 
 local Data = require("stdlib.data.data")
+local Item = require("stdlib.data.item")
+local Entity = require("stdlib.data.entity")
 
-data:extend{
-    {
-        type = "custom-input",
-        name = "picker-notes",
-        key_sequence = "ALT + W",
-    },
+Data {
+    type = "custom-input",
+    name = "picker-notes",
+    key_sequence = "ALT + W"
 }
 
---[[Sticky Note Proxies]]--
-local invis_note_item ={
+Item {
     type = "item",
     name = "invis-note",
     icon = "__PickerExtended__/graphics/sticky-note.png",
     icon_size = 32,
-    flags = { "hidden" },
+    flags = {"hidden"},
     subgroup = "circuit-network",
-    place_result="invis-note",
+    place_result = "invis-note",
     order = "b[combinators]-c[invis-note]",
-    stack_size = 1,
+    stack_size = 1
 }
 
-local invis_note = {
+Entity {
     type = "constant-combinator",
     name = "invis-note",
     icon = "__PickerExtended__/graphics/sticky-note.png",
@@ -35,15 +36,13 @@ local invis_note = {
     max_health = 1,
     collision_mask = {"not-colliding-with-itself"},
     item_slot_count = settings.startup["picker-notes-slot-count"].value,
-    sprites =
-    {
+    sprites = {
         north = Data.empty_picture(),
         east = Data.empty_picture(),
         south = Data.empty_picture(),
-        west = Data.empty_picture(),
+        west = Data.empty_picture()
     },
-    activity_led_sprites =
-    {
+    activity_led_sprites = {
         north = Data.empty_picture(),
         east = Data.empty_picture(),
         south = Data.empty_picture(),
@@ -51,8 +50,7 @@ local invis_note = {
     },
     activity_led_light_offsets = {{0, 0}, {0, 0}, {0, 0}, {0, 0}},
     circuit_wire_max_distance = 0,
-    circuit_wire_connection_points =
-    {
+    circuit_wire_connection_points = {
         {
             shadow = {red = {0, 0}, green = {0, 0}},
             wire = {red = {0, 0}, green = {0, 0}}
@@ -68,14 +66,14 @@ local invis_note = {
         {
             shadow = {red = {0, 0}, green = {0, 0}},
             wire = {red = {0, 0}, green = {0, 0}}
-        },
+        }
     }
 }
 
-local sticky_text = Data.duplicate("flying-text", "flying-text", "sticky-text")
-sticky_text.icon = "__PickerExtended__/graphics/sticky-note.png"
-sticky_text.icon_size = 32
-sticky_text.speed = 0
-sticky_text.time_to_live = 300
-
-data:extend{invis_note_item, invis_note, sticky_text}
+local function text_settings(text)
+    text.icon = "__PickerExtended__/graphics/sticky-note.png"
+    text.icon_size = 32
+    text.speed = 0
+    text.time_to_live = 300
+end
+Entity("flying-text", "flying-text"):copy("sticky-text"):excute(text_settings)

@@ -1,4 +1,6 @@
-local marker = {
+local Entity = require("stdlib.data.entity")
+
+Entity {
     type = "corpse",
     name = "picker-orphan-mark",
     collision_mask = {},
@@ -18,5 +20,3 @@ local marker = {
         }
     }
 }
-
-data:extend{marker}
