@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------------
---[[Picker Blueprinter]]--
+--[[Picker Blueprinter]] --
 -------------------------------------------------------------------------------
 --Mirroring and Upgradeing code from "Foreman", by "Choumiko"
 
@@ -9,21 +9,37 @@ local Position = require("stdlib.area.position")
 local lib = require("picker.lib")
 Event.mirror = script.generate_event_name()
 
--------------------------------------------------------------------------------
---[[BP Tools]]-- Creates the BP tools frame
--------------------------------------------------------------------------------
+-- Creates the BP tools frame
 local function get_or_create_blueprint_gui(player)
     local flow = lib.get_or_create_main_left_flow(player, "picker")
 
     local bpframe = flow["picker_bp_tools"]
     if not bpframe then
-        bpframe = flow.add{type = "frame", name = "picker_bp_tools", direction="horizontal", style = "picker_frame"}
+        bpframe = flow.add {type = "frame", name = "picker_bp_tools", direction = "horizontal", style = "picker_frame"}
 
-        local bptable = bpframe.add{type = "table", name = "picker_bp_tools_table", column_count = 4, style = "picker_table"}
-        bptable.add{type = "sprite-button", name = "picker_bp_tools_mirror", sprite = "picker-mirror-sprite", style = "picker_buttons", tooltip = {"blueprinter.btn-mirror"}}
-        bptable.add{type = "choose-elem-button", name = "picker_bp_tools_from", elem_type = "entity", style = "picker_buttons", tooltip = {"blueprinter.btn-from"}}
-        bptable.add{type = "choose-elem-button", name = "picker_bp_tools_to", elem_type = "entity", style = "picker_buttons", tooltip = {"blueprinter.btn-to"}}
-        bptable.add{type = "sprite-button", name = "picker_bp_tools_update", sprite = "picker-upgrade-sprite", style = "picker_buttons", tooltip = {"blueprinter.btn-upgrade"}}
+        local bptable = bpframe.add {type = "table", name = "picker_bp_tools_table", column_count = 4, style = "picker_table"}
+        bptable.add {
+            type = "sprite-button",
+            name = "picker_bp_tools_mirror",
+            sprite = "picker-mirror-sprite",
+            style = "picker_buttons",
+            tooltip = {"blueprinter.btn-mirror"}
+        }
+        bptable.add {
+            type = "choose-elem-button",
+            name = "picker_bp_tools_from",
+            elem_type = "entity",
+            style = "picker_buttons",
+            tooltip = {"blueprinter.btn-from"}
+        }
+        bptable.add {type = "choose-elem-button", name = "picker_bp_tools_to", elem_type = "entity", style = "picker_buttons", tooltip = {"blueprinter.btn-to"}}
+        bptable.add {
+            type = "sprite-button",
+            name = "picker_bp_tools_update",
+            sprite = "picker-upgrade-sprite",
+            style = "picker_buttons",
+            tooltip = {"blueprinter.btn-upgrade"}
+        }
     end
     return bpframe
 end
@@ -43,30 +59,55 @@ local function show_bp_tools(event)
 end
 Event.register(defines.events.on_player_cursor_stack_changed, show_bp_tools)
 
--------------------------------------------------------------------------------
---[[Blueprint when running out of items]]-- --TODO not needed in .17?
--------------------------------------------------------------------------------
---Creates a blueprint item in your hand of the last thing you built if you run out of items.
-local function last_built(event)
-    local player, pdata = Player.get(event.player_index)
-    if not player.cursor_stack.valid_for_read and player.mod_settings["picker-blueprint-last"].value and pdata.last_put then
-        local entity = event.created_entity
-        local area = Area.shrink(entity.bounding_box, .25)
-        if Area.size(area) > 0 then
-            local bp = lib.get_planner(player, "blueprint", "Pipette Blueprint")
-            bp.create_blueprint{
+-- TODO not needed in .17?
+-- Blueprint when running out of items
+local function blueprint_single_entity(player, pdata, entity, target_name, area)
+    if area:size() > 0 then
+        local bp = lib.get_planner(player, "blueprint", "Pipette Blueprint")
+        if bp then
+            bp.clear_blueprint()
+            bp.label = "Pipette Blueprint"
+            bp.allow_manual_label_change = false
+            -- Build from surface
+            bp.create_blueprint {
                 surface = entity.surface,
                 force = player.force,
                 area = area,
                 always_include_tiles = false
             }
-            bp.label = "Pipette Blueprint"
-            bp.allow_manual_label_change = false
-            local bp_ents = bp.get_blueprint_entities()
-            if not bp_ents or bp_ents[1].name ~= pdata.last_put.name then bp.clear() end
+
+            -- Remove garbage
+            local found = false
+            for i, ent in pairs(bp.get_blueprint_entities() or {}) do
+                if ent.name == target_name then
+                    bp.set_blueprint_entities {ent}
+                    found = true
+                    break
+                end
+            end
+            pdata.last_put = nil
+            if not found then
+                return bp.clear() and nil
+            end
+            if bp.is_blueprint_setup() then
+                pdata.new_simple = true
+                local frame = get_or_create_blueprint_gui(player)
+                frame["picker_bp_tools_table"]["picker_bp_tools_from"].elem_value = entity.name
+            end
+        else
+            player.print({"picker.msg-cant-insert-blueprint"})
         end
     end
-    pdata.last_put = nil
+end
+
+--Creates a blueprint item in your hand of the last thing you built if you run out of items.
+local function last_built(event)
+    local player, pdata = Player.get(event.player_index)
+    if not player.cursor_stack.valid_for_read and player.mod_settings["picker-blueprint-last"].value and pdata.last_put then
+        local entity = event.created_entity
+        local area = Area(entity.bounding_box)
+        blueprint_single_entity(player, pdata, entity, pdata.last_put, area)
+    end
 end
 Event.register(defines.events.on_built_entity, last_built)
 
@@ -74,20 +115,17 @@ local function last_item(event)
     local player, pdata = Player.get(event.player_index)
     if player.cursor_stack and player.cursor_stack.valid_for_read then
         local stack = player.cursor_stack
-        if stack.count == 1
-        and stack.prototype.place_result
-        and not stack.prototype.place_result.has_flag('not-blueprintable')
-        and player.get_item_count(stack.name) == 1 then
-            pdata.last_put = stack.prototype.place_result
+        if
+            stack.count == 1 and stack.prototype.place_result and not stack.prototype.place_result.has_flag("not-blueprintable") and
+                player.get_item_count(stack.name) == 1
+         then
+            pdata.last_put = stack.prototype.place_result.name
         end
     end
 end
 Event.register(defines.events.on_put_item, last_item)
 
--------------------------------------------------------------------------------
---[[Make Simple Blueprint]]--
--------------------------------------------------------------------------------
---Makes a simple blueprint of the selected entity, including recipes/modules
+-- Make Simple Blueprint --Makes a simple blueprint of the selected entity, including recipes/modules
 local function make_simple_blueprint(event)
     local player, pdata = Player.get(event.player_index)
     if player.controller_type ~= defines.controllers.ghost and player.mod_settings["picker-simple-blueprint"].value then
@@ -99,28 +137,8 @@ local function make_simple_blueprint(event)
                         return
                     else
                         local area = Area(entity.bounding_box)
-                        if area:size() > 0 then
-                            local bp = lib.get_planner(player, "blueprint", "Pipette Blueprint")
-                            if bp then
-                                bp.clear_blueprint()
-                                bp.label = "Pipette Blueprint"
-                                bp.allow_manual_label_change = false
-                                bp.create_blueprint{
-                                    surface = entity.surface,
-                                    force = player.force,
-                                    area = area,
-                                    always_include_tiles = false
-                                }
-                                pdata.new_simple = true
-                                if bp.is_blueprint_setup() then
-                                    local frame = get_or_create_blueprint_gui(player)
-                                    frame["picker_bp_tools_table"]["picker_bp_tools_from"].elem_value = entity.name
-                                end
-                            end
-                        end
+                        blueprint_single_entity(player, pdata, entity, player.selected.name, area)
                     end
-                else
-                    player.print({"picker.msg-cant-insert-blueprint"})
                 end
             end
         end
@@ -128,9 +146,7 @@ local function make_simple_blueprint(event)
 end
 Event.register("picker-make-ghost", make_simple_blueprint)
 
--------------------------------------------------------------------------------
---[[Update BP Entities]]-- Update blueprint entities
--------------------------------------------------------------------------------
+-- Update BP Entities
 local function update_blueprint(event)
     local player = game.players[event.player_index]
     local stack = lib.stack_name(player.cursor_stack, "blueprint", true)
@@ -148,7 +164,7 @@ local function update_blueprint(event)
 
                 stack.set_blueprint_entities(bp_entities)
             else
-                player.print({"blueprinter.selections-not-fast-replaceable", {"entity-name."..from}, {"entity-name."..to}})
+                player.print({"blueprinter.selections-not-fast-replaceable", {"entity-name." .. from}, {"entity-name." .. to}})
             end
         else
             player.print({"blueprinter.no-from-or-to"})
@@ -157,9 +173,7 @@ local function update_blueprint(event)
 end
 Gui.on_click("picker_bp_tools_update", update_blueprint)
 
--------------------------------------------------------------------------------
---[[Quick Pick Blueprint]]-- Makes a quick blueprint from the entity selector gui TODO not needed in .16?
--------------------------------------------------------------------------------
+--Quick Pick Blueprint -- Makes a quick blueprint from the entity selector gui TODO not needed in .16?
 local function create_quick_pick_blueprint(event)
     local player = game.players[event.player_index]
     local stack = lib.stack_name(player.cursor_stack, "blueprint")
@@ -186,7 +200,12 @@ local function create_quick_pick_blueprint(event)
                 }
             }
             lib.get_planner(player, "blueprint", "Pipette Blueprint")
-            local ok = pcall(function() stack.set_blueprint_entities(entities) end)
+            local ok =
+                pcall(
+                function()
+                    stack.set_blueprint_entities(entities)
+                end
+            )
             if ok then
                 stack.label = "Pipette Blueprint"
             end
@@ -195,9 +214,7 @@ local function create_quick_pick_blueprint(event)
 end
 Gui.on_elem_changed("picker_bp_tools_from", create_quick_pick_blueprint)
 
--------------------------------------------------------------------------------
---[[Mirroring]]-- Mirrors the current blueprint held in the hand
--------------------------------------------------------------------------------
+--Mirroring -- Mirrors the current blueprint held in the hand
 local function get_mirrored_blueprint(blueprint)
     local curves, others, stops, signals, tanks = 9, 0, 4, 4, 2
 
@@ -236,10 +253,10 @@ local function get_mirrored_blueprint(blueprint)
                 ent.direction = (tanks + ent.direction) % 8
             elseif entType == "lamp" and ent.name == "smart-train-stop-proxy" then
                 ent.direction = 0
-                table.insert(smartSignal, {entity = {name=ent.name, position = Position.copy(ent.position)}, i = i})
+                table.insert(smartSignal, {entity = {name = ent.name, position = Position.copy(ent.position)}, i = i})
             elseif entType == "constant-combinator" and ent.name == "smart-train-stop-proxy-cargo" then
                 ent.direction = 0
-                table.insert(smartCargo, {entity = {name=ent.name, position = Position.copy(ent.position)}, i = i})
+                table.insert(smartCargo, {entity = {name = ent.name, position = Position.copy(ent.position)}, i = i})
             else
                 ent.direction = (others - ent.direction) % 8
             end
@@ -278,7 +295,7 @@ local function get_mirrored_blueprint(blueprint)
     return {entities = entities, tiles = tiles}
 end
 
-local function mirror_blueprint (event)
+local function mirror_blueprint(event)
     local player = game.players[event.player_index]
     local blueprint = lib.stack_name(player.cursor_stack, "blueprint", true)
     if blueprint then
@@ -287,9 +304,9 @@ local function mirror_blueprint (event)
         blueprint.set_blueprint_tiles(mirrored.tiles)
         if blueprint.label and not event.corner then
             if blueprint.label:find("Belt Brush Corner Left") then
-                blueprint.label = "Belt Brush Corner Right "..blueprint.label:match("%d+")
+                blueprint.label = "Belt Brush Corner Right " .. blueprint.label:match("%d+")
             elseif blueprint.label:find("Belt Brush Corner Right") then
-                blueprint.label = "Belt Brush Corner Left "..blueprint.label:match("%d+")
+                blueprint.label = "Belt Brush Corner Left " .. blueprint.label:match("%d+")
             end
         end
     end

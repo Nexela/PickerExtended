@@ -19,7 +19,7 @@ Event table returned with the event
 }
 
 --In your mods on_load and on_init, create an event handler for the dolly_moved_entity_id
---Adding the event registration in on_load and on_init you will not have to add picker as an optional dependency
+--Adding the event registration in on_load and on_init you should not have to add picker as an optional dependency
 
 if remote.interfaces["picker"] and remote.interfaces["picker"]["dolly_moved_entity_id"] then
     script.on_event(remote.call("picker", "dolly_moved_entity_id"), function_to_update_positions)
@@ -27,8 +27,6 @@ end
 --]]
 local function blacklist(entity)
     local types = {
-        --["entity-ghost"] = true,
-        --["tile-ghost"] = true,
         ["item-request-proxy"] = true,
         ["rocket-silo-rocket"] = true,
         ["player"] = true,
@@ -126,7 +124,7 @@ local function move_combinator(event)
                 table.each(
                     items_on_ground,
                     function(item)
-                        if item.valid then
+                        if item.valid and not player.mine_entity(item) then
                             item.teleport(entity.surface.find_non_colliding_position("item-on-ground", ent.position, 0, .20))
                         end
                     end

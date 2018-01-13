@@ -18,14 +18,6 @@ local color_picker_interface = "color-picker"
 local open_color_picker_button_name = "open_color_picker_stknt"
 local color_picker_name = "color_picker_stknt"
 
-local function num(var)
-    return var and 1 or 0
-end
-
-local function bool(numb)
-    return (numb ~= 0 and true) or false
-end
-
 -- GUI Layout -----------------------------------------------------------------
 local function menu_note(player, pdata, open_or_close)
     if open_or_close == nil then
@@ -109,7 +101,7 @@ local function menu_note(player, pdata, open_or_close)
                 type = "checkbox",
                 name = "chk_stknt_autoshow",
                 caption = {"notes-gui.autoshow"},
-                state = note.autoshow,
+                state = note.autoshow or false,
                 tooltip = {"notes-gui-tt.autoshow"},
                 style = "checkbox_stknt_style"
             }
@@ -117,7 +109,7 @@ local function menu_note(player, pdata, open_or_close)
                 type = "checkbox",
                 name = "chk_stknt_mapmark",
                 caption = {"notes-gui.mapmark"},
-                state = (note.mapmark ~= nil),
+                state = note.mapmark ~= nil,
                 tooltip = {"notes-gui-tt.mapmark"},
                 style = "checkbox_stknt_style"
             }
@@ -125,7 +117,7 @@ local function menu_note(player, pdata, open_or_close)
                 type = "checkbox",
                 name = "chk_stknt_locked_force",
                 caption = {"notes-gui.locked-force"},
-                state = note.locked_force,
+                state = note.locked_force or false,
                 tooltip = {"notes-gui-tt.locked-force"},
                 style = "checkbox_stknt_style"
             }
@@ -133,7 +125,7 @@ local function menu_note(player, pdata, open_or_close)
                     type = "checkbox",
                     name = "chk_stknt_locked_admin",
                     caption = {"notes-gui.locked-admin"},
-                    state = note.locked_admin,
+                    state = note.locked_admin or false,
                     tooltip = {"notes-gui-tt.locked-admin"},
                     style = "checkbox_stknt_style"
                 }.enabled = player.admin
@@ -214,72 +206,16 @@ end
 -- ENCODING -------------------------------------------------------------------
 -- store the note data into an existing invis-note
 local function encode_note(note)
-    local encoding_version = 1
+    --local encoding_version = 1
     local invis_note = note.invis_note
 
     if invis_note then
-        -- metadata bytes (big endian): <encoding version>, <reserved>, <flags>, <color index>
-        local metadata = 0
-        metadata = bit32.replace(metadata, encoding_version, 24, 8)
-
-        metadata = bit32.replace(metadata, num(note.autoshow), 8)
-        metadata = bit32.replace(metadata, num(note.mapmark ~= nil), 9)
-        metadata = bit32.replace(metadata, num(note.locked_force), 10)
-        metadata = bit32.replace(metadata, num(note.locked_admin), 11)
-
-        local color = note.color
-        local color_index
-        for i, v in pairs(color_array) do
-            if color.r == v.r and color.g == v.g and color.b == v.b then
-                color_index = i
-                break
-            end
-        end
-        if color_index == nil or color_index > 255 then
-            return
-        end
-        metadata = bit32.replace(metadata, color_index, 0, 8)
-
-        -- array of encoded values to store in the invis-note
-        local signal_vals = {}
-        for i = 1, settings.startup["picker-notes-slot-count"].value do
-            signal_vals[i] = -2 ^ 31
-        end
-
-        signal_vals[1] = signal_vals[1] + metadata
-
-        for i = 1, #note.text + 1 do
-            local signal_i = math.floor((i - 1) / 4)
-            local shift = (i - 1) % 4 * 8
-            local val
-            if i == #note.text + 1 then
-                val = 0 -- string termination
-            else
-                val = string.byte(note.text, i)
-            end
-            signal_vals[signal_i + 2] = signal_vals[signal_i + 2] + val * 2 ^ shift
-        end
-        if #signal_vals > settings.startup["picker-notes-slot-count"].value then
-            return
-        end
-
-        local params = {}
-        for i, v in pairs(signal_vals) do
-            table.insert(
-                params,
-                {
-                    signal = {
-                        type = "virtual",
-                        name = "signal-0"
-                    },
-                    count = v,
-                    index = i
-                }
-            )
-        end
-
-        -- assign encoded values to invis_note
-        invis_note.get_or_create_control_behavior().parameters = {parameters = params}
+        invis_note.alert_parameters = {
+            show_alert = true,
+            show_on_map = true,
+            icon_signal_id = {type = "item", name = "invis-note"},
+            alert_message = note.text
+        }
     end
 end
 
@@ -290,47 +226,13 @@ end
 -- 2.0.0: 0
 -- 2.0.1: 1
 local function decode_note(invis_note, target)
+    game.print("DECODE")
+    game.print(serpent.block(invis_note.alert_parameters))
     local note = {}
     note.invis_note = invis_note
     note.target = target
     note.target_unit_number = target.unit_number -- needed in case target becomes invalid
-
-    local params = invis_note.get_or_create_control_behavior().parameters.parameters
-    local metadata = params[1].count + 2 ^ 31
-
-    local version = bit32.extract(metadata, 24, 8)
-
-    local terminator = 0
-    if version == 0 then
-        terminator = 3
-    end
-
-    if version == 0 or version == 1 then
-        note.autoshow = bool(bit32.extract(metadata, 8))
-        local show_mapmark = bool(bit32.extract(metadata, 9))
-        note.locked_force = bool(bit32.extract(metadata, 10))
-        note.locked_admin = bool(bit32.extract(metadata, 11))
-
-        local color_i = bit32.extract(metadata, 0, 8)
-        note.color = color_array[color_i]
-
-        note.text = ""
-        for i = 1, (settings.startup["picker-notes-slot-count"].value - 1) * 4 do
-            local signal_i = math.floor((i - 1) / 4)
-            local shift = (i - 1) % 4 * 8
-
-            local byte = bit32.extract(params[signal_i + 2].count + 2 ^ 31, shift, 8)
-            if byte == terminator then
-                break
-            end
-            note.text = note.text .. string.char(byte)
-        end
-
-        display_mapmark(note, show_mapmark)
-    else
-        game.print({"notes-encoder.failed"})
-        return
-    end
+    note.text = invis_note.alert_parameters.alert_message
     return note
 end
 
