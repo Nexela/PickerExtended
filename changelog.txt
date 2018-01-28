@@ -1,16 +1,21 @@
 ---------------------------------------------------------------------------------------------------
 Version: 3.0.4
 Date: ??????
+  Features:
+    - Filter Fill now works on the player inventory.
+  Enhancements:
+    - Changed the way notes are saved.
   Bugfixes:
     - Include changelog in release. #68
-    - Reverse rotating saved dollies is now possible. Factorio Bug
+    - Reverse rotating saved dollies is now possible. Factorio Bug.
     - Fix map ping item description.
+    - Fix filter fill nil error if mods change to custom gui. #72
 ---------------------------------------------------------------------------------------------------
 Version: 3.0.3
 Date: ??????
   Changes:
     - Better GUI support in some spots.
-    - Per User setting added for simple quick entity blueprinting
+    - Per User setting added for simple quick entity blueprinting.
   Bugfixes:
     - Fix another notes gui error. #66
     - Fix Area tostring error in stdlib. Rotype
