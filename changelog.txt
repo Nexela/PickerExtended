@@ -5,6 +5,7 @@ Date: ??????
     - Filter Fill now works on the player inventory.
   Enhancements:
     - Changed the way notes are saved.
+    - Sort Inventory now uses sort_and_merge inventory method
   Bugfixes:
     - Include changelog in release. #68
     - Reverse rotating saved dollies is now possible. Factorio Bug.

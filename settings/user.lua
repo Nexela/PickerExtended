@@ -55,7 +55,7 @@ data:extend{
         type = "bool-setting",
         name = "picker-auto-sort-inventory",
         setting_type = "runtime-per-user",
-        default_value = false,
+        default_value = true,
         order = "picker-b[sortinventory]-a",
     },
     {
