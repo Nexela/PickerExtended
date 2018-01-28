@@ -1,4 +1,4 @@
-
+--luacheck: ignore
 local Note = {}
 local Player = require("stdlib.event.player")
 
