@@ -27,27 +27,27 @@ local function zapper(event)
 end
 Event.register("picker-zapper", zapper)
 
-local inv_map = {
-    [defines.events.on_player_main_inventory_changed] = defines.inventory.player_main,
-    [defines.events.on_player_quickbar_inventory_changed] = defines.inventory.player_quickbar
-}
-local inv_map_god = {
-    [defines.events.on_player_main_inventory_changed] = defines.inventory.god_main,
-    [defines.events.on_player_quickbar_inventory_changed] = defines.inventory.god_quickbar
-}
-
 local function cleanup_blueprints(event)
     local player = game.players[event.player_index]
-    local index = (player.character and inv_map[event.name]) or inv_map_god[event.name]
-    local inventory = player.get_inventory(index)
+
+    local settings = player.mod_settings
+    local quickbar = false
+    local inventory
+
+    if event.name == defines.events.on_player_main_inventory_changed then
+        inventory = player.get_inventory(player.character and defines.inventory.player_main or defines.inventory.god_main)
+    else
+        inventory = player.get_quickbar()
+        quickbar = true
+    end
+
     for planner in pairs(global.planners) do
         local bp = game.item_prototypes[planner] and inventory.find_item_stack(planner)
         if bp then
-            local settings = player.mod_settings
             local setting =
                 settings["picker-no-" .. bp.name .. "-inv"] and settings["picker-no-" .. bp.name .. "-inv"].value or
                 settings["picker-no-other-planner-inv"].value
-            if setting ~= "none" and not (setting == "main" and index == defines.inventory.player_quickbar) then
+            if setting ~= "none" and not (setting == "main" and quickbar) then
                 bp.clear()
             end
         end

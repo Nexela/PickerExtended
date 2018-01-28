@@ -10,6 +10,7 @@ Date: ??????
     - Reverse rotating saved dollies is now possible. Factorio Bug.
     - Fix map ping item description.
     - Fix filter fill nil error if mods change to custom gui. #72
+    - Fix zapper being all undecidy in god mode. #70
 ---------------------------------------------------------------------------------------------------
 Version: 3.0.3
 Date: ??????
