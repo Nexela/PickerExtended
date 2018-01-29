@@ -11,8 +11,7 @@ local lib = require("picker.lib")
 
 local function find_targeters(entity)
     local targeters = {}
-    local area = Area(entity.selection_box):expand(10)
-    local filter = {force = entity.force, Area = area}
+    local filter = {force = entity.force, area = Area(entity.selection_box):expand(10)}
     for _, ent in pairs(entity.surface.find_entities_filtered(filter)) do
         if ent.drop_target == entity and not ent.to_be_deconstructed then
             targeters[#targeters + 1] = ent
@@ -26,7 +25,7 @@ local _find = function(v)
 end
 
 local function has_resources(drill)
-    local filter = {area = Position.expand_to_area(drill.position, drill.prototype.mining_drill_radius), type = "resource"}
+    local filter = {area = Position(drill.position):expand_to_area(drill.prototype.mining_drill_radius), type = "resource"}
     return table.find(drill.surface.find_entities_filtered(filter), _find)
 end
 
@@ -54,8 +53,8 @@ end
 local function autodeconstruct(event)
     if settings.global["picker-autodeconstruct"].value then
         local resource = event.entity
-        local area = Area(resource.selection_box):expand(10)
-        for _, drill in pairs(resource.surface.find_entities_filtered {type = "mining-drill", area = area}) do
+        local filter = {type = "mining-drill", area = Area(resource.selection_box):expand(10)}
+        for _, drill in pairs(resource.surface.find_entities_filtered(filter)) do
             check_for_deconstruction(drill)
         end
     end
