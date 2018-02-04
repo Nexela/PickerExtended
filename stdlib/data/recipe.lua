@@ -11,7 +11,15 @@ local Item = require("stdlib/data/item")
 function Recipe:_get(recipe)
     return self:get(recipe, "recipe")
 end
-Recipe:set_caller(Recipe._get)
+Recipe:set_caller(function(recipe) Recipe:get(recipe, "recipe") end)
+
+function Recipe:Products(products) --luacheck: ignore
+    --if not products then return products table,
+    --if products and products is string return if not product return products table, else return product?
+end
+
+function Recipe:Ingredients(ingredients) --luacheck: ignore
+end
 
 -- Returns a formated ingredient or prodcut table
 local function format(ingredient, result_count)
@@ -304,7 +312,7 @@ end
 --- Set the main product of the recipe.
 -- @tparam string|boolean main_product if boolean then use normal/expensive recipes passed as main product
 -- @tparam[opt] Concepts.Product|string normal recipe
--- @tparam[opt] Concempts.Product|string expensive recipe
+-- @tparam[opt] Concepts.Product|string expensive recipe
 -- @treturn self
 function Recipe:set_main_product(main_product, normal, expensive)
     if self:valid("recipe") then
