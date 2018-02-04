@@ -12,6 +12,7 @@ Date: ??????
     - Fix map ping item description.
     - Fix filter fill nil error if mods change to custom gui. #72
     - Fix zapper being all undecidy in god mode. #70
+    - Fix aggresive search in autodeconstruct.
 ---------------------------------------------------------------------------------------------------
 Version: 3.0.3
 Date: ??????
