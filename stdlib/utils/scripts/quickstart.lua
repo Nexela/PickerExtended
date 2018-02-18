@@ -1,14 +1,19 @@
 --- Quickstart script.
 -- Creates a quickstart world for testing mods.
--- <p>This module requires the use of stdlib's @{Event} module for player creation interactions.
 -- <p>config settings should be a created in a table retured from `config-quickstart.lua`
 -- @script quickstart
 -- @usage
+-- -- For use with STDLIB Events
 -- if DEBUG then
---   require('stdlib/utils/scripts/quickstart')
+--   require('stdlib/utils/scripts/quickstart').register_events()
 -- end
+-- @usage
+-- --If not using stdlibs event system
+-- local quickstart = require("stdlib/utils/scripts/quickstart")
+-- script.on_event(defines.events.on_player_created, function()
+--  quickstart.on_player_created() -- can be wrapped in an if DEBUG type check
+-- end)
 
-local Core = require("stdlib/core")
 require("stdlib/event/event")
 local Area = require("stdlib/area/area")
 
@@ -27,7 +32,7 @@ else
     return
 end
 
-local QS = require("stdlib/config/config").new(Core.prequire("config-quickstart") or {})
+local QS = require("stdlib/config/config").new(prequire("config-quickstart") or {})
 local quickstart = {}
 
 function quickstart.on_player_created(event)
@@ -39,6 +44,8 @@ function quickstart.on_player_created(event)
         local area = Area(QS.get("area_box", {{-100, -100}, {100, 100}})):shrink_to_surface_size(surface)
 
         player.force.chart(surface, area)
+
+        player.surface.always_day = QS.get("always_day", false)
 
         if QS.get("cheat_mode", false) then
             player.cheat_mode = true
@@ -56,8 +63,8 @@ function quickstart.on_player_created(event)
 
         local simple_stacks = QS.get("stacks", {})
         local qb_stacks = QS.get("quickbar", {})
-        local inv = player.get_inventory(player.character and defines.inventory.player_main or defines.inventory.god_main)
-        local qb = player.get_inventory(player.character and defines.inventory.player_quickbar or defines.inventory.god_quickbar)
+        local inv = player.get_main_inventory()
+        local qb = player.get_quickbar()
 
         if inv then
             for _, item in pairs(simple_stacks) do
@@ -70,6 +77,18 @@ function quickstart.on_player_created(event)
                     qb.insert(item)
                 end
             end
+        end
+
+        local tool_inv = player.get_inventory(defines.inventory.player_tools)
+        if tool_inv then
+            local tool = QS.get("tool", "steel-axe")
+            if not game.item_prototypes[tool] then
+                tool = "steel-axe"
+                if not game.item_prototypes[tool] then
+                    tool = nil
+                end
+            end
+            if tool then tool_inv.insert(tool) end
         end
 
         local power_armor = QS.get("power_armor", "fake")
@@ -246,22 +265,6 @@ function quickstart.on_player_created(event)
             end
         end
 
-        if QS.get("center_map_tag", false) then
-            local function create_center_map_tag()
-                local tag = {
-                    position = {0, 0},
-                    text = "Center",
-                    icon = {type = "virtual", name = "signal-0"},
-                    last_user = player
-                }
-                if force.add_chart_tag(surface, tag) then
-                    Event.remove(defines.events.on_chunk_generated, create_center_map_tag)
-                end
-            end
-            --Not completely MP Safe
-            Event.register(defines.events.on_chunk_generated, create_center_map_tag)
-        end
-
         if QS.get("setup_power", false) then
             if game.entity_prototypes["debug-energy-interface"] then
                 local es = surface.create_entity {name = "debug-energy-interface", position = {0, 0}, force = force}
@@ -300,4 +303,8 @@ tLcXg6aNbeXgxbN7aWgvIUs5J+3kAWp8hayUlaChyykSvCQlVwF0e3lqFF0ezlqEt1ejppFt5ejFtHtp
 JxT/vVs7Merlq1sNvX5vV4fHLt4G+H359bnb742U52VKnmOqhIfwDr9+U4w==
 ]]
 
+function quickstart.register_events()
+    Event.register(defines.events.on_player_created, quickstart.on_player_created)
+    return quickstart
+end
 return quickstart

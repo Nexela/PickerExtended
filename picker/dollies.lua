@@ -106,7 +106,7 @@ local function move_combinator(event)
                 )
             end
 
-            local out_of_the_way = Position(entity.position):translate(Position.opposite_direction(direction), 20)
+            local out_of_the_way = Position(entity.position):translate(Position.opposite_direction(direction), event.tiles_away or 20)
 
             local sel_area = Area(entity.selection_box)
             local item_area = Area(entity.bounding_box):non_zero():translate(direction, distance)
@@ -284,5 +284,27 @@ local function rotate_ghost(event)
     end
 end
 Event.register({"dolly-rotate-ghost", "dolly-rotate-ghost-reverse"}, rotate_ghost)
+
+local function mass_moving(event)
+    if event.item == "picker-dolly" and #event.entities > 0 then
+        local player, pdata = Player.get(event.player_index)
+        pdata.dolly_movers = {}
+        pdata.dolly_movers_time = event.tick
+        local tiles_away = Area(event.area):size()
+        for _, ent in ipairs(event.entities) do
+            local out_of_the_way = Position(ent.position):translate(Position.opposite_direction(ent.direction), tiles_away)
+            local pos = ent.position
+            if ent.teleport(out_of_the_way) then
+                ent.teleport(pos)
+            else
+                player.print("Selection does not fully support moving")
+                return
+            end
+        end
+        pdata.dolly_movers = event.entities
+        player.print("Entities stored")
+    end
+end
+Event.register({defines.events.on_player_selected_area, defines.events.on_player_alt_selected_area}, mass_moving)
 
 return move_combinator

@@ -35,7 +35,7 @@ local function cleanup_blueprints(event)
     local inventory
 
     if event.name == defines.events.on_player_main_inventory_changed then
-        inventory = player.get_inventory(player.character and defines.inventory.player_main or defines.inventory.god_main)
+        inventory = player.get_main_inventory()
     else
         inventory = player.get_quickbar()
         quickbar = true

@@ -58,7 +58,7 @@ Event = {
 }
 setmetatable(Event, {__index = require("stdlib/core")})
 
-local fail_if_missing = Event.fail_if_missing
+local fail_if_not = Event.fail_if_not
 
 local function is_valid_id(event_id)
     if not (type(event_id) == "number" or type(event_id) == "string") then
@@ -87,8 +87,8 @@ end
 -- @tparam function handler the function to call when the given events are triggered
 -- @return (<span class="types">@{Event}</span>) Event module object allowing for call chaining
 function Event.register(event_ids, handler)
-    fail_if_missing(event_ids, "missing event_ids argument")
-    fail_if_missing(handler, "handler is missing, use Event.remove to unregister events")
+    fail_if_not(event_ids, "missing event_ids argument")
+    fail_if_not(handler, "handler is missing, use Event.remove to unregister events")
 
     event_ids = (type(event_ids) == "table" and event_ids) or {event_ids}
 
@@ -198,8 +198,8 @@ end
 -- @tparam function handler the handler to remove
 -- @return (<span class="types">@{Event}</span>) Event module object allowing for call chaining
 function Event.remove(event_ids, handler)
-    fail_if_missing(event_ids, "missing event_ids argument")
-    fail_if_missing(handler, "missing handler argument")
+    fail_if_not(event_ids, "missing event_ids argument")
+    fail_if_not(handler, "missing handler argument")
 
     event_ids = (type(event_ids) == "table" and event_ids) or {event_ids}
 
@@ -223,6 +223,18 @@ function Event.remove(event_ids, handler)
         end
     end
     return Event
+end
+
+--- Filters events related to entity_type.
+-- @tparam string event_parameter The event parameter to look inside to find the entity type
+-- @tparam string entity_type The entity type to filter events for
+-- @tparam callable callback The callback to invoke if the filter passes. The object defined in the event parameter is passed
+function Event.filter_entity(event_parameter, entity_type, callback)
+    return function(evt)
+        if(evt[event_parameter].type == entity_type) then
+            callback(evt[event_parameter])
+        end
+    end
 end
 
 return Event

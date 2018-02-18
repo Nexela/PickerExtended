@@ -55,6 +55,7 @@ Event.register(defines.events.on_player_joined_game, set_join_options)
 if MOD.DEBUG then
     log(MOD.name .. " Debug mode enabled")
     require("stdlib/utils/scripts/quickstart")
+    require("stdlib/utils/scripts/load_globals")()
 end
 
 -------------------------------------------------------------------------------

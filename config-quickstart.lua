@@ -2,6 +2,7 @@
 -- if an item doesn't exist it is ignored.
 return {
     cheat_mode = true,
+    always_day = true,
     clear_items = true,
     power_armor = "power-armor-mk2",
     equipment = {
@@ -24,7 +25,9 @@ return {
     setup_power = true,
     stacks = {
         "construction-robot",
-        "steel-axe"
+        "assembling-machine-3",
+        "pipe",
+        "fast-inserter",
     },
     quickbar = {
         "creative-mode_item-source",

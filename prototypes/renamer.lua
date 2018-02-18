@@ -2,21 +2,11 @@
 --[[Renamer]] --
 -------------------------------------------------------------------------------
 local Data = require("stdlib.data.data")
-Data {
-    type = "custom-input",
-    name = "picker-rename",
-    key_sequence = "CONTROL + R",
-    consuming = "all"
-}
 
-Data {
-    type = "font",
-    name = "picker-rename-button",
-    from = "default-bold",
-    size = 14
-}
+Data {type = "custom-input", name = "picker-rename", key_sequence = "CONTROL + R", consuming = "all"}
+Data {type = "font", name = "picker-rename-button", from = "default-bold", size = 14}
 
-Data.new_style {
+Data.Util.extend_style {
     type = "button_style",
     name = "picker-rename-button",
     parent = "button",

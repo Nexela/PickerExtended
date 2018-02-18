@@ -12,7 +12,7 @@ require("stdlib/event/event")
 local Force = {_module_name = "Force"}
 setmetatable(Force, {__index = require("stdlib/core")})
 
-local fail_if_missing = Force.fail_if_missing
+local fail_if_not = Force.fail_if_not
 local Game = require("stdlib/game")
 
 -- return new default force object
@@ -55,7 +55,7 @@ end
 -- -- Returns data for the force named "player" from either a string or LuaForce object
 function Force.get(force)
     force = Game.get_force(force)
-    fail_if_missing(force, "force is missing")
+    fail_if_not(force, "force is missing")
     return game.forces[force.name], global.forces[force.name] or Force.init(force.name)
 end
 
@@ -102,13 +102,18 @@ function Force.merge()
 end
 
 local events = {defines.events.on_force_created, Event.core_events.configuration_changed}
-function Force.register_events()
+function Force.register_events(skip_init)
+    require('stdlib/event/event')
     Event.register(events, Force.init)
     Event.register(defines.events.on_forces_merging, Force.merge)
+    if not skip_init then
+        Force.register_init()
+    end
     return Force
 end
 
 function Force.register_init()
+    require('stdlib/event/event')
     Event.register(Event.core_events.init, Force.init)
     return Force
 end

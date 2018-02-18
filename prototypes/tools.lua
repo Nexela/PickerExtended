@@ -1,8 +1,7 @@
 local Data = require("stdlib.data.data")
-local Entity = require("stdlib.data.entity")
 
 -- Tape Measure -- Quick way to get bounding box sizes and distances.
-Entity {
+Data {
     type = "selection-tool",
     name = "picker-tape-measure",
     icon = "__PickerExtended__/graphics/tape-measure.png",
@@ -23,7 +22,7 @@ Entity {
 }
 
 -- Eraser
-Entity {
+Data {
     type = "selection-tool",
     name = "picker-ore-eraser",
     icon = "__PickerExtended__/graphics/ore-eraser.png",
@@ -43,7 +42,7 @@ Entity {
 }
 
 -- Screen Shot Camera --Graphics by Factorio forum/mod portal user YuokiTani
- Entity {
+ Data {
     type = "selection-tool",
     name = "picker-camera",
     icon = "__PickerExtended__/graphics/camera.png",

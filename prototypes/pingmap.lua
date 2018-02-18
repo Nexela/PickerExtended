@@ -65,6 +65,18 @@ Entity {
     spread_duration = 10
 }
 
-Data.new_sound("picker-map-ping-1", "__PickerExtended__/sounds/ping1.ogg")
-Data.new_sound("picker-map-ping-2", "__PickerExtended__/sounds/ping2.ogg")
-Data.new_sound("picker-map-ping-3", "__PickerExtended__/sounds/ping3.ogg")
+Data {
+    type = "sound",
+    name = "picker-map-ping-1",
+    filename = "__PickerExtended__/sounds/ping1.ogg"
+}
+Data {
+    type = "sound",
+    name = "picker-map-ping-2",
+    filename = "__PickerExtended__/sounds/ping2.ogg"
+}
+Data {
+    type = "sound",
+    name = "picker-map-ping-3",
+    filename = "__PickerExtended__/sounds/ping3.ogg"
+}
