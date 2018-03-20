@@ -5,9 +5,10 @@
 --"author": "mindmix",
 --"description": "This mod marks drills that have no more resources to mine for deconstruction."
 
-local Area = require("stdlib.area.area")
-local Position = require("stdlib.area.position")
-local lib = require("picker.lib")
+local Event = require('stdlib/event/event')
+local Area = require('stdlib/area/area')
+local Position = require('stdlib/area/position')
+local lib = require('picker/lib')
 
 local function find_targeters(entity)
     local targeters = {}
@@ -21,23 +22,20 @@ local function find_targeters(entity)
 end
 
 local _find = function(v)
-    return v.prototype.resource_category == "basic-solid" and (v.amount > 0 or v.prototype.infinite_resource)
+    return v.prototype.resource_category == 'basic-solid' and (v.amount > 0 or v.prototype.infinite_resource)
 end
 
 local function has_resources(drill)
-    local filter = {area = Position(drill.position):expand_to_area(drill.prototype.mining_drill_radius), type = "resource"}
+    local filter = {area = Position(drill.position):expand_to_area(drill.prototype.mining_drill_radius), type = 'resource'}
     return table.find(drill.surface.find_entities_filtered(filter), _find)
 end
 
-local targets = table.arr_to_bool({"container", "logistic-container"})
+local targets = table.array_to_dictionary({'container', 'logistic-container'})
 
 local function check_for_deconstruction(drill)
-    if
-        not drill.to_be_deconstructed(drill.force) and lib.can_decon(drill) and not has_resources(drill) and not lib.has_fluidbox(drill) and
-            not lib.is_circuit_connected(drill)
-     then
+    if not drill.to_be_deconstructed(drill.force) and lib.can_decon(drill) and not has_resources(drill) and not lib.has_fluidbox(drill) and not lib.is_circuit_connected(drill) then
         if drill.order_deconstruction(drill.force) then
-            if settings.global["picker-autodeconstruct-target"].value then
+            if settings.global['picker-autodeconstruct-target'].value then
                 local target = drill.drop_target
                 if target and targets[target.type] and not lib.is_circuit_connected(target) and lib.can_decon(target) and target.force == drill.force then
                     local targeters = find_targeters(target)
@@ -51,9 +49,9 @@ local function check_for_deconstruction(drill)
 end
 
 local function autodeconstruct(event)
-    if settings.global["picker-autodeconstruct"].value then
+    if settings.global['picker-autodeconstruct'].value then
         local resource = event.entity
-        local filter = {type = "mining-drill", area = Area(resource.selection_box):expand(10)}
+        local filter = {type = 'mining-drill', area = Area(resource.selection_box):expand(10)}
         for _, drill in pairs(resource.surface.find_entities_filtered(filter)) do
             check_for_deconstruction(drill)
         end
@@ -63,7 +61,7 @@ Event.register(defines.events.on_resource_depleted, autodeconstruct)
 
 local function init()
     for _, surface in pairs(game.surfaces) do
-        for _, drill in pairs(surface.find_entities_filtered {type = "mining-drill"}) do
+        for _, drill in pairs(surface.find_entities_filtered {type = 'mining-drill'}) do
             check_for_deconstruction(drill)
         end
     end

@@ -4,13 +4,14 @@
     "description": "Reverse entire segments of belt",
     "license": "MIT"
 --]]
-local Position = require("stdlib.area.position")
+local Event = require('stdlib/event/event')
+local Position = require('stdlib/area/position')
 local op_dir = Position.opposite_direction
 
 local belt_types = {
-    ["transport-belt"] = true,
-    ["loader"] = true,
-    ["underground-belt"] = true
+    ['transport-belt'] = true,
+    ['loader'] = true,
+    ['underground-belt'] = true
 }
 
 local function replace_line_contents(line, contents)
@@ -38,17 +39,17 @@ end
 local function isBeltTerminatingDownstream(belt, distance)
     distance = distance or 1
     local pos = Position(belt.position):translate(belt.direction, distance)
-    local downstreamBelt = getBeltLike(belt.surface, pos, "transport-belt")
-    local downstreamUGBelt = getBeltLike(belt.surface, pos, "underground-belt")
-    local downstreamLoader = getBeltLike(belt.surface, pos, "loader")
+    local downstreamBelt = getBeltLike(belt.surface, pos, 'transport-belt')
+    local downstreamUGBelt = getBeltLike(belt.surface, pos, 'underground-belt')
+    local downstreamLoader = getBeltLike(belt.surface, pos, 'loader')
 
     if downstreamBelt and downstreamBelt.direction ~= op_dir(belt.direction) then
         return false
     end
-    if downstreamUGBelt and downstreamUGBelt.direction == belt.direction and downstreamUGBelt.belt_to_ground_type == "input" then
+    if downstreamUGBelt and downstreamUGBelt.direction == belt.direction and downstreamUGBelt.belt_to_ground_type == 'input' then
         return false
     end
-    if downstreamLoader and downstreamLoader.direction == belt.direction and downstreamLoader.loader_type == "input" then
+    if downstreamLoader and downstreamLoader.direction == belt.direction and downstreamLoader.loader_type == 'input' then
         return false
     end
     return true
@@ -57,9 +58,9 @@ end
 local function isBeltSideloadingDownstream(belt, distance)
     distance = distance or 1
     local pos = Position(belt.position):translate(belt.direction, distance)
-    local downstreamBelt = getBeltLike(belt.surface, pos, "transport-belt")
-    local downstreamUGBelt = getBeltLike(belt.surface, pos, "underground-belt")
-    local downstreamLoader = getBeltLike(belt.surface, pos, "loader")
+    local downstreamBelt = getBeltLike(belt.surface, pos, 'transport-belt')
+    local downstreamUGBelt = getBeltLike(belt.surface, pos, 'underground-belt')
+    local downstreamLoader = getBeltLike(belt.surface, pos, 'loader')
     if downstreamLoader then
         return false
     end
@@ -71,14 +72,14 @@ local function isBeltSideloadingDownstream(belt, distance)
             return false
         else
             local up_pos = Position(downstreamBelt.position):translate(op_dir(downstreamBelt.direction))
-            local upstreamBelt = getBeltLike(belt.surface, up_pos, "transport-belt")
-            local upstreamUGBelt = getBeltLike(belt.surface, up_pos, "underground-belt")
-            local upstreamLoader = getBeltLike(belt.surface, up_pos, "loader")
+            local upstreamBelt = getBeltLike(belt.surface, up_pos, 'transport-belt')
+            local upstreamUGBelt = getBeltLike(belt.surface, up_pos, 'underground-belt')
+            local upstreamLoader = getBeltLike(belt.surface, up_pos, 'loader')
 
             local opposite_pos = Position(downstreamBelt.position):translate(belt.direction)
-            local oppositeBelt = getBeltLike(belt.surface, opposite_pos, "transport-belt")
-            local oppositeUGBelt = getBeltLike(belt.surface, opposite_pos, "underground-belt")
-            local oppositeLoader = getBeltLike(belt.surface, opposite_pos, "loader")
+            local oppositeBelt = getBeltLike(belt.surface, opposite_pos, 'transport-belt')
+            local oppositeUGBelt = getBeltLike(belt.surface, opposite_pos, 'underground-belt')
+            local oppositeLoader = getBeltLike(belt.surface, opposite_pos, 'loader')
 
             local continuingBelt = true
             if not (upstreamBelt or upstreamUGBelt or upstreamLoader) then
@@ -87,7 +88,7 @@ local function isBeltSideloadingDownstream(belt, distance)
             if upstreamBelt and upstreamBelt.direction ~= downstreamBelt.direction then
                 continuingBelt = false
             end
-            if upstreamUGBelt and not (upstreamUGBelt.direction == downstreamBelt.direction and upstreamUGBelt.belt_to_ground_type == "output") then
+            if upstreamUGBelt and not (upstreamUGBelt.direction == downstreamBelt.direction and upstreamUGBelt.belt_to_ground_type == 'output') then
                 continuingBelt = false
             end
             if upstreamLoader and upstreamLoader.direction ~= downstreamBelt.direction then
@@ -103,7 +104,7 @@ local function isBeltSideloadingDownstream(belt, distance)
             if oppositeBelt and oppositeBelt.direction ~= opposite_direction then
                 sandwichBelt = false
             end
-            if oppositeUGBelt and not (oppositeUGBelt.direction == opposite_direction and oppositeUGBelt.belt_to_ground_type == "output") then
+            if oppositeUGBelt and not (oppositeUGBelt.direction == opposite_direction and oppositeUGBelt.belt_to_ground_type == 'output') then
                 sandwichBelt = false
             end
             if oppositeLoader and oppositeLoader.direction ~= opposite_direction then
@@ -120,7 +121,7 @@ end
 
 local function get_next_downstream_transport_line(belt)
     local distance = 1
-    if belt.type == "underground-belt" and belt.belt_to_ground_type == "input" then
+    if belt.type == 'underground-belt' and belt.belt_to_ground_type == 'input' then
         if belt.neighbours then
             return belt.neighbours
         else
@@ -128,8 +129,8 @@ local function get_next_downstream_transport_line(belt)
         end
     end
 
-    if belt.type == "loader" then
-        if belt.loader_type == "output" then
+    if belt.type == 'loader' then
+        if belt.loader_type == 'output' then
             distance = 1.5
         else
             return nil
@@ -137,9 +138,9 @@ local function get_next_downstream_transport_line(belt)
     end
 
     local pos = Position(belt.position):translate(belt.direction, distance)
-    local downstreamBelt = getBeltLike(belt.surface, pos, "transport-belt")
-    local downstreamUGBelt = getBeltLike(belt.surface, pos, "underground-belt")
-    local downstreamLoader = getBeltLike(belt.surface, pos, "loader")
+    local downstreamBelt = getBeltLike(belt.surface, pos, 'transport-belt')
+    local downstreamUGBelt = getBeltLike(belt.surface, pos, 'underground-belt')
+    local downstreamLoader = getBeltLike(belt.surface, pos, 'loader')
 
     if isBeltTerminatingDownstream(belt, distance) then
         return nil
@@ -154,24 +155,24 @@ end
 local function getUpstreamBeltInDirection(belt, direction, distance)
     distance = distance or 1
     local pos = Position(belt.position):translate(direction, distance)
-    local upstreamBelt = getBeltLike(belt.surface, pos, "transport-belt")
-    local upstreamUGBelt = getBeltLike(belt.surface, pos, "underground-belt")
-    local upstreamLoader = getBeltLike(belt.surface, pos, "loader")
+    local upstreamBelt = getBeltLike(belt.surface, pos, 'transport-belt')
+    local upstreamUGBelt = getBeltLike(belt.surface, pos, 'underground-belt')
+    local upstreamLoader = getBeltLike(belt.surface, pos, 'loader')
     local opposite_direction = op_dir(direction)
     if upstreamBelt and upstreamBelt.direction == opposite_direction then
         return upstreamBelt
     end
-    if upstreamLoader and upstreamLoader.direction == opposite_direction and upstreamLoader.loader_type == "output" then
+    if upstreamLoader and upstreamLoader.direction == opposite_direction and upstreamLoader.loader_type == 'output' then
         return upstreamLoader
     end
-    if upstreamUGBelt and upstreamUGBelt.direction == opposite_direction and upstreamUGBelt.belt_to_ground_type == "output" then
+    if upstreamUGBelt and upstreamUGBelt.direction == opposite_direction and upstreamUGBelt.belt_to_ground_type == 'output' then
         return upstreamUGBelt
     end
     return nil
 end
 
 local function get_next_upstream_transport_line(belt)
-    if belt.type == "underground-belt" and belt.belt_to_ground_type == "output" then
+    if belt.type == 'underground-belt' and belt.belt_to_ground_type == 'output' then
         if belt.neighbours then
             return belt.neighbours
         else
@@ -179,8 +180,8 @@ local function get_next_upstream_transport_line(belt)
         end
     end
 
-    if belt.type == "loader" then
-        if belt.loader_type == "input" then
+    if belt.type == 'loader' then
+        if belt.loader_type == 'input' then
             local linearBelt = getUpstreamBeltInDirection(belt, op_dir(belt.direction), 1.5)
             if linearBelt then
                 return linearBelt
@@ -210,7 +211,7 @@ local function find_start_of_transport_line(current_belt, initial_belt)
         return current_belt
     end
     if next_belt == initial_belt then
-        if next_belt.type == "underground-belt" and next_belt.belt_to_ground_type == "input" then
+        if next_belt.type == 'underground-belt' and next_belt.belt_to_ground_type == 'input' then
             return next_belt
         else
             return current_belt
@@ -220,7 +221,7 @@ local function find_start_of_transport_line(current_belt, initial_belt)
 end
 
 local function reverse_transport_entity(belt, direction)
-    if belt.type == "loader" or (belt.type == "underground-belt" and belt.belt_to_ground_type == "input") then
+    if belt.type == 'loader' or (belt.type == 'underground-belt' and belt.belt_to_ground_type == 'input') then
         belt.rotate()
     else
         belt.direction = direction
@@ -251,4 +252,4 @@ local function reverse_entire_transport_line(event)
         reverse_transport_entity(start_belt, directionToTurnStartBelt)
     end
 end
-Event.register("picker-reverse-belts", reverse_entire_transport_line)
+Event.register('picker-reverse-belts', reverse_entire_transport_line)

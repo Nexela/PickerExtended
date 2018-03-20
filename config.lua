@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------------
---[[MOD CONFIG]]--
+--[MOD CONFIG]--
 -------------------------------------------------------------------------------
 local PICKER = {}
 
@@ -13,7 +13,7 @@ PICKER.colored_books = {
     purple = defines.color.purple,
     yellow = defines.color.yellow,
     white = defines.color.white,
-    black = defines.color.black,
+    black = defines.color.black
 }
 
 return PICKER

@@ -1,26 +1,27 @@
 -------------------------------------------------------------------------------
---[[Additional Paste Settings]]--[[Copy pipe direction]]
+--[Additional Paste Settings]--[[Copy pipe direction]]
 -------------------------------------------------------------------------------
 --Modified from "Additional Paste Settings", by "Shirkit",
 --https://mods.factorio.com/mods/SHiRKiT/additional-paste-settings
 --Modified from "Copy Assembler Pipe Direction", by "IronCartographer",
 --https://mods.factorio.com/mods/IronCartographer/CopyAssemblerPipeDirection
 
-local Player = require("stdlib.event.player")
+local Event = require('stdlib/event/event')
+local Player = require('stdlib/event/player')
 
 --Called before settings are pasted, Allows us to retrieve the existing stored request slots
 local function on_pre_entity_settings_pasted(event)
     local _, pdata = Player.get(event.player_index)
     pdata.requests = {}
-    if event.source.type == "assembling-machine" and event.destination.type == "logistic-container" and event.destination.request_slot_count > 0 then
+    if event.source.type == 'assembling-machine' and event.destination.type == 'logistic-container' and event.destination.request_slot_count > 0 then
         for i = 1, event.destination.request_slot_count do
             pdata.requests[i] = event.destination.get_request_slot(i)
         end
-    elseif event.source.type == "logistic-container" and event.destination.type == "logistic-container" and event.destination.request_slot_count > 0 then
+    elseif event.source.type == 'logistic-container' and event.destination.type == 'logistic-container' and event.destination.request_slot_count > 0 then
         for i = 1, event.destination.request_slot_count do
             event.destination.clear_request_slot(i)
         end
-    elseif event.source.type == "inserter" and event.destination.type == "inserter" then
+    elseif event.source.type == 'inserter' and event.destination.type == 'inserter' then
         local ctrl = event.destination.get_or_create_control_behavior()
         ctrl.logistic_condition = nil
         ctrl.circuit_condition = nil
@@ -31,7 +32,7 @@ end
 
 local function paste_assembling_to_container(pdata, event)
     if #pdata.requests > 0 then
-        local multiplier = settings.get_player_settings(pdata.index)["picker-player-paste-modifier"].value
+        local multiplier = settings.get_player_settings(pdata.index)['picker-player-paste-modifier'].value
         for i = 1, #pdata.requests do
             local found = false
             local source_stack = pdata.requests[i]
@@ -59,7 +60,7 @@ local function paste_assembling_to_container(pdata, event)
 end
 
 local function paste_assembling_to_inserter(pdata, event)
-    local multiplier = settings.get_player_settings(pdata.index)["picker-player-paste-modifier"].value
+    local multiplier = settings.get_player_settings(pdata.index)['picker-player-paste-modifier'].value
     local ctrl = event.destination.get_or_create_control_behavior()
 
     local c1 = ctrl.get_circuit_network(defines.wire_type.red)
@@ -80,10 +81,10 @@ local function paste_assembling_to_inserter(pdata, event)
         if item then
             if not c1 and not c2 then
                 ctrl.connect_to_logistic_network = true
-                ctrl.logistic_condition = {condition={comparator="<", first_signal={type="item", name=product}, constant = multiplier * item.stack_size}}
+                ctrl.logistic_condition = {condition = {comparator = '<', first_signal = {type = 'item', name = product}, constant = multiplier * item.stack_size}}
             else
                 ctrl.circuit_mode_of_operation = defines.control_behavior.inserter.circuit_mode_of_operation.enable_disable
-                ctrl.circuit_condition = {condition={comparator="<", first_signal={type="item", name=product}, constant = multiplier * item.stack_size}}
+                ctrl.circuit_condition = {condition = {comparator = '<', first_signal = {type = 'item', name = product}, constant = multiplier * item.stack_size}}
             end
         end
     end
@@ -93,19 +94,22 @@ end
 local function on_entity_settings_pasted(event)
     local _, pdata = Player.get(event.player_index)
 
-    if event.source.type == "assembling-machine" and event.destination.type == "logistic-container" and event.destination.request_slot_count > 0 then
+    if event.source.type == 'assembling-machine' and event.destination.type == 'logistic-container' and event.destination.request_slot_count > 0 then
         paste_assembling_to_container(pdata, event)
     end
-    if event.source.type == "assembling-machine" and event.destination.type == "inserter" then
+    if event.source.type == 'assembling-machine' and event.destination.type == 'inserter' then
         paste_assembling_to_inserter(pdata, event)
     end
     --Copy assembler pipe direction if entity is square and has fluidboxes
-    if event.source and event.source.supports_direction and (event.source.fluidbox and #event.source.fluidbox > 0)
-    and(event.source.prototype.collision_box and event.source.prototype.collision_box.x == event.source.prototype.collision_box.y)
-    and event.destination.supports_direction and (event.destination.fluidbox and #event.destination.fluidbox > 0)
-    and (event.destination.prototype.collision_box and event.destination.prototype.collision_box.x == event.destination.prototype.collision_box.y)
-    and event.source.prototype.fast_replaceable_group == "assembling-machine"
-    and event.destination.prototype.fast_replaceable_group == "assembling-machine" then
+    if
+        event.source and event.source.supports_direction and (event.source.fluidbox and #event.source.fluidbox > 0) and
+            (event.source.prototype.collision_box and event.source.prototype.collision_box.x == event.source.prototype.collision_box.y) and
+            event.destination.supports_direction and
+            (event.destination.fluidbox and #event.destination.fluidbox > 0) and
+            (event.destination.prototype.collision_box and event.destination.prototype.collision_box.x == event.destination.prototype.collision_box.y) and
+            event.source.prototype.fast_replaceable_group == 'assembling-machine' and
+            event.destination.prototype.fast_replaceable_group == 'assembling-machine'
+     then
         event.destination.direction = event.source.direction
     end
 end

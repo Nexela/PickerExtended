@@ -1,6 +1,8 @@
 -------------------------------------------------------------------------------
---[[Switch Player Gun while Driving]]--
+--[Switch Player Gun while Driving]--
 -------------------------------------------------------------------------------
+local Event = require('stdlib/event/event')
+
 local function switch_player_gun_while_driving(event)
     local player = game.players[event.player_index]
     if player.character and player.driving then
@@ -16,4 +18,4 @@ local function switch_player_gun_while_driving(event)
         until index == start
     end
 end
-Event.register("switch-player-gun-while-driving", switch_player_gun_while_driving)
+Event.register('switch-player-gun-while-driving', switch_player_gun_while_driving)

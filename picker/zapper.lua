@@ -1,15 +1,16 @@
 -------------------------------------------------------------------------------
---[[Item Zapper]] --
+--[Item Zapper]--
 -------------------------------------------------------------------------------
-local Player = require("stdlib.event.player")
-local Position = require("stdlib.area.position")
+local Event = require('stdlib/event/event')
+local Player = require('stdlib/event/player')
+local Position = require('stdlib/area/position')
 
 local function zapper(event)
     local player, pdata = Player.get(event.player_index)
     local name = (player.cursor_stack.valid_for_read and player.cursor_stack.name)
 
     if name then
-        local all = player.mod_settings["picker-item-zapper-all"].value
+        local all = player.mod_settings['picker-item-zapper-all'].value
 
         if all or global.planners[name] then
             if (pdata.last_dropped or 0) + 30 < game.tick then
@@ -17,7 +18,7 @@ local function zapper(event)
                 if player.cursor_stack.valid_for_read then
                     player.cursor_stack.clear()
                     player.surface.create_entity {
-                        name = "drop-planner",
+                        name = 'drop-planner',
                         position = Position(player.position):translate(math.random(0, 7), 1)
                     }
                 end
@@ -25,7 +26,7 @@ local function zapper(event)
         end
     end
 end
-Event.register("picker-zapper", zapper)
+Event.register('picker-zapper', zapper)
 
 local function cleanup_blueprints(event)
     local player = game.players[event.player_index]
@@ -44,10 +45,8 @@ local function cleanup_blueprints(event)
     for planner in pairs(global.planners) do
         local bp = game.item_prototypes[planner] and inventory.find_item_stack(planner)
         if bp then
-            local setting =
-                settings["picker-no-" .. bp.name .. "-inv"] and settings["picker-no-" .. bp.name .. "-inv"].value or
-                settings["picker-no-other-planner-inv"].value
-            if setting ~= "none" and not (setting == "main" and quickbar) then
+            local setting = settings['picker-no-' .. bp.name .. '-inv'] and settings['picker-no-' .. bp.name .. '-inv'].value or settings['picker-no-other-planner-inv'].value
+            if setting ~= 'none' and not (setting == 'main' and quickbar) then
                 bp.clear()
             end
         end

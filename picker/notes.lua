@@ -1,11 +1,14 @@
 -------------------------------------------------------------------------------
---[[StickyNotes]]
----------------------------------------------------------------------------------
-if not settings.startup["picker-use-notes"].value then
+--[StickyNotes]--
+-------------------------------------------------------------------------------
+
+if not settings.startup['picker-use-notes'].value then
     return
 end
 
-local Player = require("stdlib.event.player")
+local Event = require('stdlib/event/event')
+local Gui = require('stdlib/event/gui')
+local Player = require('stdlib/event/player')
 
 local text_color_default = {r = 1, g = 1, b = 0}
 local color_array = {}
@@ -13,12 +16,14 @@ for _, v in pairs(defines.color) do
     table.insert(color_array, v)
 end
 
-local max_chars = 4 * (settings.startup["picker-notes-slot-count"].value - 1) - 1 -- max length of storable string
-local color_picker_interface = "color-picker"
-local open_color_picker_button_name = "open_color_picker_stknt"
-local color_picker_name = "color_picker_stknt"
+local max_chars = 4 * (settings.startup['picker-notes-slot-count'].value - 1) - 1 -- max length of storable string
+local color_picker_interface = 'color-picker'
+local open_color_picker_button_name = 'open_color_picker_stknt'
+local color_picker_name = 'color_picker_stknt'
 
--- GUI Layout -----------------------------------------------------------------
+--------------------------------------------------------------------------------
+--[Gui Layout]--
+--------------------------------------------------------------------------------
 local function menu_note(player, pdata, open_or_close)
     if open_or_close == nil then
         open_or_close = (player.gui.center.flow_stknt == nil)
@@ -40,51 +45,51 @@ local function menu_note(player, pdata, open_or_close)
         if note then
             flow =
                 player.gui.center.add {
-                type = "flow",
-                name = "flow_stknt",
-                style = "achievements_vertical_flow",
-                direction = "vertical"
+                type = 'flow',
+                name = 'flow_stknt',
+                style = 'achievements_vertical_flow',
+                direction = 'vertical'
             }
             frame =
                 flow.add {
-                type = "frame",
-                name = "frm_stknt",
-                caption = {"notes-gui.title", (player.selected and player.selected.unit_number) or note.n},
-                style = "frame_stknt_style",
-                direction = "vertical"
+                type = 'frame',
+                name = 'frm_stknt',
+                caption = {'notes-gui.title', (player.selected and player.selected.unit_number) or note.n},
+                style = 'frame_stknt_style',
+                direction = 'vertical'
             }
 
             local table_main =
                 frame.add {
-                type = "table",
-                name = "tab_stknt_main",
+                type = 'table',
+                name = 'tab_stknt_main',
                 column_count = 1,
-                style = "picker_table"
+                style = 'picker_table'
             }
             local txt_box =
                 table_main.add {
-                type = "text-box",
-                name = "txt_stknt",
+                type = 'text-box',
+                name = 'txt_stknt',
                 text = note.text,
-                style = "textbox_stknt_style",
+                style = 'textbox_stknt_style',
                 word_wrap = true
             }
 
-            if not settings.global["picker-notes-use-color-picker"].value then
+            if not settings.global['picker-notes-use-color-picker'].value then
                 local table_colors =
                     table_main.add {
-                    type = "table",
-                    name = "tab_stknt_colors",
-                    style = "picker_table",
+                    type = 'table',
+                    name = 'tab_stknt_colors',
+                    style = 'picker_table',
                     column_count = 10
                 }
                 for name, color in pairs(defines.color) do
                     color_button =
                         table_colors.add {
-                        type = "button",
-                        name = "but_stknt_col_" .. name,
-                        caption = "@",
-                        style = "button_stknt_style"
+                        type = 'button',
+                        name = 'but_stknt_col_' .. name,
+                        caption = '@',
+                        style = 'button_stknt_style'
                     }
                     color_button.style.font_color = color
                 end
@@ -92,72 +97,72 @@ local function menu_note(player, pdata, open_or_close)
 
             local table_checks =
                 table_main.add {
-                type = "table",
-                name = "tab_stknt_check",
+                type = 'table',
+                name = 'tab_stknt_check',
                 column_count = 2,
-                style = "picker_table"
+                style = 'picker_table'
             }
             table_checks.add {
-                type = "checkbox",
-                name = "chk_stknt_autoshow",
-                caption = {"notes-gui.autoshow"},
+                type = 'checkbox',
+                name = 'chk_stknt_autoshow',
+                caption = {'notes-gui.autoshow'},
                 state = note.autoshow or false,
-                tooltip = {"notes-gui-tt.autoshow"},
-                style = "checkbox_stknt_style"
+                tooltip = {'notes-gui-tt.autoshow'},
+                style = 'checkbox_stknt_style'
             }
             table_checks.add {
-                type = "checkbox",
-                name = "chk_stknt_mapmark",
-                caption = {"notes-gui.mapmark"},
+                type = 'checkbox',
+                name = 'chk_stknt_mapmark',
+                caption = {'notes-gui.mapmark'},
                 state = note.mapmark ~= nil,
-                tooltip = {"notes-gui-tt.mapmark"},
-                style = "checkbox_stknt_style"
+                tooltip = {'notes-gui-tt.mapmark'},
+                style = 'checkbox_stknt_style'
             }
             table_checks.add {
-                type = "checkbox",
-                name = "chk_stknt_locked_force",
-                caption = {"notes-gui.locked-force"},
+                type = 'checkbox',
+                name = 'chk_stknt_locked_force',
+                caption = {'notes-gui.locked-force'},
                 state = note.locked_force or false,
-                tooltip = {"notes-gui-tt.locked-force"},
-                style = "checkbox_stknt_style"
+                tooltip = {'notes-gui-tt.locked-force'},
+                style = 'checkbox_stknt_style'
             }
             table_checks.add {
-                    type = "checkbox",
-                    name = "chk_stknt_locked_admin",
-                    caption = {"notes-gui.locked-admin"},
+                    type = 'checkbox',
+                    name = 'chk_stknt_locked_admin',
+                    caption = {'notes-gui.locked-admin'},
                     state = note.locked_admin or false,
-                    tooltip = {"notes-gui-tt.locked-admin"},
-                    style = "checkbox_stknt_style"
+                    tooltip = {'notes-gui-tt.locked-admin'},
+                    style = 'checkbox_stknt_style'
                 }.enabled = player.admin
 
             local table_but =
                 table_main.add {
-                type = "table",
-                name = "tab_stknt_but",
+                type = 'table',
+                name = 'tab_stknt_but',
                 column_count = 6,
-                style = "picker_table"
+                style = 'picker_table'
             }
             table_but.add {
-                type = "button",
-                name = "but_stknt_delete",
-                caption = {"notes-gui.delete"},
-                tooltip = {"notes-gui-tt.delete"},
-                style = "button_stknt_style"
+                type = 'button',
+                name = 'but_stknt_delete',
+                caption = {'notes-gui.delete'},
+                tooltip = {'notes-gui-tt.delete'},
+                style = 'button_stknt_style'
             }
             table_but.add {
-                type = "button",
-                name = "but_stknt_close",
-                caption = {"notes-gui.close"},
-                tooltip = {"notes-gui-tt.close"},
-                style = "button_stknt_style"
+                type = 'button',
+                name = 'but_stknt_close',
+                caption = {'notes-gui.close'},
+                tooltip = {'notes-gui-tt.close'},
+                style = 'button_stknt_style'
             }
             -- Use Color Picker mod if enabled.
-            if settings.global["picker-notes-use-color-picker"].value and remote.interfaces[color_picker_interface] then
+            if settings.global['picker-notes-use-color-picker'].value and remote.interfaces[color_picker_interface] then
                 table_but.add {
-                    type = "button",
+                    type = 'button',
                     name = open_color_picker_button_name,
-                    caption = {"gui-train.color"},
-                    style = "button_stknt_style"
+                    caption = {'gui-train.color'},
+                    style = 'button_stknt_style'
                 }
             end
             txt_box.focus()
@@ -166,7 +171,9 @@ local function menu_note(player, pdata, open_or_close)
     end
 end
 
---------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--[Codes]--
+--------------------------------------------------------------------------------
 local function display_mapmark(note, on_or_off)
     if note then
         if note.mapmark and note.mapmark.valid then
@@ -176,7 +183,7 @@ local function display_mapmark(note, on_or_off)
 
         if on_or_off and note.invis_note and note.invis_note.valid then
             local tag = {
-                icon = {type = "item", name = "invis-note"},
+                icon = {type = 'item', name = 'invis-note'},
                 position = note.invis_note.position,
                 text = note.text,
                 last_user = note.last_user,
@@ -192,7 +199,7 @@ local function create_invis_note(entity)
     local invis_note =
         surf.create_entity(
         {
-            name = "invis-note",
+            name = 'invis-note',
             position = entity.position,
             direction = entity.direction,
             force = entity.force
@@ -203,31 +210,20 @@ local function create_invis_note(entity)
     return invis_note
 end
 
--- ENCODING -------------------------------------------------------------------
--- store the note data into an existing invis-note
 local function encode_note(note)
-    --local encoding_version = 1
     local invis_note = note.invis_note
 
     if invis_note then
         invis_note.alert_parameters = {
             show_alert = true,
             show_on_map = true,
-            icon_signal_id = {type = "item", name = "invis-note"},
+            icon_signal_id = {type = 'item', name = 'invis-note'},
             alert_message = note.text
         }
     end
 end
 
--- DECODING -------------------------------------------------------------------
--- decode an invis_note and return a note object. Also, create a mapmark if needed.
--- returns nil if decode failed
--- encoding versions changes:
--- 2.0.0: 0
--- 2.0.1: 1
 local function decode_note(invis_note, target)
-    game.print("DECODE")
-    game.print(serpent.block(invis_note.alert_parameters))
     local note = {}
     note.invis_note = invis_note
     note.target = target
@@ -236,7 +232,6 @@ local function decode_note(invis_note, target)
     return note
 end
 
---------------------------------------------------------------------------------------
 local function show_note(note)
     if note then
         if note.fly and note.fly.valid then
@@ -252,7 +247,7 @@ local function show_note(note)
 
             local fly =
                 surf.create_entity {
-                name = "sticky-text",
+                name = 'sticky-text',
                 text = note.text,
                 color = note.color,
                 position = {x = x, y = y}
@@ -265,7 +260,6 @@ local function show_note(note)
     end
 end
 
---------------------------------------------------------------------------------------
 local function hide_note(note)
     if note then
         if note.fly and note.fly.valid then
@@ -275,7 +269,6 @@ local function hide_note(note)
     end
 end
 
---------------------------------------------------------------------------------------
 local function destroy_note(note)
     for _, player in pairs(game.connected_players) do
         local pdata = global.players[player.index]
@@ -301,10 +294,9 @@ local function destroy_note(note)
     end
 end
 
---------------------------------------------------------------------------------------
 -- lookup the note of an invis-note or a target entity
 local function get_note(ent)
-    if ent.name == "invis-note" then
+    if ent.name == 'invis-note' then
         return global.notes_by_invis[ent.unit_number]
     end
     return global.notes_by_target[ent.unit_number]
@@ -318,7 +310,6 @@ local function on_selected_entity_changed(event)
 end
 Event.register(defines.events.on_selected_entity_changed, on_selected_entity_changed)
 
---------------------------------------------------------------------------------------
 local function register_note(note)
     global.n_note = global.n_note + 1
     note.n = global.n_note
@@ -326,7 +317,6 @@ local function register_note(note)
     global.notes_by_invis[note.invis_note.unit_number] = note
 end
 
---------------------------------------------------------------------------------------
 local function update_note_target(note, new_target)
     if note.target then
         global.notes_by_target[note.target_unit_number] = nil
@@ -336,28 +326,27 @@ local function update_note_target(note, new_target)
     global.notes_by_target[new_target.unit_number] = note
 end
 
---------------------------------------------------------------------------------------
 local function add_note(entity)
     local note = {
-        text = "text " .. global.n_note + 1, -- text
+        text = 'text ' .. global.n_note + 1, -- text
         color = text_color_default, -- color
         n = nil, -- number of the note
         fly = nil, -- text entity
-        autoshow = settings.global["picker-notes-default-autoshow"].value, -- if true, then note autoshows/hides
+        autoshow = settings.global['picker-notes-default-autoshow'].value, -- if true, then note autoshows/hides
         mapmark = nil, -- mark on the map
         locked_force = true, -- only modifiable by the same force
         locked_admin = false, -- only modifiable by admins
         editer = nil, -- player currently editing
-        is_sign = (entity.name == "sticky-note" or entity.name == "sticky-sign"), -- is connected to a real note/sign object
+        is_sign = (entity.name == 'sticky-note' or entity.name == 'sticky-sign'), -- is connected to a real note/sign object
         invis_note = create_invis_note(entity),
         target = entity,
         target_unit_number = entity.unit_number -- needed in case target becomes invalid
     }
 
-    note.text = #settings.global["picker-notes-default-message"].value > 1 and settings.global["picker-notes-default-message"].value or note.text
+    note.text = #settings.global['picker-notes-default-message'].value > 1 and settings.global['picker-notes-default-message'].value or note.text
     show_note(note)
     register_note(note)
-    display_mapmark(note, settings.global["picker-notes-default-mapmark"].value)
+    display_mapmark(note, settings.global['picker-notes-default-mapmark'].value)
     encode_note(note)
 
     return (note)
@@ -386,14 +375,14 @@ local function on_creation(event)
     end
 
     -- Revive note ghosts immediately
-    if ent.name == "entity-ghost" and ent.ghost_name == "invis-note" then
+    if ent.name == 'entity-ghost' and ent.ghost_name == 'invis-note' then
         local revived, rev_ent = ent.revive()
         if revived then
             ent = rev_ent
         end
     end
 
-    if ent.name == "invis-note" then
+    if ent.name == 'invis-note' then
         ent.destructible = false
         ent.operable = false
 
@@ -404,7 +393,7 @@ local function on_creation(event)
         local note_target
         local note_targets =
             ent.surface.find_entities_filtered {
-            name = "entity-ghost",
+            name = 'entity-ghost',
             position = ent.position,
             force = ent.force,
             limit = 1
@@ -420,7 +409,7 @@ local function on_creation(event)
         if not note_target then
             note_targets = ent.surface.find_entities_filtered {position = ent.position, force = ent.force}
             for _, target in pairs(note_targets) do
-                if target.prototype.has_flag("player-creation") then
+                if target.prototype.has_flag('player-creation') then
                     if target.valid and get_note(target) == nil then
                         note_target = target
                     end
@@ -444,15 +433,15 @@ local function on_creation(event)
         else
             ent.destroy()
         end
-    elseif ent.name ~= "entity-ghost" then -- when a normal item is placed figure out what ghosts are destroyed
-        if (ent.name == "sticky-note" or ent.name == "sticky-sign") then
+    elseif ent.name ~= 'entity-ghost' then -- when a normal item is placed figure out what ghosts are destroyed
+        if (ent.name == 'sticky-note' or ent.name == 'sticky-sign') then
             ent.destructible = false
             ent.operable = false
         end
 
         local x = ent.position.x
         local y = ent.position.y
-        local invis_notes = ent.surface.find_entities_filtered {name = "invis-note", area = {{x - 10, y - 10}, {x + 10, y + 10}}}
+        local invis_notes = ent.surface.find_entities_filtered {name = 'invis-note', area = {{x - 10, y - 10}, {x + 10, y + 10}}}
         for _, invis_note in pairs(invis_notes) do
             local note = get_note(invis_note)
             if not note.target.valid then -- if we deleted a ghost with this placement
@@ -467,7 +456,6 @@ local function on_creation(event)
 end
 Event.register({defines.events.on_built_entity, defines.events.on_robot_built_entity}, on_creation)
 
---------------------------------------------------------------------------------------
 local function on_destruction(event)
     local ent = event.entity
     local note = get_note(ent)
@@ -477,12 +465,11 @@ local function on_destruction(event)
 end
 Event.register({defines.events.on_entity_died, defines.events.on_robot_pre_mined, defines.events.on_pre_player_mined_item}, on_destruction)
 
---------------------------------------------------------------------------------------
 local function on_marked_for_deconstruction(event)
     local ent = event.entity
-    if ent.name == "invis-note" then
+    if ent.name == 'invis-note' then
         local note = get_note(ent)
-        if not note.target.valid or note.target.name == "entity-ghost" then
+        if not note.target.valid or note.target.name == 'entity-ghost' then
             destroy_note(note)
         else -- if target is still valid, just cancel deconstruction
             local force = (event.player_index and game.players[event.player_index].force) or (ent.last_user and ent.last_user.force) or ent.force
@@ -492,9 +479,11 @@ local function on_marked_for_deconstruction(event)
 end
 Event.register(defines.events.on_marked_for_deconstruction, on_marked_for_deconstruction)
 
--- GUI ------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--[Gui]--
+--------------------------------------------------------------------------------
 Gui.on_text_changed(
-    "^txt_stknt$",
+    '^txt_stknt$',
     function(event)
         local player, pdata = Player.get(event.player_index)
         local note = pdata.note_sel
@@ -502,7 +491,7 @@ Gui.on_text_changed(
         if note then
             if #event.element.text > max_chars then
                 event.element.text = string.sub(event.element.text, 1, max_chars)
-                player.print({"notes_gui.to-long", max_chars})
+                player.print({'notes_gui.to-long', max_chars})
             end
 
             note.text = event.element.text
@@ -518,7 +507,7 @@ Gui.on_text_changed(
 )
 
 local function close_note(event)
-    if event.element and (event.element.name == "flow_stknt" or event.element.name == "but_stknt_close") then
+    if event.element and (event.element.name == 'flow_stknt' or event.element.name == 'but_stknt_close') then
         local player, pdata = Player.get(event.player_index)
         local note = pdata.note_sel
         if note then
@@ -531,11 +520,11 @@ local function close_note(event)
         pdata.note_sel = nil
     end
 end
-Gui.on_click("but_stknt_close", close_note)
+Gui.on_click('but_stknt_close', close_note)
 Event.register(defines.events.on_gui_closed, close_note)
 
 Gui.on_click(
-    "but_stknt_delete",
+    'but_stknt_delete',
     function(event)
         local player, pdata = Player.get(event.player_index)
         local note = pdata.note_sel
@@ -549,7 +538,7 @@ Gui.on_click(
 )
 
 Gui.on_click(
-    "but_stknt_col_(.*)",
+    'but_stknt_col_(.*)',
     function(event)
         local _, pdata = Player.get(event.player_index)
 
@@ -566,7 +555,7 @@ Gui.on_click(
 )
 
 Gui.on_checked_state_changed(
-    "chk_stknt_autoshow",
+    'chk_stknt_autoshow',
     function(event)
         local _, pdata = Player.get(event.player_index)
         local note = pdata.note_sel
@@ -583,7 +572,7 @@ Gui.on_checked_state_changed(
 )
 
 Gui.on_checked_state_changed(
-    "chk_stknt_mapmark",
+    'chk_stknt_mapmark',
     function(event)
         local _, pdata = Player.get(event.player_index)
         local note = pdata.note_sel
@@ -599,7 +588,7 @@ Gui.on_checked_state_changed(
 )
 
 Gui.on_checked_state_changed(
-    "chk_stknt_locked_force",
+    'chk_stknt_locked_force',
     function(event)
         local _, pdata = Player.get(event.player_index)
         local note = pdata.note_sel
@@ -609,7 +598,7 @@ Gui.on_checked_state_changed(
 )
 
 Gui.on_checked_state_changed(
-    "chk_stknt_locked_admin",
+    'chk_stknt_locked_admin',
     function(event)
         local player, pdata = Player.get(event.player_index)
         if player.admin then
@@ -639,7 +628,7 @@ Gui.on_click(
             else
                 remote.call(
                     color_picker_interface,
-                    "add_instance",
+                    'add_instance',
                     {
                         parent = flow,
                         container_name = color_picker_name,
@@ -652,21 +641,23 @@ Gui.on_click(
     end
 )
 
--- HOTKEYS --------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--[Hotkeys]--
+--------------------------------------------------------------------------------
 local ignore_types = {
-    ["car"] = true,
-    ["tank"] = true,
-    ["player"] = true,
-    ["unit"] = true,
-    ["unit-spawner"] = true,
-    ["straight-rail"] = true,
-    ["curved-rail"] = true,
-    ["locomotive"] = true,
-    ["cargo-wagon"] = true,
-    ["fluid-wagon"] = true,
-    ["logistic-robot"] = true,
-    ["construction-robot"] = true,
-    ["combat-robot"] = true
+    ['car'] = true,
+    ['tank'] = true,
+    ['player'] = true,
+    ['unit'] = true,
+    ['unit-spawner'] = true,
+    ['straight-rail'] = true,
+    ['curved-rail'] = true,
+    ['locomotive'] = true,
+    ['cargo-wagon'] = true,
+    ['fluid-wagon'] = true,
+    ['logistic-robot'] = true,
+    ['construction-robot'] = true,
+    ['combat-robot'] = true
 }
 
 local function on_hotkey_write(event)
@@ -699,24 +690,23 @@ local function on_hotkey_write(event)
         end
 
         -- show the new menu
-        if
-            note and (note.editer == nil or not note.editer.connected) and (note.invis_note.force == player.force or not note.locked_force) and
-                (player.admin or not note.locked_admin)
-         then
+        if note and (note.editer == nil or not note.editer.connected) and (note.invis_note.force == player.force or not note.locked_force) and (player.admin or not note.locked_admin) then
             pdata.note_sel = note
             note.editer = player
             menu_note(player, pdata, true)
         end
     end
 end
-Event.register("picker-notes", on_hotkey_write)
+Event.register('picker-notes', on_hotkey_write)
 
---Init-------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--[Core Events]--
+--------------------------------------------------------------------------------
 local function register_conditionals()
     if remote.interfaces[color_picker_interface] then
         -- color picker events.
         Event.register(
-            remote.call(color_picker_interface, "on_color_updated"),
+            remote.call(color_picker_interface, 'on_color_updated'),
             function(event)
                 if event.container.name == color_picker_name then
                     local _, pdata = Player.get(event.player_index)
@@ -733,7 +723,7 @@ local function register_conditionals()
         )
 
         Event.register(
-            remote.call(color_picker_interface, "on_ok_button_clicked"),
+            remote.call(color_picker_interface, 'on_ok_button_clicked'),
             function(event)
                 if event.container.name == color_picker_name then
                     event.container.destroy()
@@ -757,7 +747,7 @@ end
 Event.register(Event.core_events.init, on_init)
 
 local function on_configuration_changed(event)
-    if event.mod_changes and event.mod_changes["PickerExtended"] then
+    if event.mod_changes and event.mod_changes['PickerExtended'] then
         global.notes_by_invis = global.notes_by_invis or {}
         global.notes_by_target = global.notes_by_target or {}
         global.n_note = global.n_note or 0
@@ -765,7 +755,9 @@ local function on_configuration_changed(event)
 end
 Event.register(Event.core_events.configuration_changed, on_configuration_changed)
 
--- Interface ------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--[Interface]--
+--------------------------------------------------------------------------------
 local interfaces = {}
 
 function interfaces.delete_all()
@@ -777,7 +769,7 @@ function interfaces.count(silent)
     local invis = table.count_keys(global.notes_by_invis)
     local target = table.count_keys(global.notes_by_target)
     if not silent then
-        game.print("Notes by invis-notes: " .. invis .. " Notes by targets: " .. target)
+        game.print('Notes by invis-notes: ' .. invis .. ' Notes by targets: ' .. target)
     end
     return invis, target
 end
@@ -803,8 +795,8 @@ function interfaces.clean()
     table.each(global.notes_by_invis, fix_note)
     table.each(global.notes_by_target, fix_note)
 
-    game.print("Cleaned out " .. destroy_count .. " notes")
-    game.print("Aligned " .. align_count .. " notes")
+    game.print('Cleaned out ' .. destroy_count .. ' notes')
+    game.print('Aligned ' .. align_count .. ' notes')
 end
 
 function interfaces.add_note(entity, parameters)
@@ -875,6 +867,6 @@ for name, func in pairs(interfaces) do
     MOD.interfaces[name] = func
 end
 
-if not remote.interfaces["StickyNotes"] then
-    remote.add_interface("StickyNotes", interfaces)
+if not remote.interfaces['StickyNotes'] then
+    remote.add_interface('StickyNotes', interfaces)
 end

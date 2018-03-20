@@ -1,9 +1,11 @@
 -------------------------------------------------------------------------------
---[[Reviver]] -- Revives the selected entity
+--[Reviver] -- Revives the selected entity
 -------------------------------------------------------------------------------
-local Area = require("stdlib.area.area")
-local Player = require("stdlib.event.player")
-local lib = require("picker.lib")
+
+local Event = require('stdlib/event/event')
+local Area = require('stdlib/area/area')
+local Player = require('stdlib/event/player')
+local lib = require('picker/lib')
 
 --as of 08/30 this is mostly incorporated into base.
 --Modules are still not revived,
@@ -22,13 +24,13 @@ Event.register(defines.events.on_built_entity, revive_it)
 local function picker_revive_selected(event)
     local player = game.players[event.player_index]
     if player.selected and player.controller_type ~= defines.controllers.ghost then
-        if player.selected.name == "item-on-ground" then
+        if player.selected.name == 'item-on-ground' then
             return player.mine_entity(player.selected)
-        elseif player.selected.name == "item-request-proxy" and not player.cursor_stack.valid_for_read then
+        elseif player.selected.name == 'item-request-proxy' and not player.cursor_stack.valid_for_read then
             lib.satisfy_requests(player, player.selected)
         end
     end
 end
-Event.register("picker-select", picker_revive_selected)
+Event.register('picker-select', picker_revive_selected)
 
 return picker_revive_selected

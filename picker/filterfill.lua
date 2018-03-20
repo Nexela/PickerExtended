@@ -3,7 +3,9 @@
 -------------------------------------------------------------------------------
 --Code modified from: "Fast Filter Fill" by: "Keryja, SeaRyanC"
 
-local lib = require("picker.lib")
+local Event = require('stdlib/event/event')
+local Gui = require('stdlib/event/gui')
+local lib = require('picker/lib')
 local INVENTORY_COLUMNS = 10
 local GUI_TYPES = {
     [defines.gui_type.controller] = true,
@@ -12,93 +14,93 @@ local GUI_TYPES = {
 
 --[flow][frame][[table[#btns]][table[#btns]]]
 local function get_or_create_filterfill_gui(player, destroy)
-    local flow = lib.get_or_create_main_left_flow(player, "picker")
+    local flow = lib.get_or_create_main_left_flow(player, 'picker')
 
-    local filter_frame = flow["filterfill_frame"]
+    local filter_frame = flow['filterfill_frame']
     if destroy then
         return filter_frame and filter_frame.destroy()
     elseif not filter_frame then
-        filter_frame = flow.add {type = "frame", name = "filterfill_frame", direction = "horizontal", style = "picker_frame"}
+        filter_frame = flow.add {type = 'frame', name = 'filterfill_frame', direction = 'horizontal', style = 'picker_frame'}
 
-        local requests = filter_frame.add {type = "table", name = "filterfill_requests", column_count = 6, style = "picker_table"}
+        local requests = filter_frame.add {type = 'table', name = 'filterfill_requests', column_count = 6, style = 'picker_table'}
         requests.add {
-            type = "sprite-button",
-            name = "filterfill_requests_btn_bp",
-            sprite = "picker-request-bp",
-            tooltip = {"filterfill.btn-bp"},
-            style = "picker_buttons"
+            type = 'sprite-button',
+            name = 'filterfill_requests_btn_bp',
+            sprite = 'picker-request-bp',
+            tooltip = {'filterfill.btn-bp'},
+            style = 'picker_buttons'
         }
         requests.add {
-            type = "sprite-button",
-            name = "filterfill_requests_btn_2x",
-            sprite = "picker-request-2x",
-            tooltip = {"filterfill.btn-2x"},
-            style = "picker_buttons"
+            type = 'sprite-button',
+            name = 'filterfill_requests_btn_2x',
+            sprite = 'picker-request-2x',
+            tooltip = {'filterfill.btn-2x'},
+            style = 'picker_buttons'
         }
         requests.add {
-            type = "sprite-button",
-            name = "filterfill_requests_btn_5x",
-            sprite = "picker-request-5x",
-            tooltip = {"filterfill.btn-5x"},
-            style = "picker_buttons"
+            type = 'sprite-button',
+            name = 'filterfill_requests_btn_5x',
+            sprite = 'picker-request-5x',
+            tooltip = {'filterfill.btn-5x'},
+            style = 'picker_buttons'
         }
         requests.add {
-            type = "sprite-button",
-            name = "filterfill_requests_btn_10x",
-            sprite = "picker-request-10x",
-            tooltip = {"filterfill.btn-10x"},
-            style = "picker_buttons"
+            type = 'sprite-button',
+            name = 'filterfill_requests_btn_10x',
+            sprite = 'picker-request-10x',
+            tooltip = {'filterfill.btn-10x'},
+            style = 'picker_buttons'
         }
         requests.add {
-            type = "sprite-button",
-            name = "filterfill_requests_btn_max",
-            sprite = "picker-request-max",
-            tooltip = {"filterfill.btn-max"},
-            style = "picker_buttons"
+            type = 'sprite-button',
+            name = 'filterfill_requests_btn_max',
+            sprite = 'picker-request-max',
+            tooltip = {'filterfill.btn-max'},
+            style = 'picker_buttons'
         }
         requests.add {
-            type = "sprite-button",
-            name = "filterfill_requests_btn_0x",
-            sprite = "picker-request-clear",
-            tooltip = {"filterfill.btn-clear"},
-            style = "picker_buttons"
+            type = 'sprite-button',
+            name = 'filterfill_requests_btn_0x',
+            sprite = 'picker-request-clear',
+            tooltip = {'filterfill.btn-clear'},
+            style = 'picker_buttons'
         }
 
-        local filters = filter_frame.add {type = "table", name = "filterfill_filters", column_count = 5, style = "picker_table"}
+        local filters = filter_frame.add {type = 'table', name = 'filterfill_filters', column_count = 5, style = 'picker_table'}
         filters.add {
-            type = "sprite-button",
-            name = "filterfill_filters_btn_all",
-            sprite = "picker-filters-all",
-            tooltip = {"filterfill.btn-all"},
-            style = "picker_buttons"
+            type = 'sprite-button',
+            name = 'filterfill_filters_btn_all',
+            sprite = 'picker-filters-all',
+            tooltip = {'filterfill.btn-all'},
+            style = 'picker_buttons'
         }
         filters.add {
-            type = "sprite-button",
-            name = "filterfill_filters_btn_down",
-            sprite = "picker-filters-down",
-            tooltip = {"filterfill.btn-down"},
-            style = "picker_buttons"
+            type = 'sprite-button',
+            name = 'filterfill_filters_btn_down',
+            sprite = 'picker-filters-down',
+            tooltip = {'filterfill.btn-down'},
+            style = 'picker_buttons'
         }
         filters.add {
-            type = "sprite-button",
-            name = "filterfill_filters_btn_right",
-            sprite = "picker-filters-right",
-            tooltip = {"filterfill.btn-right"},
-            style = "picker_buttons"
+            type = 'sprite-button',
+            name = 'filterfill_filters_btn_right',
+            sprite = 'picker-filters-right',
+            tooltip = {'filterfill.btn-right'},
+            style = 'picker_buttons'
         }
         filters.add {
-            type = "sprite-button",
-            name = "filterfill_filters_btn_set_all",
-            sprite = "picker-filters-set-all",
-            tooltip = {"filterfill.btn-set-all"},
-            style = "picker_buttons"
+            type = 'sprite-button',
+            name = 'filterfill_filters_btn_set_all',
+            sprite = 'picker-filters-set-all',
+            tooltip = {'filterfill.btn-set-all'},
+            style = 'picker_buttons'
         }
         filters.add {
-            type = "sprite-button",
-            name = "filterfill_filters_btn_clear_all",
-            sprite = "picker-filters-clear-all",
-            tooltip = {"filterfill.btn-clear-all"},
-            style = "picker_buttons"
+            type = 'sprite-button',
+            name = 'filterfill_filters_btn_clear_all',
+            sprite = 'picker-filters-clear-all',
+            tooltip = {'filterfill.btn-clear-all'},
+            style = 'picker_buttons'
         }
     end
     return filter_frame
@@ -132,7 +134,7 @@ local function filterfill_all(event)
         end
     end
 end
-Gui.on_click("filterfill_filters_btn_all", filterfill_all)
+Gui.on_click('filterfill_filters_btn_all', filterfill_all)
 
 -- Filtering: Copies the filter settings of each cell to the cell(s) below it
 local function filterfill_down(event)
@@ -153,7 +155,7 @@ local function filterfill_down(event)
         end
     end
 end
-Gui.on_click("filterfill_filters_btn_down", filterfill_down)
+Gui.on_click('filterfill_filters_btn_down', filterfill_down)
 
 -- Filtering: Copies the filter settings of each cell to the cell(s) to the right of it
 local function filterfill_right(event)
@@ -175,7 +177,7 @@ local function filterfill_right(event)
         end
     end
 end
-Gui.on_click("filterfill_filters_btn_right", filterfill_right)
+Gui.on_click('filterfill_filters_btn_right', filterfill_right)
 
 -- Filtering: Set the filters of the opened container to the contents of each cell
 local function filterfill_set_all(event)
@@ -188,7 +190,7 @@ local function filterfill_set_all(event)
         end
     end
 end
-Gui.on_click("filterfill_filters_btn_set_all", filterfill_set_all)
+Gui.on_click('filterfill_filters_btn_set_all', filterfill_set_all)
 
 -- Filtering: Clear all filters in the opened container
 local function filterfill_clear_all(event)
@@ -200,7 +202,7 @@ local function filterfill_clear_all(event)
         end
     end
 end
-Gui.on_click("filterfill_filters_btn_clear_all", filterfill_clear_all)
+Gui.on_click('filterfill_filters_btn_clear_all', filterfill_clear_all)
 
 --[REQUESTS]-----------------------------------------------------------------
 local function requests_fill(event)
@@ -227,13 +229,13 @@ local function requests_fill(event)
     event.element.parent.parent.destroy()
     player.opened = nil
 end
-Gui.on_click("filterfill_requests_btn_max", requests_fill)
+Gui.on_click('filterfill_requests_btn_max', requests_fill)
 
 local function multiply_filter(event)
     local player = game.players[event.player_index]
     local opened = player.opened
     if opened then
-        local factor = tonumber(event.element.name:match("%d+"))
+        local factor = tonumber(event.element.name:match('%d+'))
         for i = 1, opened.request_slot_count do
             local existing = opened.get_request_slot(i)
             if existing and factor > 0 then
@@ -246,14 +248,14 @@ local function multiply_filter(event)
     event.element.parent.parent.destroy()
     player.opened = nil
 end
-Gui.on_click("filterfill_requests_btn_%d+x", multiply_filter)
+Gui.on_click('filterfill_requests_btn_%d+x', multiply_filter)
 
 local function blueprint_requests(event)
     --chest "should be non-nil" at this point
     local player = game.players[event.player_index]
     local chest = player.opened
     local chest_inv = chest and chest.get_output_inventory()
-    local blueprint = lib.stack_name(player.cursor_stack, "blueprint", true) or (chest_inv and lib.stack_name(chest_inv[1], "blueprint", true))
+    local blueprint = lib.stack_name(player.cursor_stack, 'blueprint', true) or (chest_inv and lib.stack_name(chest_inv[1], 'blueprint', true))
     if chest then
         if blueprint then
             for i = 1, chest.request_slot_count do
@@ -275,13 +277,13 @@ local function blueprint_requests(event)
             event.element.parent.parent.destroy()
             player.opened = nil
         else
-            player.print({"filterfill.no-blueprint"})
+            player.print({'filterfill.no-blueprint'})
         end
     else
         event.element.parent.parent.destroy()
     end
 end
-Gui.on_click("filterfill_requests_btn_bp", blueprint_requests)
+Gui.on_click('filterfill_requests_btn_bp', blueprint_requests)
 
 --[Check inventory]------------------------------------------------------------
 local function check_for_filterable_inventory(event)
@@ -290,11 +292,11 @@ local function check_for_filterable_inventory(event)
 
     local inv = get_opened_inventory(player)
     if inv then
-        local requester = player.opened and player.opened.type == "logistic-container" and player.opened.prototype.logistic_mode == "requester"
+        local requester = player.opened and player.opened.type == 'logistic-container' and player.opened.prototype.logistic_mode == 'requester'
 
-        frame["filterfill_requests"].style.visible = requester or false
-        frame["filterfill_filters"].style.visible = inv and inv.supports_filters()
-        frame.style.visible = frame["filterfill_filters"].style.visible or frame["filterfill_requests"].style.visible
+        frame['filterfill_requests'].style.visible = requester or false
+        frame['filterfill_filters'].style.visible = inv and inv.supports_filters()
+        frame.style.visible = frame['filterfill_filters'].style.visible or frame['filterfill_requests'].style.visible
     else
         frame.style.visible = false
     end

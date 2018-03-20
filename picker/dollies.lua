@@ -1,13 +1,15 @@
 -------------------------------------------------------------------------------
---[[Picker Dolly]] --
+--[Picker Dolly]--
 -------------------------------------------------------------------------------
-local Player = require("stdlib.event.player")
-local Area = require("stdlib.area.area")
-local Position = require("stdlib.area.position")
-local lib = require("picker.lib")
+
+local Event = require('stdlib/event/event')
+local Player = require('stdlib/event/player')
+local Area = require('stdlib/area/area')
+local Position = require('stdlib/area/position')
+local lib = require('picker/lib')
 
 Event.dolly_moved = script.generate_event_name()
-MOD.interfaces["dolly_moved_entity_id"] = function()
+MOD.interfaces['dolly_moved_entity_id'] = function()
     return Event.dolly_moved
 end
 
@@ -25,31 +27,32 @@ if remote.interfaces["picker"] and remote.interfaces["picker"]["dolly_moved_enti
     script.on_event(remote.call("picker", "dolly_moved_entity_id"), function_to_update_positions)
 end
 --]]
+
 local function blacklist(entity)
     local types = {
-        ["item-request-proxy"] = true,
-        ["rocket-silo-rocket"] = true,
-        ["player"] = true,
-        ["resource"] = true,
-        ["car"] = true,
-        ["construction-robot"] = true,
-        ["logisitic-rotbot"] = true,
-        ["rocket"] = true
+        ['item-request-proxy'] = true,
+        ['rocket-silo-rocket'] = true,
+        ['player'] = true,
+        ['resource'] = true,
+        ['car'] = true,
+        ['construction-robot'] = true,
+        ['logisitic-rotbot'] = true,
+        ['rocket'] = true
     }
     local names = {}
     return types[entity.type] or names[entity.name]
 end
 
 local input_to_direction = {
-    ["dolly-move-north"] = defines.direction.north,
-    ["dolly-move-east"] = defines.direction.east,
-    ["dolly-move-south"] = defines.direction.south,
-    ["dolly-move-west"] = defines.direction.west
+    ['dolly-move-north'] = defines.direction.north,
+    ['dolly-move-east'] = defines.direction.east,
+    ['dolly-move-south'] = defines.direction.south,
+    ['dolly-move-west'] = defines.direction.west
 }
 
 local oblong_combinators = {
-    ["arithmetic-combinator"] = true,
-    ["decider-combinator"] = true
+    ['arithmetic-combinator'] = true,
+    ['decider-combinator'] = true
 }
 
 local function get_saved_entity(player, pdata, tick)
@@ -66,7 +69,7 @@ local function get_saved_entity(player, pdata, tick)
 end
 
 local function _get_distance(entity)
-    if entity.type == "electric-pole" then
+    if entity.type == 'electric-pole' then
         return entity.prototype.max_wire_distance
     elseif entity.circuit_connected_entities then
         return entity.prototype.max_circuit_wire_distance
@@ -112,8 +115,8 @@ local function move_combinator(event)
             local item_area = Area(entity.bounding_box):non_zero():translate(direction, distance)
 
             local update = entity.surface.find_entities_filtered {area = sel_area:copy():expand(32), force = entity.force}
-            local items_on_ground = entity.surface.find_entities_filtered {type = "item-entity", area = item_area}
-            local proxy = entity.surface.find_entities_filtered {name = "item-request-proxy", area = sel_area:non_zero(), force = player.force}[1]
+            local items_on_ground = entity.surface.find_entities_filtered {type = 'item-entity', area = item_area}
+            local proxy = entity.surface.find_entities_filtered {name = 'item-request-proxy', area = sel_area:non_zero(), force = player.force}[1]
 
             --Update everything after teleporting
             local function teleport_and_update(ent, pos, raise)
@@ -125,7 +128,7 @@ local function move_combinator(event)
                     items_on_ground,
                     function(item)
                         if item.valid and not player.mine_entity(item) then
-                            item.teleport(entity.surface.find_non_colliding_position("item-on-ground", ent.position, 0, .20))
+                            item.teleport(entity.surface.find_non_colliding_position('item-on-ground', ent.position, 0, .20))
                         end
                     end
                 )
@@ -141,7 +144,7 @@ local function move_combinator(event)
                 if raise then
                     script.raise_event(Event.dolly_moved, {player_index = player.index, moved_entity = ent, start_pos = start_pos})
                 else
-                    player.play_sound({path = "utility/cannot_build", position = player.position, volume = 1})
+                    player.play_sound({path = 'utility/cannot_build', position = player.position, volume = 1})
                 end
                 return raise
             end
@@ -165,26 +168,26 @@ local function move_combinator(event)
                 pdata.dolly_tick = event.tick
                 entity.direction = ent_direction
 
-                local ghost = entity.name == "entity-ghost" and entity.ghost_name
+                local ghost = entity.name == 'entity-ghost' and entity.ghost_name
 
                 local params = {name = ghost or entity.name, position = target_pos, direction = ent_direction, force = entity.force}
-                if entity.surface.can_place_entity(params) and not entity.surface.find_entity("entity-ghost", target_pos) then
+                if entity.surface.can_place_entity(params) and not entity.surface.find_entity('entity-ghost', target_pos) then
                     --We can place the entity here, check for wire distance
                     if entity.circuit_connected_entities then
                         --Move Poles
-                        if entity.type == "electric-pole" and not table.any(entity.neighbours, _cant_reach) then
+                        if entity.type == 'electric-pole' and not table.any(entity.neighbours, _cant_reach) then
                             --Move Wires
                             return teleport_and_update(entity, target_pos, true)
-                        elseif entity.type ~= "electric-pole" and not table.any(entity.circuit_connected_entities, _cant_reach) then
-                            if entity.type == "mining-drill" and lib.find_resources(entity) == 0 then
-                                local name = entity.mining_target and entity.mining_target.localised_name or {"picker-dollies.generic-ore-patch"}
-                                player.print({"picker-dollies.off-ore-patch", entity.localised_name, name})
+                        elseif entity.type ~= 'electric-pole' and not table.any(entity.circuit_connected_entities, _cant_reach) then
+                            if entity.type == 'mining-drill' and lib.find_resources(entity) == 0 then
+                                local name = entity.mining_target and entity.mining_target.localised_name or {'picker-dollies.generic-ore-patch'}
+                                player.print({'picker-dollies.off-ore-patch', entity.localised_name, name})
                                 return teleport_and_update(entity, start_pos, false)
                             else
                                 return teleport_and_update(entity, target_pos, true)
                             end
                         else
-                            player.print({"picker-dollies.wires-maxed"})
+                            player.print({'picker-dollies.wires-maxed'})
                             return teleport_and_update(entity, start_pos, false)
                         end
                     else --All others
@@ -194,14 +197,14 @@ local function move_combinator(event)
                     return teleport_and_update(entity, start_pos, false)
                 end
             else --Entity can't be teleported
-                player.print({"picker-dollies.cant-be-teleported", entity.localised_name})
+                player.print({'picker-dollies.cant-be-teleported', entity.localised_name})
             end
         else
-            player.play_sound({path = "utility/cannot_build", position = player.position, volume = 1})
+            player.play_sound({path = 'utility/cannot_build', position = player.position, volume = 1})
         end
     end
 end
-Event.register({"dolly-move-north", "dolly-move-east", "dolly-move-south", "dolly-move-west"}, move_combinator)
+Event.register({'dolly-move-north', 'dolly-move-east', 'dolly-move-south', 'dolly-move-west'}, move_combinator)
 
 local function try_rotate_combinator(event)
     local player, pdata = Player.get(event.player_index)
@@ -233,7 +236,7 @@ local function try_rotate_combinator(event)
         end
     end
 end
-Event.register("dolly-rotate-rectangle", try_rotate_combinator)
+Event.register('dolly-rotate-rectangle', try_rotate_combinator)
 
 local function rotate_saved_dolly(event)
     local player, pdata = Player.get(event.player_index)
@@ -242,11 +245,11 @@ local function rotate_saved_dolly(event)
 
         if entity and entity.supports_direction then
             pdata.dolly = entity
-            entity.rotate{reverse = event.input_name == "dolly-rotate-saved-reverse", by_player = player}
+            entity.rotate {reverse = event.input_name == 'dolly-rotate-saved-reverse', by_player = player}
         end
     end
 end
-Event.register({"dolly-rotate-saved", "dolly-rotate-saved-reverse"}, rotate_saved_dolly)
+Event.register({'dolly-rotate-saved', 'dolly-rotate-saved-reverse'}, rotate_saved_dolly)
 
 --   "name": "ghost-pipette",
 --   "title": "Ghost Pipette",
@@ -257,12 +260,12 @@ local function rotate_ghost(event)
     local player, pdata = Player.get(event.player_index)
     if not player.cursor_stack.valid_for_read then
         local ghost = get_saved_entity(player, pdata, event.tick)
-        if ghost and ghost.name == "entity-ghost" then
-            local left = event.input_name == "picker-rotate-ghost-reverse"
+        if ghost and ghost.name == 'entity-ghost' then
+            local left = event.input_name == 'picker-rotate-ghost-reverse'
             local prototype = game.entity_prototypes[ghost.ghost_name]
-            local value = prototype.has_flag("building-direction-8-way") and 1 or 2
+            local value = prototype.has_flag('building-direction-8-way') and 1 or 2
 
-            if prototype.type == "offshore-pump" then
+            if prototype.type == 'offshore-pump' then
                 return
             end
 
@@ -283,10 +286,10 @@ local function rotate_ghost(event)
         end
     end
 end
-Event.register({"dolly-rotate-ghost", "dolly-rotate-ghost-reverse"}, rotate_ghost)
+Event.register({'dolly-rotate-ghost', 'dolly-rotate-ghost-reverse'}, rotate_ghost)
 
 local function mass_moving(event)
-    if event.item == "picker-dolly" and #event.entities > 0 then
+    if event.item == 'picker-dolly' and #event.entities > 0 then
         local player, pdata = Player.get(event.player_index)
         pdata.dolly_movers = {}
         pdata.dolly_movers_time = event.tick
@@ -297,12 +300,12 @@ local function mass_moving(event)
             if ent.teleport(out_of_the_way) then
                 ent.teleport(pos)
             else
-                player.print("Selection does not fully support moving")
+                player.print('Selection does not fully support moving')
                 return
             end
         end
         pdata.dolly_movers = event.entities
-        player.print("Entities stored")
+        player.print('Entities stored')
     end
 end
 Event.register({defines.events.on_player_selected_area, defines.events.on_player_alt_selected_area}, mass_moving)

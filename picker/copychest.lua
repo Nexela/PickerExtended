@@ -1,10 +1,11 @@
 -------------------------------------------------------------------------------
---[[Copy Chest]]--
+--[Copy Chest]--
 -------------------------------------------------------------------------------
-local Player = require("stdlib.event.player")
+local Event = require('stdlib/event/event')
+local Player = require('stdlib/event/player')
 local chest_types = {
-    ["container"] = true,
-    ["logistic-container"] = true
+    ['container'] = true,
+    ['logistic-container'] = true
 }
 
 local function copy_chest(event)
@@ -15,11 +16,11 @@ local function copy_chest(event)
         if player.force == chest.force and player.can_reach_entity(chest) then
             --local data = global.copy_chest[player.index]
             if not pdata.copy_chest.src or not pdata.copy_chest.src.valid then
-                player.print({"picker.copy-src"})
+                player.print({'picker.copy-src'})
                 pdata.copy_chest.src = chest
                 pdata.copy_chest.tick = game.tick
             elseif pdata.copy_chest.src.valid then
-                player.print({"picker.paste-dest"})
+                player.print({'picker.paste-dest'})
                 local src, dest = pdata.copy_chest.src, chest
                 --clone inventory 1 to inventory 2
                 local src_inv = src.get_inventory(defines.inventory.chest)
@@ -42,4 +43,4 @@ local function copy_chest(event)
         pdata.copy_chest = nil
     end
 end
-Event.register("picker-copy-chest", copy_chest)
+Event.register('picker-copy-chest', copy_chest)

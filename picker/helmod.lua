@@ -1,23 +1,31 @@
 -------------------------------------------------------------------------------
---[[Planner Pin Panel (helmod)]]--
+--[Planner Pin Panel (helmod)]--
 -------------------------------------------------------------------------------
-local lib = require("picker.lib")
+local Gui = require('stdlib/event/gui')
+local lib = require('picker/lib')
 
 local function pick_helmod_pin(event)
     local player = game.players[event.player_index]
     local recipe_name, item_name
-    string.gsub(event.match, "PlannerPinPanel_recipe_block_%d+=(.+)=(.+)", function(a, b) recipe_name = a item_name = b end)
+    string.gsub(
+        event.match,
+        'PlannerPinPanel_recipe_block_%d+=(.+)=(.+)',
+        function(a, b)
+            recipe_name = a
+            item_name = b
+        end
+    )
     local item = game.item_prototypes[item_name]
     local items = {}
-    local module = event.element.parent["factory-modules"..recipe_name]
+    local module = event.element.parent['factory-modules' .. recipe_name]
     if module then
         for _, child in pairs(module.children) do
-            local name = child.sprite and child.sprite:gsub("item/(.+)", "%1")
+            local name = child.sprite and child.sprite:gsub('item/(.+)', '%1')
             if name and game.item_prototypes[name] then
-            items[#items+1] = {
-                item = name,
-                count = 1
-            }
+                items[#items + 1] = {
+                    item = name,
+                    count = 1
+                }
             end
         end
     end
@@ -32,10 +40,10 @@ local function pick_helmod_pin(event)
         local entity = item.place_result
         local recipe = game.recipe_prototypes[recipe_name]
         if entity and recipe then
-            local bp = lib.get_planner(player, "blueprint", "Pipette Blueprint")
+            local bp = lib.get_planner(player, 'blueprint', 'Pipette Blueprint')
             if bp then
                 bp.clear_blueprint()
-                bp.label = "Pipette Blueprint"
+                bp.label = 'Pipette Blueprint'
                 bp.allow_manual_label_change = false
                 local bp_ents = {
                     {
@@ -52,4 +60,4 @@ local function pick_helmod_pin(event)
         end
     end
 end
-Gui.on_click("PlannerPinPanel_recipe_block_%d+=.+=.+", pick_helmod_pin)
+Gui.on_click('PlannerPinPanel_recipe_block_%d+=.+=.+', pick_helmod_pin)

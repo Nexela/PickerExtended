@@ -1,13 +1,15 @@
 -------------------------------------------------------------------------------
---[[Picker Item Count]]--
+--[Picker Item Count]--
 -------------------------------------------------------------------------------
+local Event = require('stdlib/event/event')
+
 local function get_or_create_itemcount_gui(player)
     local gui = player.gui.center.itemcount
     if not gui then
-        gui = player.gui.center.add{type="label", name="itemcount", caption="0", direction = "vertical"}
-        gui.style.font = "default-bold"
+        gui = player.gui.center.add {type = 'label', name = 'itemcount', caption = '0', direction = 'vertical'}
+        gui.style.font = 'default-bold'
     end
-    local enabled = player.mod_settings["picker-itemcount"].value
+    local enabled = player.mod_settings['picker-itemcount'].value
     gui.style.visible = enabled and player.cursor_stack.valid_for_read
     return gui
 end
@@ -22,9 +24,9 @@ local function get_itemcount_counts(event)
         if player.vehicle and player.vehicle.get_inventory(defines.inventory.car_trunk) then
             vehicle_count = player.vehicle.get_inventory(defines.inventory.car_trunk).get_item_count(stack.name)
         end
-        gui.caption = inventory_count .. (vehicle_count and (" ("..vehicle_count..")") or "")
+        gui.caption = inventory_count .. (vehicle_count and (' (' .. vehicle_count .. ')') or '')
     else
-        gui.caption = ""
+        gui.caption = ''
     end
 end
 
@@ -33,14 +35,14 @@ local item_count_events = {
     defines.events.on_player_driving_changed_state,
     defines.events.on_player_main_inventory_changed,
     defines.events.on_player_ammo_inventory_changed,
-    defines.events.on_player_quickbar_inventory_changed,
+    defines.events.on_player_quickbar_inventory_changed
 }
 Event.register(item_count_events, get_itemcount_counts)
 
 local function update_item_count_settings(event)
     local player = game.players[event.player_index]
-    if event.setting == "picker-itemcount" then
-        local enabled = player.mod_settings["picker-itemcount"].value
+    if event.setting == 'picker-itemcount' then
+        local enabled = player.mod_settings['picker-itemcount'].value
         local gui = get_or_create_itemcount_gui(player)
         gui.style.visible = enabled and player.cursor_stack.valid_for_read or false
     end

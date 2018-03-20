@@ -3,7 +3,8 @@
 -------------------------------------------------------------------------------
 --Loosley based on pipe manager by KeyboardHack
 
-local Player = require("stdlib.event.player")
+local Event = require('stdlib/event/event')
+local Player = require('stdlib/event/player')
 
 --Start at a drain and clear fluidboxes out that match. find drain connections not cleaned and repeat
 local function call_a_plumber(event)
@@ -15,7 +16,7 @@ local function call_a_plumber(event)
 
         local clog = #plumber.selected.fluidbox > 0 and plumber.selected.fluidbox[1] and plumber.selected.fluidbox[1].name
         if clog then
-            plumber.print({"pipecleaner.cleaning-clogs", game.fluid_prototypes[clog].localised_name})
+            plumber.print({'pipecleaner.cleaning-clogs', game.fluid_prototypes[clog].localised_name})
 
             repeat
                 local index, drain = next(toilets)
@@ -41,8 +42,8 @@ local function call_a_plumber(event)
                 end
             until not index
         elseif #plumber.selected.fluidbox > 0 then
-            plumber.print({"pipecleaner.no-clogs-found"})
+            plumber.print({'pipecleaner.no-clogs-found'})
         end
     end
 end
-Event.register("picker-pipe-cleaner", call_a_plumber)
+Event.register('picker-pipe-cleaner', call_a_plumber)
