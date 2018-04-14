@@ -6,9 +6,8 @@ local Event = require('stdlib/event/event')
 
 local function toggle_armor_modules(event, name, types)
     local player = game.players[event.player_index]
-    local armor = player.get_inventory(defines.inventory.player_armor)[1]
-    if armor and armor.valid_for_read and armor.grid then
-        local grid = armor.grid
+    local grid = player.character and player.character.grid
+    if grid then
         local status = 'notfound'
         local equip_locale
 
