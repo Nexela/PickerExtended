@@ -214,6 +214,15 @@ local function create_quick_pick_blueprint(event)
 end
 Gui.on_elem_changed('picker_bp_tools_from', create_quick_pick_blueprint)
 
+local swap_sides = {
+    ['left'] = 'right',
+    ['right'] = 'left',
+    ['in'] = 'out',
+    ['out'] = 'in',
+    ['input'] = 'output',
+    ['output'] = 'input'
+}
+
 --Mirroring -- Mirrors the current blueprint held in the hand
 local function get_mirrored_blueprint(blueprint)
     local curves, others, stops, signals, tanks = 9, 0, 4, 4, 2
@@ -257,6 +266,9 @@ local function get_mirrored_blueprint(blueprint)
             elseif entType == 'constant-combinator' and ent.name == 'smart-train-stop-proxy-cargo' then
                 ent.direction = 0
                 table.insert(smartCargo, {entity = {name = ent.name, position = Position.copy(ent.position)}, i = i})
+            elseif entType == 'splitter' then
+                ent.input_priority = ent.input_priority and swap_sides[ent.input_priority]
+                ent.output_priority = ent.output_priority and swap_sides[ent.output_priority]
             else
                 ent.direction = (others - ent.direction) % 8
             end
