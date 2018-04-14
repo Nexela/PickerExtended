@@ -73,8 +73,6 @@ require('picker/reviver')
 require('picker/tools')
 require('picker/blueprinter')
 require('picker/planners')
---require("picker/death") -- Create a death map tag?
---require("picker/deconstructor") -- Deconstruction Planner Builder?
 require('picker/dollies')
 require('picker/minimap')
 require('picker/itemcount')
@@ -89,12 +87,11 @@ require('picker/pipecleaner')
 require('picker/orphans')
 require('picker/beltbrush')
 require('picker/beltreverser')
---require("picker/pastesettings") --needs on/off user config
+require("picker/pastesettings")
 require('picker/flashlight')
 require('picker/filterfill')
 require('picker/vehicles')
 require('picker/helmod')
---require("picker/usedfor") --Built in what is it used for.
 require('picker/notes')
 require('picker/coloredbooks')
 require('picker/switchgun')
