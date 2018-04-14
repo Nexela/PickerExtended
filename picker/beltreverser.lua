@@ -14,22 +14,36 @@ local belt_types = {
     ['underground-belt'] = true
 }
 
+-- replace the current line contents with contents
 local function replace_line_contents(line, contents)
     line.clear()
     local current = 0
-    for name, count in pairs(contents) do
-        for _ = 1, count do
-            line.insert_at(current, {name = name, count = 1})
-            current = current + (0.03125 * 9)
-        end
+
+    for _, name in pairs(contents) do
+        line.insert_at(current, {name = name, count = 1})
+        current = current + (0.03125 * 9)
     end
+end
+
+-- Get the reverse order of contents
+local function get_contents(line)
+    local contents = {}
+
+    for i = #line, 1, -1 do
+        contents[#contents + 1] = line[i].name
+    end
+    return contents
 end
 
 local function flip_lines(belt)
     local line_one = belt.get_transport_line(1)
     local line_two = belt.get_transport_line(2)
-    replace_line_contents(line_two, line_one.get_contents())
-    replace_line_contents(line_one, line_two.get_contents())
+    --Get the contents before swapping otherwise we will be getting the wrong contents #77
+    --Using a custom get_contents to keep ordering.
+    local contents_one = get_contents(line_one)
+    local contents_two = get_contents(line_two)
+    replace_line_contents(line_one, contents_two)
+    replace_line_contents(line_two, contents_one)
 end
 
 local function getBeltLike(surface, position, type)
