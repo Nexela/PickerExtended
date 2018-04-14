@@ -2,6 +2,7 @@
 Version: 3.0.4
 Date: ??????
   Features:
+    - Added picker cheat recipes
     - Filter Fill now works on the player inventory.
   Enhancements:
     - Changed the way notes are saved.
