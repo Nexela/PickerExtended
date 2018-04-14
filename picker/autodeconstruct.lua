@@ -22,7 +22,7 @@ local function find_targeters(entity)
 end
 
 local _find = function(v)
-    return v.prototype.resource_category == 'basic-solid' and (v.amount > 0 or v.prototype.infinite_resource)
+    return (v.amount > 0 or v.prototype.infinite_resource)
 end
 
 local function has_resources(drill)
