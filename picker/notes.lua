@@ -16,7 +16,6 @@ for _, v in pairs(defines.color) do
     table.insert(color_array, v)
 end
 
-local max_chars = 4 * (settings.startup['picker-notes-slot-count'].value - 1) - 1 -- max length of storable string
 local color_picker_interface = 'color-picker'
 local open_color_picker_button_name = 'open_color_picker_stknt'
 local color_picker_name = 'color_picker_stknt'
@@ -485,15 +484,10 @@ Event.register(defines.events.on_marked_for_deconstruction, on_marked_for_decons
 Gui.on_text_changed(
     '^txt_stknt$',
     function(event)
-        local player, pdata = Player.get(event.player_index)
+        local _, pdata = Player.get(event.player_index)
         local note = pdata.note_sel
 
         if note then
-            if #event.element.text > max_chars then
-                event.element.text = string.sub(event.element.text, 1, max_chars)
-                player.print({'notes_gui.to-long', max_chars})
-            end
-
             note.text = event.element.text
             encode_note(note)
 
@@ -818,7 +812,7 @@ end
 local writable_fields = {
     --[fieldname]=function(value,note), functions should perform check of the passed values and transformations as needed
     text = function(note, t)
-        note.text = t and tostring(t):sub(1, max_chars)
+        note.text = t and tostring(t)
     end, -- text
     color = function(note, color_name)
         note.color = defines.color[color_name] or note.color
