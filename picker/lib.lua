@@ -158,7 +158,7 @@ function lib.satisfy_requests(player, proxy)
     end
 
     if proxy and entity then
-        local pinv = player.get_inventory(defines.inventory.player_main) or player.get_inventory(defines.inventory.god_main)
+        local pinv = player.get_main_inventory()
         local new_requests = {}
         local pos = Position.increment(entity.position, 0, -0.35)
         for name, count in pairs(proxy.item_requests) do

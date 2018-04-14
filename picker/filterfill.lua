@@ -114,7 +114,7 @@ local function get_opened_inventory(player)
     local inv
     if GUI_TYPES[player.opened_gui_type] then
         if player.opened_self then
-            inv = player.character and player.get_inventory(defines.inventory.player_main) or player.get_inventory(defines.inventory.god_main)
+            inv = player.get_main_inventory()
         elseif player.opened_gui_type == defines.gui_type.entity then
             inv = player.opened.get_output_inventory()
         end
