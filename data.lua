@@ -1,16 +1,9 @@
--------------------------------------------------------------------------------
---[DATA.LUA]--
--------------------------------------------------------------------------------
 require('stdlib/core')
 
--------------------------------------------------------------------------------
---[Picker]--
--------------------------------------------------------------------------------
 require('prototypes/adjustment-pad')
 require('prototypes/styles')
 require('prototypes/sprites')
 
-require('prototypes/pingmap')
 require('prototypes/picker')
 require('prototypes/eqkeys')
 require('prototypes/tools')

@@ -85,7 +85,7 @@ Data {
     icon_size = 64,
     flags = {},
     subgroup = 'tool',
-    order = 'c[automated-construction]-b[dolly]',
+    order = 'c[selection-tool]-a[dolly]',
     stack_size = 1,
     stackable = false,
     selection_color = {r = 0, g = 1, b = 0},
