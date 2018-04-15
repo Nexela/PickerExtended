@@ -10,8 +10,6 @@ local Area = require('stdlib/area/area')
 local Position = require('stdlib/area/position')
 local lib = require('picker/lib')
 
-Event.mirror = script.generate_event_name()
-
 -- Creates the BP tools frame
 local function get_or_create_blueprint_gui(player)
     local flow = lib.get_or_create_main_left_flow(player, 'picker')
@@ -325,4 +323,4 @@ local function mirror_blueprint(event)
 end
 Gui.on_click('picker_bp_tools_mirror', mirror_blueprint)
 Event.register('picker-mirror-blueprint', mirror_blueprint)
-Event.register(Event.mirror, mirror_blueprint)
+Event.register(Event.generate_event_name('mirror_blueprint'), mirror_blueprint)

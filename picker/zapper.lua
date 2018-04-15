@@ -42,7 +42,7 @@ local function cleanup_blueprints(event)
         quickbar = true
     end
 
-    for planner in pairs(global.planners) do
+    for planner in pairs(global.planners or {}) do
         local bp = game.item_prototypes[planner] and inventory.find_item_stack(planner)
         if bp then
             local setting = settings['picker-no-' .. bp.name .. '-inv'] and settings['picker-no-' .. bp.name .. '-inv'].value or settings['picker-no-other-planner-inv'].value

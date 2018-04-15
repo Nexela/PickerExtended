@@ -364,7 +364,7 @@ local function entity_moved(event)
         end
     end
 end
-Event.register(Event.dolly_moved, entity_moved)
+Event.register(Event.generate_event_name('dolly_moved'), entity_moved)
 
 local function on_creation(event)
     local ent = event.created_entity

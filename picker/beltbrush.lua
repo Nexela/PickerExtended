@@ -303,7 +303,7 @@ local function beltbrush_corners(event)
                 build_ptg_brush(stack, ptg, stored)
             end
         elseif stack.label:find('Belt Brush Corner Left') then
-            Event.dispatch({name = Event.mirror, player_index = player.index, corner = true})
+            Event.dispatch({name = Event.generate_event_name('mirror_blueprint'), player_index = player.index, corner = true})
             stack.label = 'Belt Brush Corner Right ' .. stack.label:match('%d+')
         elseif stack.label:find('Belt Brush Corner Right') then
             build_beltbrush(stack, belt.name, tonumber(stack.label:match('%d+')))

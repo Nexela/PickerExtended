@@ -5,7 +5,7 @@ local Pad = {}
 local Event = require('stdlib/event/event')
 local lib = require('picker/lib')
 
-Event.adjustment_pad = script.generate_event_name()
+Event.adjustment_pad = Event.generate_event_name('adjustment_pad')
 Event.register(
     'adjustment-pad-increase',
     function(event)
@@ -46,7 +46,7 @@ function Pad.get_or_create_adjustment_pad(player, name, flow_name) -- return gui
 end
 
 MOD.interfaces['get_adjustment_pad_id'] = function()
-    return (Event.adjustment_pad)
+    return Event.generate_event_name('adjustment_pad')
 end
 MOD.interfaces['get_or_create_adjustment_pad'] = Pad.get_or_create_adjustment_pad
 

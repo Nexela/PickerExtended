@@ -8,9 +8,10 @@ local Area = require('stdlib/area/area')
 local Position = require('stdlib/area/position')
 local lib = require('picker/lib')
 
-Event.dolly_moved = script.generate_event_name()
+Event.generate_event_name('dolly_moved')
 MOD.interfaces['dolly_moved_entity_id'] = function()
-    return Event.dolly_moved
+    return Event.generate_event_name('dolly_moved')
+
 end
 
 --[[
@@ -142,7 +143,7 @@ local function move_combinator(event)
                     end
                 )
                 if raise then
-                    script.raise_event(Event.dolly_moved, {player_index = player.index, moved_entity = ent, start_pos = start_pos})
+                    script.raise_event(Event.generate_event_name('dolly_moved'), {player_index = player.index, moved_entity = ent, start_pos = start_pos})
                 else
                     player.play_sound({path = 'utility/cannot_build', position = player.position, volume = 1})
                 end
