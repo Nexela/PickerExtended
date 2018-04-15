@@ -5,8 +5,9 @@ Date: ??????
     - Added picker cheat recipes
     - Filter Fill now works on the player inventory.
     - Train Goto next station hotkey added.
+    - Player inventory can be manually sorted.
   Enhancements:
-    - Changed the way notes are saved. Existing notes may get destroyed.
+    - Changed the way notes are saved. Existing notes may get destroyed or lost.
     - Sort Inventory now uses sort_and_merge inventory method.
   Bugfixes:
     - Allow specifying train horn.
@@ -20,6 +21,7 @@ Date: ??????
     - Fix filter fill nil error if mods change to custom gui. #72
     - Fix zapper being all undecidy in god mode. #70
     - Fix aggresive search in autodeconstruct.
+    - Fix aggressive sort_and_merge.
 ---------------------------------------------------------------------------------------------------
 Version: 3.0.3
 Date: ??????
