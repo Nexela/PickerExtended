@@ -21,6 +21,3 @@ require('prototypes/orphans')
 require('prototypes/notes')
 require('prototypes/coloredbooks')
 require('prototypes/vehicles')
-
-require('prototypes/cheats/item-groups')
-require('prototypes/cheats/infinity-containers')
