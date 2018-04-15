@@ -48,5 +48,13 @@ data:extend {
         setting_type = 'runtime-global',
         default_value = true,
         order = 'picker-honk-a'
-    }
+    },
+    {
+        type = 'string-setting',
+        name = 'picker-train-honk-type',
+        setting_type = 'runtime-global',
+        default_value = 'deltic',
+        allowed_values = {'deltic', 'train'},
+        order = 'picker-honk-ab'
+    },
 }
