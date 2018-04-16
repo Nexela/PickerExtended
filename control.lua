@@ -48,7 +48,7 @@ end
 
 --((Picker Scripts))--
 require('picker/adjustment-pad')
-require('picker/eqkeys') --Equipment hotkeys and gui from nanobots
+require('picker/eqkeys')
 
 require('picker/playeroptions')
 require('picker/autodeconstruct')
@@ -78,6 +78,7 @@ require('picker/helmod')
 require('picker/notes')
 require('picker/coloredbooks')
 require('picker/switchgun')
+--))Picker Scripts((--
 
 --((Remote Interfaces))--
 MOD.interfaces['write_global'] = function()
@@ -85,4 +86,4 @@ MOD.interfaces['write_global'] = function()
 end
 MOD.interfaces['console'] = require('stdlib/utils/scripts/console')
 
-remote.add_interface(MOD.if_name, MOD.interfaces)
+remote.add_interface(MOD.if_name, MOD.interfaces) --))
