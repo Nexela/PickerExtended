@@ -2,155 +2,22 @@
 -- @classmod Recipe
 
 local Recipe = {
-    _class = 'Recipe',
-    _ingredients_mt = require('stdlib/data/modules/ingredients'),
-    _results_mt = require('stdlib/data/modules/results')
+    _class = 'Recipe'
 }
 setmetatable(Recipe, require('stdlib/data/data'))
 
 local Is = require('stdlib/utils/is')
 local Item = require('stdlib/data/item')
 
---TODO
---[[
-    Recipe:replace_ingredients --swap whole ingredients
-    Recipe:replace_results --swap whole results
-
-    Finish Recipe:xxx_result stuff
-]]
-
 function Recipe:_caller(recipe)
     local new = self:get(recipe, 'recipe')
-    --[[prototype
-        type, name
-        localised_name[opt]
-        localised_description[opt]
-        subgroup, order (needed when no main product)
-    --]]
-    --[[recipe
-        category
-        icon/icons (or has main_product)
-        crafting_machine_tint = {
-            primary, secondary, tertiary
-        }
-        normal/expensive = {
-            ingredients
-            results, result, result_count[opt=1] (result ignored if results present) at least 1 result
-            main_product
-            energy_required > 0.001
-            emissions_multiplier
-            requester_paste_multiplier
-            overload_multiplier
-            enabled <boolean>
-            hidden <boolean>
-            hide_from_stats <boolean>
-            allow_decomposition <boolean>
-            allow_as_intermediate <boolean>
-            allow_intermediates <boolean>
-            always_show_made_in <boolean>
-            show_amount_in_title <boolean>
-            always_show_products <boolean>
-        }
-    --]]
-    -- Convert the recipe to difficult format
-
-    -- Convert the ingredients to full format
-    --new:Ingredients()
-
-    -- Convert the results to full format
-    --new:Results()
+    --new.Ingredients = require('stdlib/data/modules/ingredients')(new)
+    --new.Results = require('stdlib/data/modules/results')(new)
     return new
-end
-
-function Recipe:Results(get_expensive)
-    if self:valid('recipe') then
-        if get_expensive then
-            self:make_difficult()
-        end
-        if self.normal then
-            if self.normal.result then
-                self.normal.results = {
-                    {type = 'item', name = self.normal.result, amount = self.normal.result_count or 1}
-                }
-                self.normal.result = nil
-                self.normal.result_count = nil
-            end
-            self.normal.results._owner = self
-            self.normal.results._valid = 'results'
-            setmetatable(self.normal.results, Recipe._results_mt)
-            if self.expensive.result then
-                self.expensive.results = {
-                    {type = 'item', name = self.expensive.result, amount = self.expensive.result_count or 1}
-                }
-                self.expensive.result = nil
-                self.expensive.result_count = nil
-            end
-            self.expensive.results._owner = self
-            self.expensive.results._valid = 'results'
-            setmetatable(self.expensive.results, Recipe._results_mt)
-            return get_expensive and self.expensive.results or self.normal.results
-        else
-            if self.result then
-                self.results = {
-                    {type = 'item', name = self.result, amount = self.result_count or 1}
-                }
-                self.result = nil
-                self.result_count = nil
-            end
-            self.results._owner = self
-            self.results._valid = 'results'
-            return setmetatable(self.results, Recipe._results_mt)
-        end
-    end
-    return self
-end
-
-function Recipe:Ingredients(get_expensive)
-    if self:valid('recipe') then
-        if get_expensive then
-            self:make_difficult()
-        end
-        if self.normal then
-            self.normal.ingredients._owner = self
-            self.normal.ingredients._valid = 'ingredients'
-            setmetatable(self.normal.ingredients, Recipe._ingredients_mt)
-            self.expensive.ingredients._owner = self
-            self.expensive.ingredients._valid = 'ingredients'
-            setmetatable(self.expensive.ingredients, Recipe._ingredients_mt)
-            return get_expensive and self.expensive.ingredients or self.normal.ingredients
-        else
-            self.ingredients._owner = self
-            self.ingredients._valid = 'ingredients'
-            return setmetatable(self.ingredients, Recipe._ingredients_mt)
-        end
-    end
-    return self
 end
 
 -- Returns a formated ingredient or prodcut table
 local function format(ingredient, result_count)
-    --[[
-    Ingredient table
-    {"name", amount} -- Assumes a type of "item"
-    {
-        type :: string: "item" or "fluid".
-        name :: string: Prototype name of the required item or fluid.
-        amount :: uint: Amount of the item.
-        minimum_temperature :: uint (optional): The minimum fluid temperature required. Has no effect if type is '"item"'.
-        maximum_temperature :: uint (optional): The maximum fluid temperature allowed. Has no effect if type is '"item"'.
-    }
-
-    Product table
-    {
-        type :: string: "item" or "fluid".
-        name :: string: Prototype name of the result.
-        amount :: float (optional): If not specified, amount_min, amount_max and probability must all be specified.
-        temperature :: uint (optional): The fluid temperature of this product. Has no effect if type is '"item"'.
-        amount_min :: uint (optional):
-        amount_max :: uint (optional):
-        probability :: double (optional): A value in range [0, 1].
-    }
-    --]]
     local object
     if type(ingredient) == 'table' then
         if ingredient.valid and ingredient:valid() then
@@ -223,6 +90,7 @@ local function replace_ingredient(ingredients, find, replace, replace_name_only)
         end
     end
 end
+Recipe.rep_ing = Recipe.replace_ingredient
 
 --- Add an ingredient to a recipe.
 -- @tparam string|Concepts.ingredient normal
@@ -248,6 +116,7 @@ function Recipe:add_ingredient(normal, expensive)
     end
     return self
 end
+Recipe.add_ing = Recipe.add_ingredient
 
 --- Remove one ingredient completely.
 -- @tparam string normal
@@ -269,6 +138,7 @@ function Recipe:remove_ingredient(normal, expensive)
     end
     return self
 end
+Recipe.rem_ing = Recipe.remove_ingredient
 
 --- Replace one ingredient with another.
 -- @tparam string replace
@@ -550,10 +420,6 @@ function Recipe:replace_result(result_name, normal, expensive, main_product)
     end
     return self
 end
-
-Recipe.rep_ing = Recipe.replace_ingredient
-Recipe.add_ing = Recipe.add_ingredient
-Recipe.rem_ing = Recipe.remove_ingredient
 
 Recipe._mt = {
     __index = Recipe,

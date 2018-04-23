@@ -73,7 +73,7 @@ function Data.create_data_globals(files)
     return Data
 end
 
---[Classes]--------------------------------------------------------------------
+--(( CLASSES ))--
 
 --- Is this a valid object
 -- @tparam[opt] string type if present is the object this type
@@ -189,8 +189,9 @@ end
 
 --(( Flags ))--
 function Data:Flags()
-    if self:valid() and self.flags then
-        return setmetatable(self.flags, require('stdlib/utils/classes/string_array'))
+    if self:valid() then
+        self.flags = rawget(self, 'flags') or {}
+        return setmetatable(self.flags, self._classes.string_array)
     end
 end
 
@@ -231,6 +232,19 @@ function Data:get_function_results(func, ...)
     end
 end
 
+--- Set the string array class to the field if the field is present
+-- @tparam table field
+-- @treturn self
+function Data:set_string_array(field)
+    if self:valid() then
+        local has = rawget(self, field)
+        if Is.Table(has) then
+            setmetatable(has, self._classes.string_arrary)
+        end
+    end
+    return self
+end
+
 --- Add or change a field.
 -- @tparam string field the field to change.
 -- @tparam mixed value the value to set on the field.
@@ -257,10 +271,16 @@ end
 
 --- Get a field.
 -- @tparam string field
+-- @tparam mixed default_value return this if the field doesn't exist
 -- @treturn nil|mixed the value of the field
-function Data:get_field(field)
+function Data:get_field(field, default_value)
     if self:valid() then
-        return rawget(self, field)
+        local has = rawget(self, field)
+        if has ~= nil then
+            return has
+        else
+            return default_value
+        end
     end
 end
 
@@ -445,7 +465,9 @@ function Data:get(object, object_type, opts)
         new._valid = new.type -- can change
         new._options = opts
         setmetatable(new, self._mt)
-        new:Flags()
+        new:set_string_array('flags')
+        new:set_string_array('crafting_categories')
+        new:set_string_array('mining_categories')
         return new:extend()
     else
         local trace = traceback()
@@ -466,5 +488,6 @@ Data._mt = {
     __call = Data._caller,
     __tostring = Data.tostring
 }
+--))
 
 return Data
