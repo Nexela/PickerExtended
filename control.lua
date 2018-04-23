@@ -6,37 +6,20 @@ require('stdlib/core')
 MOD = {}
 MOD.name = 'PickerExtended'
 MOD.if_name = 'picker'
-MOD.interfaces = {}
-MOD.config = require('config')
-MOD.commands = {}
 MOD.DEBUG = settings.startup['picker-debug'] and settings.startup['picker-debug'].value or false
 
 local Event = require('stdlib/event/event')
+local Changes = require('stdlib/event/changes')
 local Player = require('stdlib/event/player')
 local Force = require('stdlib/event/force')
 
-local function on_configuration_changed(event)
-    if event.data and event.data.mod_changes and event.data.mod_changes[MOD.name] then
-        global._changes = global._changes or {}
-        global._changes[event.data.mod_changes[MOD.name].new_version] = event.data.mod_changes[MOD.name].old_version or '0.0.0'
-        for _, player in pairs(game.players) do
-            local gui = player.gui.center['picker_quick_picker']
-            if gui then
-                gui.destroy()
-            end
-        end
-    end
-end
-Event.register(Event.core_events.configuration_changed, on_configuration_changed)
-
 local function on_init()
-    global._changes = {}
-    global._changes[game.active_mods[MOD.name]] = '0.0.0'
     Player.init()
     Force.init()
 end
 Event.register(Event.core_events.init, on_init)
 
+Changes.register_events()
 Player.register_events()
 Force.register_events()
 
@@ -46,7 +29,7 @@ if MOD.DEBUG then
     require('stdlib/utils/scripts/quickstart')
 end
 
---((Picker Scripts))--
+--(( Picker Scripts ))--
 require('picker/adjustment-pad')
 require('picker/eqkeys')
 
@@ -78,12 +61,8 @@ require('picker/helmod')
 require('picker/notes')
 require('picker/coloredbooks')
 require('picker/switchgun')
---))Picker Scripts((--
+--)) Picker Scripts ((--
 
---((Remote Interfaces))--
-MOD.interfaces['write_global'] = function()
-    game.write_file('Picker/global.lua', serpent.block(global, {comment = false, nocode = true}), false)
-end
-MOD.interfaces['console'] = require('stdlib/utils/scripts/console')
-
-remote.add_interface(MOD.if_name, MOD.interfaces) --))
+--(( Remote Interfaces ))--
+local interface = require('interface')
+remote.add_interface(MOD.if_name, interface) --))

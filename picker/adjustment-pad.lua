@@ -45,9 +45,10 @@ function Pad.get_or_create_adjustment_pad(player, name, flow_name) -- return gui
     return main_flow[name .. '_frame_main']
 end
 
-MOD.interfaces['get_adjustment_pad_id'] = function()
+local interface = require('interface')
+interface['get_adjustment_pad_id'] = function()
     return Event.generate_event_name('adjustment_pad')
 end
-MOD.interfaces['get_or_create_adjustment_pad'] = Pad.get_or_create_adjustment_pad
+interface['get_or_create_adjustment_pad'] = Pad.get_or_create_adjustment_pad
 
 return Pad

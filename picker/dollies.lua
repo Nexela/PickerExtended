@@ -7,11 +7,11 @@ local Player = require('stdlib/event/player')
 local Area = require('stdlib/area/area')
 local Position = require('stdlib/area/position')
 local lib = require('picker/lib')
+local interface = require('interface')
 
 Event.generate_event_name('dolly_moved')
-MOD.interfaces['dolly_moved_entity_id'] = function()
+interface['dolly_moved_entity_id'] = function()
     return Event.generate_event_name('dolly_moved')
-
 end
 
 --[[

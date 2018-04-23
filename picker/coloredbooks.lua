@@ -3,7 +3,7 @@
 -------------------------------------------------------------------------------
 
 local Event = require('stdlib/event/event')
-local colors = MOD.config.colored_books
+local colors = require('config').colored_books
 
 local function next_book_color(book_color)
     if book_color == 'blueprint' then

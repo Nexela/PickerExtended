@@ -32,7 +32,7 @@ local function menu_note(player, pdata, open_or_close)
         player.gui.center.flow_stknt.destroy()
     end
 
-    --Remove after .16 support
+    --! Remove after .16 support
     if player.gui.left.flow_stknt then
         player.gui.left.flow_stknt.destroy()
     end
@@ -740,26 +740,17 @@ local function on_init()
 end
 Event.register(Event.core_events.init, on_init)
 
-local function on_configuration_changed(event)
-    if event.mod_changes and event.mod_changes['PickerExtended'] then
-        global.notes_by_invis = global.notes_by_invis or {}
-        global.notes_by_target = global.notes_by_target or {}
-        global.n_note = global.n_note or 0
-    end
-end
-Event.register(Event.core_events.configuration_changed, on_configuration_changed)
-
 --------------------------------------------------------------------------------
 --[Interface]--
 --------------------------------------------------------------------------------
-local interfaces = {}
+local note_interface = {}
 
-function interfaces.delete_all()
+function note_interface.delete_all()
     table.each(global.notes_by_invis, destroy_note)
     table.each(global.notes_by_target, destroy_note)
 end
 
-function interfaces.count(silent)
+function note_interface.count(silent)
     local invis = table.count_keys(global.notes_by_invis)
     local target = table.count_keys(global.notes_by_target)
     if not silent then
@@ -770,7 +761,7 @@ end
 
 -- destroy any remaining notes without targets or invis-notes
 -- also, make sure notes are aligned with their targets
-function interfaces.clean()
+function note_interface.clean()
     local destroy_count = 0
     local align_count = 0
 
@@ -793,12 +784,12 @@ function interfaces.clean()
     game.print('Aligned ' .. align_count .. ' notes')
 end
 
-function interfaces.add_note(entity, parameters)
+function note_interface.add_note(entity, parameters)
     add_note(entity)
-    interfaces.modify_note(entity, parameters)
+    note_interface.modify_note(entity, parameters)
 end
 
-function interfaces.remove_note(entity)
+function note_interface.remove_note(entity)
     local note = get_note(entity)
     if note then
         destroy_note(note)
@@ -837,7 +828,7 @@ local writable_fields = {
     end -- only modifiable by admins
 }
 
-function interfaces.modify_note(entity, par)
+function note_interface.modify_note(entity, par)
     local note = get_note(entity)
     if not note then
         return
@@ -856,11 +847,12 @@ function interfaces.modify_note(entity, par)
     end
 end
 
---Add to picker and StickyNotes interface
-for name, func in pairs(interfaces) do
-    MOD.interfaces[name] = func
+--(( Add to picker and StickyNotes interface ))--
+local interface = require('interface')
+for name, func in pairs(note_interface) do
+    interface[name] = func
 end
 
 if not remote.interfaces['StickyNotes'] then
-    remote.add_interface('StickyNotes', interfaces)
-end
+    remote.add_interface('StickyNotes', note_interface)
+end --))
