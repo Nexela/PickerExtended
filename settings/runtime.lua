@@ -57,4 +57,11 @@ data:extend {
         allowed_values = {'deltic', 'train'},
         order = 'picker-honk-ab'
     },
+    {
+        type = 'bool-setting',
+        name = 'picker-train-honk-attract',
+        setting_type = 'runtime-global',
+        default_value = false,
+        order = 'picker-honk-ac'
+    },
 }

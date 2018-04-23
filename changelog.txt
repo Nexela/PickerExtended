@@ -6,8 +6,10 @@ Date: ??????
     - Filter Fill now works on the player inventory.
     - Train Goto next station hotkey added.
     - Player inventory can be manually sorted.
+    - Honking can attract enemies (defaults to off).
+    - Train horns are configurable.
   Enhancements:
-    - Changed the way notes are saved. Existing notes may get destroyed or lost.
+    - Changed the way notes are saved. Existing notes will get destroyed or lost.
     - Sort Inventory now uses sort_and_merge inventory method.
   Bugfixes:
     - Allow specifying train horn.
