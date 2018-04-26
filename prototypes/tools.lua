@@ -1,12 +1,16 @@
 local Data = require('stdlib/data/data')
 
+-- Hide base game items because.
+Data('blueprint', 'blueprint'):Flags():add('hidden')
+Data('deconstruction-planner', 'deconstruction-item'):Flags():add('hidden')
+
 -- Tape Measure -- Quick way to get bounding box sizes and distances.
 Data {
     type = 'selection-tool',
     name = 'picker-tape-measure',
     icon = '__PickerExtended__/graphics/tape-measure.png',
     icon_size = 64,
-    flags = {},
+    flags = {'hidden'},
     subgroup = 'tool',
     order = 'c[selection-tool]-a[tape-measure]',
     stack_size = 1,
@@ -27,7 +31,7 @@ Data {
     name = 'picker-ore-eraser',
     icon = '__PickerExtended__/graphics/ore-eraser.png',
     icon_size = 32,
-    flags = {},
+    flags = {'hidden'},
     subgroup = 'tool',
     order = 'c[selection-tool]-b[ore-eraser]',
     stack_size = 1,
@@ -47,7 +51,7 @@ Data {
     name = 'picker-camera',
     icon = '__PickerExtended__/graphics/camera.png',
     icon_size = 32,
-    flags = {},
+    flags = {'hidden'},
     subgroup = 'tool',
     order = 'd[selection-tool]-b[camera]',
     stack_size = 1,
@@ -66,7 +70,7 @@ Data {
     name = 'picker-ping-tool',
     icon = '__PickerExtended__/graphics/pingtool.png',
     icon_size = 32,
-    flags = {},
+    flags = {'hidden'},
     stackable = false,
     stack_size = 1,
     subgroup = 'tool',

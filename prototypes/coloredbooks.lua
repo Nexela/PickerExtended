@@ -7,7 +7,9 @@
 -- "author": "Blank",
 -- "description": "This mod allows the user to change the color of a blueprint book.",
 
+local Data = require('stdlib/data/data')
 local colors = require('config').colored_books
+local use_books = settings.startup['picker-colored-books'].value
 
 local function make_icons(color)
     return {
@@ -24,27 +26,23 @@ local function make_icons(color)
 end
 
 --Change the default book to support colors
-local default_book = data.raw['blueprint-book']['blueprint-book']
-default_book.icon = nil
-default_book.icons = make_icons({r = 0.3, g = 0.75, b = 1.0, a = 1.0})
+local book = Data('blueprint-book', 'blueprint-book'):set('icons', make_icons({r = 0.3, g = 0.75, b = 1.0, a = 1.0})):remove_field('icon')
+book.flags = book:Flags() + 'hidden'
 
 --Add in the aditional colors
-if settings.startup['picker-colored-books'].value then
+if use_books then
     for name, color in pairs(colors) do
-        local book = table.deepcopy(data.raw['blueprint-book']['blueprint-book'])
-        book.name = name .. '-book'
-        book.icons = make_icons(color)
-        book.icon_size = 32
-        book.localised_name = {'item-name.colored-book', {'colors.' .. name}}
-        book.show_in_library = false
-        data:extend {book}
+        book:copy(name .. '-book'):set_fields {
+            icons = make_icons(color),
+            localised_name = {'item-name.colored-book', {'colors.' .. name}},
+            show_in_library = false
+        }
     end
 end
 
-data:extend {
-    {
-        type = 'custom-input',
-        name = 'picker-blueprint-colorchange',
-        key_sequence = 'CONTROL + SHIFT + B'
-    }
+Data {
+    type = 'custom-input',
+    name = 'picker-blueprint-colorchange',
+    key_sequence = 'CONTROL + SHIFT + B',
+    disabled = not use_books
 }
