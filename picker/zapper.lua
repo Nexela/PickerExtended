@@ -32,21 +32,19 @@ local function cleanup_blueprints(event)
     local player = game.players[event.player_index]
 
     local settings = player.mod_settings
-    local quickbar = false
     local inventory
 
     if event.name == defines.events.on_player_main_inventory_changed then
         inventory = player.get_main_inventory()
     else
         inventory = player.get_quickbar()
-        quickbar = true
     end
 
     for planner in pairs(global.planners or {}) do
         local bp = game.item_prototypes[planner] and inventory.find_item_stack(planner)
         if bp then
             local setting = settings['picker-no-' .. bp.name .. '-inv'] and settings['picker-no-' .. bp.name .. '-inv'].value or settings['picker-no-other-planner-inv'].value
-            if setting ~= 'none' and not (setting == 'main' and quickbar) then
+            if setting ~= 'none' and not (setting == 'main' and inventory.is_quickbar()) then
                 bp.clear()
             end
         end

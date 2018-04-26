@@ -43,23 +43,34 @@ function lib.get_item_or_filter(inventory, n, item_only, filter_only)
 end
 
 function lib.is_named_bp(stack, name)
-    return stack.valid_for_read and stack.name == 'blueprint' and stack.label and stack.label:find('^' .. name)
+    return stack and stack.valid_for_read and stack.is_blueprint and stack.label and stack.label:find('^' .. name)
 end
 
+-- ! Broken logic
 function lib.stack_name(slot, name, is_bp_setup)
     if slot and slot.valid and slot.valid_for_read then
         local stack
         if slot.name == name then
             stack = slot
-        elseif slot.type == 'blueprint-book' then
+        elseif slot.is_blueprint_book then
             local inv = slot.get_inventory(defines.inventory.item_main)
             local index = slot.active_index
             stack = inv and index and inv[index].valid_for_read and inv[index]
         end
         if stack and is_bp_setup then
-            return stack and stack.name == 'blueprint' and stack.is_blueprint_setup() and stack
+            return stack and stack.is_blueprint and stack.is_blueprint_setup() and stack
         else
             return stack
+        end
+    end
+end
+
+function lib.get_blueprint(stack, is_bp_setup, no_book)
+    if stack and stack.valid and stack.valid_for_read then
+        if stack.is_blueprint then
+            return not is_bp_setup and stack or stack.is_blueprint_setup() and stack
+        elseif stack.is_blueprint_book and not no_book and stack.active_index then
+            return lib.get_blueprint(stack.get_inventory(defines.inventory.item_main)[stack.active_index], is_bp_setup)
         end
     end
 end

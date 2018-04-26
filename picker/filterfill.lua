@@ -255,7 +255,7 @@ local function blueprint_requests(event)
     local player = game.players[event.player_index]
     local chest = player.opened
     local chest_inv = chest and chest.get_output_inventory()
-    local blueprint = lib.stack_name(player.cursor_stack, 'blueprint', true) or (chest_inv and lib.stack_name(chest_inv[1], 'blueprint', true))
+    local blueprint = lib.get_blueprint(player.cursor_stack, true) or (chest_inv and lib.get_blueprint(chest_inv[1], true, true))
     if chest then
         if blueprint then
             for i = 1, chest.request_slot_count do

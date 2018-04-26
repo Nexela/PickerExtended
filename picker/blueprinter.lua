@@ -47,7 +47,7 @@ end
 
 local function show_bp_tools(event)
     local player, pdata = Player.get(event.player_index)
-    local bp = lib.stack_name(player.cursor_stack, 'blueprint')
+    local bp = lib.get_blueprint(player.cursor_stack)
     local frame = get_or_create_blueprint_gui(player)
     if bp and not lib.is_named_bp(bp, 'Belt brush') then
         frame.style.visible = true
@@ -147,7 +147,7 @@ Event.register('picker-make-ghost', make_simple_blueprint)
 -- Update BP Entities
 local function update_blueprint(event)
     local player = game.players[event.player_index]
-    local stack = lib.stack_name(player.cursor_stack, 'blueprint', true)
+    local stack = lib.get_blueprint(player.cursor_stack, true)
     if stack then
         local from = event.element.parent['picker_bp_tools_from'].elem_value
         local to = event.element.parent['picker_bp_tools_to'].elem_value
@@ -174,7 +174,7 @@ Gui.on_click('picker_bp_tools_update', update_blueprint)
 --Quick Pick Blueprint -- Makes a quick blueprint from the entity selector gui TODO not needed in .16?
 local function create_quick_pick_blueprint(event)
     local player = game.players[event.player_index]
-    local stack = lib.stack_name(player.cursor_stack, 'blueprint')
+    local stack = lib.get_blueprint(player.cursor_stack)
     if event.element.elem_value and stack and (not stack.is_blueprint_setup() or lib.is_named_bp(stack, 'Pipette Blueprint')) then
         local _valid_entities = function(v)
             if v.place_result then

@@ -98,7 +98,7 @@ local function create_or_destroy_bp(player, lanes)
                 stack = lib.get_planner(player, 'blueprint', 'Belt Brush')
                 stack.clear_blueprint()
             end
-            if lib.stack_name(player.cursor_stack, 'blueprint') then
+            if lib.get_blueprint(player.cursor_stack, 'blueprint', true) then
                 build_beltbrush(stack, name, lanes)
             end
         elseif lib.is_named_bp(stack, 'Belt Brush') and lanes == 1 then
@@ -442,7 +442,7 @@ Event.register('picker-beltbrush-balancers', beltbrush_balancers)
 -- When a blueprint is placed check to see if it is a beltbrush bp and if it is destroy matched ghosts underneath.
 local function placed_blueprint(event)
     local player, pdata = Player.get(event.player_index)
-    local stack = lib.stack_name(player.cursor_stack, 'blueprint', true)
+    local stack = lib.get_blueprint(player.cursor_stack, true)
     if stack and lib.is_named_bp(stack, 'Belt Brush') and (pdata.last_ghost_check or 0) <= event.tick - 2 then --and not stack.label:find("Belt Brush %d+") then
         local corners = {lx = 0, ly = 0, rx = 0, ry = 0}
         --Create a bounding box from the blueprint entities.
