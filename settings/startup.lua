@@ -15,6 +15,34 @@ data:extend {
         default_value = true,
         order = 'picker[startup][colored-blueprints]'
     },
+    {
+        type = 'bool-setting',
+        name = 'picker-tool-tape-measure',
+        setting_type = 'startup',
+        default_value = true,
+        order = 'a[startup]-tool-tape-measure'
+    },
+    {
+        type = 'bool-setting',
+        name = 'picker-tool-ore-eraser',
+        setting_type = 'startup',
+        default_value = true,
+        order = 'a[startup]-tool-ore-eraser'
+    },
+    {
+        type = 'bool-setting',
+        name = 'picker-tool-camera',
+        setting_type = 'startup',
+        default_value = true,
+        order = 'a[startup]-tool-camera'
+    },
+    {
+        type = 'bool-setting',
+        name = 'picker-tool-ping',
+        setting_type = 'startup',
+        default_value = true,
+        order = 'a[startup]-tool-ping'
+    },
 }
 
 if config.DEBUG then

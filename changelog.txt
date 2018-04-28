@@ -2,7 +2,7 @@
 Version: 3.0.4
 Date: ??????
   Features:
-    - Added picker cheat recipes
+    - Added picker cheat recipes (From Blueprint Extensions by Dewin).
     - Filter Fill now works on the player inventory.
     - Train Goto next station hotkey added.
     - Player inventory can be manually sorted.

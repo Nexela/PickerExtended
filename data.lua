@@ -5,6 +5,7 @@ require('prototypes/styles')
 require('prototypes/sprites')
 
 require('prototypes/picker')
+require('prototypes/blueprinter')
 require('prototypes/eqkeys')
 require('prototypes/tools')
 require('prototypes/renamer')

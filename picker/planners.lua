@@ -146,7 +146,7 @@ local function planners_changed()
     global.planners = {}
     for _, item in pairs(game.item_prototypes) do
         if item.type == 'blueprint-book' or item.type == 'blueprint' or item.type == 'deconstruction-item' or item.type == 'selection-tool' or item.name == 'resource-monitor' then
-            if not item.name:find('dummy') then
+            if not (item.name:find('dummy') or item.order:find('no%-picker')) then
                 global.planners[item.name] = true
             end
         end

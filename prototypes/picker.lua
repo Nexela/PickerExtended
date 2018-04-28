@@ -1,3 +1,5 @@
+local Data = require('stdlib/data/data')
+
 data:extend {
     {
         type = 'custom-input',
@@ -47,11 +49,6 @@ data:extend {
     },
     {
         type = 'custom-input',
-        name = 'picker-mirror-blueprint',
-        key_sequence = 'ALT + R'
-    },
-    {
-        type = 'custom-input',
         name = 'picker-used-for',
         key_sequence = 'CONTROL + SHIFT + ENTER'
     },
@@ -72,11 +69,10 @@ data:extend {
     }
 }
 
-local text = {
+Data {
     type = 'flying-text',
     name = 'picker-flying-text',
     flags = {'placeable-off-grid', 'not-on-map'},
     time_to_live = 150,
     speed = 0.05
 }
-data:extend {text}
