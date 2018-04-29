@@ -9,6 +9,7 @@ local Player = require('stdlib/event/player')
 local Area = require('stdlib/area/area')
 local Position = require('stdlib/area/position')
 local lib = require('picker/lib')
+local Inventory = require('stdlib/entity/inventory')
 
 -- Creates the BP tools frame
 local function get_or_create_blueprint_gui(player)
@@ -211,3 +212,47 @@ local function create_quick_pick_blueprint(event)
     end
 end
 Gui.on_elem_changed('picker_bp_tools_from', create_quick_pick_blueprint)
+
+--(( Blueprint Book tools ))--
+local function add_empty_bp_to_book(event)
+    local player = game.players[event.player_index]
+    local stack = player.cursor_stack
+    if stack.valid_for_read and stack.is_blueprint_book then
+        local inv = stack.get_inventory(defines.inventory.item_main)
+        --insert a dummy print so we have an easy way to find the idx
+        if inv and inv.insert('picker-dummy-blueprint') then
+            local slot, idx = inv.find_item_stack('picker-dummy-blueprint')
+            if slot and idx and slot.set_stack('blueprint') then
+                stack.active_index = idx + 1 --! Factorio Bug .16.38 find_item_stack off by one
+                -- Cycling blueprints in books raises cursor changed event, lets emulate that.
+                script.raise_event(defines.events.on_player_cursor_stack_changed, {player_index = event.player_index})
+            end
+        end
+    end
+end
+Event.register('picker-add-empty-bp-to-book', add_empty_bp_to_book)
+
+local function clear_empty_bp(slot)
+    if slot.valid_for_read and not slot.is_blueprint_setup() then
+        slot.clear()
+    end
+end
+local function clean_empty_bps_in_book(event)
+    local player = game.players[event.player_index]
+    local stack = player.cursor_stack
+    if stack.valid_for_read and stack.is_blueprint_book then
+        local inv = stack.get_inventory(defines.inventory.item_main)
+        if inv and not inv.is_empty() then
+            local change_index = not (inv[stack.active_index].valid_for_read and inv[stack.active_index].is_blueprint_setup())
+
+            Inventory.each_reverse(inv, clear_empty_bp)
+
+            if change_index then
+                local _, idx = inv.find_item_stack('blueprint')
+                stack.active_index = (idx and idx + 1) or 1 --! Factorio Bug 16.38
+                script.raise_event(defines.events.on_player_cursor_stack_changed, {player_index = event.player_index})
+            end
+        end
+    end
+end
+Event.register('picker-clean-empty-bps-in-book', clean_empty_bps_in_book) --))
