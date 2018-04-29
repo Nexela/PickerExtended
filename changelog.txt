@@ -4,7 +4,8 @@ Date: ??????
   Features:
     - Added Add empty blueprint to book hotkey. (linked to terrain size increase) will add and select an empty bp to the current book.
     - Added Remove empty blueprints from book. (linked to terrain size decrease) will remove all empty blueprints from the current book.
-    - Added picker cheat recipes (From Blueprint Extensions by Dewin).
+    - Added blueprint edge snapping (From Blueprint Extensions by Dewin).
+    - Added picker cheat recipes
     - Filter Fill now works on the player inventory.
     - Train Goto next station hotkey added.
     - Player inventory can be manually sorted.

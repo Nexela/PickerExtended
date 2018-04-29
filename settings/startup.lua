@@ -43,6 +43,13 @@ data:extend {
         default_value = true,
         order = 'a[startup]-tool-ping'
     },
+    {
+        type = 'bool-setting',
+        name = 'picker-bp-snap',
+        setting_type = 'startup',
+        default_value = true,
+        order = 'picker[startup]-edge-snap'
+    }
 }
 
 if config.DEBUG then

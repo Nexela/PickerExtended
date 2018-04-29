@@ -1,11 +1,11 @@
 local Data = require('stdlib/data/data')
 
+local snap = settings.startup['picker-bp-snap'].value or false
+local updater = settings.startup['picker-tool-bp-updater'].value or false
 
-Data {
-    type = 'custom-input',
-    name = 'picker-mirror-blueprint',
-    key_sequence = 'ALT + R'
-}
+local function get_setting(key)
+    return settings.startup[key] and settings.startup[key].value
+end
 
 Data {
     type = 'custom-input',
