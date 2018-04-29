@@ -223,7 +223,7 @@ local function add_empty_bp_to_book(event)
         if inv and inv.insert('picker-dummy-blueprint') then
             local slot, idx = inv.find_item_stack('picker-dummy-blueprint')
             if slot and idx and slot.set_stack('blueprint') then
-                stack.active_index = idx + 1 --! Factorio Bug .16.38 find_item_stack off by one
+                stack.active_index = idx --! Factorio Bug .16.38 find_item_stack off by one
                 -- Cycling blueprints in books raises cursor changed event, lets emulate that.
                 script.raise_event(defines.events.on_player_cursor_stack_changed, {player_index = event.player_index})
             end
@@ -249,7 +249,7 @@ local function clean_empty_bps_in_book(event)
 
             if change_index then
                 local _, idx = inv.find_item_stack('blueprint')
-                stack.active_index = (idx and idx + 1) or 1 --! Factorio Bug 16.38
+                stack.active_index = idx or 1 --! Factorio Bug 16.38
                 script.raise_event(defines.events.on_player_cursor_stack_changed, {player_index = event.player_index})
             end
         end
