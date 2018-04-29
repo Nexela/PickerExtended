@@ -98,13 +98,14 @@ local function create_or_destroy_bp(player, lanes)
                 stack = lib.get_planner(player, 'blueprint', 'Belt Brush')
                 stack.clear_blueprint()
             end
-            if lib.get_blueprint(player.cursor_stack, 'blueprint', true) then
+            if lib.get_blueprint(player.cursor_stack, false) then
                 build_beltbrush(stack, name, lanes)
             end
         elseif lib.is_named_bp(stack, 'Belt Brush') and lanes == 1 then
             for _, inv in pairs({defines.inventory.player_main, defines.inventory.player_quickbar}) do
                 local item = player.get_inventory(inv).find_item_stack(name)
                 if item then
+                    --TODO swapstack?
                     --stack.clear()
                     stack.set_stack(item)
                     item.clear()
