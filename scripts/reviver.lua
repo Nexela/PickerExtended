@@ -5,7 +5,7 @@
 local Event = require('stdlib/event/event')
 local Area = require('stdlib/area/area')
 local Player = require('stdlib/event/player')
-local lib = require('picker/lib')
+local lib = require('scripts/lib')
 
 --as of 08/30 this is mostly incorporated into base.
 --Modules are still not revived,

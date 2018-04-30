@@ -6,7 +6,7 @@ local Event = require('stdlib/event/event')
 local Player = require('stdlib/event/player')
 local Area = require('stdlib/area/area')
 local Position = require('stdlib/area/position')
-local lib = require('picker/lib')
+local lib = require('scripts/lib')
 local interface = require('interface')
 
 Event.generate_event_name('dolly_moved')

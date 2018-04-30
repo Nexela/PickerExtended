@@ -8,7 +8,7 @@ local Gui = require('stdlib/event/gui')
 local Player = require('stdlib/event/player')
 local Area = require('stdlib/area/area')
 local Position = require('stdlib/area/position')
-local lib = require('picker/lib')
+local lib = require('scripts/lib')
 local Inventory = require('stdlib/entity/inventory')
 
 -- Creates the BP tools frame

@@ -8,7 +8,7 @@
 --]]
 local Event = require('stdlib/event/event')
 local min, max = math.min, math.max
-local lib = require('picker/lib')
+local lib = require('scripts/lib')
 local table = require('stdlib/utils/table')
 
 local Snap = {

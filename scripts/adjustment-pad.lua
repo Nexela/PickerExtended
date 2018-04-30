@@ -3,7 +3,7 @@
 -------------------------------------------------------------------------------
 local Pad = {}
 local Event = require('stdlib/event/event')
-local lib = require('picker/lib')
+local lib = require('scripts/lib')
 
 Event.adjustment_pad = Event.generate_event_name('adjustment_pad')
 Event.register(

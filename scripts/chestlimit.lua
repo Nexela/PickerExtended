@@ -4,7 +4,7 @@
 local Event = require('stdlib/event/event')
 local Gui = require('stdlib/event/gui')
 local Player = require('stdlib/event/player')
-local Pad = require('picker/adjustment-pad')
+local Pad = require('scripts/adjustment-pad')
 
 local match_to_item = {
     ['container'] = true,

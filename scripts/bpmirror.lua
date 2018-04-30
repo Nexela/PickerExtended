@@ -3,7 +3,7 @@
 local Event = require('stdlib/event/event')
 local Gui = require('stdlib/event/gui')
 local Position = require('stdlib/area/position')
-local lib = require('picker/lib')
+local lib = require('scripts/lib')
 
 local swap_sides = {
     ['left'] = 'right',

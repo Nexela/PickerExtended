@@ -4,7 +4,7 @@
 local Event = require('stdlib/event/event')
 local Gui = require('stdlib/event/gui')
 local Player = require('stdlib/event/player')
-local lib = require('picker/lib')
+local lib = require('scripts/lib')
 
 -------------------------------------------------------------------------------
 --[Planner Menu]--

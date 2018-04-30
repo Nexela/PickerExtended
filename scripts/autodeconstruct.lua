@@ -8,7 +8,7 @@
 local Event = require('stdlib/event/event')
 local Area = require('stdlib/area/area')
 local Position = require('stdlib/area/position')
-local lib = require('picker/lib')
+local lib = require('scripts/lib')
 
 local function find_targeters(entity)
     local targeters = {}

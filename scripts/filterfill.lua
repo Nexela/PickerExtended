@@ -5,7 +5,7 @@
 
 local Event = require('stdlib/event/event')
 local Gui = require('stdlib/event/gui')
-local lib = require('picker/lib')
+local lib = require('scripts/lib')
 local INVENTORY_COLUMNS = 10
 local GUI_TYPES = {
     [defines.gui_type.controller] = true,

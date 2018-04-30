@@ -6,8 +6,8 @@ local Gui = require('stdlib/event/gui')
 local Player = require('stdlib/event/player')
 local Position = require('stdlib/area/position')
 local Area = require('stdlib/area/area')
-local Pad = require('picker/adjustment-pad')
-local lib = require('picker/lib')
+local Pad = require('scripts/adjustment-pad')
+local lib = require('scripts/lib')
 
 local balancers = require('blueprints/balancers')
 
