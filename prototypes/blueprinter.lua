@@ -1,7 +1,6 @@
 local Data = require('stdlib/data/data')
 
 local snap = settings.startup['picker-bp-snap'].value or false
-local updater = settings.startup['picker-tool-bp-updater'].value or false
 
 local function get_setting(key)
     return settings.startup[key] and settings.startup[key].value
@@ -11,13 +10,6 @@ Data {
     type = 'custom-input',
     name = 'picker-mirror-blueprint',
     key_sequence = 'ALT + R'
-}
-
-Data {
-    type = 'custom-input',
-    name = 'picker-bp-update',
-    key_sequence = 'SHIFT + U',
-    enabled = updater
 }
 
 Data {
@@ -75,27 +67,6 @@ Data {
     key_sequence = 'PAD 5',
     enabled = snap
 }
-
-if get_setting('picker-tool-bp-updater') then
-    Data {
-        type = 'selection-tool',
-        name = 'picker-bp-updater',
-        icon = '__PickerExtended__/graphics/cloned-blueprint.png',
-        icon_size = 32,
-        flags = {'hidden'},
-        subgroup = 'tool',
-        order = 'c[automated-construction]-a[blueprint-updater]-no-picker',
-        stack_size = 1,
-        stackable = false,
-        selection_color = {r = 0, g = 1, b = 0},
-        alt_selection_color = {r = 0, g = 1, b = 0},
-        selection_mode = {'blueprint'},
-        alt_selection_mode = {'blueprint'},
-        selection_cursor_box_type = 'copy',
-        alt_selection_cursor_box_type = 'copy',
-        show_in_library = false
-    }
-end
 
 Data('blueprint', 'blueprint'):copy('picker-dummy-blueprint'):set_fields {
     draw_label_for_cursor_render = false,
