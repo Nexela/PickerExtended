@@ -56,6 +56,11 @@ local oblong_combinators = {
     ['decider-combinator'] = true
 }
 
+local wire_distance_types = {
+    ['electric-pole'] = true,
+    --['power-switch'] = true -- ! API PR made
+}
+
 local function get_saved_entity(player, pdata, tick)
     if player.selected and player.selected.force == player.force and not blacklist(player.selected) then
         return player.selected
@@ -70,7 +75,7 @@ local function get_saved_entity(player, pdata, tick)
 end
 
 local function _get_distance(entity)
-    if entity.type == 'electric-pole' then
+    if wire_distance_types[entity.type] then
         return entity.prototype.max_wire_distance
     elseif entity.circuit_connected_entities then
         return entity.prototype.max_circuit_wire_distance
@@ -175,11 +180,9 @@ local function move_combinator(event)
                 if entity.surface.can_place_entity(params) and not entity.surface.find_entity('entity-ghost', target_pos) then
                     --We can place the entity here, check for wire distance
                     if entity.circuit_connected_entities then
-                        --Move Poles
-                        if entity.type == 'electric-pole' and not table.any(entity.neighbours, _cant_reach) then
-                            --Move Wires
+                        if wire_distance_types[entity.type] and not table.any(entity.neighbours, _cant_reach) then
                             return teleport_and_update(entity, target_pos, true)
-                        elseif entity.type ~= 'electric-pole' and not table.any(entity.circuit_connected_entities, _cant_reach) then
+                        elseif not wire_distance_types[entity.type] and not table.any(entity.circuit_connected_entities, _cant_reach) then
                             if entity.type == 'mining-drill' and lib.find_resources(entity) == 0 then
                                 local name = entity.mining_target and entity.mining_target.localised_name or {'picker-dollies.generic-ore-patch'}
                                 player.print({'picker-dollies.off-ore-patch', entity.localised_name, name})
