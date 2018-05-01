@@ -52,7 +52,7 @@ local function pick_wires(event)
         for _, wire_name in ipairs(wire_types) do
             local wire = lib.get_item_stack(player, wire_name)
             if wire then
-                return stack.swap_stack(wire)
+                return player.clean_cursor() and stack.swap_stack(wire)
             end
         end
         player.print({'wiretool.no-wires-found'})
@@ -71,7 +71,7 @@ local function pick_wires(event)
                 index = index < #wire_types and index + 1 or 1
                 local wire = lib.get_item_stack(player, wire_types[index])
                 if wire then
-                    return stack.swap_stack(wire)
+                    return player.clean_cursor() and stack.swap_stack(wire)
                 end
             until index == start
             player.print({'wiretool.no-wires-found'})

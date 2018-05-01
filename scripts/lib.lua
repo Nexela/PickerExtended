@@ -5,12 +5,6 @@
 local lib = {}
 local Area = require('stdlib/area/area')
 local Position = require('stdlib/area/position')
-local INVENTORIES = {
-    defines.inventory.player_quickbar,
-    defines.inventory.player_main,
-    defines.inventory.god_quickbar,
-    defines.inventory.god_main
-}
 
 function lib.get_or_create_main_left_flow(player, flow_name)
     local main_flow = player.gui.left[flow_name .. '_main_flow']
@@ -46,25 +40,7 @@ function lib.is_named_bp(stack, name)
     return stack and stack.valid_for_read and stack.is_blueprint and stack.label and stack.label:find('^' .. name)
 end
 
--- ! Broken logic
-function lib.stack_name(slot, name, is_bp_setup)
-    if slot and slot.valid and slot.valid_for_read then
-        local stack
-        if slot.name == name then
-            stack = slot
-        elseif slot.is_blueprint_book then
-            local inv = slot.get_inventory(defines.inventory.item_main)
-            local index = slot.active_index
-            stack = inv and index and inv[index].valid_for_read and inv[index]
-        end
-        if stack and is_bp_setup then
-            return stack and stack.is_blueprint and stack.is_blueprint_setup() and stack
-        else
-            return stack
-        end
-    end
-end
-
+-- TODO move to stdlib/entity/inventory
 function lib.get_blueprint(stack, is_bp_setup, no_book)
     if stack and stack.valid and stack.valid_for_read then
         if stack.is_blueprint then
@@ -111,21 +87,34 @@ function lib.find_resources(entity)
     return 0
 end
 
-function lib.get_item_stack(e, name)
-    for _, inv in pairs(INVENTORIES) do
-        local inventory = e.get_inventory(inv)
-        local stack = inventory and inventory.find_item_stack(name)
-        if stack then
-            return stack
-        end
+function lib.get_item_stack(e, name, give_free)
+    local stack = (e.get_main_inventory().find_item_stack(name)) or (e.get_quickbar().find_item_stack(name))
+    if stack then
+        return stack
     end
     if e.vehicle then
         local trunk = e.vehicle.get_inventory(defines.inventory.car_trunk)
-        local stack = trunk and trunk.find_item_stack(name)
+        stack = trunk and trunk.find_item_stack(name)
         if stack then
             return stack
         end
     end
+    if e.is_player() and (e.cheat_mode or give_free) then
+        local inv = lib.create_buffer_corpse(e).get_inventory(defines.inventory.character_corpse)
+        if inv[1].set_stack(name) then
+            return inv[1]
+        end
+    end
+end
+
+function lib.create_buffer_corpse(player, inf)
+    return player.surface.create_entity {
+        name = 'picker-buffer-corpse-' .. (inf and 'inf' or 'instant'),
+        position = {0, 0},
+        force = player.force,
+        inventory_size = 1,
+        player_index = player.index
+    }
 end
 
 -- Attempt to insert an item_stack or array of item_stacks into the entity
@@ -193,30 +182,27 @@ end
 
 function lib.get_planner(player, planner, label)
     local found
-    for _, idx in pairs(INVENTORIES) do
-        local inventory = player.get_inventory(idx)
-        if inventory then
-            for i = 1, #inventory do
-                local slot = inventory[i]
-                if slot.valid_for_read then
-                    if slot.name == planner then
-                        if planner == 'blueprint' then
-                            if not slot.is_blueprint_setup() then
-                                found = slot
-                            elseif (label and slot.is_blueprint_setup() and slot.label and slot.label:find(label)) then
-                                if player.cursor_stack.swap_stack(slot) then
-                                    return player.cursor_stack
-                                end
-                            end
-                        elseif global.planners[planner] and game.item_prototypes[planner] then
+    for _, inventory in pairs({player.get_quickbar(), player.get_main_inventory()}) do
+        for i = 1, #inventory do
+            local slot = inventory[i]
+            if slot.valid_for_read then
+                if slot.name == planner then
+                    if planner == 'blueprint' then
+                        if not slot.is_blueprint_setup() then
+                            found = slot
+                        elseif (label and slot.is_blueprint_setup() and slot.label and slot.label:find(label)) then
                             if player.cursor_stack.swap_stack(slot) then
                                 return player.cursor_stack
                             end
                         end
-                    elseif planner == 'repair-tool' and slot.type == 'repair-tool' then
+                    elseif global.planners[planner] and game.item_prototypes[planner] then
                         if player.cursor_stack.swap_stack(slot) then
                             return player.cursor_stack
                         end
+                    end
+                elseif planner == 'repair-tool' and slot.type == 'repair-tool' then
+                    if player.cursor_stack.swap_stack(slot) then
+                        return player.cursor_stack
                     end
                 end
             end
@@ -229,6 +215,7 @@ function lib.get_planner(player, planner, label)
     end
 end
 
+-- TODO Move to stdlib/entity
 function lib.damaged(entity)
     return entity.health and entity.prototype.max_health and entity.health < entity.prototype.max_health
 end
