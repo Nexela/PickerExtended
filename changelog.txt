@@ -13,7 +13,7 @@ Date: ??????
     - Honking can attract enemies (defaults to off).
     - Train horns are configurable.
   Enhancements:
-    - zapper always deleters blueprints you place in trash slots.
+    - Zapper always deletes blueprints you place in trash slots (add bps to autotrash to always trash em).
     - Selection tools, Blueprints, Blueprint Books, and Deconstruction items are hidden by default.
     - Changed the way notes are saved. Existing notes will get destroyed or lost.
     - Sort Inventory now uses sort_and_merge inventory method.

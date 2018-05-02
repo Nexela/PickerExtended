@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------------
---[Belt Brush]-- TODO .16 can use item_stack.import/export
+--[Belt Brush]-- -- .16 can possibly use item_stack.import/export
 -------------------------------------------------------------------------------
 local Event = require('stdlib/event/event')
 local Gui = require('stdlib/event/gui')
@@ -35,7 +35,8 @@ end
 --Revive belts in build range when using belt brush blueprints
 local function revive_belts(event)
     local player = Player.get(event.player_index)
-    if event.created_entity.name == 'entity-ghost' and match_to_revive[event.created_entity.ghost_type] and lib.is_named_bp(player.cursor_stack, 'Belt Brush') then
+    local ent = event.created_entity
+    if ent.name == 'entity-ghost' and match_to_revive[ent.ghost_type] and lib.is_named_bp(player.cursor_stack, 'Belt Brush') then
         local ghost = event.created_entity
         local name = ghost.ghost_name
         if Position.distance(player.position, ghost.position) <= player.build_distance + 1 then
@@ -94,7 +95,6 @@ local function create_or_destroy_bp(player, lanes)
     if name then
         if lanes > 1 then
             if not lib.is_named_bp(stack, 'Belt Brush') and player.clean_cursor() then
-                --elseif player.clean_cursor() then
                 stack = lib.get_planner(player, 'blueprint', 'Belt Brush')
                 stack.clear_blueprint()
             end
@@ -102,16 +102,14 @@ local function create_or_destroy_bp(player, lanes)
                 build_beltbrush(stack, name, lanes)
             end
         elseif lib.is_named_bp(stack, 'Belt Brush') and lanes == 1 then
-            for _, inv in pairs({defines.inventory.player_main, defines.inventory.player_quickbar}) do
-                local item = player.get_inventory(inv).find_item_stack(name)
+            for _, inv in pairs(lib.get_main_inventories(player)) do
+                local item = inv.find_item_stack(name)
                 if item then
-                    --TODO swapstack?
-                    --stack.clear()
-                    stack.set_stack(item)
-                    item.clear()
+                    stack.set_stack(item) -- set the cursor stack to the item
+                    item.clear() -- clear the item from the inventory
                     break
                 else
-                    stack.clear()
+                    stack.clear() -- no item found, just nuke the cursor stack
                 end
             end
         end
