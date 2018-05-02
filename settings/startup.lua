@@ -45,6 +45,13 @@ data:extend {
     },
     {
         type = 'bool-setting',
+        name = 'picker-tool-bp-updater',
+        setting_type = 'startup',
+        default_value = true,
+        order = 'a[startup]-tool-bp-updater'
+    },
+    {
+        type = 'bool-setting',
         name = 'picker-bp-snap',
         setting_type = 'startup',
         default_value = true,

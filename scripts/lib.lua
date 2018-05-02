@@ -117,6 +117,10 @@ function lib.create_buffer_corpse(player, inf)
     }
 end
 
+function lib.get_main_inventories(player)
+    return {player.get_quickbar(), player.get_main_inventory()}
+end
+
 -- Attempt to insert an item_stack or array of item_stacks into the entity
 -- Spill to the ground at the entity/player anything that doesn't get inserted
 -- @param entity: the entity or player object
