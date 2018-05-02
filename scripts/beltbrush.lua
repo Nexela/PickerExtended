@@ -410,12 +410,15 @@ local function beltbrush_balancers(event)
 
                 local i = 0
                 repeat
-                    ents = table.deepcopy(balancers[lanes .. 'x' .. width])
+                    --ents = table.deepcopy(balancers[lanes .. 'x' .. width])
+                    ents = balancers[lanes .. 'x' .. width]
                     width = (not ents and ((width <= 1 and 32) or (width - 1))) or width
                     i = i + 1
                 until ents or width == lanes or i == 100
 
                 if ents and not (width == lanes and stack.label:find('Belt Brush Balancers')) then
+                    stack.import_stack(ents)
+                    ents = stack.get_blueprint_entities()
                     table.each(
                         ents,
                         function(v)
