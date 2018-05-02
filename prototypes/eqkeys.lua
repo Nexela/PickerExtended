@@ -21,7 +21,7 @@ data:extend {
     },
     {
         type = 'custom-input',
-        name = 'toggle-equipment-bot-chip-all',
+        name = 'toggle-equipment-active-defense',
         key_sequence = 'CONTROL + F4'
     },
     {

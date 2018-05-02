@@ -18,6 +18,7 @@ Date: ??????
     - Changed the way notes are saved. Existing notes will get destroyed or lost.
     - Sort Inventory now uses sort_and_merge inventory method.
   Bugfixes:
+    - Fix missing locale for equipment hotkeys.
     - Fix small logic bug in lib.
     - Allow specifying train horn.
     - Include changelog in release. #68

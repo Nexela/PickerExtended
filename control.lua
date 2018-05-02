@@ -63,7 +63,6 @@ require('scripts/vehicles')
 require('scripts/helmod')
 require('scripts/notes')
 require('scripts/coloredbooks')
-require('scripts/switchgun')
 --)) Picker Scripts ((--
 
 --(( Remote Interfaces ))--

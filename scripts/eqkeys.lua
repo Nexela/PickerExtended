@@ -1,9 +1,26 @@
--------------------------------------------------------------------------------
---[Equipment toggle hotkeys]--
--------------------------------------------------------------------------------
-
 local Event = require('stdlib/event/event')
 
+-- (( Switch player gun while driving ))--
+local function switch_player_gun_while_driving(event)
+    local player = game.players[event.player_index]
+    local character = player.character
+    if character and player.vehicle then
+        local index = character.selected_gun_index
+        local gun_inv = character.get_inventory(defines.inventory.player_guns)
+        local start = index
+        repeat
+            index = index < #gun_inv and (index + 1) or 1
+            if gun_inv[index].valid_for_read then
+                character.selected_gun_index = index
+                break
+            end
+        until index == start
+    end
+end
+Event.register('switch-player-gun-while-driving', switch_player_gun_while_driving)
+--))
+
+--(( Equipment toggle hotkeys ))--
 local function toggle_armor_modules(event, name, types)
     local player = game.players[event.player_index]
     local grid = player.character and player.character.grid
@@ -80,26 +97,38 @@ end
 Event.armor_hotkeys['toggle-equipment-belt-immunity'] = function(event)
     toggle_armor_modules(event, 'equipment-bot-chip-all', get_eq_type_names('belt-immunity-equipment'))
 end
---Nanobots toggles
-Event.armor_hotkeys['toggle-equipment-bot-chip-all'] = function(event)
+Event.armor_hotkeys['toggle-equipment-active-defense'] = function(event)
     toggle_armor_modules(event, 'equipment-bot-chip-all', get_eq_type_names('active-defense-equipment'))
 end
+
+-- Create API for nanobots to register these
 Event.armor_hotkeys['toggle-equipment-bot-chip-trees'] = function(event)
-    toggle_armor_modules(event, 'equipment-bot-chip-trees')
+    if game.active_mods['Nanobots'] then
+        toggle_armor_modules(event, 'equipment-bot-chip-trees')
+    end
 end
 Event.armor_hotkeys['toggle-equipment-bot-chip-items'] = function(event)
-    toggle_armor_modules(event, 'equipment-bot-chip-items')
+    if game.active_mods['Nanobots'] then
+        toggle_armor_modules(event, 'equipment-bot-chip-items')
+    end
 end
 Event.armor_hotkeys['toggle-equipment-bot-chip-launcher'] = function(event)
-    toggle_armor_modules(event, 'equipment-bot-chip-launcher')
+    if game.active_mods['Nanobots'] then
+        toggle_armor_modules(event, 'equipment-bot-chip-launcher')
+    end
 end
 Event.armor_hotkeys['toggle-equipment-bot-chip-feeder'] = function(event)
-    toggle_armor_modules(event, 'equipment-bot-chip-feeder')
+    if game.active_mods['Nanobots'] then
+        toggle_armor_modules(event, 'equipment-bot-chip-feeder')
+    end
 end
 Event.armor_hotkeys['toggle-equipment-bot-chip-nanointerface'] = function(event)
-    toggle_armor_modules(event, 'equipment-bot-chip-nanointerface')
+    if game.active_mods['Nanobots'] then
+        toggle_armor_modules(event, 'equipment-bot-chip-nanointerface')
+    end
 end
 
 for event_name in pairs(Event.armor_hotkeys) do
     Event.register(event_name, Event.armor_hotkeys[event_name])
 end
+--)
