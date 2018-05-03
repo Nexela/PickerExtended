@@ -3,7 +3,7 @@
 local Event = require('stdlib/event/event')
 local Gui = require('stdlib/event/gui')
 local Position = require('stdlib/area/position')
-local lib = require('scripts/lib')
+local Inventory = require('stdlib/entity/inventory')
 
 local swap_sides = {
     ['left'] = 'right',
@@ -100,7 +100,7 @@ end
 
 local function mirror_blueprint(event)
     local player = game.players[event.player_index]
-    local blueprint = lib.get_blueprint(player.cursor_stack, true)
+    local blueprint = Inventory.get_blueprint(player.cursor_stack, true)
     if blueprint then
         local mirrored = get_mirrored_blueprint(blueprint)
         blueprint.set_blueprint_entities(mirrored.entities)

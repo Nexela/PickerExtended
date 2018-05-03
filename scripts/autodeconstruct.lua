@@ -8,7 +8,7 @@
 local Event = require('stdlib/event/event')
 local Area = require('stdlib/area/area')
 local Position = require('stdlib/area/position')
-local lib = require('scripts/lib')
+local Entity = require('stdlib/entity/entity')
 
 local function find_targeters(entity)
     local targeters = {}
@@ -33,11 +33,11 @@ end
 local targets = table.array_to_dictionary({'container', 'logistic-container'})
 
 local function check_for_deconstruction(drill)
-    if not drill.to_be_deconstructed(drill.force) and lib.can_decon(drill) and not has_resources(drill) and not lib.has_fluidbox(drill) and not lib.is_circuit_connected(drill) then
+    if not drill.to_be_deconstructed(drill.force) and Entity.can_decon(drill) and not has_resources(drill) and not Entity.has_fluidbox(drill) and not Entity.is_circuit_connected(drill) then
         if drill.order_deconstruction(drill.force) then
             if settings.global['picker-autodeconstruct-target'].value then
                 local target = drill.drop_target
-                if target and targets[target.type] and not lib.is_circuit_connected(target) and lib.can_decon(target) and target.force == drill.force then
+                if target and targets[target.type] and not Entity.is_circuit_connected(target) and Entity.can_decon(target) and target.force == drill.force then
                     local targeters = find_targeters(target)
                     if #targeters <= 0 then
                         target.order_deconstruction(drill.force)

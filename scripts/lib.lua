@@ -5,6 +5,7 @@
 local lib = {}
 local Area = require('stdlib/area/area')
 local Position = require('stdlib/area/position')
+local Inventory = require('stdlib/entity/inventory')
 
 function lib.get_or_create_main_left_flow(player, flow_name)
     local main_flow = player.gui.left[flow_name .. '_main_flow']
@@ -28,28 +29,6 @@ lib.ghosts = {
     ['entity-ghost'] = true,
     ['tile-ghost'] = true
 }
-
--- Returns either the item at a position, or the filter
--- at the position if there isn't an item there
-function lib.get_item_or_filter(inventory, n, item_only, filter_only)
-    local filter = not item_only and inventory.get_filter(n)
-    return filter or (not filter_only and inventory[n].valid_for_read and inventory[n].name) or nil
-end
-
-function lib.is_named_bp(stack, name)
-    return stack and stack.valid_for_read and stack.is_blueprint and stack.label and stack.label:find('^' .. name)
-end
-
--- TODO move to stdlib/entity/inventory
-function lib.get_blueprint(stack, is_bp_setup, no_book)
-    if stack and stack.valid and stack.valid_for_read then
-        if stack.is_blueprint then
-            return not is_bp_setup and stack or stack.is_blueprint_setup() and stack
-        elseif stack.is_blueprint_book and not no_book and stack.active_index then
-            return lib.get_blueprint(stack.get_inventory(defines.inventory.item_main)[stack.active_index], is_bp_setup)
-        end
-    end
-end
 
 --Return localised name, entity_prototype, and item_prototype
 function lib.get_placeable_item(entity)
@@ -117,10 +96,6 @@ function lib.create_buffer_corpse(player, inf)
     }
 end
 
-function lib.get_main_inventories(player)
-    return {player.get_quickbar(), player.get_main_inventory()}
-end
-
 -- Attempt to insert an item_stack or array of item_stacks into the entity
 -- Spill to the ground at the entity/player anything that doesn't get inserted
 -- @param entity: the entity or player object
@@ -186,12 +161,12 @@ end
 
 function lib.get_planner(player, planner, label)
     local found
-    for _, inventory in pairs({player.get_quickbar(), player.get_main_inventory()}) do
+    for _, inventory in pairs(Inventory.get_main_inventories()) do
         for i = 1, #inventory do
             local slot = inventory[i]
             if slot.valid_for_read then
                 if slot.name == planner then
-                    if planner == 'blueprint' then
+                    if planner.is_blueprint then
                         if not slot.is_blueprint_setup() then
                             found = slot
                         elseif (label and slot.is_blueprint_setup() and slot.label and slot.label:find(label)) then
@@ -217,23 +192,6 @@ function lib.get_planner(player, planner, label)
     else
         return planner and game.item_prototypes[planner] and player.cursor_stack.set_stack(planner) and player.cursor_stack
     end
-end
-
--- TODO Move to stdlib/entity
-function lib.damaged(entity)
-    return entity.health and entity.prototype.max_health and entity.health < entity.prototype.max_health
-end
-
-function lib.is_circuit_connected(entity)
-    return entity.circuit_connected_entities and (next(entity.circuit_connected_entities.red) or next(entity.circuit_connected_entities.green))
-end
-
-function lib.has_fluidbox(entity)
-    return entity.fluidbox and #entity.fluidbox > 0
-end
-
-function lib.can_decon(entity)
-    return entity.minable and entity.prototype.selectable_in_game and not entity.has_flag('not-deconstructable')
 end
 
 return lib

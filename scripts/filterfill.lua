@@ -5,7 +5,9 @@
 
 local Event = require('stdlib/event/event')
 local Gui = require('stdlib/event/gui')
+local Inventory = require('stdlib/entity/inventory')
 local lib = require('scripts/lib')
+
 local INVENTORY_COLUMNS = 10
 local GUI_TYPES = {
     [defines.gui_type.controller] = true,
@@ -127,9 +129,9 @@ local function filterfill_all(event)
     local inventory = get_opened_inventory(player)
     if inventory then
         -- Get the contents of the player's cursor stack, or the first cell
-        local desired = (player.cursor_stack.valid_for_read and player.cursor_stack.name) or lib.get_item_or_filter(inventory, 1)
+        local desired = (player.cursor_stack.valid_for_read and player.cursor_stack.name) or Inventory.get_item_or_filter(inventory, 1)
         for i = 1, #inventory do
-            local current = not event.shift and lib.get_item_or_filter(inventory, i)
+            local current = not event.shift and Inventory.get_item_or_filter(inventory, i)
             inventory.set_filter(i, current or desired or nil)
         end
     end
@@ -144,11 +146,11 @@ local function filterfill_down(event)
         local size = #inventory
         local rows = math.ceil(size / INVENTORY_COLUMNS)
         for c = 1, INVENTORY_COLUMNS do
-            local desired = lib.get_item_or_filter(inventory, c)
+            local desired = Inventory.get_item_or_filter(inventory, c)
             for r = 1, rows do
                 local i = c + (r - 1) * INVENTORY_COLUMNS
                 if i <= size then
-                    desired = lib.get_item_or_filter(inventory, i) or desired
+                    desired = Inventory.get_item_or_filter(inventory, i) or desired
                     inventory.set_filter(i, desired or nil)
                 end
             end
@@ -166,11 +168,11 @@ local function filterfill_right(event)
         local rows = math.ceil(size / INVENTORY_COLUMNS)
         --local desired
         for r = 1, rows do
-            local desired = lib.get_item_or_filter(inventory, 1 + (r - 1) * INVENTORY_COLUMNS)
+            local desired = Inventory.get_item_or_filter(inventory, 1 + (r - 1) * INVENTORY_COLUMNS)
             for c = 1, INVENTORY_COLUMNS do
                 local i = c + (r - 1) * INVENTORY_COLUMNS
                 if i <= size then
-                    desired = lib.get_item_or_filter(inventory, i) or desired
+                    desired = Inventory.get_item_or_filter(inventory, i) or desired
                     inventory.set_filter(i, desired or nil)
                 end
             end
@@ -185,7 +187,7 @@ local function filterfill_set_all(event)
     local inventory = get_opened_inventory(player)
     if inventory then
         for i = 1, #inventory do
-            local desired = lib.get_item_or_filter(inventory, i, true)
+            local desired = Inventory.get_item_or_filter(inventory, i, true)
             inventory.set_filter(i, desired or nil)
         end
     end
@@ -255,7 +257,7 @@ local function blueprint_requests(event)
     local player = game.players[event.player_index]
     local chest = player.opened
     local chest_inv = chest and chest.get_output_inventory()
-    local blueprint = lib.get_blueprint(player.cursor_stack, true) or (chest_inv and lib.get_blueprint(chest_inv[1], true, true))
+    local blueprint = Inventory.get_blueprint(player.cursor_stack, true) or (chest_inv and Inventory.get_blueprint(chest_inv[1], true, true))
     if chest then
         if blueprint then
             for i = 1, chest.request_slot_count do

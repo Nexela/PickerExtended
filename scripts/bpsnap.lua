@@ -7,8 +7,9 @@
     "description": "Adds tools for updating and placing blueprints."
 --]]
 local Event = require('stdlib/event/event')
+local Inventory = require('stdlib/entity/inventory')
+
 local min, max = math.min, math.max
-local lib = require('scripts/lib')
 local table = require('stdlib/utils/table')
 
 local Snap = {
@@ -43,7 +44,7 @@ local Snap = {
 function Snap.on_event(event)
     local player = game.players[event.player_index]
 
-    local bp = lib.get_blueprint(player.cursor_stack, true)
+    local bp = Inventory.get_blueprint(player.cursor_stack, true)
 
     if bp then
         local player_settings = player.mod_settings

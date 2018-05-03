@@ -8,8 +8,10 @@ local Gui = require('stdlib/event/gui')
 local Player = require('stdlib/event/player')
 local Area = require('stdlib/area/area')
 local Position = require('stdlib/area/position')
-local lib = require('scripts/lib')
 local Inventory = require('stdlib/entity/inventory')
+local Entity = require('stdlib/entity/entity')
+
+local lib = require('scripts/lib')
 
 -- Creates the BP tools frame
 local function get_or_create_blueprint_gui(player)
@@ -48,9 +50,9 @@ end
 
 local function show_bp_tools(event)
     local player, pdata = Player.get(event.player_index)
-    local bp = lib.get_blueprint(player.cursor_stack)
+    local bp = Inventory.get_blueprint(player.cursor_stack)
     local frame = get_or_create_blueprint_gui(player)
-    if bp and not lib.is_named_bp(bp, 'Belt brush') then
+    if bp and not Inventory.is_named_bp(bp, 'Belt brush') then
         frame.style.visible = true
         frame['picker_bp_tools_table']['picker_bp_tools_to'].elem_value = nil
         frame['picker_bp_tools_table']['picker_bp_tools_from'].elem_value = nil
@@ -132,7 +134,7 @@ local function make_simple_blueprint(event)
             if not (player.cursor_stack.valid_for_read and global.planners[player.cursor_stack.name]) then
                 local entity = player.selected
                 if player.clean_cursor() then
-                    if entity.force == player.force and lib.damaged(entity) and lib.get_planner(player, 'repair-tool') then
+                    if entity.force == player.force and Entity.damaged(entity) and lib.get_planner(player, 'repair-tool') then
                         return
                     else
                         local area = Area(entity.bounding_box)
@@ -148,7 +150,7 @@ Event.register('picker-make-ghost', make_simple_blueprint)
 -- Update BP Entities
 local function update_blueprint(event)
     local player = game.players[event.player_index]
-    local stack = lib.get_blueprint(player.cursor_stack, true)
+    local stack = Inventory.get_blueprint(player.cursor_stack, true)
     if stack then
         local from = event.element.parent['picker_bp_tools_from'].elem_value
         local to = event.element.parent['picker_bp_tools_to'].elem_value
@@ -172,11 +174,11 @@ local function update_blueprint(event)
 end
 Gui.on_click('picker_bp_tools_update', update_blueprint)
 
---Quick Pick Blueprint -- Makes a quick blueprint from the entity selector gui TODO not needed in .16?
+--Quick Pick Blueprint -- Makes a quick blueprint from the entity selector gui TODO not needed in .17?
 local function create_quick_pick_blueprint(event)
     local player = game.players[event.player_index]
-    local stack = lib.get_blueprint(player.cursor_stack)
-    if event.element.elem_value and stack and (not stack.is_blueprint_setup() or lib.is_named_bp(stack, 'Pipette Blueprint')) then
+    local stack = Inventory.get_blueprint(player.cursor_stack)
+    if event.element.elem_value and stack and (not stack.is_blueprint_setup() or Inventory.is_named_bp(stack, 'Pipette Blueprint')) then
         local _valid_entities = function(v)
             if v.place_result then
                 return v.place_result.name == event.element.elem_value and not v.place_result.has_flag('not-blueprintable')

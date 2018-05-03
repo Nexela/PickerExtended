@@ -95,7 +95,7 @@ if updater then
 end
 
 Data('blueprint', 'blueprint'):copy('picker-dummy-blueprint'):set_fields {
-    draw_label_for_cursor_render = false,
+    draw_label_for_cursor_render = true,
     show_in_library = false,
     flags = {'hidden'},
     order = 'c[automated-construction]-a[blueprint]-no-picker'

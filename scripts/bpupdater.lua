@@ -8,6 +8,7 @@
 --]]
 local Event = require('stdlib/event/event')
 local Player = require('stdlib/event/player')
+local Inventory = require('stdlib/entity/inventory')
 local lib = require('scripts/lib')
 
 local evt = defines.events
@@ -47,7 +48,7 @@ end
 -- Capabilities related to updating blueprints.
 function Updater.clone(event)
     local player, pdata = Player.get(event.player_index)
-    local bp = lib.get_blueprint(player.cursor_stack, true)
+    local bp = Inventory.get_blueprint(player.cursor_stack, true)
     if bp then
         local updater = {
             name = bp.name,

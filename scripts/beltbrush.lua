@@ -6,6 +6,7 @@ local Gui = require('stdlib/event/gui')
 local Player = require('stdlib/event/player')
 local Position = require('stdlib/area/position')
 local Area = require('stdlib/area/area')
+local Inventory = require('stdlib/entity/inventory')
 local Pad = require('scripts/adjustment-pad')
 local lib = require('scripts/lib')
 
@@ -36,7 +37,7 @@ end
 local function revive_belts(event)
     local player = Player.get(event.player_index)
     local ent = event.created_entity
-    if ent.name == 'entity-ghost' and match_to_revive[ent.ghost_type] and lib.is_named_bp(player.cursor_stack, 'Belt Brush') then
+    if ent.name == 'entity-ghost' and match_to_revive[ent.ghost_type] and Inventory.is_named_bp(player.cursor_stack, 'Belt Brush') then
         local ghost = event.created_entity
         local name = ghost.ghost_name
         if Position.distance(player.position, ghost.position) <= player.build_distance + 1 then
@@ -94,15 +95,15 @@ local function create_or_destroy_bp(player, lanes)
 
     if name then
         if lanes > 1 then
-            if not lib.is_named_bp(stack, 'Belt Brush') and player.clean_cursor() then
+            if not Inventory.is_named_bp(stack, 'Belt Brush') and player.clean_cursor() then
                 stack = lib.get_planner(player, 'blueprint', 'Belt Brush')
                 stack.clear_blueprint()
             end
-            if lib.get_blueprint(player.cursor_stack, false) then
+            if Inventory.get_blueprint(player.cursor_stack, false) then
                 build_beltbrush(stack, name, lanes)
             end
-        elseif lib.is_named_bp(stack, 'Belt Brush') and lanes == 1 then
-            for _, inv in pairs(lib.get_main_inventories(player)) do
+        elseif Inventory.is_named_bp(stack, 'Belt Brush') and lanes == 1 then
+            for _, inv in pairs(Inventory.get_main_inventories(player)) do
                 local item = inv.find_item_stack(name)
                 if item then
                     stack.set_stack(item) -- set the cursor stack to the item
@@ -267,7 +268,7 @@ end
 -- pressing a third time will revert to brush width
 local function beltbrush_corners(event)
     local player = Player.get(event.player_index)
-    if lib.is_named_bp(player.cursor_stack, 'Belt Brush') then
+    if Inventory.is_named_bp(player.cursor_stack, 'Belt Brush') then
         local stack = player.cursor_stack
         local stored = tonumber(Pad.get_or_create_adjustment_pad(player, 'beltbrush')['beltbrush_text_box'].text)
         local bp_ents = stack.get_blueprint_entities()
@@ -379,7 +380,7 @@ end
 -- Subsequent key presses will cycle through the availble balancers
 local function beltbrush_balancers(event)
     local player = Player.get(event.player_index)
-    if lib.is_named_bp(player.cursor_stack, 'Belt Brush') then
+    if Inventory.is_named_bp(player.cursor_stack, 'Belt Brush') then
         local stack = player.cursor_stack
         local lanes = tonumber(Pad.get_or_create_adjustment_pad(player, 'beltbrush')['beltbrush_text_box'].text)
         local bp = stack.get_blueprint_entities()
@@ -444,8 +445,8 @@ Event.register('picker-beltbrush-balancers', beltbrush_balancers)
 -- When a blueprint is placed check to see if it is a beltbrush bp and if it is destroy matched ghosts underneath.
 local function placed_blueprint(event)
     local player, pdata = Player.get(event.player_index)
-    local stack = lib.get_blueprint(player.cursor_stack, true)
-    if stack and lib.is_named_bp(stack, 'Belt Brush') and (pdata.last_ghost_check or 0) <= event.tick - 2 then --and not stack.label:find("Belt Brush %d+") then
+    local stack = Inventory.get_blueprint(player.cursor_stack, true)
+    if stack and Inventory.is_named_bp(stack, 'Belt Brush') and (pdata.last_ghost_check or 0) <= event.tick - 2 then --and not stack.label:find("Belt Brush %d+") then
         local corners = {lx = 0, ly = 0, rx = 0, ry = 0}
         --Create a bounding box from the blueprint entities.
         table.each(
@@ -489,9 +490,9 @@ local function increase_decrease_reprogrammer(event, change)
     local player = Player.get(event.player_index)
     if player.cursor_stack and player.cursor_stack.valid_for_read then
         local stack = player.cursor_stack
-        if get_match(stack) or lib.is_named_bp(stack, 'Belt Brush') then
+        if get_match(stack) or Inventory.is_named_bp(stack, 'Belt Brush') then
             local text_field = Pad.get_or_create_adjustment_pad(player, 'beltbrush')['beltbrush_text_box']
-            local lanes = lib.is_named_bp(stack, 'Belt Brush') and stack.label:match('%d+') or tonumber(text_field.text)
+            local lanes = Inventory.is_named_bp(stack, 'Belt Brush') and stack.label:match('%d+') or tonumber(text_field.text)
             if event.element and event.element.name == 'beltbrush_text_box' and not tonumber(event.element.text) then
                 return
             elseif event.element and event.element.name == 'beltbrush_text_box' then
@@ -500,7 +501,7 @@ local function increase_decrease_reprogrammer(event, change)
                 lanes = lanes and math.min(math.max(1, lanes + (change or 0)), 32) or 1
             end
             text_field.text = lanes or 1
-            if not (lib.is_named_bp(stack, 'Belt Brush') and not change) then
+            if not (Inventory.is_named_bp(stack, 'Belt Brush') and not change) then
                 create_or_destroy_bp(player, lanes or 1)
             end
         else
@@ -514,7 +515,7 @@ end
 local function adjust_pad(event)
     local player = Player.get(event.player_index)
     if lib.get_or_create_main_left_flow(player, 'picker')['beltbrush_frame_main'] then
-        if get_match(player.cursor_stack) or lib.is_named_bp(player.cursor_stack, 'Belt Brush') then
+        if get_match(player.cursor_stack) or Inventory.is_named_bp(player.cursor_stack, 'Belt Brush') then
             if event.input_name == 'adjustment-pad-increase' then
                 increase_decrease_reprogrammer(event, 1)
             elseif event.input_name == 'adjustment-pad-decrease' then
