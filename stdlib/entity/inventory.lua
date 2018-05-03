@@ -121,4 +121,29 @@ function Inventory.each_reverse(inventory, func, ...)
     return index and inventory[index]
 end
 
+function Inventory.get_main_inventories(player)
+    return {player.get_quickbar(), player.get_main_inventory()}
+end
+
+function Inventory.get_blueprint(stack, is_bp_setup, no_book)
+    if stack and stack.valid and stack.valid_for_read then
+        if stack.is_blueprint then
+            return not is_bp_setup and stack or stack.is_blueprint_setup() and stack
+        elseif stack.is_blueprint_book and not no_book and stack.active_index then
+            return Inventory.get_blueprint(stack.get_inventory(defines.inventory.item_main)[stack.active_index], is_bp_setup)
+        end
+    end
+end
+
+function Inventory.is_named_bp(stack, name)
+    return stack and stack.valid_for_read and stack.is_blueprint and stack.label and stack.label:find('^' .. name)
+end
+
+-- Returns either the item at a position, or the filter
+-- at the position if there isn't an item there
+function Inventory.get_item_or_filter(inventory, n, item_only, filter_only)
+    local filter = not item_only and inventory.get_filter(n)
+    return filter or (not filter_only and inventory[n].valid_for_read and inventory[n].name) or nil
+end
+
 return Inventory
