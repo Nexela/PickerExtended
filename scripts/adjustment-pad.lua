@@ -5,17 +5,17 @@ local Pad = {}
 local Event = require('stdlib/event/event')
 local lib = require('scripts/lib')
 
-Event.adjustment_pad = Event.generate_event_name('adjustment_pad')
+local adjustment_pad = Event.generate_event_name('adjustment_pad')
 Event.register(
     'adjustment-pad-increase',
     function(event)
-        script.raise_event(Event.adjustment_pad, event)
+        script.raise_event(adjustment_pad, event)
     end
 )
 Event.register(
     'adjustment-pad-decrease',
     function(event)
-        script.raise_event(Event.adjustment_pad, event)
+        script.raise_event(adjustment_pad, event)
     end
 )
 

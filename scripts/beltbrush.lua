@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------------
---[Belt Brush]-- -- .16 can possibly use item_stack.import/export
+--[Belt Brush]--
 -------------------------------------------------------------------------------
 local Event = require('stdlib/event/event')
 local Gui = require('stdlib/event/gui')
@@ -30,7 +30,21 @@ local match_to_revive = {
 }
 
 local function get_match(stack)
-    return stack.valid_for_read and stack.prototype.place_result and match_to_brush[stack.prototype.place_result.type or 'nil']
+    --return stack.valid_for_read and stack.prototype.place_result and match_to_brush[stack.prototype.place_result.type or 'nil']
+    if stack.valid_for_read then
+        if stack.prototype.place_result and match_to_brush[stack.prototype.place_result.type or 'nil'] then
+            return stack.prototype.place_result.name
+        elseif stack.is_blueprint and stack.is_blueprint_setup() then
+            local ent =
+                table.find(
+                stack.get_blueprint_entities(),
+                function(v)
+                    return match_to_brush[game.entity_prototypes[v.name].type]
+                end
+            )
+            return ent and ent.name
+        end
+    end
 end
 
 --Revive belts in build range when using belt brush blueprints
@@ -79,24 +93,12 @@ end
 
 local function create_or_destroy_bp(player, lanes)
     local stack = player.cursor_stack
-    local name
-    if get_match(stack) then
-        name = stack.prototype.place_result.name
-    elseif stack.is_blueprint_setup() then
-        local ent =
-            table.find(
-            stack.get_blueprint_entities(),
-            function(v)
-                return match_to_brush[game.entity_prototypes[v.name].type]
-            end
-        )
-        name = ent and ent.name
-    end
+    local name = get_match(stack)
 
     if name then
         if lanes > 1 then
-            if not Inventory.is_named_bp(stack, 'Belt Brush') and player.clean_cursor() then
-                stack = lib.get_planner(player, 'blueprint', 'Belt Brush')
+            if not (Inventory.is_named_bp(stack, 'Belt Brush') or Inventory.is_named_bp(stack, 'Pipette Blueprint')) and player.clean_cursor() then
+                stack = lib.get_planner(player, 'picker-dummy-blueprint', 'Belt Brush')
                 stack.clear_blueprint()
             end
             if Inventory.get_blueprint(player.cursor_stack, false) then
@@ -380,10 +382,10 @@ end
 -- Subsequent key presses will cycle through the availble balancers
 local function beltbrush_balancers(event)
     local player = Player.get(event.player_index)
-    if Inventory.is_named_bp(player.cursor_stack, 'Belt Brush') then
-        local stack = player.cursor_stack
+    local stack = player.cursor_stack
+    if Inventory.is_named_bp(stack, 'Belt Brush') --[[or get_match(stack)]] then
         local lanes = tonumber(Pad.get_or_create_adjustment_pad(player, 'beltbrush')['beltbrush_text_box'].text)
-        local bp = stack.get_blueprint_entities()
+        local bp = stack.is_blueprint and stack.is_blueprint_setup() and stack.get_blueprint_entities()
         local belt =
             table.find(
             bp,
@@ -524,7 +526,7 @@ local function adjust_pad(event)
         end
     end
 end
-Event.register(Event.adjustment_pad, adjust_pad)
+Event.register(Event.generate_event_name('adjustment_pad'), adjust_pad)
 
 Gui.on_text_changed(
     'beltbrush_text_box',

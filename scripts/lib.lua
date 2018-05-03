@@ -161,7 +161,7 @@ end
 
 function lib.get_planner(player, planner, label)
     local found
-    for _, inventory in pairs(Inventory.get_main_inventories()) do
+    for _, inventory in pairs(Inventory.get_main_inventories(player)) do
         for i = 1, #inventory do
             local slot = inventory[i]
             if slot.valid_for_read then

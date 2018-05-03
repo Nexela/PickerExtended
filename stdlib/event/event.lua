@@ -13,7 +13,6 @@
 -- @module Event
 -- @usage local Event = require('stdlib/event/event')
 
-
 local table = require('stdlib/utils/table')
 
 --Holds the event registry
@@ -399,7 +398,7 @@ function Event.counts(reg_type)
                 init = init + #registry
             elseif id == 'on_configuration_changed' then
                 config = config + #registry
-            elseif id == 'load' then
+            elseif id == 'on_load' then
                 load = load + #registry
             else
                 events = events + #registry
@@ -423,21 +422,24 @@ function Event.dump_data()
         return script.mod_name .. '/Events/' .. (name or '_') .. '.lua'
     end
 
-    local _options = function(name)
-        return {comment = false, sparse = true, compact = true, indent = '  ', nocode = true, name = name or nil, metatostring = false}
-    end
-
     Event._counts_total = Event.counts()
-    game.write_file(log_file('registry'), inspect(event_registry))
     game.write_file(log_file('Event'), inspect(Event))
+
+    local custom_to_string = table.invert(Event.custom_events)
+
+    local r = {}
+    for event, data in pairs(event_registry) do
+        r[Event.event_names[event] or custom_to_string[event] or event] = data
+    end
+    game.write_file(log_file('registry'), inspect(r, {longkeys = true, arraykeys = true}))
 
     local t = {}
     for event in pairs(event_registry) do
         if valid_event_id(event) then
-            t[event] = script.get_event_handler(event)
+            t[Event.event_names[event] or custom_to_string[event] or event] = script.get_event_handler(event)
         end
     end
-    game.write_file(log_file('registered_events'), inspect(t))
+    game.write_file(log_file('registered_events'), inspect(t, {longkeys = true, arraykeys = true}))
 end
 
 --- Filters events related to entity_type.

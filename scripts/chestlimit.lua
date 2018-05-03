@@ -55,7 +55,7 @@ local function adjust_limit_pad(event)
         end
     end
 end
-Event.register(Event.adjustment_pad, adjust_limit_pad)
+Event.register(Event.generate_event_name('adjustment_pad'), adjust_limit_pad)
 
 Gui.on_text_changed(
     'chestlimit_text_box',

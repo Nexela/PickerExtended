@@ -67,7 +67,7 @@ Event.register(defines.events.on_player_cursor_stack_changed, show_bp_tools)
 -- Blueprint when running out of items
 local function blueprint_single_entity(player, pdata, entity, target_name, area)
     if area:size() > 0 then
-        local bp = lib.get_planner(player, 'blueprint', 'Pipette Blueprint')
+        local bp = lib.get_planner(player, 'picker-dummy-blueprint', 'Pipette Blueprint')
         if bp then
             bp.clear_blueprint()
             bp.label = 'Pipette Blueprint'
@@ -200,7 +200,7 @@ local function create_quick_pick_blueprint(event)
                     position = Position.translate({x, y}, defines.direction.northeast, item.place_result.building_grid_bit_shift)
                 }
             }
-            lib.get_planner(player, 'blueprint', 'Pipette Blueprint')
+            lib.get_planner(player, 'picker-dummy-blueprint', 'Pipette Blueprint')
             local ok =
                 pcall(
                 function()
