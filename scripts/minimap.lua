@@ -2,7 +2,7 @@
 --[Picker Hide Minimap]-- TODO add hotkeys to enable/disable map and other elements
 -------------------------------------------------------------------------------
 local Event = require('stdlib/event/event')
-local hide_types = table.array_to_dictionary {'logistic-container', 'electric-pole', 'roboport'}
+local hide_types = table.array_to_dictionary {'logistic-container', 'electric-pole', 'roboport', 'container'}
 
 local function picker_hide_minimap(event)
     local player = game.players[event.player_index]
@@ -19,10 +19,9 @@ end
 Event.register(defines.events.on_selected_entity_changed, picker_hide_minimap)
 
 local function update_minimap_settings(event)
-    local player = game.players[event.player_index]
     --Toggle minimap back on when switching settings just in case
     if event.setting == 'picker-hide-minimap' then
-        player.game_view_settings.show_minimap = true
+        game.players[event.player_index].game_view_settings.show_minimap = true
     end
 end
 Event.register(defines.events.on_runtime_mod_setting_changed, update_minimap_settings)

@@ -9,6 +9,7 @@ MOD.if_name = 'picker'
 MOD.DEBUG = settings.startup['picker-debug'] and settings.startup['picker-debug'].value or false
 
 local Event = require('stdlib/event/event')
+Event.protected_mode = MOD.DEBUG
 local Changes = require('stdlib/event/changes')
 local Player = require('stdlib/event/player')
 local Force = require('stdlib/event/force')
@@ -63,8 +64,13 @@ require('scripts/vehicles')
 require('scripts/helmod')
 require('scripts/notes')
 require('scripts/coloredbooks')
+require('scripts/nakedrails')
 --)) Picker Scripts ((--
 
 --(( Remote Interfaces ))--
 local interface = require('interface')
 remote.add_interface(MOD.if_name, interface) --))
+
+if MOD.DEBUG then
+    Event.register(Event.core_events.init, Event.dump_data)
+end

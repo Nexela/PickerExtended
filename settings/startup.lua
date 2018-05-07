@@ -17,6 +17,13 @@ data:extend {
     },
     {
         type = 'bool-setting',
+        name = 'picker-naked-rails',
+        setting_type = 'startup',
+        default_value = true,
+        order = 'picker[startup][naked-rails]'
+    },
+    {
+        type = 'bool-setting',
         name = 'picker-tool-tape-measure',
         setting_type = 'startup',
         default_value = true,
