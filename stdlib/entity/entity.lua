@@ -235,7 +235,6 @@ function Entity.revive(ghost, player_index, raise_script_event)
     end
 end
 
--- TODO Move to stdlib/entity
 function Entity.damaged(entity)
     return entity.health and entity.prototype.max_health and entity.health < entity.prototype.max_health
 end
