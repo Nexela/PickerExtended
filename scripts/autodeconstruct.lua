@@ -33,11 +33,11 @@ end
 local targets = table.array_to_dictionary({'container', 'logistic-container'})
 
 local function check_for_deconstruction(drill)
-    if not drill.to_be_deconstructed(drill.force) and Entity.can_decon(drill) and not has_resources(drill) and not Entity.has_fluidbox(drill) and not Entity.is_circuit_connected(drill) then
+    if not drill.to_be_deconstructed(drill.force) and Entity.can_deconstruct(drill) and not has_resources(drill) and not Entity.has_fluidbox(drill) and not Entity.is_circuit_connected(drill) then
         if drill.order_deconstruction(drill.force) then
             if settings.global['picker-autodeconstruct-target'].value then
                 local target = drill.drop_target
-                if target and targets[target.type] and not Entity.is_circuit_connected(target) and Entity.can_decon(target) and target.force == drill.force then
+                if target and targets[target.type] and not Entity.is_circuit_connected(target) and Entity.can_deconstruct(target) and target.force == drill.force then
                     local targeters = find_targeters(target)
                     if #targeters <= 0 then
                         target.order_deconstruction(drill.force)
