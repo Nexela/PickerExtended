@@ -74,18 +74,40 @@ function Data:is_class(class)
     end
 end
 
+function Data:print(...)
+    local arr = {}
+    for _ , key in pairs({...}) do
+        arr[#arr + 1] = Inspect(self[key])
+    end
+        print(table.unpack(arr))
+    return self
+end
+
 function Data:log(tbl)
-    local _class = {self.class, _class = self._class}
-    local no_meta = function(item, _path)
-        if item == (self.class or self) then
-            return _class
+    local reduce_spam = function(item, path)
+        -- if item == self.class then
+        --     return {item._class, self._class}
+        -- end
+        if item == Data._object_mt then
+            return {self._class, tostring(self)}
         end
-        if item == Data.object_mt then
-            return _class
+        if path[#path] == 'parent' then
+            return {tostring(item), item._class}
+        end
+        if path[#path] == 'class' then
+            return {self._class, item._class}
+        end
+        if path[#path] == Inspect.METATABLE then
+            return {self._class or item._class, item._class}
         end
         return item
     end
-    log(Inspect(tbl and tbl or self, {process = no_meta}))
+    log(Inspect(tbl and tbl or self, {process = reduce_spam}))
+    return self
+end
+
+function Data:serpent()
+    log(serpent.block(self, {name = self.name, metatostring = false, nocode = true, comment = false}))
     return self
 end
 
@@ -98,7 +120,7 @@ end
 -- @tparam boolean bool
 -- @treturn self
 function Data:continue(bool)
-    rawset(self, 'valid', (bool and rawget(self, 'raw') and self.type) or false)
+    rawset(self, 'valid', (bool and rawget(self, '_raw') and self.type) or false)
     return self
 end
 
@@ -106,7 +128,7 @@ end
 -- @tparam function func the function to test, self is passed as the first paramater
 -- @treturn self
 function Data:continue_if(func, ...)
-    rawset(self, 'valid', (func(self, ...) and rawget(self, 'raw') and self.type) or false)
+    rawset(self, 'valid', (func(self, ...) and rawget(self, '_raw') and self.type) or false)
     return self
 end
 
@@ -121,7 +143,7 @@ function Data:extend(force)
                 t = {}
                 data.raw[self.type] = t
             end
-            t[self.name] = self.raw
+            t[self.name] = self._raw
             self.extended = true
         end
     end
@@ -137,7 +159,7 @@ function Data:copy(new_name, mining_result)
     if self:is_valid() then
         mining_result = mining_result or new_name
         --local from = self.name
-        local copy = table.deep_copy(rawget(self, 'raw'))
+        local copy = table.deep_copy(rawget(self, '_raw'))
         copy.name = new_name
 
         -- For Entities
@@ -421,6 +443,7 @@ end
 -- @tparam[opt] table opts options to pass
 -- @treturn Object
 function Data:get(object, object_type, opts)
+
     Is.Assert(object, 'object string or table is required')
 
     -- Create our middle man container object
@@ -436,7 +459,7 @@ function Data:get(object, object_type, opts)
     if type(object) == 'table' then
         Is.Assert(object.type and object.name, 'Name and Type are required')
 
-        new.raw = object
+        new._raw = object
         new.valid = object.type
         --Is a data-raw that we are overwriting
         local existing = data.raw[object.type] and data.raw[object.type][object.name]
@@ -450,9 +473,9 @@ function Data:get(object, object_type, opts)
         local types = (object_type and {object_type}) or (self._class == 'Item' and groups.item_and_fluid)
         if types then
             for _, type in pairs(types) do
-                new.raw = data.raw[type] and data.raw[type][object]
-                if new.raw then
-                    new.valid = new.raw.type
+                new._raw = data.raw[type] and data.raw[type][object]
+                if new._raw then
+                    new.valid = new._raw.type
                     new.extended = true
                     break
                 end
@@ -462,7 +485,7 @@ function Data:get(object, object_type, opts)
         end
     end
 
-    setmetatable(new, self.object_mt)
+    setmetatable(new, self._object_mt)
     if new.valid then
         new:set_string_array('flags')
         new:set_string_array('crafting_categories')
@@ -481,27 +504,17 @@ function Data:get(object, object_type, opts)
 end
 Data.__call = Data.get
 
-Data.object_mt = {
+Data._object_mt = {
     __index = function(t, k)
-        return rawget(t, 'raw') and t.raw[k] or t.class[k]
+        return rawget(t, '_raw') and t._raw[k] or t.class[k]
     end,
     __newindex = function(t, k, v)
-        if rawget(t, 'valid') and rawget(t, 'raw') then
-            t.raw[k] = v
+        if rawget(t, 'valid') and rawget(t, '_raw') then
+            t._raw[k] = v
         end
     end,
     __call = function(t, ...) return t:__call(...) end,
     __tostring = Data.tostring,
 }
---)) Methods ((--
-
---(( TESTS ))--
--- require('spec/setup/dataloader')
--- _G.log = function(m) print(m) end
-
--- local b = Data('stone-furnace', 'recipe')
--- for _, d in b:pairs() do
---     print(d, d._class)
--- end
 
 return Data

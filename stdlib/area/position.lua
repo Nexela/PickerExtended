@@ -7,18 +7,11 @@
 -- @see defines.direction
 
 local Position = {
-    _module = 'Position'
+    _module = 'Position',
+    __index = require('stdlib/core')
 }
-setmetatable(Position, require('stdlib/core'))
+setmetatable(Position, Position)
 local Is = require('stdlib/utils/is')
-
-function Position._caller(_, ...)
-    if type((...)) == 'table' then
-        return Position.new(...)
-    else
-        return Position.construct(...)
-    end
-end
 
 local MAX_UINT = 4294967296
 local floor = math.floor
@@ -31,6 +24,14 @@ Position.immutable = false
 -- @return epsilon
 Position.epsilon = 1.19e-07
 
+Position.__call = function(_, ...)
+    if type((...)) == 'table' then
+        return Position.new(...)
+    else
+        return Position.construct(...)
+    end
+end
+
 --- Returns a correctly formated position object.
 -- @usage Position.new({0, 0}) -- returns {x = 0, y = 0}
 -- @tparam Concepts.Position pos the position table or array to convert
@@ -40,12 +41,12 @@ function Position.new(pos, new_copy)
     Is.Assert.Table(pos, 'missing position argument')
 
     local copy = new_copy or Position.immutable
-    if not copy and getmetatable(pos) == Position then
+    if not copy and getmetatable(pos) == Position._mt then
         return pos
     end
 
     local new = {x = pos.x or pos[1], y = pos.y or pos[2]}
-    return setmetatable(new, Position)
+    return setmetatable(new, Position._mt)
 end
 
 --- Creates a table representing the position from x and y.
@@ -75,7 +76,7 @@ end
 -- @treturn Concepts.Position the position with metatable attached
 function Position.load(pos)
     Is.Assert.Position(pos, 'position missing or malformed')
-    return setmetatable(pos, Position)
+    return setmetatable(pos, Position._mt)
 end
 
 --- Adds two positions.
@@ -420,7 +421,7 @@ end
 
 --- Position tables are returned with these metamethods attached
 -- @table Metamethods
-local _metamethods = {
+Position._mt = {
     __index = Position, -- If key is not found, see if there is one availble in the Position module.
     __tostring = Position.tostring, -- Returns a string representation of the position
     __add = Position.add, -- Adds two position together.
@@ -431,9 +432,5 @@ local _metamethods = {
     __concat = Position._concat, -- calls tostring on both sides of concact.
     __call = Position.copy
 }
-
-for k, v in pairs(_metamethods) do
-    Position[k] = v
-end
 
 return Position

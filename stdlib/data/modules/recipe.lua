@@ -1,31 +1,31 @@
 --- Recipe class
 -- @classmod Recipe
--- luacheck: ignore
 
 local Recipe = {
-    _class = 'Recipe'
+    _class = 'Recipe',
+    __index = require('stdlib/data/data'),
+    __call = function(self, recipe) return self:get(recipe, 'recipe') end
 }
-setmetatable(Recipe, require('stdlib/data/data'))
+setmetatable(Recipe, Recipe)
 
 local Is = require('stdlib/utils/is')
 local Item = require('stdlib/data/item')
 
-function Recipe:_caller(recipe)
-    local new = self:get(recipe, 'recipe')
-    return new
-end
+-- function Recipe:__call(recipe)
+--     local new = self:get(recipe, 'recipe')
+--     rawset(new, 'is_difficult', new.normal ~= nil)
+--     return new
+-- end
 
 local Products = require('stdlib/data/modules/products')
-function Recipe:Ingredients(recipe, type, difficulty)
-    Is.Assert(self:valid('recipe'), 'Invalid recipe')
-    return Products('ingredients', difficulty)
+
+function Recipe:Ingredients()
+    return Products(self, 'ingredients')
+end
+Recipe.Ing = Recipe.Ingredients
+
+function Recipe:Results()
+    return Products(self, 'results')
 end
 
-function Recipe:Results(recipe, type, difficutly)
-    Is.Assert(self:valid('recipe'), 'Invalid recipe')
-    return Products('results', difficulty)
-end
-
---(( TESTS ))--
-require('spec/setup/dataloader')
-print(inspect(Recipe('stone-furnace'):Ingredients()))
+return Recipe
