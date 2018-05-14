@@ -27,7 +27,7 @@ Force.register_events()
 if MOD.DEBUG then
     log(MOD.name .. ' Debug mode enabled')
     require('stdlib/core').create_stdlib_globals()
-    require('stdlib/utils/scripts/quickstart')
+    require('stdlib/scripts/quickstart')
 end
 
 --(( Picker Scripts ))--
