@@ -63,6 +63,13 @@ data:extend {
         setting_type = 'startup',
         default_value = true,
         order = 'picker[startup]-edge-snap'
+    },
+    {
+        type = 'bool-setting',
+        name = 'picker-transfer-settings-death',
+        setting_type = 'startup',
+        default_value = true,
+        order = 'picker[startup]-transfer-settings'
     }
 }
 

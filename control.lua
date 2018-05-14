@@ -65,6 +65,7 @@ require('scripts/helmod')
 require('scripts/notes')
 require('scripts/coloredbooks')
 require('scripts/nakedrails')
+require('scripts/playerdeath')
 --)) Picker Scripts ((--
 
 --(( Remote Interfaces ))--

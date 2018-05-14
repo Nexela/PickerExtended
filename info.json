@@ -5,7 +5,7 @@
   "title": "Picker Extended Version",
   "author": "Tinyboss, Nexela",
   "contact": "nexela@gmail.com",
-  "dependencies": ["base >= 0.16.0"],
+  "dependencies": ["base >= 0.16.42"],
   "homepage": "https://forums.factorio.com/viewtopic.php?f=93&t=14695",
   "description": "Enhances the players pipette tool with features such as quick blueprints, quick planners, ghost reviving, entity moving, orphan finding and more"
 }
