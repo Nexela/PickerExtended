@@ -92,10 +92,10 @@ function Data:log(tbl)
             return {self._class, tostring(self)}
         end
         if path[#path] == 'parent' then
-            return {tostring(item), item._class}
+            return {item._class, tostring(item)}
         end
         if path[#path] == 'class' then
-            return {self._class, item._class}
+            return {item._class, self._class}
         end
         if path[#path] == Inspect.METATABLE then
             return {self._class or item._class, item._class}
@@ -120,7 +120,7 @@ end
 -- @tparam boolean bool
 -- @treturn self
 function Data:continue(bool)
-    rawset(self, 'valid', (bool and rawget(self, '_raw') and self.type) or false)
+    rawset(self, 'valid', (bool and rawget(self, 'raw') and self.type) or false)
     return self
 end
 
@@ -128,7 +128,7 @@ end
 -- @tparam function func the function to test, self is passed as the first paramater
 -- @treturn self
 function Data:continue_if(func, ...)
-    rawset(self, 'valid', (func(self, ...) and rawget(self, '_raw') and self.type) or false)
+    rawset(self, 'valid', (func(self, ...) and rawget(self, 'raw') and self.type) or false)
     return self
 end
 
@@ -143,7 +143,7 @@ function Data:extend(force)
                 t = {}
                 data.raw[self.type] = t
             end
-            t[self.name] = self._raw
+            t[self.name] = self.raw
             self.extended = true
         end
     end
@@ -159,7 +159,7 @@ function Data:copy(new_name, mining_result)
     if self:is_valid() then
         mining_result = mining_result or new_name
         --local from = self.name
-        local copy = table.deep_copy(rawget(self, '_raw'))
+        local copy = table.deep_copy(rawget(self, 'raw'))
         copy.name = new_name
 
         -- For Entities
@@ -459,7 +459,7 @@ function Data:get(object, object_type, opts)
     if type(object) == 'table' then
         Is.Assert(object.type and object.name, 'Name and Type are required')
 
-        new._raw = object
+        new.raw = object
         new.valid = object.type
         --Is a data-raw that we are overwriting
         local existing = data.raw[object.type] and data.raw[object.type][object.name]
@@ -473,9 +473,9 @@ function Data:get(object, object_type, opts)
         local types = (object_type and {object_type}) or (self._class == 'Item' and groups.item_and_fluid)
         if types then
             for _, type in pairs(types) do
-                new._raw = data.raw[type] and data.raw[type][object]
-                if new._raw then
-                    new.valid = new._raw.type
+                new.raw = data.raw[type] and data.raw[type][object]
+                if new.raw then
+                    new.valid = new.raw.type
                     new.extended = true
                     break
                 end
@@ -506,11 +506,11 @@ Data.__call = Data.get
 
 Data._object_mt = {
     __index = function(t, k)
-        return rawget(t, '_raw') and t._raw[k] or t.class[k]
+        return rawget(t, 'raw') and t.raw[k] or t.class[k]
     end,
     __newindex = function(t, k, v)
-        if rawget(t, 'valid') and rawget(t, '_raw') then
-            t._raw[k] = v
+        if rawget(t, 'valid') and rawget(t, 'raw') then
+            t.raw[k] = v
         end
     end,
     __call = function(t, ...) return t:__call(...) end,
