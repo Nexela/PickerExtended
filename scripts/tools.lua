@@ -118,7 +118,7 @@ local function paparazzi(event)
         local pix_per_tile = 32 * _zoom
         local max_dist = (_aa and 256 / _zoom) or 512 / _zoom
 
-        local area = event.area
+        local area = Area(event.area):round_to_integer()
         local diffx = area.right_bottom.x - area.left_top.x
         local diffy = area.right_bottom.y - area.left_top.y
 
