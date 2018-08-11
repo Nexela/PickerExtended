@@ -8,14 +8,19 @@
 
 local Position = {
     _module = 'Position',
+    __class = 'Position',
     __index = require('stdlib/core')
 }
 setmetatable(Position, Position)
 
 local Is = require('stdlib/utils/is')
+local string = require('stdlib/utils/string')
+local math = require('stdlib/utils/math')
 local floor = math.floor
+local abs = math.abs
+local dirs = defines.direction
 
---- By default position tables are mutated in place set this to true to make the tables immutable.
+--- By default position methods mutate the table in place. Set this to true to make the position immutable.
 Position.immutable = false
 
 --- Machine Epsilon
@@ -23,9 +28,15 @@ Position.immutable = false
 -- @return epsilon
 Position.epsilon = 1.19e-07
 
+--- Constructor Methods
+-- @section Constructors
+
 Position.__call = function(_, ...)
-    if type((...)) == 'table' then
+    local t = type((...))
+    if t == 'table' then
         return Position.new(...)
+    elseif t == 'string' then
+        Position.from_string(...)
     else
         return Position.construct(...)
     end
@@ -59,8 +70,8 @@ function Position.construct(...)
     local t = (type(args[1]) == 'table' and 1) or 0
 
     local x = args[1 + t] or 0
-    local y = args[2 + t] or 0
-    return Position.new({x = x, y = y})
+    local y = args[2 + t] or x or 0
+    return setmetatable({x = x, y = y}, Position._mt)
 end
 
 --- Creates a position that is a copy of the given position.
@@ -78,26 +89,91 @@ function Position.load(pos)
     return setmetatable(pos, Position._mt)
 end
 
+--- Converts a position string to a position.
+-- @tparam string pos_string the position to convert
+-- @treturn Concepts.Position
+function Position.from_string(pos_string)
+    return Position(load('return ' .. pos_string)())
+end
+
+--- Converts a string key position to a position.
+-- @tparam string pos_string the position to convert
+-- @treturn Concepts.Position
+function Position.from_key(pos_string)
+    -- local t = string.split(pos_string, '/')
+    -- for k, v in pairs(t) do
+    --     t[k] = tonumber(v)
+    -- end
+    -- return Position(t)
+    return Position(string.split(pos_string, '/', false, tonumber))
+end
+
+--- Position Methods
+-- @section Methods
+
 --- Adds two positions.
 -- @tparam Concepts.Position pos1 the first position
--- @tparam Concepts.Position pos2 the second position or vector
--- @treturn Concepts.Position a new position &rarr; { x = pos1.x + pos2.x, y = pos1.y + pos2.y}
-function Position.add(pos1, ...)
-    pos1 = Position.new(pos1)
-    local pos2 = Position(...)
-
-    return Position.new({x = pos1.x + pos2.x, y = pos1.y + pos2.y})
+-- @tparam Concepts.Position pos2 the second position
+-- @treturn Concepts.Position pos1 with pos2 added
+function Position.add(pos1, pos2)
+    pos1, pos2 = Position(pos1), Position(pos2)
+    pos1.x = pos1.x + pos2.x
+    pos1.y = pos1.y + pos2.y
+    return pos1
 end
 
 --- Subtracts two positions.
 -- @tparam Concepts.Position pos1 the first position
 -- @tparam Concepts.Position pos2 the second position
--- @treturn Concepts.Position a new position &rarr; { x = pos1.x - pos2.x, y = pos1.y - pos2.y }
-function Position.subtract(pos1, ...)
-    pos1 = Position.new(pos1)
-    local pos2 = Position(...)
+-- @treturn Concepts.Position pos1 with pos2 subtracted
+function Position.subtract(pos1, pos2)
+    pos1, pos2 = Position(pos1), Position(pos2)
+    pos1.x = pos1.x - pos2.x
+    pos1.y = pos1.y - pos2.y
+    return pos1
+end
 
-    return Position.new({x = pos1.x - pos2.x, y = pos1.y - pos2.y})
+--- Multipies two positions.
+-- @tparam Concepts.Position pos1 the first position
+-- @tparam Concepts.Position pos2 the second position
+-- @treturn Concepts.Position pos1 multiplied with pos2
+function Position.multiply(pos1, pos2)
+    pos1, pos2 = Position(pos1), Position(pos2)
+    pos1.x = pos1.x * pos2.x
+    pos1.y = pos1.y * pos2.y
+    return pos1
+end
+
+--- Divides two positions.
+-- @tparam Concepts.Position pos1 the first position
+-- @tparam Concepts.Position pos2 the second position
+-- @treturn Concepts.Position pos1 divided by pos2
+function Position.divide(pos1, pos2)
+    pos1, pos2 = Position(pos1), Position(pos2)
+    pos1.x = pos1.x / pos2.x
+    pos1.y = pos1.y / pos2.y
+    return pos1
+end
+
+--- The middle of two positions
+-- @tparam Concepts.Position pos1 the first position
+-- @tparam Concepts.Position pos2 the second position
+-- @treturn Concepts.Position pos1 with pos2 subtracted
+function Position.between(pos1, pos2)
+    pos1, pos2 = Position(pos1), Position(pos2)
+    pos1.x = abs(pos2.x - pos1.x)
+    pos1.y = abs(pos2.y - pos1.y)
+    return pos1
+end
+
+--- Flip the signs of the position
+-- @tparam Concepts.Position pos
+-- @return Concenpts.position with flipped signs
+function Position.unary(pos)
+    pos = Position(pos)
+    pos.x = -pos.x
+    pos.y = -pos.y
+    return pos
 end
 
 --- Creates a position that is offset by x,y coordinates.
@@ -125,29 +201,101 @@ function Position.translate(pos, direction, distance)
     distance = distance or 1
     pos = Position.new(pos)
 
-    if direction == defines.direction.north then
+    if direction == dirs.north then
         pos.y = pos.y - distance
-    elseif direction == defines.direction.northeast then
+    elseif direction == dirs.northeast then
         pos.x = pos.x + distance
         pos.y = pos.y - distance
-    elseif direction == defines.direction.east then
+    elseif direction == dirs.east then
         pos.x = pos.x + distance
-    elseif direction == defines.direction.southeast then
+    elseif direction == dirs.southeast then
         pos.x = pos.x + distance
         pos.y = pos.y + distance
-    elseif direction == defines.direction.south then
+    elseif direction == dirs.south then
         pos.y = pos.y + distance
-    elseif direction == defines.direction.southwest then
+    elseif direction == dirs.southwest then
         pos.x = pos.x - distance
         pos.y = pos.y + distance
-    elseif direction == defines.direction.west then
+    elseif direction == dirs.west then
         pos.x = pos.x - distance
-    elseif direction == defines.direction.northwest then
+    elseif direction == dirs.northwest then
         pos.x = pos.x - distance
         pos.y = pos.y - distance
     end
     return pos
 end
+
+--- Perpindicular position.
+-- @tparam Concepts.Position pos
+-- @treturn Concepts.Position pos
+function Position.perpendicular(pos)
+    pos = Position.new(pos)
+    local old = pos.y
+    pos.y = pos.x
+    pos.x = -old
+    return pos
+end
+
+--- Flip the x and y coordinates.
+-- @tparam Concepts.Position pos
+-- @treturn Concepts.Position pos flipped.
+function Position.flip(pos)
+    pos = Position(pos)
+    local x, y = pos.x, pos.y
+    pos.x, pos.y = y, x
+    return pos
+end
+
+--- Gets the center position of the tile where the given position resides.
+-- @tparam Concepts.Position pos
+-- @treturn Concepts.Position the position at the center of the tile
+function Position.center(pos)
+    pos = Position.new(pos)
+
+    local x, y = pos.x, pos.y
+    x = x >= 0 and floor(x) + 0.5 or math.ceil(x) - 0.5
+    y = y >= 0 and floor(y) + 0.5 or math.ceil(y) - 0.5
+    pos.x = x
+    pos.y = y
+
+    return pos
+end
+
+--- Get the @{LuaTile.position|tile position} of a tile where the given position resides.
+-- @tparam Concepts.Position pos the position that resides somewhere in a tile
+-- @treturn LuaTile.position a new tile position
+function Position.tile_position(pos)
+    pos = Position.new(pos)
+    pos.x = floor(pos.x)
+    pos.y = floor(pos.y)
+
+    return pos
+end
+
+--- Gets the chunk position of a chunk where the specified position resides.
+-- @tparam Concepts.Position pos a position residing somewhere in a chunk
+-- @treturn Concepts.ChunkPosition a new chunk position
+-- @usage local chunk_x = Position.chunk_position(pos).x
+function Position.chunk_position(pos)
+    pos = Position.new(pos)
+    pos.x = floor(pos.x / 32)
+    pos.y = floor(pos.y / 32)
+    return pos
+end
+Position.to_chunk_position = Position.chunk_position
+
+--- Gets the left top tile position of a chunk from the chunk position.
+-- @tparam Concepts.Position pos
+-- @treturn Concepts.Position
+function Position.from_chunk_position(pos)
+    pos = Position.new(pos)
+    pos.x = (floor(pos.x) * 32)
+    pos.y = (floor(pos.y) * 32)
+    return pos
+end
+
+--- Position Functions
+-- @section Functions
 
 --- Increment a position each time it is called.
 -- This can be used to increment or even decrement a position quickly.
@@ -175,8 +323,8 @@ function Position.increment(pos, inc_x, inc_y, increment_initial)
     local x, y = pos.x, pos.y
     inc_x, inc_y = inc_x or 0, inc_y or 0
 
-    ---
-    -- @function increment_closure A closure which the @{increment} function returns.
+    --- A closure which the @{increment} function returns.
+    -- @function increment_closure
     --> Do not call this directly and do not store this in the global object.
     -- @see increment
     -- @tparam[opt=0] number new_inc_x
@@ -191,47 +339,38 @@ function Position.increment(pos, inc_x, inc_y, increment_initial)
             y = y
             increment_initial = true
         end
-        return Position.new({x, y})
+        return Position.load({x = x, y = y})
     end
 end
 
---- Gets the center position of a tile where the given position resides.
--- @tparam Concepts.Position pos the position which resides somewhere on a tile
--- @treturn Concepts.Position the position at the center of the tile
-function Position.center(pos)
-    pos = Position.new(pos)
+--- Return the average of the passed positions
+-- @tparam tuple ...
+-- @treturn Concepts.Position the Avg position of the positions
+function Position.average(...)
+    local positions = {...}
+    local n = #positions
+    Is.Assert(n > 0, 'average() called with 0 inputs')
 
-    local x, y = pos.x, pos.y
-    x = x >= 0 and floor(x) + 0.5 or math.ceil(x) - 0.5
-    y = y >= 0 and floor(y) + 0.5 or math.ceil(y) - 0.5
-    pos.x = x
-    pos.y = y
-
-    return pos
+    local avg = Position()
+    for i, pos in ipairs(positions) do
+        avg:add(pos)
+    end
+    return avg:divide(n)
 end
 
---- Get the @{LuaTile.position|tile position} of a tile where the given position resides.
--- @tparam Concepts.Position pos the position that resides somewhere in a tile
--- @treturn LuaTile.position a new tile position
-function Position.tile_position(pos)
+--- Is a position inside of an area.
+-- @tparam Concepts.Position pos The pos to check
+-- @tparam Concepts.BoundingBox area The area to check.
+-- @treturn boolean Is the position inside of the area.
+function Position.inside(pos, area)
+    local Area = require('stdlib/area/area')
     pos = Position.new(pos)
+    area = Area.new(area)
 
-    local x = floor(pos.x)
-    local y = floor(pos.y)
+    local lt = area.left_top
+    local rb = area.right_bottom
 
-    return Position.load {x = x, y = y}
-end
-
---- Gets the chunk position of a chunk where the specified position resides.
--- @tparam Concepts.Position pos a position residing somewhere in a chunk
--- @treturn Concepts.ChunkPosition a new chunk position
--- @usage local chunk_x = Position.chunk_position(pos).x
-function Position.chunk_position(pos)
-    pos = Position.new(pos)
-
-    local x, y = floor(pos.x / 32), floor(pos.y / 32)
-
-    return Position.load {x = x, y = y}
+    return pos.x >= lt.x and pos.y >= lt.y and pos.x <= rb.x and pos.y <= rb.y
 end
 
 --- Expands a position to a square area.
@@ -278,6 +417,8 @@ function Position.expand_to_chunk_area(pos)
 
     return Area.load {left_top = left_top, right_bottom = right_bottom}
 end
+--- @function Position.to_chunk_area
+-- @see Position.expand_to_chunk_area
 Position.to_chunk_area = Position.expand_to_chunk_area
 
 --- Converts a position to a string.
@@ -288,14 +429,7 @@ function Position.tostring(pos)
     return '{x = ' .. pos.x .. ', y = ' .. pos.y .. '}'
 end
 
---- Converts a position string to a position.
--- @tparam string pos the position to convert
--- @treturn Concepts.Position
-function Position.from_string(pos)
-    return Position(load('return ' .. pos)())
-end
-
---- Converts a position to a string suitable for using as a table index
+--- Converts a position to a string suitable for using as a table index.
 -- @tparam Concepts.Position pos the position to convert
 -- @treturn string
 function Position.to_key(pos)
@@ -303,11 +437,12 @@ function Position.to_key(pos)
     return pos.x .. '/' .. pos.y
 end
 
---- Converts a string key position to a position
--- @tparam string pos the position to convert
--- @treturn Concepts.Position
-function Position.from_key(pos)
-    return Position(pos:split('/'))
+--- Unpack a position into a tuple.
+-- @tparam Concepts.Position pos the position to unpack
+-- @treturn tuple x, y
+function Position.unpack(pos)
+    pos = Position.new(pos)
+    return pos.x, pos.y
 end
 
 --- Tests whether or not the two given positions are equal.
@@ -315,28 +450,29 @@ end
 -- @tparam Concepts.Position pos2 the second position
 -- @treturn boolean true if positions are equal
 function Position.equals(pos1, pos2)
-    if not pos1 or not pos2 then
+    if not (pos1 and pos2) then
         return false
     end
-    pos1 = Position.new(pos1)
-    pos2 = Position.new(pos2)
 
-    local epsilon = Position.epsilon
-    local abs = math.abs
-    return abs(pos1.x - pos2.x) < epsilon and abs(pos1.y - pos2.y) < epsilon
+    pos1, pos2 = Position(pos1), Position(pos2)
+    return abs(pos1.x - pos2.x) < Position.epsilon and abs(pos1.y - pos2.y) < Position.epsilon
 end
 
+--- Is pos1 less than pos2
+-- @tparam Concepts.Position pos1
+-- @tparam Concepts.Position pos2
+-- @treturn boolean
 function Position.less_than(pos1, pos2)
-    pos1 = Position.new(pos1)
-    pos2 = Position.new(pos2)
-
+    pos1, pos2 = Position(pos1), Position(pos2)
     return pos1.x < pos2.x and pos1.y < pos2.y
 end
 
+--- Is pos1 less than or equal to pos2
+-- @tparam Concepts.Position pos1
+-- @tparam Concepts.Position pos2
+-- @treturn boolean
 function Position.less_than_eq(pos1, pos2)
-    pos1 = Position.new(pos1)
-    pos2 = Position.new(pos2)
-
+    pos1, pos2 = Position(pos1), Position(pos2)
     return pos1.x <= pos2.x and pos1.y <= pos2.y
 end
 
@@ -345,8 +481,7 @@ end
 -- @tparam Concepts.Position pos2 the second position
 -- @treturn number the square of the euclidean distance
 function Position.distance_squared(pos1, pos2)
-    pos1 = Position.new(pos1)
-    pos2 = Position.new(pos2)
+    pos1, pos2 = Position(pos1), Position(pos2)
 
     local axbx = pos1.x - pos2.x
     local ayby = pos1.y - pos2.y
@@ -358,9 +493,7 @@ end
 -- @tparam Concepts.Position pos2 the second position
 -- @treturn number the euclidean distance
 function Position.distance(pos1, pos2)
-    pos1 = Position.new(pos1)
-    pos2 = Position.new(pos2)
-
+    pos1, pos2 = Position(pos1), Position(pos2)
     return math.sqrt(Position.distance_squared(pos1, pos2))
 end
 
@@ -370,11 +503,28 @@ end
 -- @treturn number the manhatten distance
 -- @see https://en.wikipedia.org/wiki/Taxicab_geometry Taxicab geometry (manhatten distance)
 function Position.manhattan_distance(pos1, pos2)
-    pos1 = Position.new(pos1)
-    pos2 = Position.new(pos2)
-
+    pos1, pos2 = Position(pos1), Position(pos2)
     return math.abs(pos2.x - pos1.x) + math.abs(pos2.y - pos1.y)
 end
+
+--- Calculates the distance to {0, 0}.
+-- @tparam Concepts.Position pos
+-- @treturn number the distance
+function Position.length(pos)
+    pos = Position(pos)
+    return Position.distance(pos, {0, 0})
+end
+
+--- Is this position {0, 0}.
+-- @tparam Concepts.Position pos
+-- @treturn boolean
+function Position.is_zero(pos)
+    pos = Position(pos)
+    return pos.x == 0 and pos.y == 0
+end
+
+--- Direction Functions
+-- @section Directions
 
 --- Returns the opposite direction &mdash; adapted from Factorio util.lua.
 -- @release 0.8.1
@@ -392,7 +542,6 @@ end
 -- @treturn defines.direction the next direction
 function Position.next_direction(direction, reverse, eight_way)
     Is.Assert.Number(direction, 'missing starting direction')
-
     return (direction + (eight_way and ((reverse and -1) or 1) or ((reverse and -2) or 2))) % 8
 end
 
@@ -416,19 +565,63 @@ end
 function Position.direction_to_orientation(direction)
     return direction / 8
 end
+--- @section end
+
+-- Some of these are qusi duplicates of the named methods, however the
+-- the methods return new positions as opposed to mutating.
+local function __add(pos1, pos2)
+    pos1, pos2 = Position(pos1), Position(pos2)
+    return Position.load({x = pos1.x + pos2.x, y = pos1.y + pos2.y})
+end
+
+local function __sub(pos1, pos2)
+    pos1, pos2 = Position(pos1), Position(pos2)
+    return Position.load({x = pos1.x - pos2.x, y = pos1.y - pos2.y})
+end
+
+local function __mul(pos1, pos2)
+    pos1, pos2 = Position(pos1), Position(pos2)
+    return Position.load({x = pos1.x * pos2.x, y = pos1.y * pos2.y})
+end
+
+local function __div(pos1, pos2)
+    pos1, pos2 = Position(pos1), Position(pos2)
+    return Position.load({x = pos1.x / pos2.x, y = pos1.y / pos2.y})
+end
+
+local function __mod(pos1, pos2)
+    pos1, pos2 = Position(pos1), Position(pos2)
+    return Position.load({x = abs(pos2.x - pos1.x), y = abs(pos2.y - pos1.y)})
+end
+
+local function __unm(pos)
+    pos = Position(pos)
+    return Position.load({x = -pos.x, y = -pos.y})
+end
+
+local function __eq(pos1, pos2)
+    --eq requires both sides to have same metatable so constructor check isn't needed
+    return abs(pos1.x - pos2.x) < Position.epsilon and abs(pos1.y - pos2.y) < Position.epsilon
+end
 
 --- Position tables are returned with these metamethods attached
 -- @table Metamethods
 Position._mt = {
+    __class = 'position',
     __index = Position, -- If key is not found, see if there is one availble in the Position module.
-    __tostring = Position.tostring, -- Returns a string representation of the position
-    __add = Position.add, -- Adds two position together.
-    __sub = Position.subtract, -- Subtracts one position from another.
-    __eq = Position.equals, -- Are two positions the same.
+    __add = __add, -- Adds two position together. Returns a new position.
+    __sub = __sub, -- Subtracts one position from another. Returns a new position.
+    __mul = __mul, -- Multiply 2 positions. Returns a new position.
+    __div = __div, -- Divide 2 positions. Returns a new position.
+    __mod = __mod, -- Position between 2 positions. Returns a new position.
+    __unm = __unm, -- Unary Minus of a position. Returns a new position.
+    __eq = __eq, -- Are two positions at the same spot.
+    __len = Position.length, -- Distance from 0, 0.
     __lt = Position.less_than, -- Is position1 less than position2.
     __le = Position.less_than_eq, -- Is position1 less than or equal to position2.
+    __tostring = Position.tostring, -- Returns a string representation of the position
     __concat = Position._concat, -- calls tostring on both sides of concact.
-    __call = Position.copy
+    __call = Position.copy -- copy the position.
 }
 
 return Position
