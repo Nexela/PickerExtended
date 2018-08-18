@@ -72,7 +72,7 @@ if not data.raw['custom-input']['equipment-toggle-personal-roboport'] then
             buffer_capacity = '0kJ',
             input_flow_limit = '0kW',
             drain = '0W',
-            usage_priority = 'terciary'
+            usage_priority = 'tertiary'
         }
         equipment[#equipment + 1] = t
     end

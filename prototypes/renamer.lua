@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------
 --[Renamer]--
 -------------------------------------------------------------------------------
-local Data = require('stdlib/data/data')
+local Data = require('__stdlib__/data/data')
 
 Data {type = 'custom-input', name = 'picker-rename', key_sequence = 'CONTROL + R', consuming = 'all'}
 Data {type = 'font', name = 'picker-rename-button', from = 'default-bold', size = 14}

@@ -1,4 +1,4 @@
-local Entity = require('stdlib/data/entity')
+local Entity = require('__stdlib__/data/entity')
 
 Entity {
     type = 'corpse',

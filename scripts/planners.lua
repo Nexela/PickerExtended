@@ -1,9 +1,9 @@
 -------------------------------------------------------------------------------
 --[Planners]--
 -------------------------------------------------------------------------------
-local Event = require('stdlib/event/event')
-local Gui = require('stdlib/event/gui')
-local Player = require('stdlib/event/player')
+local Event = require('__stdlib__/event/event')
+local Gui = require('__stdlib__/event/gui')
+local Player = require('__stdlib__/event/player')
 local lib = require('scripts/lib')
 
 -------------------------------------------------------------------------------
@@ -60,7 +60,7 @@ local function planner_clicked(event)
         if event.button == defines.mouse_button_type.left then
             if planner_enabled(player, item) and player.clean_cursor() then
                 player.cursor_stack.set_stack(event.match)
-                event.element.parent.parent.parent.parent.style.visible = false
+                event.element.parent.parent.parent.parent.visible = false
             else
                 player.print({'planner-menu.not-enabled'})
             end
@@ -74,7 +74,7 @@ Gui.on_click('picker_planner_table_sprite_(.*)', planner_clicked)
 
 local function close_planner_menu(event)
     if event.element and event.element.name == 'picker_planner_flow' then
-        event.element.style.visible = false
+        event.element.visible = false
     end
 end
 Event.register(defines.events.on_gui_closed, close_planner_menu)
@@ -82,8 +82,8 @@ Event.register(defines.events.on_gui_closed, close_planner_menu)
 local function open_or_close_planner_menu(event)
     local player = game.players[event.player_index]
     local flow = get_or_create_planner_flow(player)
-    flow.style.visible = not flow.style.visible
-    player.opened = flow.style.visible and flow or nil
+    flow.visible = not flow.visible
+    player.opened = flow.visible and flow or nil
 end
 Event.register('picker-planner-menu', open_or_close_planner_menu)
 
@@ -95,7 +95,7 @@ local function get_next_planner(player, last_planner)
     local stack = player.cursor_stack
     local pdata = global.players[player.index]
     local fail = 0
-    get_or_create_planner_flow(player).style.visible = false
+    get_or_create_planner_flow(player).visible = false
 
     if (not stack.valid_for_read) then
         local planner

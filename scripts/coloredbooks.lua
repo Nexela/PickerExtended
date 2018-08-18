@@ -2,7 +2,7 @@
 --[Colored Blueprints]--
 -------------------------------------------------------------------------------
 
-local Event = require('stdlib/event/event')
+local Event = require('__stdlib__/event/event')
 local colors = require('config').colored_books
 
 local function next_book_color(book_color)

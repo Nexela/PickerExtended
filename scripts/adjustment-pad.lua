@@ -2,7 +2,7 @@
 --[Adjustment Pad]--
 -------------------------------------------------------------------------------
 local Pad = {}
-local Event = require('stdlib/event/event')
+local Event = require('__stdlib__/event/event')
 local lib = require('scripts/lib')
 
 local adjustment_pad = Event.generate_event_name('adjustment_pad')

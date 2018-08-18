@@ -1,9 +1,9 @@
 -------------------------------------------------------------------------------
 --[Chest Limiter]--
 -------------------------------------------------------------------------------
-local Event = require('stdlib/event/event')
-local Gui = require('stdlib/event/gui')
-local Player = require('stdlib/event/player')
+local Event = require('__stdlib__/event/event')
+local Gui = require('__stdlib__/event/gui')
+local Player = require('__stdlib__/event/player')
 local Pad = require('scripts/adjustment-pad')
 
 local match_to_item = {

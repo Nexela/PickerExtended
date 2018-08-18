@@ -4,8 +4,8 @@
     "description": "Reverse entire segments of belt",
     "license": "MIT"
 --]]
-local Event = require('stdlib/event/event')
-local Position = require('stdlib/area/position')
+local Event = require('__stdlib__/event/event')
+local Position = require('__stdlib__/area/position')
 local op_dir = Position.opposite_direction
 
 local belt_types = {

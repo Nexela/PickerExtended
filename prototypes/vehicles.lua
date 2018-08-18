@@ -1,4 +1,4 @@
-local Data = require('stdlib/data/data')
+local Data = require('__stdlib__/data/data')
 
 Data {type = 'custom-input', name = 'picker-dude-wheres-my-car', key_sequence = 'CONTROL + SHIFT + J'}
 Data {type = 'custom-input', name = 'picker-toggle-train-control', key_sequence = 'J'}

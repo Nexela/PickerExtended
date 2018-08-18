@@ -1,4 +1,4 @@
-local Data = require('stdlib/data/data')
+local Data = require('__stdlib__/data/data')
 
 local function get_setting(key)
     return settings.startup[key] and settings.startup[key].value

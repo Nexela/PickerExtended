@@ -1,18 +1,18 @@
 -------------------------------------------------------------------------------
 --[Picker Extended]--
 -------------------------------------------------------------------------------
-require('stdlib/core')
+require('__stdlib__/core')
 
 MOD = {}
 MOD.name = 'PickerExtended'
 MOD.if_name = 'picker'
 MOD.DEBUG = settings.startup['picker-debug'] and settings.startup['picker-debug'].value or false
 
-local Event = require('stdlib/event/event')
+local Event = require('__stdlib__/event/event')
 Event.protected_mode = MOD.DEBUG
-local Changes = require('stdlib/event/changes')
-local Player = require('stdlib/event/player')
-local Force = require('stdlib/event/force')
+local Changes = require('__stdlib__/event/changes')
+local Player = require('__stdlib__/event/player')
+local Force = require('__stdlib__/event/force')
 
 local function on_init()
     Player.init()
@@ -26,8 +26,8 @@ Force.register_events()
 
 if MOD.DEBUG then
     log(MOD.name .. ' Debug mode enabled')
-    require('stdlib/core').create_stdlib_globals()
-    require('stdlib/scripts/quickstart')
+    require('__stdlib__/core').create_stdlib_globals()
+    require('__stdlib__/scripts/quickstart')
 end
 
 --(( Picker Scripts ))--

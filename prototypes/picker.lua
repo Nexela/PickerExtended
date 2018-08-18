@@ -1,4 +1,4 @@
-local Data = require('stdlib/data/data')
+local Data = require('__stdlib__/data/data')
 
 data:extend {
     {

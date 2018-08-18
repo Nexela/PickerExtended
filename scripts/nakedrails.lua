@@ -1,4 +1,4 @@
-local Event = require('stdlib/event/event')
+local Event = require('__stdlib__/event/event')
 
 local function on_selected_area(event)
     local alt = event.name == defines.events.on_player_alt_selected_area

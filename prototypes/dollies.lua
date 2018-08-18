@@ -2,7 +2,7 @@
 --[Combinator Dollies]--
 -------------------------------------------------------------------------------
 
-local Data = require('stdlib/data/data')
+local Data = require('__stdlib__/data/data')
 
 data:extend {
     {
@@ -90,8 +90,8 @@ Data {
     stackable = false,
     selection_color = {r = 0, g = 1, b = 0},
     alt_selection_color = {r = 0, g = 0, b = 1},
-    selection_mode = {'matches-force', 'buildable-type'},
-    alt_selection_mode = {'matches-force', 'buildable-type'},
+    selection_mode = {'same-force', 'buildable-type'},
+    alt_selection_mode = {'same-force', 'buildable-type'},
     selection_cursor_box_type = 'entity',
     alt_selection_cursor_box_type = 'entity',
     always_include_tiles = false,

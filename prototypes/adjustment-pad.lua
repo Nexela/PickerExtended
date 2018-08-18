@@ -45,14 +45,13 @@ style.adjustment_pad_frame_style = {
 style.adjustment_pad_label_style = {
     type = 'label_style',
     parent = 'label',
-    --font = "default-listbox",
     maximal_width = 90,
     minimal_width = 90
 }
 
 style.adjustment_pad_text_style = {
-    type = 'textfield_style',
-    parent = 'textfield',
+    type = 'textbox_style',
+    parent = 'number_textfield',
     maximal_width = 42,
     minimal_width = 42,
     maximal_height = 24,
@@ -92,34 +91,25 @@ style.adjustment_pad_btn_up = {
     type = 'button_style',
     parent = 'adjustment_pad_btn_small_style',
     default_graphical_set = {
-        type = 'monolith',
-        monolith_image = {
-            filename = '__PickerExtended__/graphics/small-btns.png',
-            priority = 'extra-high-no-scale',
-            width = 20,
-            height = 14,
-            x = 0
-        }
+        filename = '__PickerExtended__/graphics/small-btns.png',
+        priority = 'extra-high-no-scale',
+        position = {0, 0},
+        size = {20, 14},
+        scale = 1
     },
     hovered_graphical_set = {
-        type = 'monolith',
-        monolith_image = {
-            filename = '__PickerExtended__/graphics/small-btns.png',
-            priority = 'extra-high-no-scale',
-            width = 20,
-            height = 14,
-            x = 20
-        }
+        filename = '__PickerExtended__/graphics/small-btns.png',
+        priority = 'extra-high-no-scale',
+        position = {20, 0},
+        size = {20, 14},
+        scale = 1
     },
     clicked_graphical_set = {
-        type = 'monolith',
-        monolith_image = {
-            filename = '__PickerExtended__/graphics/small-btns.png',
-            priority = 'extra-high-no-scale',
-            width = 20,
-            height = 14,
-            x = 20
-        }
+        filename = '__PickerExtended__/graphics/small-btns.png',
+        priority = 'extra-high-no-scale',
+        position = {20, 0},
+        size = {20, 14},
+        scale = 1
     }
 }
 
@@ -127,37 +117,25 @@ style.adjustment_pad_btn_dn = {
     type = 'button_style',
     parent = 'adjustment_pad_btn_small_style',
     default_graphical_set = {
-        type = 'monolith',
-        monolith_image = {
-            filename = '__PickerExtended__/graphics/small-btns.png',
-            priority = 'extra-high-no-scale',
-            width = 20,
-            height = 14,
-            x = 0,
-            y = 14
-        }
+        filename = '__PickerExtended__/graphics/small-btns.png',
+        priority = 'extra-high-no-scale',
+        size = {20, 14},
+        position = {0, 14},
+        scale = 1
     },
     hovered_graphical_set = {
-        type = 'monolith',
-        monolith_image = {
-            filename = '__PickerExtended__/graphics/small-btns.png',
-            priority = 'extra-high-no-scale',
-            width = 20,
-            height = 14,
-            x = 20,
-            y = 14
-        }
+        filename = '__PickerExtended__/graphics/small-btns.png',
+        priority = 'extra-high-no-scale',
+        size = {20, 14},
+        position = {20, 14},
+        scale = 1
     },
     clicked_graphical_set = {
-        type = 'monolith',
-        monolith_image = {
-            filename = '__PickerExtended__/graphics/small-btns.png',
-            priority = 'extra-high-no-scale',
-            width = 20,
-            height = 14,
-            x = 20,
-            y = 14
-        }
+        filename = '__PickerExtended__/graphics/small-btns.png',
+        priority = 'extra-high-no-scale',
+        size = {20, 14},
+        position = {20, 14},
+        scale = 1
     }
 }
 
@@ -176,36 +154,24 @@ style.adjustment_pad_btn_reset = {
         }
     },
     default_graphical_set = {
-        type = 'monolith',
-        monolith_image = {
-            filename = '__PickerExtended__/graphics/small-btns.png',
-            priority = 'extra-high-no-scale',
-            width = 20,
-            height = 28,
-            x = 40,
-            y = 0
-        }
+        filename = '__PickerExtended__/graphics/small-btns.png',
+        priority = 'extra-high-no-scale',
+        size = {20, 28},
+        position = {40, 0},
+        scale = 1
     },
     hovered_graphical_set = {
-        type = 'monolith',
-        monolith_image = {
-            filename = '__PickerExtended__/graphics/small-btns.png',
-            priority = 'extra-high-no-scale',
-            width = 20,
-            height = 28,
-            x = 60,
-            y = 0
-        }
+        filename = '__PickerExtended__/graphics/small-btns.png',
+        priority = 'extra-high-no-scale',
+        size = {20, 28},
+        position = {60, 0},
+        scale = 1
     },
     clicked_graphical_set = {
-        type = 'monolith',
-        monolith_image = {
-            filename = '__PickerExtended__/graphics/small-btns.png',
-            priority = 'extra-high-no-scale',
-            width = 20,
-            height = 28,
-            x = 60,
-            y = 0
-        }
+        filename = '__PickerExtended__/graphics/small-btns.png',
+        priority = 'extra-high-no-scale',
+        size = {20, 28},
+        position = {60, 0},
+        scale = 1
     }
 }

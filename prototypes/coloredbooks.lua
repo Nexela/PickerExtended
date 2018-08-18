@@ -7,7 +7,7 @@
 -- "author": "Blank",
 -- "description": "This mod allows the user to change the color of a blueprint book.",
 
-local Data = require('stdlib/data/data')
+local Data = require('__stdlib__/data/data')
 local colors = require('config').colored_books
 local use_books = settings.startup['picker-colored-books'].value
 

@@ -1,5 +1,5 @@
-local Event = require('stdlib/event/event')
-local Player = require('stdlib/event/player')
+local Event = require('__stdlib__/event/event')
+local Player = require('__stdlib__/event/player')
 
 -- https://forums.factorio.com/viewtopic.php?f=6&t=60302
 

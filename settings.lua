@@ -1,4 +1,4 @@
-require('stdlib/core')
+require('__stdlib__/core')
 
 require('settings/startup')
 require('settings/runtime')

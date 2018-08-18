@@ -3,13 +3,13 @@
 -------------------------------------------------------------------------------
 --Mirroring and Upgradeing code from "Foreman", by "Choumiko"
 
-local Event = require('stdlib/event/event')
-local Gui = require('stdlib/event/gui')
-local Player = require('stdlib/event/player')
-local Area = require('stdlib/area/area')
-local Position = require('stdlib/area/position')
-local Inventory = require('stdlib/entity/inventory')
-local Entity = require('stdlib/entity/entity')
+local Event = require('__stdlib__/event/event')
+local Gui = require('__stdlib__/event/gui')
+local Player = require('__stdlib__/event/player')
+local Area = require('__stdlib__/area/area')
+local Position = require('__stdlib__/area/position')
+local Inventory = require('__stdlib__/entity/inventory')
+local Entity = require('__stdlib__/entity/entity')
 
 local lib = require('scripts/lib')
 
@@ -53,11 +53,11 @@ local function show_bp_tools(event)
     local bp = Inventory.get_blueprint(player.cursor_stack)
     local frame = get_or_create_blueprint_gui(player)
     if bp and not Inventory.is_named_bp(bp, 'Belt brush') then
-        frame.style.visible = true
+        frame.visible = true
         frame['picker_bp_tools_table']['picker_bp_tools_to'].elem_value = nil
         frame['picker_bp_tools_table']['picker_bp_tools_from'].elem_value = nil
     else
-        frame.style.visible = false
+        frame.visible = false
     end
     pdata.last_put = nil
 end

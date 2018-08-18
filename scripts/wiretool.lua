@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
 --[WIRE TOOLS]--
 -------------------------------------------------------------------------------
-local Event = require('stdlib/event/event')
-local Player = require('stdlib/event/player')
+local Event = require('__stdlib__/event/event')
+local Player = require('__stdlib__/event/player')
 local lib = require('scripts/lib')
 
 --Cut wires code modified from "WireStripper", by "justarandomgeek"

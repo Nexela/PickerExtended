@@ -6,8 +6,8 @@
     Adds toggle train mode hotkey
     Adds automatic train mode toggling
 ]]
-local Event = require('stdlib/event/event')
-local Player = require('stdlib/event/player')
+local Event = require('__stdlib__/event/event')
+local Player = require('__stdlib__/event/player')
 
 --[[
 	"name": "DelticHonk",

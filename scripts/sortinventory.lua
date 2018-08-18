@@ -1,4 +1,4 @@
-local Event = require('stdlib/event/event')
+local Event = require('__stdlib__/event/event')
 
 local types = {
     ['car'] = defines.inventory.car_trunk,

@@ -8,7 +8,7 @@ if not settings.startup['picker-naked-rails'].value then
     return
 end
 
-local Data = require('stdlib/data/data')
+local Data = require('__stdlib__/data/data')
 
 local naked_subelements = {'ties', 'stone_path', 'stone_path_background'}
 local sleepy_subelements = {'stone_path', 'stone_path_background'}

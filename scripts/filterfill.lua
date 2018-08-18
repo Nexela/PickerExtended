@@ -3,9 +3,9 @@
 -------------------------------------------------------------------------------
 --Code modified from: "Fast Filter Fill" by: "Keryja, SeaRyanC"
 
-local Event = require('stdlib/event/event')
-local Gui = require('stdlib/event/gui')
-local Inventory = require('stdlib/entity/inventory')
+local Event = require('__stdlib__/event/event')
+local Gui = require('__stdlib__/event/gui')
+local Inventory = require('__stdlib__/entity/inventory')
 local lib = require('scripts/lib')
 
 local INVENTORY_COLUMNS = 10
@@ -296,11 +296,11 @@ local function check_for_filterable_inventory(event)
     if inv then
         local requester = player.opened and player.opened.type == 'logistic-container' and player.opened.prototype.logistic_mode == 'requester'
 
-        frame['filterfill_requests'].style.visible = requester or false
-        frame['filterfill_filters'].style.visible = inv and inv.supports_filters()
-        frame.style.visible = frame['filterfill_filters'].style.visible or frame['filterfill_requests'].style.visible
+        frame['filterfill_requests'].visible = requester or false
+        frame['filterfill_filters'].visible = inv and inv.supports_filters()
+        frame.visible = frame['filterfill_filters'].visible or frame['filterfill_requests'].visible
     else
-        frame.style.visible = false
+        frame.visible = false
     end
 end
 Event.register({defines.events.on_gui_opened, defines.events.on_gui_closed}, check_for_filterable_inventory)

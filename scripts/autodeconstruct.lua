@@ -5,10 +5,10 @@
 --"author": "mindmix",
 --"description": "This mod marks drills that have no more resources to mine for deconstruction."
 
-local Event = require('stdlib/event/event')
-local Area = require('stdlib/area/area')
-local Position = require('stdlib/area/position')
-local Entity = require('stdlib/entity/entity')
+local Event = require('__stdlib__/event/event')
+local Area = require('__stdlib__/area/area')
+local Position = require('__stdlib__/area/position')
+local Entity = require('__stdlib__/entity/entity')
 
 local function find_targeters(entity)
     local targeters = {}

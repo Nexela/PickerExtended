@@ -6,9 +6,9 @@ if not settings.startup['picker-use-notes'].value then
     return
 end
 
-local Event = require('stdlib/event/event')
-local Gui = require('stdlib/event/gui')
-local Player = require('stdlib/event/player')
+local Event = require('__stdlib__/event/event')
+local Gui = require('__stdlib__/event/gui')
+local Player = require('__stdlib__/event/player')
 
 local text_color_default = {r = 1, g = 1, b = 0}
 local color_array = {}

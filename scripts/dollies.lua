@@ -2,10 +2,10 @@
 --[Picker Dolly]--
 -------------------------------------------------------------------------------
 
-local Event = require('stdlib/event/event')
-local Player = require('stdlib/event/player')
-local Area = require('stdlib/area/area')
-local Position = require('stdlib/area/position')
+local Event = require('__stdlib__/event/event')
+local Player = require('__stdlib__/event/player')
+local Area = require('__stdlib__/area/area')
+local Position = require('__stdlib__/area/position')
 local lib = require('scripts/lib')
 local interface = require('interface')
 

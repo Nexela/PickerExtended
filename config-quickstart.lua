@@ -36,6 +36,8 @@ return {
         'creative-mode_super-substation',
         'creative-mode_magic-wand-modifier',
         'creative-mode_super-roboport',
-        'picker-infinity-chest'
+        'picker-infinity-chest',
+        'picker-infinity-pipe',
+        'picker-heat-interface'
     }
 }

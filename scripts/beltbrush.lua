@@ -1,12 +1,12 @@
 -------------------------------------------------------------------------------
 --[Belt Brush]--
 -------------------------------------------------------------------------------
-local Event = require('stdlib/event/event')
-local Gui = require('stdlib/event/gui')
-local Player = require('stdlib/event/player')
-local Position = require('stdlib/area/position')
-local Area = require('stdlib/area/area')
-local Inventory = require('stdlib/entity/inventory')
+local Event = require('__stdlib__/event/event')
+local Gui = require('__stdlib__/event/gui')
+local Player = require('__stdlib__/event/player')
+local Position = require('__stdlib__/area/position')
+local Area = require('__stdlib__/area/area')
+local Inventory = require('__stdlib__/entity/inventory')
 local Pad = require('scripts/adjustment-pad')
 local lib = require('scripts/lib')
 

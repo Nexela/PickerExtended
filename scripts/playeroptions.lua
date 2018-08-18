@@ -1,4 +1,4 @@
-local Event = require('stdlib/event/event')
+local Event = require('__stdlib__/event/event')
 
 local function set_join_options(event)
     local player = game.players[event.player_index]

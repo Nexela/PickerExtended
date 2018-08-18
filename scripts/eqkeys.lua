@@ -1,4 +1,4 @@
-local Event = require('stdlib/event/event')
+local Event = require('__stdlib__/event/event')
 
 -- (( Switch player gun while driving ))--
 local function switch_player_gun_while_driving(event)

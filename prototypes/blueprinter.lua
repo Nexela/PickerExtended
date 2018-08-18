@@ -1,4 +1,4 @@
-local Data = require('stdlib/data/data')
+local Data = require('__stdlib__/data/data')
 
 local snap = settings.startup['picker-bp-snap'].value or false
 local updater = settings.startup['picker-tool-bp-updater'].value or false

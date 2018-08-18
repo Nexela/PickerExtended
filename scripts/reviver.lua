@@ -2,9 +2,9 @@
 --[Reviver] -- Revives the selected entity
 -------------------------------------------------------------------------------
 
-local Event = require('stdlib/event/event')
-local Area = require('stdlib/area/area')
-local Player = require('stdlib/event/player')
+local Event = require('__stdlib__/event/event')
+local Area = require('__stdlib__/area/area')
+local Player = require('__stdlib__/event/player')
 local lib = require('scripts/lib')
 
 --as of 08/30 this is mostly incorporated into base.
