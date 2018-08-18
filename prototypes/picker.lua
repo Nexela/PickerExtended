@@ -59,11 +59,6 @@ data:extend {
     },
     {
         type = 'custom-input',
-        name = 'picker-manual-inventory-sort',
-        key_sequence = 'SHIFT + E'
-    },
-    {
-        type = 'custom-input',
         name = 'picker-flashlight-toggle',
         key_sequence = 'KEY68'
     }
