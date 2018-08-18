@@ -32,7 +32,6 @@ end
 
 --(( Picker Scripts ))--
 require('scripts/adjustment-pad')
-require('scripts/eqkeys')
 
 require('scripts/playeroptions')
 require('scripts/autodeconstruct')
@@ -44,7 +43,6 @@ require('scripts/bpupdater')
 require('scripts/bpsnap')
 require('scripts/planners')
 require('scripts/zapper')
-require('scripts/dollies')
 require('scripts/minimap')
 require('scripts/itemcount')
 require('scripts/crafter')

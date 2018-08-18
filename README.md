@@ -9,12 +9,6 @@ Recomend using this with the same keybinds as clean cursor and pipette tool. Pic
 
 ![Reviver in Action](https://github.com/Nexela/PickerExtended/raw/master/web/picker-reviver.gif)
 
-### Picker Dollies
-
-Hover over entities and use the Picker dolly keybinds to move entities around. Entities will keep their wire connections and settings. This allows you to build your set up spaced out and when you are finished push it all together for a nice tight build. Some entities can't be shoved around. Also respects max wire distance. Note Moving some modded entities that rely on position can cause issues. There is an API available that mod authors can use to be notified of these events.
-
-![Dollies in Action](https://github.com/Nexela/PickerExtended/raw/master/web/picker-combinator-dolly.gif)
-
 ### Picker Entity Blueprinter
 
 Hover over an entity and take a quick blueprint of everything in its selection area with CONTROL+Q. Blueprints are created automatically if you don't have an existing Pipette Blueprint in your inventory. Modules and recipes are stored in the blueprint. Now you can quickly blueprint your moduled beacon for fast placing! Blue print mirroing is Availble by holding a blueprint and pressing ALT+R, Blueprint upgrading is available using the toolbar that shows up whenever you are holding a blueprint. Quickly Edit the current blueprint or deconstruction planner in your hand with CONTROL+SHIFT+~, Pick any item in the game to make a blueprint of using the blueprint toolbar.
