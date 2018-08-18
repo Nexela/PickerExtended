@@ -6,7 +6,6 @@ return {
     clear_items = true,
     power_armor = 'power-armor-mk2',
     equipment = {
-        'creative-mode_super-fusion-reactor-equipment',
         'fusion-reactor-equipment',
         'personal-roboport-mk2-equipment',
         'belt-immunity-equipment'
@@ -30,14 +29,9 @@ return {
         'fast-inserter'
     },
     quickbar = {
-        'creative-mode_item-source',
-        'creative-mode_fluid-source',
-        'creative-mode_energy-source',
-        'creative-mode_super-substation',
-        'creative-mode_magic-wand-modifier',
-        'creative-mode_super-roboport',
         'picker-infinity-chest',
         'picker-infinity-pipe',
-        'picker-heat-interface'
+        'picker-heat-interface',
+        'picker-electric-energy-interface'
     }
 }
