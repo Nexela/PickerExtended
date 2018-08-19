@@ -59,8 +59,9 @@ require('scripts/playerdeath')
 
 --(( Remote Interfaces ))--
 local interface = require('interface')
-remote.add_interface(MOD.if_name, interface) --))
+remote.add_interface(MOD.if_name, interface)
+remote.add_interface(script.mod_name, interface) --))
 
-if MOD.DEBUG then
-    Event.register(Event.core_events.init, Event.dump_data)
-end
+-- if MOD.DEBUG then
+--     Event.register(Event.core_events.init, Event.dump_data)
+-- end

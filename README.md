@@ -46,29 +46,11 @@ Call a plumber on any fluidbox by selecting the pipe and pressing CONTROL+DELETE
 
 ![Pipe Cleaner in Action](https://github.com/Nexela/PickerExtended/raw/master/web/picker-pipe-cleaner.gif)
 
-### Picker Chest Contents Mover
-
-Quickly Move the contents of once chest to another. This is a quick and dirty move. CONTROL+V on the source chest and CONTROL+V on the destination chest. Items with grids or inventories will lose their grids or inventories when transferred. Use this for bulk material only.
-
-![Chest Copy in Action](https://github.com/Nexela/PickerExtended/raw/master/web/picker-inv-copy.gif)
-
 ### Picker Auto Hide Minimap
 
 Automatically hides the minimap when you are hovering over a logistic container. This option can be disabled in the mod settings screen.
 
 ![Minimap Hide in Action](https://github.com/Nexela/PickerExtended/raw/master/web/picker-minimap-hide.gif)
-
-### Picker Chest Limiter
-
-Automatically set the bar limits on newly placed chests. (Chest limiter mod)
-
-![Chest Limiter in Action](https://github.com/Nexela/PickerExtended/raw/master/web/picker-chest-limit.gif)
-
-### Picker Inventory Sort
-
-Manually sort opened containers with SHIFT+E, Automatically sorts container inventories when opened if the option is enabled. Can lag big warehouses, runtime option to disable.
-
-![Inventory Sort in Action](https://github.com/Nexela/PickerExtended/raw/master/web/picker-inventory-sort.gif)
 
 ### Picker Automatic Orphan Finder
 
@@ -88,19 +70,6 @@ With a transport or underground belt in your hand hit pad increase or decrease b
 
 Additional tools include inputs and outputs for ungerground belt and pipe brushes CTRL+SHIFT+R to cycle from max distance to 0, and cascading underground belts CTRL+SHIFT+B with a belt brush of undergrounds to cycle from max distance to 0
 
-### Picker Filter Fill
-
-Quickly and easily set filters and adjust requests using the handy dandy filter fill toolbar, Automatically shows up whenever you open a requester chest or filterable inventory. Requester chests can be made to quickly request all items in a blueprint by putting it in the first chest slot and clicking the button, or clicking the button with a blueprint in your hand. Copying from an assembler to a requester chest will add the new requests to the old ones instead of clearing them. Usefull for using one requester for multiple machines.
-
 ### Picker Belt Upgrader (soon)
 
 Quickly upgrade a section of belt by pressing the hotkey while hovering over the old belt while holding the belt type you want to upgrade to.
-
-### Picker Vehicles
-
-Hotkey to create an alert with the location of the last car you were in CTRL+SHIFT+J, Toggle trains between manual and automatic with J, Smart train toggling. Trains you enter that have 1 or fewer stations will be put into manual mode.
-
-### Picker Sticky Notes
-
-Sticky notes are now a part of Picker Extended, Leave notes everywhere! Originally developed by BinbinHfr, taken over by NiftyManiac. <https://forums.factorio.com/viewtopic.php?f=92&t=30980&p=195631>
-![Picker Notes](https://github.com/Nexela/PickerExtended/raw/master/web/stickynotes.png)

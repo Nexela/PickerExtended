@@ -27,7 +27,6 @@ function Pad.register_events()
         return Event.generate_event_name('adjustment_pad')
     end
     interface['get_or_create_adjustment_pad'] = Pad.get_or_create_adjustment_pad
-
     return Pad
 end
 
