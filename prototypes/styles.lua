@@ -89,16 +89,6 @@ style.picker_buttons_med_off = {
     }
 }
 
---[[Filterfill Tables]]
-style.filterfill_requests = {
-    type = 'table_style',
-    parent = 'picker_table'
-}
-style.filterfill_filters = {
-    type = 'table_style',
-    parent = 'picker_table'
-}
-
 --[[What is it used for]]
 style.small_spacing_scroll_pane_style = {
     type = 'scroll_pane_style',

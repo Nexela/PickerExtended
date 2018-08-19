@@ -3,21 +3,33 @@
 -------------------------------------------------------------------------------
 local Pad = {}
 local Event = require('__stdlib__/event/event')
-local lib = require('scripts/lib')
+local lib = require('__PickerExtended__/scripts/lib')
 
-local adjustment_pad = Event.generate_event_name('adjustment_pad')
-Event.register(
-    'adjustment-pad-increase',
-    function(event)
-        script.raise_event(adjustment_pad, event)
+function Pad.register_events()
+    local adjustment_pad = Event.generate_event_name('adjustment_pad')
+
+    Event.register(
+        'adjustment-pad-increase',
+        function(event)
+            script.raise_event(adjustment_pad, event)
+        end
+    )
+
+    Event.register(
+        'adjustment-pad-decrease',
+        function(event)
+            script.raise_event(adjustment_pad, event)
+        end
+    )
+
+    local interface = require('interface')
+    interface['get_adjustment_pad_id'] = function()
+        return Event.generate_event_name('adjustment_pad')
     end
-)
-Event.register(
-    'adjustment-pad-decrease',
-    function(event)
-        script.raise_event(adjustment_pad, event)
-    end
-)
+    interface['get_or_create_adjustment_pad'] = Pad.get_or_create_adjustment_pad
+
+    return Pad
+end
 
 function Pad.remove_gui(player, frame_name, flow_name)
     flow_name = flow_name or 'picker'
@@ -44,11 +56,5 @@ function Pad.get_or_create_adjustment_pad(player, name, flow_name) -- return gui
     end
     return main_flow[name .. '_frame_main']
 end
-
-local interface = require('interface')
-interface['get_adjustment_pad_id'] = function()
-    return Event.generate_event_name('adjustment_pad')
-end
-interface['get_or_create_adjustment_pad'] = Pad.get_or_create_adjustment_pad
 
 return Pad

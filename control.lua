@@ -6,7 +6,7 @@ require('__stdlib__/core')
 MOD = {}
 MOD.name = 'PickerExtended'
 MOD.if_name = 'picker'
-MOD.DEBUG = settings.startup['picker-debug'] and settings.startup['picker-debug'].value or false
+MOD.DEBUG = require('config').DEBUG
 
 local Event = require('__stdlib__/event/event')
 Event.protected_mode = MOD.DEBUG
@@ -31,10 +31,9 @@ if MOD.DEBUG then
 end
 
 --(( Picker Scripts ))--
-require('scripts/adjustment-pad')
+require('scripts/adjustment-pad').register_events()
 
 require('scripts/playeroptions')
-require('scripts/autodeconstruct')
 require('scripts/reviver')
 require('scripts/tools')
 require('scripts/blueprinter')
@@ -47,8 +46,6 @@ require('scripts/minimap')
 require('scripts/itemcount')
 require('scripts/crafter')
 require('scripts/renamer')
-require('scripts/chestlimit')
-require('scripts/copychest')
 require('scripts/wiretool')
 require('scripts/pipecleaner')
 require('scripts/orphans')
@@ -56,11 +53,7 @@ require('scripts/beltbrush')
 require('scripts/beltreverser')
 require('scripts/pastesettings')
 require('scripts/flashlight')
-require('scripts/vehicles')
 require('scripts/helmod')
-require('scripts/notes')
-require('scripts/coloredbooks')
-require('scripts/nakedrails')
 require('scripts/playerdeath')
 --)) Picker Scripts ((--
 

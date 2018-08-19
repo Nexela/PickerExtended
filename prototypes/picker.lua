@@ -19,11 +19,6 @@ data:extend {
     },
     {
         type = 'custom-input',
-        name = 'picker-copy-chest',
-        key_sequence = 'CONTROL + V'
-    },
-    {
-        type = 'custom-input',
         name = 'picker-pipe-cleaner',
         key_sequence = 'CONTROL + DELETE'
     },
