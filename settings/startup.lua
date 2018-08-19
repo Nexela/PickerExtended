@@ -45,13 +45,6 @@ data:extend {
     },
     {
         type = 'bool-setting',
-        name = 'picker-tool-ping',
-        setting_type = 'startup',
-        default_value = true,
-        order = 'a[startup]-tool-ping'
-    },
-    {
-        type = 'bool-setting',
         name = 'picker-tool-bp-updater',
         setting_type = 'startup',
         default_value = true,
