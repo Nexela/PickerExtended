@@ -2,7 +2,7 @@
 --[Planner Pin Panel (helmod)]--
 -------------------------------------------------------------------------------
 local Gui = require('__stdlib__/event/gui')
-local lib = require('scripts/lib')
+local lib = require('__PickerExtended__/utils/lib')
 
 local function pick_helmod_pin(event)
     local player = game.players[event.player_index]

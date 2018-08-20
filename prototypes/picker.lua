@@ -19,11 +19,6 @@ data:extend {
     },
     {
         type = 'custom-input',
-        name = 'picker-pipe-cleaner',
-        key_sequence = 'CONTROL + DELETE'
-    },
-    {
-        type = 'custom-input',
         name = 'picker-wire-cutter',
         key_sequence = 'CONTROL + DELETE'
     },
@@ -34,23 +29,8 @@ data:extend {
     },
     {
         type = 'custom-input',
-        name = 'picker-beltbrush-corners',
-        key_sequence = 'CONTROL + SHIFT + R'
-    },
-    {
-        type = 'custom-input',
-        name = 'picker-beltbrush-balancers',
-        key_sequence = 'CONTROL + SHIFT + B'
-    },
-    {
-        type = 'custom-input',
         name = 'picker-used-for',
         key_sequence = 'CONTROL + SHIFT + ENTER'
-    },
-    {
-        type = 'custom-input',
-        name = 'picker-reverse-belts',
-        key_sequence = 'ALT + R'
     },
     {
         type = 'custom-input',

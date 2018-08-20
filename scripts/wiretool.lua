@@ -3,7 +3,7 @@
 -------------------------------------------------------------------------------
 local Event = require('__stdlib__/event/event')
 local Player = require('__stdlib__/event/player')
-local lib = require('scripts/lib')
+local lib = require('__PickerExtended__/utils/lib')
 
 --Cut wires code modified from "WireStripper", by "justarandomgeek"
 --https://mods.factorio.com/mods/justarandomgeek/wirestripper

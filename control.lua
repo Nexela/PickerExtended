@@ -31,37 +31,30 @@ if MOD.DEBUG then
 end
 
 --(( Picker Scripts ))--
-require('scripts/adjustment-pad').register_events()
+require('utils/adjustment-pad').register_events()
 
 require('scripts/playeroptions')
-require('scripts/reviver')
 require('scripts/tools')
+require('scripts/reviver')
+require('scripts/zapper')
+require('scripts/minimap')
+require('scripts/itemcount')
+require('scripts/renamer')
+require('scripts/wiretool')
+require('scripts/pastesettings')
+require('scripts/flashlight')
+require('scripts/helmod')
+require('scripts/playerdeath')
+
 require('scripts/blueprinter')
 require('scripts/bpmirror')
 require('scripts/bpupdater')
 require('scripts/bpsnap')
 require('scripts/planners')
-require('scripts/zapper')
-require('scripts/minimap')
-require('scripts/itemcount')
 require('scripts/crafter')
-require('scripts/renamer')
-require('scripts/wiretool')
-require('scripts/pipecleaner')
-require('scripts/orphans')
-require('scripts/beltbrush')
-require('scripts/beltreverser')
-require('scripts/pastesettings')
-require('scripts/flashlight')
-require('scripts/helmod')
-require('scripts/playerdeath')
 --)) Picker Scripts ((--
 
 --(( Remote Interfaces ))--
 local interface = require('interface')
 remote.add_interface(MOD.if_name, interface)
 remote.add_interface(script.mod_name, interface) --))
-
--- if MOD.DEBUG then
---     Event.register(Event.core_events.init, Event.dump_data)
--- end
