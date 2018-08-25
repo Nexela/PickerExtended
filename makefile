@@ -59,7 +59,7 @@ nodebug:
 #Run luacheck on files in build directiory
 check:
 	@wget -q --no-check-certificate -O ./$(BUILD_DIR)/.luacheckrc https://raw.githubusercontent.com/Nexela/Factorio-luacheckrc/master/.luacheckrc
-	@sed -i 's/exclude_files/_SKIP_/' ./$(BUILD_DIR)/.luacheckrc
+	@sed -i 's/\('\''\*\*\/\.\*\/\*'\''\)/--\1/' ./$(BUILD_DIR)/.luacheckrc
 	@luacheck ./$(OUTPUT_DIR) -q --codes --config ./$(BUILD_DIR)/.luacheckrc
 
 package: package-copy $(OUT_FILES) check nodebug optimize
