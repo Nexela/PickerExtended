@@ -1,8 +1,3 @@
 .build/
 .token
 .vscode/
-
-scripts/wip/
-prototypes/wip/
-
-stdlib/data/

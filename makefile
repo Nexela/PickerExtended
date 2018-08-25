@@ -63,7 +63,6 @@ check:
 	@luacheck ./$(OUTPUT_DIR) -q --codes --config ./$(BUILD_DIR)/.luacheckrc
 
 package: package-copy $(OUT_FILES) check nodebug optimize
-	@cp -r stdlib $(BUILD_DIR)/$(OUTPUT_NAME)/stdlib
 	@cd $(BUILD_DIR) && zip -rq $(OUTPUT_NAME).zip $(OUTPUT_NAME)
 	@echo $(OUTPUT_NAME).zip ready
 
