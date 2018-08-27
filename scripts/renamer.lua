@@ -1,9 +1,9 @@
 -------------------------------------------------------------------------------
 --[Picker Renamer]--
 -------------------------------------------------------------------------------
-local Event = require('__stdlib__/event/event')
-local Gui = require('__stdlib__/event/gui')
-local Player = require('__stdlib__/event/player')
+local Event = require('__stdlib__/stdlib/event/event')
+local Gui = require('__stdlib__/stdlib/event/gui')
+local Player = require('__stdlib__/stdlib/event/player')
 
 local function spawn_rename_gui(player, pdata)
     local frame = player.gui.center.picker_rename_frame

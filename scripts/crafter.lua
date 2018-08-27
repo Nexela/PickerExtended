@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------
 --[Picker Crafter]-- Craft selected entity on hotkey press
 -------------------------------------------------------------------------------
-local Event = require('__stdlib__/event/event')
+local Event = require('__stdlib__/stdlib/event/event')
 local lib = require('__PickerExtended__/utils/lib')
 
 local function picker_crafter(event)

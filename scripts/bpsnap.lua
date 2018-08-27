@@ -6,11 +6,11 @@
     "homepage": "https://github.com/dewiniaid/BlueprintExensions",
     "description": "Adds tools for updating and placing blueprints."
 --]]
-local Event = require('__stdlib__/event/event')
-local Inventory = require('__stdlib__/entity/inventory')
+local Event = require('__stdlib__/stdlib/event/event')
+local Inventory = require('__stdlib__/stdlib/entity/inventory')
 
 local min, max = math.min, math.max
-local table = require('__stdlib__/utils/table')
+local table = require('__stdlib__/stdlib/utils/table')
 
 local Snap = {
     events = {

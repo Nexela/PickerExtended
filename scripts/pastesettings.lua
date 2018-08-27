@@ -4,7 +4,7 @@
 --Modified from "Copy Assembler Pipe Direction", by "IronCartographer",
 --https://mods.factorio.com/mods/IronCartographer/CopyAssemblerPipeDirection
 
-local Event = require('__stdlib__/event/event')
+local Event = require('__stdlib__/stdlib/event/event')
 
 local function on_entity_settings_pasted(event)
     --Copy assembler pipe direction if entity is square and has fluidboxes

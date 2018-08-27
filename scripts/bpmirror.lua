@@ -1,9 +1,9 @@
 -- Mirroring and Upgradeing code from "Foreman", by "Choumiko"
 
-local Event = require('__stdlib__/event/event')
-local Gui = require('__stdlib__/event/gui')
-local Position = require('__stdlib__/area/position')
-local Inventory = require('__stdlib__/entity/inventory')
+local Event = require('__stdlib__/stdlib/event/event')
+local Gui = require('__stdlib__/stdlib/event/gui')
+local Position = require('__stdlib__/stdlib/area/position')
+local Inventory = require('__stdlib__/stdlib/entity/inventory')
 
 local swap_sides = {
     ['left'] = 'right',

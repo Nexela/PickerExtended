@@ -1,12 +1,12 @@
 local interface = {}
-local Event = require('__stdlib__/event/event')
+local Event = require('__stdlib__/stdlib/event/event')
 
 interface['write_global'] = function()
     game.write_file(script.mod_name .. '/global.lua', serpent.block(global, {comment = false, nocode = true}), false)
     Event.dump_data()
 end
 
-interface['console'] = require('__stdlib__/scripts/console')
+interface['console'] = require('__stdlib__/stdlib/scripts/console')
 
 interface['dump_all'] = function()
     for inter in pairs(remote.interfaces) do

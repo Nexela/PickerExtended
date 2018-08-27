@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------
 --[Picker Hide Minimap]-- TODO add hotkeys to enable/disable map and other elements
 -------------------------------------------------------------------------------
-local Event = require('__stdlib__/event/event')
+local Event = require('__stdlib__/stdlib/event/event')
 local hide_types = table.array_to_dictionary {'logistic-container', 'electric-pole', 'roboport', 'container'}
 
 local function picker_hide_minimap(event)

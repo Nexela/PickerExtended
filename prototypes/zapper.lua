@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------
 --[[Sounds]] --
 -------------------------------------------------------------------------------
-local Entity = require('__stdlib__/data/entity')
+local Entity = require('__stdlib__/stdlib/data/entity')
 
 local setup_animation = function(entity)
     for _, animation in pairs(entity.animations) do

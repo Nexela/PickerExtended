@@ -3,9 +3,9 @@
 -------------------------------------------------------------------------------
 
 local lib = {}
-local Area = require('__stdlib__/area/area')
-local Position = require('__stdlib__/area/position')
-local Inventory = require('__stdlib__/entity/inventory')
+local Area = require('__stdlib__/stdlib/area/area')
+local Position = require('__stdlib__/stdlib/area/position')
+local Inventory = require('__stdlib__/stdlib/entity/inventory')
 
 function lib.get_or_create_main_left_flow(player, flow_name)
     local main_flow = player.gui.left[flow_name .. '_main_flow']

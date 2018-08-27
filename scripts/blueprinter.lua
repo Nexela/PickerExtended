@@ -3,13 +3,13 @@
 -------------------------------------------------------------------------------
 --Mirroring and Upgradeing code from "Foreman", by "Choumiko"
 
-local Event = require('__stdlib__/event/event')
-local Gui = require('__stdlib__/event/gui')
-local Player = require('__stdlib__/event/player')
-local Area = require('__stdlib__/area/area')
-local Position = require('__stdlib__/area/position')
-local Inventory = require('__stdlib__/entity/inventory')
-local Entity = require('__stdlib__/entity/entity')
+local Event = require('__stdlib__/stdlib/event/event')
+local Gui = require('__stdlib__/stdlib/event/gui')
+local Player = require('__stdlib__/stdlib/event/player')
+local Area = require('__stdlib__/stdlib/area/area')
+local Position = require('__stdlib__/stdlib/area/position')
+local Inventory = require('__stdlib__/stdlib/entity/inventory')
+local Entity = require('__stdlib__/stdlib/entity/entity')
 
 local lib = require('__PickerExtended__/utils/lib')
 

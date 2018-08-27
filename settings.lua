@@ -1,5 +1,3 @@
-require('__stdlib__/core')
-
 data:extend {
     {
         type = 'bool-setting',

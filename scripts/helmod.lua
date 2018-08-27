@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------
 --[Planner Pin Panel (helmod)]--
 -------------------------------------------------------------------------------
-local Gui = require('__stdlib__/event/gui')
+local Gui = require('__stdlib__/stdlib/event/gui')
 local lib = require('__PickerExtended__/utils/lib')
 
 local function pick_helmod_pin(event)

@@ -6,9 +6,9 @@
     "homepage": "https://github.com/dewiniaid/BlueprintExensions",
     "description": "Adds tools for updating and placing blueprints."
 --]]
-local Event = require('__stdlib__/event/event')
-local Player = require('__stdlib__/event/player')
-local Inventory = require('__stdlib__/entity/inventory')
+local Event = require('__stdlib__/stdlib/event/event')
+local Player = require('__stdlib__/stdlib/event/player')
+local Inventory = require('__stdlib__/stdlib/entity/inventory')
 local lib = require('__PickerExtended__/utils/lib')
 
 local evt = defines.events

@@ -1,4 +1,4 @@
-local Data = require('__stdlib__/data/data')
+local Data = require('__stdlib__/stdlib/data/data')
 
 data:extend {
     {
@@ -35,7 +35,7 @@ data:extend {
     {
         type = 'custom-input',
         name = 'picker-flashlight-toggle',
-        key_sequence = 'KEY68'
+        key_sequence = 'SEMICOLON'
     }
 }
 

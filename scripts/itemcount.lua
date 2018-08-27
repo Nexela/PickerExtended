@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------
 --[Picker Item Count]--
 -------------------------------------------------------------------------------
-local Event = require('__stdlib__/event/event')
+local Event = require('__stdlib__/stdlib/event/event')
 
 local function get_or_create_itemcount_gui(player)
     local gui = player.gui.center.itemcount

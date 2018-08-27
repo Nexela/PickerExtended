@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
 --[Tape Measure]--
 -------------------------------------------------------------------------------
-local Event = require('__stdlib__/event/event')
-local Area = require('__stdlib__/area/area')
+local Event = require('__stdlib__/stdlib/event/event')
+local Area = require('__stdlib__/stdlib/area/area')
 
 local function measure_area(event)
     if event.item == 'picker-tape-measure' then
