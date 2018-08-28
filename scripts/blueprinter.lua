@@ -63,7 +63,6 @@ local function show_bp_tools(event)
 end
 Event.register(defines.events.on_player_cursor_stack_changed, show_bp_tools)
 
--- TODO not needed in .17?
 -- Blueprint when running out of items
 local function blueprint_single_entity(player, pdata, entity, target_name, area)
     if area:size() > 0 then
