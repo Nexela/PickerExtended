@@ -45,6 +45,7 @@ require('scripts/flashlight')
 require('scripts/helmod')
 require('scripts/playerdeath')
 require('scripts/wiretools')
+require('scripts/pipecleaner')
 
 require('scripts/blueprinter')
 require('scripts/bpmirror')

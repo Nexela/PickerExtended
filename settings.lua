@@ -23,6 +23,13 @@ data:extend {
     },
     {
         type = 'bool-setting',
+        name = 'picker-tool-pipe-cleaner',
+        setting_type = 'startup',
+        default_value = true,
+        order = 'tool-pipe-cleaner'
+    },
+    {
+        type = 'bool-setting',
         name = 'picker-tool-camera',
         setting_type = 'startup',
         default_value = true,
@@ -56,7 +63,14 @@ data:extend{
         type = 'bool-setting',
         name = 'picker-wire-cutter-admin',
         setting_type = 'runtime-global',
-        default_value = false,
+        default_value = true,
+        order = 'picker[admin]'
+    },
+    {
+        type = 'bool-setting',
+        name = 'picker-pipe-cleaner-admin',
+        setting_type = 'runtime-global',
+        default_value = true,
         order = 'picker[admin]'
     }
 }
