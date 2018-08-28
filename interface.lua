@@ -6,8 +6,6 @@ interface['write_global'] = function()
     Event.dump_data()
 end
 
-interface['console'] = require('__stdlib__/stdlib/scripts/console')
-
 interface['dump_all'] = function()
     for inter in pairs(remote.interfaces) do
         if remote.interfaces[inter]['write_global'] then
