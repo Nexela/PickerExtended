@@ -7,37 +7,53 @@ local lib = require('__PickerExtended__/utils/lib')
 
 --Cut wires code modified from "WireStripper", by "justarandomgeek"
 --https://mods.factorio.com/mods/justarandomgeek/wirestripper
+
+local function update_wires(player, entities, network)
+    local found = false
+    for _, entity in pairs(entities) do
+        if not network then
+            if entity.type == 'electric-pole' then
+                found = true
+                pcall(
+                    function()
+                        entity.disconnect_neighbour()
+                    end
+                )
+            end
+        else
+            found = true
+            pcall(
+                function()
+                    entity.disconnect_neighbour(defines.wire_type.green)
+                    entity.disconnect_neighbour(defines.wire_type.red)
+                end
+            )
+        end
+        if entity.last_user then
+            entity.last_user = player
+        end
+    end
+    return found
+end
+
 local function cut_wires(event)
-    local player = Player.get(event.player_index)
-    if player.admin and player.selected and player.selected.circuit_connected_entities then
-        local a, b, c
-        a =
-            pcall(
-            function()
-                player.selected.disconnect_neighbour()
+    if event.item == 'picker-wire-cutter' and #event.entities > 0 then
+        local player = Player.get(event.player_index)
+        if player.admin or not settings.global['picker-wire-cutter-admin'].value then
+            if event.name == defines.events.on_player_selected_area then
+                if update_wires(player, event.entities) then
+                    player.print({'wiretool.copper-removed'})
+                end
+            elseif event.name == defines.events.on_player_alt_selected_area then
+                update_wires(player, event.entities, 'network')
+                player.print({'wiretool.network-removed'})
             end
-        )
-        b =
-            pcall(
-            function()
-                player.selected.disconnect_neighbour(defines.wire_type.red)
-            end
-        )
-        c =
-            pcall(
-            function()
-                player.selected.disconnect_neighbour(defines.wire_type.green)
-            end
-        )
-        if a or b or c then
-            player.print({'wiretool.all-wires-removed'})
-            if player.selected.last_user then
-                player.selected.last_user = player
-            end
+        else
+            player.print({'wiretool.must-be-admin'})
         end
     end
 end
-Event.register('picker-wire-cutter', cut_wires)
+Event.register({defines.events.on_player_alt_selected_area, defines.events.on_player_selected_area}, cut_wires)
 
 local wire_types = {
     'red-wire',

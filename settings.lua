@@ -1,32 +1,40 @@
 data:extend {
+    --(( Selection Tools ))--
     {
         type = 'bool-setting',
         name = 'picker-tool-tape-measure',
         setting_type = 'startup',
         default_value = true,
-        order = 'a[startup]-tool-tape-measure'
+        order = 'tool-tape-measure'
     },
     {
         type = 'bool-setting',
         name = 'picker-tool-ore-eraser',
         setting_type = 'startup',
         default_value = true,
-        order = 'a[startup]-tool-ore-eraser'
+        order = 'tool-ore-eraser'
+    },
+    {
+        type = 'bool-setting',
+        name = 'picker-tool-wire-cutter',
+        setting_type = 'startup',
+        default_value = true,
+        order = 'tool-wire-cutter'
     },
     {
         type = 'bool-setting',
         name = 'picker-tool-camera',
         setting_type = 'startup',
         default_value = true,
-        order = 'a[startup]-tool-camera'
+        order = 'tool-camera'
     },
     {
         type = 'bool-setting',
         name = 'picker-tool-bp-updater',
         setting_type = 'startup',
         default_value = true,
-        order = 'a[startup]-tool-bp-updater'
-    },
+        order = 'tool-bp-updater'
+    },--))
     {
         type = 'bool-setting',
         name = 'picker-bp-snap',
@@ -40,6 +48,16 @@ data:extend {
         setting_type = 'startup',
         default_value = true,
         order = 'picker[startup]-transfer-settings'
+    }
+}
+
+data:extend{
+    {
+        type = 'bool-setting',
+        name = 'picker-wire-cutter-admin',
+        setting_type = 'runtime-global',
+        default_value = false,
+        order = 'picker[admin]'
     }
 }
 

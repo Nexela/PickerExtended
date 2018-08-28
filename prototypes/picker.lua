@@ -19,11 +19,6 @@ data:extend {
     },
     {
         type = 'custom-input',
-        name = 'picker-wire-cutter',
-        key_sequence = 'CONTROL + DELETE'
-    },
-    {
-        type = 'custom-input',
         name = 'picker-wire-picker',
         key_sequence = 'SHIFT + Q'
     },

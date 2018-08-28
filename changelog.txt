@@ -3,6 +3,8 @@ Version: 4.0.0
 Date: ??????
   Features:
     - Removed many scripts to their own mods.
+  Changes:
+    - Pipe Cleaner is now a selection tool available in the library.
 ---------------------------------------------------------------------------------------------------
 Version: 3.0.4
 Date: ??????
