@@ -2,7 +2,6 @@
 --[WIRE TOOLS]--
 -------------------------------------------------------------------------------
 local Event = require('__stdlib__/stdlib/event/event')
-local Player = require('__stdlib__/stdlib/event/player')
 local lib = require('__PickerExtended__/utils/lib')
 
 --Cut wires code modified from "WireStripper", by "justarandomgeek"
@@ -38,7 +37,7 @@ end
 
 local function cut_wires(event)
     if event.item == 'picker-wire-cutter' and #event.entities > 0 then
-        local player = Player.get(event.player_index)
+        local player = game.players[event.player_index]
         if player.admin or not settings.global['picker-wire-cutter-admin'].value then
             if event.name == defines.events.on_player_selected_area then
                 if update_wires(player, event.entities) then
@@ -62,7 +61,7 @@ local wire_types = {
 }
 
 local function pick_wires(event)
-    local player = Player.get(event.player_index)
+    local player = game.players[event.player_index]
     local stack = player.cursor_stack
     if not stack.valid_for_read then
         for _, wire_name in ipairs(wire_types) do

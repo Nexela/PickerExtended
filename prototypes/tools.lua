@@ -14,7 +14,7 @@ if get_setting('picker-tool-tape-measure') then
     Data {
         type = 'selection-tool',
         name = 'picker-tape-measure',
-        icon = '__PickerExtended__/graphics/tape-measure.png',
+        icon = '__PickerExtended__/graphics/tape-measure-2.png',
         icon_size = 64,
         flags = {'hidden', 'only-in-cursor'},
         subgroup = 'tool',
