@@ -1,3 +1,4 @@
+require('settings/tools')
 data:extend {
     --(( Selection Tools ))--
     {
