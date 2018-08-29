@@ -11,7 +11,7 @@ local Position = require('__stdlib__/stdlib/area/position')
 local Inventory = require('__stdlib__/stdlib/entity/inventory')
 local Entity = require('__stdlib__/stdlib/entity/entity')
 
-local lib = require('__PickerExtended__/utils/lib')
+local lib = require('__PickerAtheneum__/utils/lib')
 
 -- Creates the BP tools frame
 local function get_or_create_blueprint_gui(player)

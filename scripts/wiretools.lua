@@ -2,7 +2,7 @@
 --[WIRE TOOLS]--
 -------------------------------------------------------------------------------
 local Event = require('__stdlib__/stdlib/event/event')
-local lib = require('__PickerExtended__/utils/lib')
+local lib = require('__PickerAtheneum__/utils/lib')
 
 --Cut wires code modified from "WireStripper", by "justarandomgeek"
 --https://mods.factorio.com/mods/justarandomgeek/wirestripper

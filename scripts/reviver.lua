@@ -5,7 +5,7 @@
 local Event = require('__stdlib__/stdlib/event/event')
 local Area = require('__stdlib__/stdlib/area/area')
 local Player = require('__stdlib__/stdlib/event/player')
-local lib = require('__PickerExtended__/utils/lib')
+local lib = require('__PickerAtheneum__/utils/lib')
 
 --as of 08/30 this is mostly incorporated into base.
 --Modules are still not revived,

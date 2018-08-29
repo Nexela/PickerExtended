@@ -9,7 +9,7 @@
 local Event = require('__stdlib__/stdlib/event/event')
 local Player = require('__stdlib__/stdlib/event/player')
 local Inventory = require('__stdlib__/stdlib/entity/inventory')
-local lib = require('__PickerExtended__/utils/lib')
+local lib = require('__PickerAtheneum__/utils/lib')
 
 local evt = defines.events
 

@@ -31,8 +31,6 @@ if MOD.DEBUG then
 end
 
 --(( Picker Scripts ))--
-require('utils/adjustment-pad').register_events()
-
 require('scripts/playeroptions')
 require('scripts/tools')
 require('scripts/reviver')
@@ -56,6 +54,6 @@ require('scripts/crafter')
 --)) Picker Scripts ((--
 
 --(( Remote Interfaces ))--
-local interface = require('interface')
+local interface = require('__stdlib__/stdlib/scripts/interface')
 remote.add_interface(MOD.if_name, interface)
 remote.add_interface(script.mod_name, interface) --))
