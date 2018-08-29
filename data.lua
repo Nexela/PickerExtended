@@ -1,8 +1,5 @@
 require('__stdlib__/stdlib/core')
 
-require('prototypes/adjustment-pad')
-
-require('prototypes/styles')
 require('prototypes/sprites')
 
 require('prototypes/picker')
