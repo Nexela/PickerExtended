@@ -3,6 +3,7 @@
 -------------------------------------------------------------------------------
 --Loosley based on pipe manager by KeyboardHack
 local Event = require('__stdlib__/stdlib/event/event')
+local table = require('__stdlib__/stdlib/utils/table')
 
 --Start at a drain and clear fluidboxes out that match. find drain connections not cleaned and repeat
 local function call_a_plumber(event)

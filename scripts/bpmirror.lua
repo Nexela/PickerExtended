@@ -4,6 +4,7 @@ local Event = require('__stdlib__/stdlib/event/event')
 local Gui = require('__stdlib__/stdlib/event/gui')
 local Position = require('__stdlib__/stdlib/area/position')
 local Inventory = require('__stdlib__/stdlib/entity/inventory')
+local table = require('__stdlib__/stdlib/utils/table')
 
 local swap_sides = {
     ['left'] = 'right',

@@ -2,6 +2,7 @@
 --[WIRE TOOLS]--
 -------------------------------------------------------------------------------
 local Event = require('__stdlib__/stdlib/event/event')
+local table = require('__stdlib__/stdlib/utils/table')
 local lib = require('__PickerAtheneum__/utils/lib')
 
 --Cut wires code modified from "WireStripper", by "justarandomgeek"

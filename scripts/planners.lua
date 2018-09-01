@@ -31,7 +31,7 @@ local function get_or_create_planner_flow(player, destroy)
         local frame = flow.add {type = 'frame', name = 'picker_planner_frame', direction = 'vertical', caption = {'planner-menu.header'}}
         local scroll = frame.add {type = 'scroll-pane', name = 'picker_planner_scroll'}
         scroll.style.maximal_height = 110
-        local table = scroll.add {type = 'table', name = 'picker_planner_table', column_count = 6}
+        local gui_table = scroll.add {type = 'table', name = 'picker_planner_table', column_count = 6}
         for planner in pairs(planners) do
             if pdata.planners[planner] == false then
                 if not game.item_prototypes[planner] then
@@ -40,7 +40,7 @@ local function get_or_create_planner_flow(player, destroy)
             else
                 pdata.planners[planner] = true
             end
-            table.add {
+            gui_table.add {
                 type = 'sprite-button',
                 name = 'picker_planner_table_sprite_' .. planner,
                 sprite = 'item/' .. planner,

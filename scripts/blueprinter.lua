@@ -11,6 +11,7 @@ local Position = require('__stdlib__/stdlib/area/position')
 local Inventory = require('__stdlib__/stdlib/entity/inventory')
 local Entity = require('__stdlib__/stdlib/entity/entity')
 
+local table = require('__stdlib__/stdlib/utils/table')
 local lib = require('__PickerAtheneum__/utils/lib')
 
 -- Creates the BP tools frame
