@@ -1,16 +1,12 @@
 local Data = require('__stdlib__/stdlib/data/data')
 
-local function get_setting(key)
-    return settings.startup[key] and settings.startup[key].value
-end
-
 -- Hide base game items because.
 Data('blueprint', 'blueprint'):Flags():add('hidden')
 Data('deconstruction-planner', 'deconstruction-item'):Flags():add('hidden')
 Data('blueprint-book', 'blueprint-book'):Flags():add('hidden')
 
 -- Tape Measure -- Quick way to get bounding box sizes and distances.
-if get_setting('picker-tool-tape-measure') then
+if settings.startup['picker-tool-tape-measure'].value then
     Data {
         type = 'selection-tool',
         name = 'picker-tape-measure',
@@ -33,7 +29,7 @@ if get_setting('picker-tool-tape-measure') then
 end
 
 -- Eraser
-if get_setting('picker-tool-ore-eraser') then
+if settings.startup['picker-tool-ore-eraser'].value then
     Data {
         type = 'selection-tool',
         name = 'picker-ore-eraser',
@@ -55,7 +51,7 @@ if get_setting('picker-tool-ore-eraser') then
 end
 
 -- Screen Shot Camera --Graphics by Factorio forum/mod portal user YuokiTani
-if get_setting('picker-tool-camera') then
+if settings.startup['picker-tool-camera'].value then
     Data {
         type = 'selection-tool',
         name = 'picker-camera',
@@ -72,6 +68,50 @@ if get_setting('picker-tool-camera') then
         alt_selection_mode = {'tiles'},
         alt_selection_color = {r = 0.7, g = 7, b = 0},
         alt_selection_cursor_box_type = 'pair',
+        show_in_library = true
+    }
+end
+
+if settings.startup['picker-tool-wire-cutter'].value then
+    Data {
+        type = 'selection-tool',
+        name = 'picker-wire-cutter',
+        icon = '__PickerExtended__/graphics/cord-cutter.png',
+        icon_size = 64,
+        flags = {'hidden', 'only-in-cursor'},
+        subgroup = 'tool',
+        order = 'c[selection-tool]-a[wire-cutter]',
+        stack_size = 1,
+        stackable = false,
+        selection_color = {r = 1, g = 0, b = 0},
+        alt_selection_color = {r = 0, g = 1, b = 0},
+        selection_mode = {'same-force', 'buildable-type', 'items-to-place'},
+        alt_selection_mode = {'same-force', 'buildable-type', 'items-to-place'},
+        selection_cursor_box_type = 'copy',
+        alt_selection_cursor_box_type = 'copy',
+        always_include_tiles = false,
+        show_in_library = true
+    }
+end
+
+if settings.startup['picker-tool-pipe-cleaner'].value then
+    Data {
+        type = 'selection-tool',
+        name = 'picker-pipe-cleaner',
+        icon = '__PickerExtended__/graphics/pipe-cleaner.png',
+        icon_size = 64,
+        flags = {'hidden', 'only-in-cursor'},
+        subgroup = 'tool',
+        order = 'c[selection-tool]-a[pipe-cleaner]',
+        stack_size = 1,
+        stackable = false,
+        selection_color = {r = 1, g = 0, b = 0},
+        alt_selection_color = {r = 0, g = 1, b = 0},
+        selection_mode = {'same-force', 'buildable-type', 'items-to-place'},
+        alt_selection_mode = {'same-force', 'buildable-type', 'items-to-place'},
+        selection_cursor_box_type = 'copy',
+        alt_selection_cursor_box_type = 'copy',
+        always_include_tiles = false,
         show_in_library = true
     }
 end
@@ -96,3 +136,25 @@ Data {
     key_sequence = 'CONTROL + SHIFT + GRAVE',
     consuming = 'all'
 }
+
+--[[ selection_mode flags
+    "blueprint"
+    "deconstruct"
+    "cancel-deconstruct"
+    "items"
+    "trees"
+    "buildable-type"
+    "tiles"
+    "items-to-place"
+    "any-entity"
+    "any-tile"
+    "same-force"
+    "not-same-force"
+    "friend"
+    "enemy"
+    "upgrade"
+    "cancel-upgrade"
+    "entity-with-health"
+    "entity-with-force"
+    "entity-with-owner"
+]]

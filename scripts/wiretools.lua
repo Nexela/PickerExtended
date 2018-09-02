@@ -39,7 +39,7 @@ end
 local function cut_wires(event)
     if event.item == 'picker-wire-cutter' and #event.entities > 0 then
         local player = game.players[event.player_index]
-        if player.admin or not settings.global['picker-wire-cutter-admin'].value then
+        if player.admin or not settings.global['picker-tool-admin-only'].value then
             if event.name == defines.events.on_player_selected_area then
                 if update_wires(player, event.entities) then
                     player.print({'wiretool.copper-removed'})
@@ -49,7 +49,7 @@ local function cut_wires(event)
                 player.print({'wiretool.network-removed'})
             end
         else
-            player.print({'wiretool.must-be-admin'})
+            player.print({'picker.must-be-admin'})
         end
     end
 end
