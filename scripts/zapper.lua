@@ -7,7 +7,7 @@ local Position = require('__stdlib__/stdlib/area/position')
 
 local evt = defines.events
 local default_destroy = {
-    ['picker-dummy-blueprint'] = 'picker-dummy-blueprint',
+    ['picker-blueprint-tool'] = 'picker-blueprint-tool',
     ['picker-bp-updater'] = 'picker-bp-updater'
 }
 

@@ -40,7 +40,7 @@ local function pick_helmod_pin(event)
             local entity = item.place_result
             local recipe = game.recipe_prototypes[recipe_name]
             if entity and recipe then
-                local bp = lib.get_planner(player, 'picker-dummy-blueprint', 'Pipette Blueprint')
+                local bp = lib.get_planner(player, 'picker-blueprint-tool', 'Pipette Blueprint')
                 if bp then
                     bp.clear_blueprint()
                     bp.label = 'Pipette Blueprint'
