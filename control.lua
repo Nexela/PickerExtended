@@ -3,10 +3,6 @@
 -------------------------------------------------------------------------------
 require('__stdlib__/stdlib/core')
 
-MOD = {}
-MOD.name = 'PickerExtended'
-MOD.if_name = 'picker'
-
 local Changes = require('__stdlib__/stdlib/event/changes')
 local Player = require('__stdlib__/stdlib/event/player')
 local Force = require('__stdlib__/stdlib/event/force')
@@ -38,5 +34,5 @@ require('scripts/crafter')
 
 --(( Remote Interfaces ))--
 local interface = require('__stdlib__/stdlib/scripts/interface')
-remote.add_interface(MOD.if_name, interface)
+remote.add_interface('picker', interface)
 remote.add_interface(script.mod_name, interface) --))
