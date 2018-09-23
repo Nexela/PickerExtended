@@ -26,13 +26,6 @@ data:extend{
         setting_type = 'runtime-global',
         default_value = true,
         order = 'picker[admin]'
-    },
-    {
-        type = 'bool-setting',
-        name = 'picker-pipe-cleaner-admin',
-        setting_type = 'runtime-global',
-        default_value = true,
-        order = 'picker[admin]'
     }
 }
 

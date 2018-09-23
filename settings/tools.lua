@@ -22,13 +22,6 @@ data:extend {
     },
     {
         type = 'bool-setting',
-        name = 'picker-tool-pipe-cleaner',
-        setting_type = 'startup',
-        default_value = true,
-        order = 'tool-pipe-cleaner'
-    },
-    {
-        type = 'bool-setting',
         name = 'picker-tool-camera',
         setting_type = 'startup',
         default_value = true,

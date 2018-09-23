@@ -25,7 +25,6 @@ require('scripts/helmod')
 require('scripts/playerdeath')
 require('scripts/tools')
 require('scripts/wiretools')
-require('scripts/pipecleaner')
 require('scripts/oreeraser')
 
 require('scripts/planners')
