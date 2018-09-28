@@ -3,6 +3,7 @@ Version: 4.0.0
 Date: ??????
   Features:
     - Removed many scripts to their own mods.
+    - Added Recipe Group/Subgroup toggles.
   Changes:
     - Pipe Cleaner is now a selection tool available in the library.
     - Wire Stripper is now a selection tool available in the library.
