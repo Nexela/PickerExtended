@@ -26,12 +26,5 @@ data:extend {
         setting_type = 'startup',
         default_value = true,
         order = 'tool-camera'
-    },
-    {
-        type = 'bool-setting',
-        name = 'picker-tool-bp-updater',
-        setting_type = 'startup',
-        default_value = true,
-        order = 'tool-bp-updater'
     }
 }
