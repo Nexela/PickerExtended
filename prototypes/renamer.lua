@@ -3,7 +3,7 @@
 -------------------------------------------------------------------------------
 local Data = require('__stdlib__/stdlib/data/data')
 
-Data {type = 'custom-input', name = 'picker-rename', key_sequence = 'CONTROL + R', consuming = 'all'}
+Data {type = 'custom-input', name = 'picker-rename', key_sequence = 'CONTROL + SHIFT + R', consuming = 'none'}
 Data {type = 'font', name = 'picker-rename-button', from = 'default-bold', size = 14}
 
 Data.Util.extend_style {
