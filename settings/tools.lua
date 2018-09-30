@@ -26,5 +26,12 @@ data:extend {
         setting_type = 'startup',
         default_value = true,
         order = 'tool-camera'
+    },
+    {
+        type = 'bool-setting',
+        name = 'picker-tool-rewire',
+        setting_type = 'startup',
+        default_value = true,
+        order = 'tool-camera'
     }
 }

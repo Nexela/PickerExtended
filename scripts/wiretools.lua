@@ -2,6 +2,7 @@
 --[WIRE TOOLS]--
 -------------------------------------------------------------------------------
 local Event = require('__stdlib__/stdlib/event/event')
+local Position = require('__stdlib__/stdlib/area/position')
 local table = require('__stdlib__/stdlib/utils/table')
 local lib = require('__PickerAtheneum__/utils/lib')
 
@@ -96,3 +97,37 @@ local function pick_wires(event)
     end
 end
 Event.register('picker-wire-picker', pick_wires)
+
+--[[
+    "name": "rewire",
+	"title": "Rewire",
+	"author": "deltatag",
+	"description": "Neatly rewire electric grid setups.",
+--]]
+local function rewire_wires(event)
+    if event.item == 'picker-rewire' and #event.entities > 2 then
+        -- Pretty crude but works for now
+        -- filter all valid electric poles
+        local poles = {}
+        for _, entity in ipairs(event.entities) do
+            if entity.type == 'electric-pole' then
+                poles[#poles + 1] = entity
+            end
+        end
+
+        for _, pole1 in ipairs(poles) do
+            for _, pole2 in ipairs(poles) do
+                -- calculate differences
+                local v = Position(pole1.position) % Position(pole2.position)
+                if v.x > 0.05 and v.y > 0.05 then
+                    pole1.disconnect_neighbour(pole2)
+                end
+                if (v.x <= 0.05 and v.y > 0.05) or (v.x > 0.05 and v.y <= 0.05) then
+                    pole1.connect_neighbour(pole2)
+                end
+            end
+        end
+
+    end
+end
+Event.register({defines.events.on_player_alt_selected_area, defines.events.on_player_selected_area}, rewire_wires)
