@@ -22,7 +22,6 @@ require('scripts/pastesettings')
 require('scripts/flashlight')
 require('scripts/helmod')
 require('scripts/groups')
-require('scripts/trashfix')
 
 require('scripts/playerdeath')
 require('scripts/tools')

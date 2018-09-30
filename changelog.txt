@@ -4,7 +4,6 @@ Date: ??????
   Features:
     - Removed many scripts to their own mods.
     - Added Recipe Group/Subgroup toggles.
-    - Added Auto Trash Fix.
     - Character Modifiers are restored when respawning.
     - Added Rewire Tool.
   Changes:
