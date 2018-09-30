@@ -108,5 +108,11 @@ data:extend {
         setting_type = 'runtime-per-user',
         type = 'bool-setting',
         default_value = true
+    },
+    {
+        name = 'picker-fix-trash-filters',
+        setting_type = 'runtime-per-user',
+        type = 'bool-setting',
+        default_value = true
     }
 }
