@@ -1,10 +1,10 @@
 -------------------------------------------------------------------------------
 --[Planners]--
 -------------------------------------------------------------------------------
-local Event = require('stdlib/event/event')
-local Gui = require('stdlib/event/gui')
-local Player = require('stdlib/event/player')
-local lib = require('scripts/lib')
+local Event = require('__stdlib__/stdlib/event/event')
+local Gui = require('__stdlib__/stdlib/event/gui')
+local Player = require('__stdlib__/stdlib/event/player')
+local lib = require('__PickerAtheneum__/utils/lib')
 
 -------------------------------------------------------------------------------
 --[Planner Menu]--
@@ -31,7 +31,7 @@ local function get_or_create_planner_flow(player, destroy)
         local frame = flow.add {type = 'frame', name = 'picker_planner_frame', direction = 'vertical', caption = {'planner-menu.header'}}
         local scroll = frame.add {type = 'scroll-pane', name = 'picker_planner_scroll'}
         scroll.style.maximal_height = 110
-        local table = scroll.add {type = 'table', name = 'picker_planner_table', column_count = 6}
+        local gui_table = scroll.add {type = 'table', name = 'picker_planner_table', column_count = 6}
         for planner in pairs(planners) do
             if pdata.planners[planner] == false then
                 if not game.item_prototypes[planner] then
@@ -40,7 +40,7 @@ local function get_or_create_planner_flow(player, destroy)
             else
                 pdata.planners[planner] = true
             end
-            table.add {
+            gui_table.add {
                 type = 'sprite-button',
                 name = 'picker_planner_table_sprite_' .. planner,
                 sprite = 'item/' .. planner,
@@ -60,7 +60,7 @@ local function planner_clicked(event)
         if event.button == defines.mouse_button_type.left then
             if planner_enabled(player, item) and player.clean_cursor() then
                 player.cursor_stack.set_stack(event.match)
-                event.element.parent.parent.parent.parent.style.visible = false
+                event.element.parent.parent.parent.parent.visible = false
             else
                 player.print({'planner-menu.not-enabled'})
             end
@@ -74,7 +74,7 @@ Gui.on_click('picker_planner_table_sprite_(.*)', planner_clicked)
 
 local function close_planner_menu(event)
     if event.element and event.element.name == 'picker_planner_flow' then
-        event.element.style.visible = false
+        event.element.visible = false
     end
 end
 Event.register(defines.events.on_gui_closed, close_planner_menu)
@@ -82,8 +82,8 @@ Event.register(defines.events.on_gui_closed, close_planner_menu)
 local function open_or_close_planner_menu(event)
     local player = game.players[event.player_index]
     local flow = get_or_create_planner_flow(player)
-    flow.style.visible = not flow.style.visible
-    player.opened = flow.style.visible and flow or nil
+    flow.visible = not flow.visible
+    player.opened = flow.visible and flow or nil
 end
 Event.register('picker-planner-menu', open_or_close_planner_menu)
 
@@ -95,7 +95,7 @@ local function get_next_planner(player, last_planner)
     local stack = player.cursor_stack
     local pdata = global.players[player.index]
     local fail = 0
-    get_or_create_planner_flow(player).style.visible = false
+    get_or_create_planner_flow(player).visible = false
 
     if (not stack.valid_for_read) then
         local planner
@@ -146,7 +146,7 @@ local function planners_changed()
     global.planners = {}
     for _, item in pairs(game.item_prototypes) do
         if item.type == 'blueprint-book' or item.type == 'blueprint' or item.type == 'deconstruction-item' or item.type == 'selection-tool' or item.name == 'resource-monitor' then
-            if not (item.name:find('dummy') or item.order:find('no%-picker')) then
+            if not (item.name:find('^selection%-tool') or item.order:find('no%-picker')) then
                 global.planners[item.name] = true
             end
         end

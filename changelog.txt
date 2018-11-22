@@ -1,8 +1,18 @@
 ---------------------------------------------------------------------------------------------------
+Version: 4.0.0
+Date: ??????
+  Features:
+    - Removed many scripts to their own mods.
+    - Added Recipe Group/Subgroup toggles.
+    - Character Modifiers are restored when respawning.
+    - Added Rewire Tool.
+  Changes:
+    - Wire-stripper is now a tool in the blueprint library.
+    - Changed the keybind for renamer.
+---------------------------------------------------------------------------------------------------
 Version: 3.0.4
 Date: ??????
   Features:
-    - Character Modifiers are restored when respawning.
     - Added Naked Rails. (assimilated Naked Rails mod).
     - Added Add empty blueprint to book hotkey. (linked to terrain size increase) will add and select an empty bp to the current book.
     - Added Remove empty blueprints from book. (linked to terrain size decrease) will remove all empty blueprints from the current book.

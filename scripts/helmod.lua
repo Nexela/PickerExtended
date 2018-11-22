@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
 --[Planner Pin Panel (helmod)]--
 -------------------------------------------------------------------------------
-local Gui = require('stdlib/event/gui')
-local lib = require('scripts/lib')
+local Gui = require('__stdlib__/stdlib/event/gui')
+local lib = require('__PickerAtheneum__/utils/lib')
 
 local function pick_helmod_pin(event)
     local player = game.players[event.player_index]
@@ -40,7 +40,7 @@ local function pick_helmod_pin(event)
             local entity = item.place_result
             local recipe = game.recipe_prototypes[recipe_name]
             if entity and recipe then
-                local bp = lib.get_planner(player, 'picker-dummy-blueprint', 'Pipette Blueprint')
+                local bp = lib.get_planner(player, 'picker-blueprint-tool', 'Pipette Blueprint')
                 if bp then
                     bp.clear_blueprint()
                     bp.label = 'Pipette Blueprint'

@@ -1,12 +1,12 @@
-local Event = require('stdlib/event/event')
-local Player = require('stdlib/event/player')
+local Event = require('__stdlib__/stdlib/event/event')
+local Player = require('__stdlib__/stdlib/event/player')
 
 -- https://forums.factorio.com/viewtopic.php?f=6&t=60302
 
 local function save_settings(event)
     local player, pdata = Player.get(event.player_index)
     local char = player.character
-    if char then
+    if char and player.mod_settings['picker-transfer-settings-death'].value then
         pdata.saved_settings = {}
         pdata.saved_settings['character_crafting_speed_modifier'] = char.character_crafting_speed_modifier
         pdata.saved_settings['character_mining_speed_modifier'] = char.character_mining_speed_modifier
@@ -29,7 +29,7 @@ end
 local function restore_settings(event)
     local player, pdata = Player.get(event.player_index)
     local char = player.character
-    if char and pdata.saved_settings then
+    if char and pdata.saved_settings and player.mod_settings['picker-transfer-settings-death'].value then
         for setting, value in pairs(pdata.saved_settings) do
             char[setting] = value
         end
@@ -37,7 +37,5 @@ local function restore_settings(event)
     pdata.saved_settings = nil
 end
 
-if settings.startup["picker-transfer-settings-death"].value then
-    Event.register(defines.events.on_pre_player_died, save_settings)
-    Event.register(defines.events.on_player_respawned, restore_settings)
-end
+Event.register(defines.events.on_pre_player_died, save_settings)
+Event.register(defines.events.on_player_respawned, restore_settings)

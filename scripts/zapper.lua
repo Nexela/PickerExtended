@@ -1,13 +1,13 @@
 -------------------------------------------------------------------------------
 --[Item Zapper]--
 -------------------------------------------------------------------------------
-local Event = require('stdlib/event/event')
-local Player = require('stdlib/event/player')
-local Position = require('stdlib/area/position')
+local Event = require('__stdlib__/stdlib/event/event')
+local Player = require('__stdlib__/stdlib/event/player')
+local Position = require('__stdlib__/stdlib/area/position')
 
 local evt = defines.events
 local default_destroy = {
-    ['picker-dummy-blueprint'] = 'picker-dummy-blueprint',
+    ['picker-blueprint-tool'] = 'picker-blueprint-tool',
     ['picker-bp-updater'] = 'picker-bp-updater'
 }
 

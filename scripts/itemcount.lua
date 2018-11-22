@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------
 --[Picker Item Count]--
 -------------------------------------------------------------------------------
-local Event = require('stdlib/event/event')
+local Event = require('__stdlib__/stdlib/event/event')
 
 local function get_or_create_itemcount_gui(player)
     local gui = player.gui.center.itemcount
@@ -10,7 +10,7 @@ local function get_or_create_itemcount_gui(player)
         gui.style.font = 'default-bold'
     end
     local enabled = player.mod_settings['picker-itemcount'].value
-    gui.style.visible = enabled and player.cursor_stack.valid_for_read
+    gui.visible = enabled and player.cursor_stack.valid_for_read
     return gui
 end
 
@@ -44,7 +44,7 @@ local function update_item_count_settings(event)
     if event.setting == 'picker-itemcount' then
         local enabled = player.mod_settings['picker-itemcount'].value
         local gui = get_or_create_itemcount_gui(player)
-        gui.style.visible = enabled and player.cursor_stack.valid_for_read or false
+        gui.visible = enabled and player.cursor_stack.valid_for_read or false
     end
 end
 Event.register(defines.events.on_runtime_mod_setting_changed, update_item_count_settings)

@@ -1,9 +1,9 @@
-local Player = require('stdlib/event/player')
+local Player = require('__stdlib__/stdlib/event/player')
 -------------------------------------------------------------------------------
 --[Lights]--
 -------------------------------------------------------------------------------
 --Code modified from Searching-flashlights, by RK84
-local Event = require('stdlib/event/event')
+local Event = require('__stdlib__/stdlib/event/event')
 local atan2, pi, floor = math.atan2, math.pi, math.floor
 
 local function orient_players(event)
