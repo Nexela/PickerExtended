@@ -60,6 +60,8 @@ local function get_mirrored_blueprint(blueprint)
                 ent.direction = (others - ent.direction) % 8
                 ent.input_priority = ent.input_priority and swap_sides[ent.input_priority]
                 ent.output_priority = ent.output_priority and swap_sides[ent.output_priority]
+            elseif entType == 'pipe-to-ground' and ent.name:find('%-clamped%-l$') then
+                ent.direction = (0 - ent.direction + 2) % 8
             else
                 ent.direction = (others - ent.direction) % 8
             end
