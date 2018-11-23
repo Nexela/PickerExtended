@@ -1,13 +1,14 @@
 -------------------------------------------------------------------------------
 --[StickyNotes]--
 -------------------------------------------------------------------------------
-if not settings.startup['picker-use-notes'].value then
-    return
-end
 
 local Data = require('stdlib/data/data')
 local Item = require('stdlib/data/item')
 local Entity = require('stdlib/data/entity')
+
+if not settings.startup['picker-use-notes'].value then
+    return
+end
 
 Data {type = 'custom-input', name = 'picker-notes', key_sequence = 'ALT + W'}
 
