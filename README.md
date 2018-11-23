@@ -46,12 +46,6 @@ Holding an item in your hand will show the total count of all of that item in yo
 
 ![Item Count in Action](https://github.com/Nexela/PickerExtended/raw/master/web/picker-item-count.gif)
 
-### Picker Pipe Cleaner
-
-Call a plumber on any fluidbox by selecting the pipe and pressing CONTROL+DELETE. This will loop through all connected pipes and remove the selected fluid allowing your pipes to freely flow again.
-
-![Pipe Cleaner in Action](https://github.com/Nexela/PickerExtended/raw/master/web/picker-pipe-cleaner.gif)
-
 ### Picker Chest Contents Mover
 
 Quickly Move the contents of once chest to another. This is a quick and dirty move. CONTROL+V on the source chest and CONTROL+V on the destination chest. Items with grids or inventories will lose their grids or inventories when transferred. Use this for bulk material only.
@@ -75,12 +69,6 @@ Automatically set the bar limits on newly placed chests. (Chest limiter mod)
 Manually sort opened containers with SHIFT+E, Automatically sorts container inventories when opened if the option is enabled. Can lag big warehouses, runtime option to disable.
 
 ![Inventory Sort in Action](https://github.com/Nexela/PickerExtended/raw/master/web/picker-inventory-sort.gif)
-
-### Picker Automatic Orphan Finder
-
-Highlights nearby underground belts and pipes that are not connected to anything underground when hoving over belts or pipes. Can be disabled per player in mod options.
-
-![Orphan Finder in Action](https://github.com/Nexela/PickerExtended/raw/master/web/picker-orphans.gif)
 
 ### Picker Wire Tools
 

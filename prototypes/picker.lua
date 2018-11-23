@@ -24,11 +24,6 @@ data:extend {
     },
     {
         type = 'custom-input',
-        name = 'picker-pipe-cleaner',
-        key_sequence = 'CONTROL + DELETE'
-    },
-    {
-        type = 'custom-input',
         name = 'picker-wire-cutter',
         key_sequence = 'CONTROL + DELETE'
     },
