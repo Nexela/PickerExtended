@@ -8,6 +8,7 @@ local Area = require('stdlib/area/area')
 local Position = require('stdlib/area/position')
 local lib = require('scripts/lib')
 local interface = require('interface')
+local table = require('stdlib/utils/table')
 
 Event.generate_event_name('dolly_moved')
 interface['dolly_moved_entity_id'] = function()
