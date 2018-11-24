@@ -12,6 +12,7 @@ local Event = require('stdlib/event/event')
 local Changes = require('stdlib/event/changes')
 local Player = require('stdlib/event/player')
 local Force = require('stdlib/event/force')
+Event.protected_mode = true
 
 local function on_init()
     Player.init()
