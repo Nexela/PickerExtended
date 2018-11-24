@@ -1,49 +1,15 @@
 local Data = require('stdlib/data/data')
 
-local marker_beams = util.table.deepcopy(data.raw['beam']['electric-beam-no-sound'])
-marker_beams.name = 'picker-pointer-beam'
+local marker_beams = Data('electric-beam-no-sound', 'beam'):copy('picker-pointer-beam')
+
 marker_beams.width = 1.0
 marker_beams.damage_interval = 2000000000
 marker_beams.action = nil
-marker_beams.start = {
-    filename = '__core__/graphics/empty.png',
-    line_length = 1,
-    width = 1,
-    height = 1,
-    frame_count = 1,
-    axially_symmetrical = false,
-    direction_count = 1,
-    hr_version = {
-        filename = '__core__/graphics/empty.png',
-        line_length = 1,
-        width = 1,
-        height = 1,
-        frame_count = 1,
-        axially_symmetrical = false,
-        direction_count = 1
-    }
-}
-marker_beams.ending = {
-    filename = '__core__/graphics/empty.png',
-    line_length = 1,
-    width = 1,
-    height = 1,
-    frame_count = 1,
-    axially_symmetrical = false,
-    direction_count = 1,
-    hr_version = {
-        filename = '__core__/graphics/empty.png',
-        line_length = 1,
-        width = 1,
-        height = 1,
-        frame_count = 1,
-        axially_symmetrical = false,
-        direction_count = 1
-    }
-}
-     --
-    -- TODO 0.17 version
-    --[[marker_beams.ending = {
+marker_beams.start = Data.Sprites.empty_pictures()
+marker_beams.ending = Data.Sprites.empty_pictures()
+-- TODO 0.17 version
+--[[
+        marker_beams.ending = {
         filename = "__PickerPipeTools__/graphics/entity/markers/" .. marker_name.box .. ".png",
         line_length = 1,
         width = 64,
@@ -65,7 +31,8 @@ marker_beams.ending = {
             --shift = {0.53125, 0},
             scale = 0.5
         }
-    }]]
+    }
+]]
 marker_beams.head = {
     filename = '__PickerExtended__/graphics/entity/markers/beam-arrow.png',
     line_length = 1,
@@ -84,28 +51,8 @@ marker_beams.tail = {
     animation_speed = 1,
     scale = 0.5
 }
-marker_beams.body = {
-    {
-    filename = '__core__/graphics/empty.png',
-    line_length = 1,
-    width = 1,
-    height = 1,
-    frame_count = 1,
-    animation_speed = 1,
-    --direction_count = 1
-    }
-}
-data:extend({marker_beams})
---[[marker_beams.body = {
-    {
-        filename = '__PickerPipeTools__/graphics/entity/markers/' .. marker_name.dash .. '.png',
-        line_length = 1,
-        width = 64,
-        height = 64,
-        frame_count = 1,
-        scale = 0.5
-    }
-}]]--
+marker_beams.body = Data.Sprites.empty_animations()
+--marker_beams.body.direction_count = nil
 
 Data {type = 'custom-input', name = 'picker-dude-wheres-my-car', key_sequence = 'CONTROL + SHIFT + J'}
 Data {type = 'custom-input', name = 'picker-toggle-train-control', key_sequence = 'J'}
