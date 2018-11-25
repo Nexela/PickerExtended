@@ -142,7 +142,7 @@ local function wheres_my_car(event)
         pdata.last_car = player.vehicle
     elseif player.selected and player.selected.type == 'car' then
         pdata.last_car = player.selected
-    elseif event.input_name and pdata.last_car and pdata.last_car.valid then
+    elseif event.input_name and pdata.last_car and pdata.last_car.valid and player.surface == pdata.last_car.surface then
         if not (pdata.car_finder_beam and pdata.car_finder_beam.valid) then
             player.add_custom_alert(pdata.last_car, {type = 'item', name = pdata.last_car.name}, {'vehicles.dude-wheres-my-car'}, true)
             pdata.car_finder_beam =
@@ -156,7 +156,7 @@ local function wheres_my_car(event)
                     duration = 2000000000
                 }
             )
-        else
+        elseif pdata.car_finder_beam then
             pdata.car_finder_beam.destroy()
             pdata.car_finder_beam = nil
         end
