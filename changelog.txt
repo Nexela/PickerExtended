@@ -1,4 +1,12 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.0.5
+Date: ??????
+  BugFixes:
+    - Fix string issue.
+    - Fix (ish) note errors. Still brokenish for existing notes.
+  Changes:
+    - Turn on event safe mode
+---------------------------------------------------------------------------------------------------
 Version: 3.0.4
 Date: ??????
   Features:
