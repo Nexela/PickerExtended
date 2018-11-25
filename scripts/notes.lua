@@ -1,14 +1,13 @@
 -------------------------------------------------------------------------------
 --[StickyNotes]--
 -------------------------------------------------------------------------------
+local Event = require('stdlib/event/event')
+local Gui = require('stdlib/event/gui')
+local Player = require('stdlib/event/player')
 
 if not settings.startup['picker-use-notes'].value then
     return
 end
-
-local Event = require('stdlib/event/event')
-local Gui = require('stdlib/event/gui')
-local Player = require('stdlib/event/player')
 
 local text_color_default = {r = 1, g = 1, b = 0}
 local color_array = {}
@@ -285,10 +284,10 @@ local function destroy_note(note)
     end
     note.mapmark = nil
 
-    global.notes_by_invis[note.invis_note.unit_number] = nil
-    global.notes_by_target[note.target_unit_number] = nil
 
     if note.invis_note and note.invis_note.valid then
+        global.notes_by_invis[note.invis_note.unit_number] = nil
+        global.notes_by_target[note.target_unit_number] = nil
         note.invis_note.destroy()
     end
 end
@@ -443,7 +442,7 @@ local function on_creation(event)
         local invis_notes = ent.surface.find_entities_filtered {name = 'invis-note', area = {{x - 10, y - 10}, {x + 10, y + 10}}}
         for _, invis_note in pairs(invis_notes) do
             local note = get_note(invis_note)
-            if not note.target.valid then -- if we deleted a ghost with this placement
+            if note and not note.target.valid then -- if we deleted a ghost with this placement
                 if math.abs(invis_note.position.x - x) < 0.01 and math.abs(invis_note.position.y - y) < 0.01 then -- if we replaced a correct ghost, reassign
                     update_note_target(note, ent)
                 else -- we destroyed an unrelated ghost
@@ -684,7 +683,7 @@ local function on_hotkey_write(event)
         end
 
         -- show the new menu
-        if note and (note.editer == nil or not note.editer.connected) and (note.invis_note.force == player.force or not note.locked_force) and (player.admin or not note.locked_admin) then
+        if note and (note.editer == nil or not note.editer.connected) and (note.invis_note.valid and note.invis_note.force == player.force or not note.locked_force) and (player.admin or not note.locked_admin) then
             pdata.note_sel = note
             note.editer = player
             menu_note(player, pdata, true)
