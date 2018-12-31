@@ -46,6 +46,13 @@ data:extend {
     },
     {
         type = 'bool-setting',
+        name = 'picker-allow-multiple-craft',
+        setting_type = 'runtime-per-user',
+        default_value = true,
+        order = 'picker-b[multiplecraft]-a'
+    },
+    {
+        type = 'bool-setting',
         name = 'picker-itemcount',
         setting_type = 'runtime-per-user',
         default_value = true,
