@@ -53,8 +53,6 @@ local function cleanup_blueprints(event)
 
     if event.name == evt.on_player_main_inventory_changed then
         inventory = player.get_main_inventory()
-    elseif event.name == evt.on_player_quickbar_inventory_changed then
-        inventory = player.get_quickbar()
     elseif is_trash then
         inventory = player.get_inventory(defines.inventory.player_trash)
     else
@@ -73,11 +71,11 @@ local function cleanup_blueprints(event)
         local bp = game.item_prototypes[planner] and inventory.find_item_stack(planner)
         if bp then
             local setting = settings['picker-no-' .. bp.name .. '-inv'] and settings['picker-no-' .. bp.name .. '-inv'].value or settings['picker-no-other-planner-inv'].value
-            if event.name == evt.on_player_trash_inventory_changed or (setting ~= 'none' and not (setting == 'main' and inventory.is_quickbar())) then
+            if event.name == evt.on_player_trash_inventory_changed or setting ~= 'none' then
                 return bp.clear()
             end
         end
     end
 end
-local events = {evt.on_player_main_inventory_changed, evt.on_player_quickbar_inventory_changed, evt.on_player_trash_inventory_changed}
+local events = {evt.on_player_main_inventory_changed, evt.on_player_trash_inventory_changed}
 Event.register(events, cleanup_blueprints)

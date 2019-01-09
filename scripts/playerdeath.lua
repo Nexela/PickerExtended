@@ -17,7 +17,6 @@ local function save_settings(event)
         pdata.saved_settings['character_resource_reach_distance_bonus'] = char.character_resource_reach_distance_bonus
         pdata.saved_settings['character_item_pickup_distance_bonus'] = char.character_item_pickup_distance_bonus
         pdata.saved_settings['character_loot_pickup_distance_bonus'] = char.character_loot_pickup_distance_bonus
-        pdata.saved_settings['quickbar_count_bonus'] = char.quickbar_count_bonus
         pdata.saved_settings['character_inventory_slots_bonus'] = char.character_inventory_slots_bonus
         pdata.saved_settings['character_logistic_slot_count_bonus'] = char.character_logistic_slot_count_bonus
         pdata.saved_settings['character_trash_slot_count_bonus'] = char.character_trash_slot_count_bonus
