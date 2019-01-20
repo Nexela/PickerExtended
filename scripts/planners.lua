@@ -110,7 +110,8 @@ local function get_next_planner(player, last_planner)
         return planner and pdata.planners[planner] and player.clean_cursor() and lib.get_planner(player, planner)
     elseif stack.valid_for_read then
         local name = stack.name
-        if pdata.planners[name] then
+        local selected = player.selected
+        if pdata.planners[name] and not (name == 'deconstruction-planner' and selected) then
             repeat
                 name = next(pdata.planners, name)
                 fail = fail + 1

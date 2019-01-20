@@ -61,7 +61,7 @@ local function cleanup_blueprints(event)
 
     --Nuke our dummy print
     for name in pairs(default_destroy) do
-        local dummy = inventory.find_item_stack(name)
+        local dummy = game.item_prototypes[name] and inventory.find_item_stack(name)
         if dummy then
             return dummy.clear()
         end
