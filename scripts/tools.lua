@@ -8,10 +8,8 @@ local function measure_area(event)
     if event.item == 'picker-tape-measure' then
         local player = game.players[event.player_index]
         local area = Area(event.area)
-        if event.name == defines.events.on_player_selected_area then
-            area:round_to_integer()
-        else
-            area:tile_center_points()
+        if event.name == defines.events.on_player_alt_selected_area then
+            area = area:ceil()
         end
         local size, width, height = area:size()
         player.print(area .. ' Center = ' .. area:center())

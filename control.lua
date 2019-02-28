@@ -2,7 +2,7 @@
 --[Picker Extended]--
 -------------------------------------------------------------------------------
 require('__stdlib__/stdlib/core')
-
+require('__stdlib__/stdlib/event/event').protected_mode = true
 local Changes = require('__stdlib__/stdlib/event/changes')
 local Player = require('__stdlib__/stdlib/event/player')
 local Force = require('__stdlib__/stdlib/event/force')
