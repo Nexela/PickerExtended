@@ -54,7 +54,7 @@ local function cleanup_blueprints(event)
     if event.name == evt.on_player_main_inventory_changed then
         inventory = player.get_main_inventory()
     elseif is_trash then
-        inventory = player.get_inventory(defines.inventory.player_trash)
+        inventory = player.get_inventory(defines.inventory.character_trash)
     else
         return
     end
