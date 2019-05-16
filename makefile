@@ -17,6 +17,8 @@ PNG_FILES := $(PNG_FILES:%=$(OUTPUT_DIR)/%)
 
 all: clean package check zip
 
+quick: package zip
+
 clean:
 	@echo Removing Build Directory.
 	@rm -rf $(BUILD_DIR)
