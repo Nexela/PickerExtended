@@ -18,5 +18,5 @@ Entity('explosion', 'explosion'):copy('drop-planner'):execute(setup_animation)
 Entity {
     type = 'custom-input',
     name = 'picker-zapper',
-    key_sequence = 'CONTROL + Z'
+    key_sequence = 'ALT + Z'
 }
