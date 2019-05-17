@@ -33,4 +33,27 @@ local function picker_revive_selected(event)
 end
 Event.register('picker-select', picker_revive_selected)
 
+--- Automatically revive ghosts when hovering over them with the item in hand.
+local function picker_revive_selected_ghosts(event)
+    local player = game.get_player(event.player_index)
+    local selected = player.selected
+    if player.controller_type ~= defines.controllers.ghost and selected then
+        local stack = player.cursor_stack
+        if stack.valid_for_read then
+            if selected.type == 'entity-ghost' and player.mod_settings['picker-revivie-selected-ghosts-entity'].value then
+                if stack.prototype.place_result == game.entity_prototypes[selected.ghost_name] then
+                    player.build_from_cursor{position=selected.position, direction=selected.direction}
+                end
+            elseif selected.type == 'tile-ghost' and player.mod_settings['picker-revive-selected-ghosts-tile'].vaue then
+                local tile = stack.prototype.place_as_tile_result
+                if tile and tile.result == game.tile_prototypes[selected.ghost_name] then
+                    player.build_from_cursor{position=selected.position, direction=selected.direction, terrain_building_size = 1}
+                end
+            end
+
+        end
+    end
+end
+Event.register(defines.events.on_selected_entity_changed, picker_revive_selected_ghosts)
+
 return picker_revive_selected

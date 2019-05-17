@@ -101,5 +101,17 @@ data:extend {
         setting_type = 'runtime-per-user',
         type = 'bool-setting',
         default_value = true
+    },
+    {
+        name = 'picker-revive-selected-ghosts-entity',
+        setting_type = 'runtime-per-user',
+        type = 'bool-setting',
+        default_value = true
+    },
+    {
+        name = 'picker-revive-selected-ghosts-tile',
+        setting_type = 'runtime-per-user',
+        type = 'bool-setting',
+        default_value = true
     }
 }
