@@ -1,6 +1,8 @@
 -------------------------------------------------------------------------------
 --[Item Zapper]--
 -------------------------------------------------------------------------------
+--! TODO move to picker inventory tools
+
 local Event = require('__stdlib__/stdlib/event/event')
 local Player = require('__stdlib__/stdlib/event/player')
 local Position = require('__stdlib__/stdlib/area/position')

@@ -7,15 +7,9 @@
 Hover over a ghost and use the Factorio pipette tool to pick the entity that places it. Press the pipette tool button again to revive the ghost. Reviving a ghost keeps all of its settings and module requests. Picker extended will also try and fill module slots of revived ghosts if they have requests. Hover over any damanged entity and press CONTROL+Q with nothing in your hands to grab a repair tool from your inventory. Hover over any item request proxy and press Q to search your inventory for the requested modules/items and insert them.
 Recomend using this with the same keybinds as clean cursor and pipette tool. Picker extend can also pick up selected items on the ground and put it in your hands.
 
+Hover any any ghost entity with the item in your hand and it will automatically revive it.
+
 ![Reviver in Action](https://github.com/Nexela/PickerAtheneum/raw/master/web/picker-reviver.gif)
-
-### Picker Entity Blueprinter
-
-Hover over an entity and take a quick blueprint of everything in its selection area with CONTROL+Q. Blueprints are created automatically if you don't have an existing Pipette Blueprint in your inventory. Modules and recipes are stored in the blueprint. Now you can quickly blueprint your moduled beacon for fast placing! Blue print mirroing is Availble by holding a blueprint and pressing ALT+R, Blueprint upgrading is available using the toolbar that shows up whenever you are holding a blueprint. Quickly Edit the current blueprint or deconstruction planner in your hand with CONTROL+SHIFT+~, Pick any item in the game to make a blueprint of using the blueprint toolbar.
-
-CONTROL+Q with nothing selected will cycle through the available planners (blueprint, deconstruction, upgrade, etc). If you don't have the planner in your inventory and the required research has been met the planner will be automatically created.
-
-Picking entities in the Helmod side panel will create a quick blueprint of the entity, recipe and modules listed.
 
 ### Picker additional Planners
 
@@ -34,11 +28,6 @@ Have an inventory full of pesky blueprints? Try dropping them on the ground by u
 
 ![Zapper in Action](https://github.com/Nexela/PickerAtheneum/raw/master/web/picker-zapper.gif)
 
-### Picker Item Count
-
-Holding an item in your hand will show the total count of all of that item in your inventory, including car trunks. Runtime option to disable.
-
-![Item Count in Action](https://github.com/Nexela/PickerAtheneum/raw/master/web/picker-item-count.gif)
 
 ### Picker Pipe Cleaner
 
