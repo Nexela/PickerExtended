@@ -1,15 +1,10 @@
 -------------------------------------------------------------------------------
 --[Picker Extended]--
 -------------------------------------------------------------------------------
-require('__stdlib__/stdlib/core')
-require('__stdlib__/stdlib/event/event').protected_mode = true
-local Changes = require('__stdlib__/stdlib/event/changes')
-local Player = require('__stdlib__/stdlib/event/player')
-local Force = require('__stdlib__/stdlib/event/force')
-
-Changes.register_events(true)
-Player.register_events(true)
-Force.register_events(true)
+require('__stdlib__/stdlib/event/event').set_protected_mode(true)
+require('__stdlib__/stdlib/event/changes').register_events('fake', 'changes/versions')
+require('__stdlib__/stdlib/event/player').register_events(true)
+require('__stdlib__/stdlib/event/force').register_events(true)
 
 --(( Picker Scripts ))--
 require('scripts/playeroptions')
