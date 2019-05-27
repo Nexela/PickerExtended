@@ -2,7 +2,9 @@
 Version: 4.0.8
 Date: ??????
   Bugfixes:
-    - Properly close the quick planner menu
+    - Properly close the quick planner menu.
+  Changes:
+    - Move held item editor to PickerInventoryTools.
 ----------------------------------------------------------------------------------------------------
 Version: 4.0.7
 Date: ??????

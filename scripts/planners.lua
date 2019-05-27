@@ -125,17 +125,6 @@ local function get_next_planner(player, last_planner)
     end
 end
 
--------------------------------------------------------------------------------
---[Open held item inventory]--
--------------------------------------------------------------------------------
-local function open_held_item_inventory(event)
-    local player = game.players[event.player_index]
-    if player.cursor_stack.valid_for_read then
-        player.opened = player.cursor_stack
-    end
-end
-Event.register('picker-inventory-editor', open_held_item_inventory)
-
 local function cycle_planners(event)
     local player, pdata = Player.get(event.player_index)
     if player.controller_type ~= defines.controllers.ghost then

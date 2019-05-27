@@ -130,13 +130,6 @@ Data {
     consuming = 'none'
 }
 
-Data {
-    type = 'custom-input',
-    name = 'picker-inventory-editor',
-    key_sequence = 'CONTROL + SHIFT + GRAVE',
-    consuming = 'all'
-}
-
 --[[ selection_mode flags
     "blueprint"
     "deconstruct"
