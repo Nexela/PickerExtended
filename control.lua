@@ -28,5 +28,4 @@ require('scripts/crafter')
 
 --(( Remote Interfaces ))--
 local interface = require('__stdlib__/stdlib/scripts/interface')
-remote.add_interface('picker', interface)
 remote.add_interface(script.mod_name, interface) --))

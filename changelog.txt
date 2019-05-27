@@ -5,6 +5,7 @@ Date: ??????
     - Properly close the quick planner menu.
   Changes:
     - Move held item editor to PickerInventoryTools.
+    - Remove deprecated 'picker' interface.
 ----------------------------------------------------------------------------------------------------
 Version: 4.0.7
 Date: ??????
