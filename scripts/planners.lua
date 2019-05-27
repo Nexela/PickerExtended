@@ -64,6 +64,7 @@ local function planner_clicked(event)
             if planner_enabled(player, item) and player.clean_cursor() then
                 player.cursor_stack.set_stack(event.match)
                 event.element.parent.parent.parent.parent.visible = false
+                player.opened = nil
             else
                 player.print({'planner-menu.not-enabled'})
             end
