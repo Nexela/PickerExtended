@@ -9,7 +9,6 @@ require('__stdlib__/stdlib/event/force').register_events(true)
 --(( Picker Scripts ))--
 require('scripts/playeroptions')
 require('scripts/reviver')
-require('scripts/zapper')
 require('scripts/minimap')
 require('scripts/renamer')
 require('scripts/pastesettings')

@@ -10,37 +10,6 @@ data:extend {
         order = 'picker-transfer-settings'
     },
     {
-        type = 'string-setting',
-        name = 'picker-no-blueprint-inv',
-        setting_type = 'runtime-per-user',
-        default_value = 'none',
-        allowed_values = {'none', 'main', 'all'},
-        order = 'picker-z[zapper]-a'
-    },
-    {
-        type = 'string-setting',
-        name = 'picker-no-deconstruction-planner-inv',
-        setting_type = 'runtime-per-user',
-        default_value = 'none',
-        allowed_values = {'none', 'main', 'all'},
-        order = 'picker-z[zapper]-b'
-    },
-    {
-        type = 'string-setting',
-        name = 'picker-no-other-planner-inv',
-        setting_type = 'runtime-per-user',
-        default_value = 'none',
-        allowed_values = {'none', 'main', 'all'},
-        order = 'picker-z[zapper]-c'
-    },
-    {
-        type = 'bool-setting',
-        name = 'picker-item-zapper-all',
-        setting_type = 'runtime-per-user',
-        default_value = false,
-        order = 'picker-z[zapper]-y'
-    },
-    {
         type = 'bool-setting',
         name = 'picker-hide-minimap',
         setting_type = 'runtime-per-user',

@@ -6,6 +6,7 @@ Date: ??????
   Changes:
     - Move held item editor to PickerInventoryTools.
     - Remove deprecated 'picker' interface.
+    - Move zapper to PickerInventoryTools.
 ----------------------------------------------------------------------------------------------------
 Version: 4.0.7
 Date: ??????
