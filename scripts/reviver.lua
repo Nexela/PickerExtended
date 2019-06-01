@@ -45,7 +45,7 @@ local function picker_revive_selected_ghosts(event)
         local stack = player.cursor_stack
         if stack.valid_for_read then
             if selected.type == 'entity-ghost' and player.mod_settings['picker-revive-selected-ghosts-entity'].value then
-                if stack.prototype.place_result == game.entity_prototypes[selected.ghost_name] and pdata.next_revive_tick ~= event.tick then
+                if stack.type ~= 'rail-planner' and stack.prototype.place_result == game.entity_prototypes[selected.ghost_name] and pdata.next_revive_tick ~= event.tick then
                     player.build_from_cursor {position = selected.position, direction = selected.direction}
                 end
             elseif selected.type == 'tile-ghost' and player.mod_settings['picker-revive-selected-ghosts-tile'].vaue then
