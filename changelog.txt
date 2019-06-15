@@ -1,7 +1,12 @@
 ---------------------------------------------------------------------------------------------------
+Version: 4.0.10
+Date: ??????
+  Bugfixes:
+    - Ghost reviver should behave better with pipe underneathies.
+---------------------------------------------------------------------------------------------------
 Version: 4.0.9
 Date: ??????
-  Changes:
+  Bugfixes:
     - Ghost reviver should behave better with underneathies.
     - Ghost reviver ignores rail-planner placed entities.
 ---------------------------------------------------------------------------------------------------

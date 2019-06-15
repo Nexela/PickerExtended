@@ -46,8 +46,9 @@ local function picker_revive_selected_ghosts(event)
         if stack.valid_for_read then
             if selected.type == 'entity-ghost' and player.mod_settings['picker-revive-selected-ghosts-entity'].value then
                 if stack.type ~= 'rail-planner' and stack.prototype.place_result == game.entity_prototypes[selected.ghost_name] and pdata.next_revive_tick ~= event.tick then
-                    local direction = selected.direction
+                    local direction = selected.direction or defines.direction.north
                     local position = selected.position
+                    --! TODO API build_from_cursor to no do flip logic
                     if selected.ghost_type == 'underground-belt' then
                         local name = selected.ghost_name
                         local belt_type = selected.belt_to_ground_type
@@ -58,6 +59,13 @@ local function picker_revive_selected_ghosts(event)
                             if ent.belt_to_ground_type ~= belt_type then
                                 ent.rotate()
                             end
+                            ent.direction = direction
+                        end
+                    elseif selected.ghost_type == 'pipe-to-ground' then
+                        local name = selected.ghost_name
+                        player.build_from_cursor {position = position, direction = direction}
+                        local ent = player.surface.find_entity(name, position)
+                        if ent and ent.direction ~= direction then
                             ent.direction = direction
                         end
                     else
