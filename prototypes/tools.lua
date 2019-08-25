@@ -7,24 +7,47 @@ Data('blueprint-book', 'blueprint-book'):Flags():add('hidden')
 
 -- Tape Measure -- Quick way to get bounding box sizes and distances.
 if settings.startup['picker-tool-tape-measure'].value then
+    local function shortcut_icon(suffix, size)
+        return {
+            filename = '__PickerExtended__/graphics/shortcut-bar/tape-measure-'..suffix,
+            priority = 'extra-high-no-scale',
+            size = size,
+            scale = 1,
+            flags = {'icon'}
+        }
+    end
     Data {
         type = 'selection-tool',
         name = 'picker-tape-measure',
-        icon = '__PickerExtended__/graphics/tape-measure-2.png',
-        icon_size = 64,
+        icons = {
+            {icon='__PickerExtended__/graphics/black.png', icon_size=1, scale=64},
+            {icon='__PickerExtended__/graphics/shortcut-bar/tape-measure-x32-white.png', icon_size=32}
+        },
         flags = {'hidden', 'only-in-cursor'},
         subgroup = 'tool',
         order = 'c[selection-tool]-a[tape-measure]',
         stack_size = 1,
         stackable = false,
-        selection_color = {r = 0, g = 1, b = 0},
-        alt_selection_color = {r = 0, g = 1, b = 0},
+        selection_color = { g = 1 },
+        alt_selection_color = { g = 1, b = 1 },
         selection_mode = {'any-tile'},
         alt_selection_mode = {'any-tile'},
         selection_cursor_box_type = 'copy',
-        alt_selection_cursor_box_type = 'copy',
+        alt_selection_cursor_box_type = 'electricity',
         always_include_tiles = true,
-        show_in_library = true
+        show_in_library = false
+    }
+    Data {
+        type = 'shortcut',
+        name = 'picker-tape-measure',
+        order = 'a[alt-mode]-b[copy]',
+        -- associated_control_input = 'get-tapeline-tool',
+        action = 'create-blueprint-item',
+        item_to_create = 'picker-tape-measure',
+        icon = shortcut_icon('x32.png', 32),
+        small_icon = shortcut_icon('x24.png', 24),
+        disabled_icon = shortcut_icon('x32-white.png', 32),
+        disabled_small_icon = shortcut_icon('x24-white.png', 24)
     }
 end
 

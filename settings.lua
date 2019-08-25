@@ -91,3 +91,130 @@ data:extend {
         default_value = true
     }
 }
+
+-------------------------------------------------------------------------------
+--[Tape Measure]--
+-------------------------------------------------------------------------------
+
+local possible_colors = {
+    'white',
+    'black',
+    'darkgrey',
+    'grey',
+    'lightgrey',
+    'darkred',
+    'red',
+    'lightred',
+    'darkgreen',
+    'green',
+    'lightgreen',
+    'darkblue',
+    'blue',
+    'lightblue',
+    'orange',
+    'yellow',
+    'pink',
+    'purple',
+    'brown'
+}
+
+data:extend {
+    {
+        type = 'bool-setting',
+        name = 'picker-log-selection-area',
+        setting_type = 'runtime-per-user',
+        default_value = false,
+        order = 'za'
+    },
+    {
+        type = 'bool-setting',
+        name = 'picker-draw-tilegrid-on-ground',
+        setting_type = 'runtime-per-user',
+        default_value = true,
+        order = 'zb'
+    },
+    {
+        type = 'double-setting',
+        name = 'picker-tilegrid-line-width',
+        setting_type = 'runtime-per-user',
+        default_value = 2.0,
+        order = 'zd'
+    },
+    {
+        type = 'double-setting',
+        name = 'picker-tilegrid-clear-delay',
+        setting_type = 'runtime-per-user',
+        default_value = 5,
+        order = 'ze'
+    },
+    {
+        type = 'int-setting',
+        name = 'picker-tilegrid-group-divisor',
+        setting_type = 'runtime-per-user',
+        default_value = 5,
+        order = 'zf'
+    },
+    {
+        type = 'int-setting',
+        name = 'picker-tilegrid-split-divisor',
+        setting_type = 'runtime-per-user',
+        default_value = 4,
+        order = 'zg'
+    },
+    {
+        type = 'string-setting',
+        name = 'picker-tilegrid-background-color',
+        setting_type = 'runtime-per-user',
+        default_value = 'black',
+        allowed_values = possible_colors,
+        order = 'zh'
+    },
+    {
+        type = 'string-setting',
+        name = 'picker-tilegrid-border-color',
+        setting_type = 'runtime-per-user',
+        default_value = 'grey',
+        allowed_values = possible_colors,
+        order = 'zi'
+    },
+    {
+        type = 'string-setting',
+        name = 'picker-tilegrid-label-color',
+        setting_type = 'runtime-per-user',
+        default_value = 'lightgrey',
+        allowed_values = possible_colors,
+        order = 'zj'
+    },
+    {
+        type = 'string-setting',
+        name = 'picker-tilegrid-color-1',
+        setting_type = 'runtime-per-user',
+        default_value = 'grey',
+        allowed_values = possible_colors,
+        order = 'zk'
+    },
+    {
+        type = 'string-setting',
+        name = 'picker-tilegrid-color-2',
+        setting_type = 'runtime-per-user',
+        default_value = 'lightgreen',
+        allowed_values = possible_colors,
+        order = 'zl'
+    },
+    {
+        type = 'string-setting',
+        name = 'picker-tilegrid-color-3',
+        setting_type = 'runtime-per-user',
+        default_value = 'lightred',
+        allowed_values = possible_colors,
+        order = 'zm'
+    },
+    {
+        type = 'string-setting',
+        name = 'picker-tilegrid-color-4',
+        setting_type = 'runtime-per-user',
+        default_value = 'yellow',
+        allowed_values = possible_colors,
+        order = 'zn'
+    }
+}
