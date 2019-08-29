@@ -6,7 +6,7 @@ local Color = require('__stdlib__/stdlib/utils/color')
 local Event = require('__stdlib__/stdlib/event/event')
 
 local function measure_area(event)
-    if not event.item == 'picker-tape-measure' then return end
+    if event.item ~= 'picker-tape-measure' then return end
     local player = game.players[event.player_index]
     local surface_index = player.surface.index
     local is_alt_selection = event.name == defines.events.on_player_alt_selected_area
