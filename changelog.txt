@@ -87,7 +87,7 @@ Date: ??????
     - Player inventory can be manually sorted.
     - Honking can attract enemies (defaults to off).
     - Train horns are configurable.
-  Enhancements:
+  Changes:
     - Beltbrushs can be created from pipette blueprints of belts.
     - Pipette and Beltbrush blueprints are always cleaned from inventory.
     - Zapper always deletes blueprints you place in trash slots (add bps to autotrash to always trash em).
