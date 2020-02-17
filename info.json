@@ -7,5 +7,15 @@
   "contact": "nexela@gmail.com",
   "dependencies": ["base >= 0.18.0", "stdlib >= 1.0.0", "PickerAtheneum >= 1.0.0"],
   "homepage": "https://forums.factorio.com/viewtopic.php?f=93&t=14695",
-  "description": "Enhances the players pipette tool with features such as quick blueprints, quick planners, ghost reviving, entity moving, orphan finding and more"
+  "description": "Enhances the players pipette tool with features such as quick blueprints, quick planners, ghost reviving, entity moving, orphan finding and more",
+  "package": {
+    "ignore": ["makefile"],
+    "scripts": {
+      "datestamp": ".vscode/datestamp.sh",
+      "prepackage": ".vscode/prepackage.sh",
+      "prepublish": ".vscode/prepublish.sh",
+      "publish": ".vscode/publish.sh",
+      "version": ".vscode/version.sh"
+    }
+  }
 }
