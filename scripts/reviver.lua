@@ -48,7 +48,7 @@ local function picker_revive_selected_ghosts(event)
                 if stack.type ~= 'rail-planner' and stack.prototype.place_result == game.entity_prototypes[selected.ghost_name] and pdata.next_revive_tick ~= event.tick then
                     local direction = selected.direction or defines.direction.north
                     local position = selected.position
-                    --! TODO API build_from_cursor to no do flip logic
+                    -- API build_from_cursor to no do flip logic
                     if selected.ghost_type == 'underground-belt' then
                         local name = selected.ghost_name
                         local belt_type = selected.belt_to_ground_type

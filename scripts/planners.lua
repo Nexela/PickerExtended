@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
 --[Planners]--
 -------------------------------------------------------------------------------
---! TODO move to blueprinter
---! TODO Remote API for registering/removing planners
+--* Move to blueprinter
+--* Remote API for registering/removing planners
 
 local Event = require('__stdlib__/stdlib/event/event')
 local Gui = require('__stdlib__/stdlib/event/gui')

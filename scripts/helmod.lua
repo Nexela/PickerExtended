@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------
 --[Planner Pin Panel (helmod)]--
 -------------------------------------------------------------------------------
---! TODO move to Blueprinter and use cursor ghost
+--* Move to Blueprinter and use cursor ghost
 
 local Gui = require('__stdlib__/stdlib/event/gui')
 local lib = require('__PickerAtheneum__/utils/lib')
