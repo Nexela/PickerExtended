@@ -13,7 +13,6 @@ require('scripts/minimap')
 require('scripts/renamer')
 require('scripts/pastesettings')
 require('scripts/flashlight')
-require('scripts/helmod')
 require('scripts/groups')
 
 require('scripts/playerdeath')

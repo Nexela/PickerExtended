@@ -2,6 +2,7 @@
 Version: 4.1.1
 Date: ????
   Changes:
+    - Removed helmod pin panel as it isn't needed anymore.
 ---------------------------------------------------------------------------------------------------
 Version: 4.1.0
 Date: ??????
