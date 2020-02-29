@@ -11,11 +11,11 @@
   "package": {
     "ignore": ["makefile"],
     "scripts": {
-      "datestamp": ".vscode/datestamp.sh",
-      "prepackage": ".vscode/prepackage.sh",
-      "prepublish": ".vscode/prepublish.sh",
-      "publish": ".vscode/publish.sh",
-      "version": ".vscode/version.sh"
+      "datestamp": "../PickerAtheneum/.publish/datestamp.sh",
+      "prepackage": "../PickerAtheneum/.publish/prepackage.sh",
+      "prepublish": "../PickerAtheneum/.publish/prepublish.sh",
+      "publish": "../PickerAtheneum/.publish/publish.sh",
+      "version": "../PickerAtheneum/.publish/version.sh"
     }
   }
 }
