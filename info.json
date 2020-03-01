@@ -9,7 +9,7 @@
   "homepage": "https://forums.factorio.com/viewtopic.php?f=93&t=14695",
   "description": "Enhances the players pipette tool with features such as quick blueprints, quick planners, ghost reviving, entity moving, orphan finding and more",
   "package": {
-    "ignore": ["makefile"],
+    "ignore": [],
     "scripts": {
       "datestamp": "../PickerAtheneum/.publish/datestamp.sh",
       "prepackage": "../PickerAtheneum/.publish/prepackage.sh",
