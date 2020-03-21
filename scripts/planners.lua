@@ -35,8 +35,9 @@ local function get_or_create_planner_flow(player, destroy)
         scroll.style.maximal_height = 110
         local gui_table = scroll.add {type = 'table', name = 'picker_planner_table', column_count = 6}
         for planner in pairs(planners) do
+            local proto = game.item_prototypes[planner]
             if pdata.planners[planner] == false then
-                if not game.item_prototypes[planner] then
+                if not proto then
                     pdata.planners[planner] = nil
                 end
             else
@@ -47,9 +48,10 @@ local function get_or_create_planner_flow(player, destroy)
                 name = 'picker_planner_table_sprite_' .. planner,
                 sprite = 'item/' .. planner,
                 style = pdata.planners[planner] and 'picker_buttons_med' or 'picker_buttons_med_off',
-                tooltip = {'planner-menu.button', game.item_prototypes[planner].localised_name}
+                tooltip = {'planner-menu.button', proto.localised_name, proto.localised_description}
             }
         end
+        flow.visible = false
     end
     return flow
 end
