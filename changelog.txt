@@ -1,6 +1,6 @@
 ---------------------------------------------------------------------------------------------------
 Version: 4.1.2
-Date: ????
+Date: 2020-04-21
   Changes:
     - Moved groups and subgroups option to Picker Inventory Tools.
     - Moved Flashlight Toggle to Picker Inventory Tools.
