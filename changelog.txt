@@ -2,6 +2,10 @@
 Version: 4.1.2
 Date: ????
   Changes:
+    - Moved groups and subgroups option to Picker Inventory Tools.
+    - Moved Flashlight Toggle to Picker Inventory Tools.
+    - Moved Minimap Toggle to Picker Inventory Tools.
+    - Ore erasers now uses Entity.deplete().
 ---------------------------------------------------------------------------------------------------
 Version: 4.1.1
 Date: 2020-03-19

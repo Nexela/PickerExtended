@@ -9,17 +9,13 @@ require('__stdlib__/stdlib/event/force').register_events(true)
 --(( Picker Scripts ))--
 require('scripts/playeroptions')
 require('scripts/reviver')
-require('scripts/minimap')
 require('scripts/renamer')
 require('scripts/pastesettings')
 require('scripts/flashlight')
-require('scripts/groups')
-
 require('scripts/playerdeath')
 require('scripts/tools')
 require('scripts/wiretools')
 require('scripts/oreeraser')
-
 require('scripts/planners')
 require('scripts/crafter')
 --)) Picker Scripts ((--

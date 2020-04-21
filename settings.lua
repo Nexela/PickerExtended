@@ -9,13 +9,7 @@ data:extend {
         default_value = true,
         order = 'picker-transfer-settings'
     },
-    {
-        type = 'bool-setting',
-        name = 'picker-hide-minimap',
-        setting_type = 'runtime-per-user',
-        default_value = true,
-        order = 'picker-b[minimap]-a'
-    },
+
     {
         type = 'bool-setting',
         name = 'picker-allow-multiple-craft',
@@ -65,18 +59,6 @@ data:extend {
         setting_type = 'runtime-per-user',
         default_value = true,
         order = 'picker-g[planner]-a'
-    },
-    {
-        name = 'picker-use-groups',
-        setting_type = 'runtime-per-user',
-        type = 'bool-setting',
-        default_value = true
-    },
-    {
-        name = 'picker-use-subgroups',
-        setting_type = 'runtime-per-user',
-        type = 'bool-setting',
-        default_value = true
     },
     {
         name = 'picker-revive-selected-ghosts-entity',

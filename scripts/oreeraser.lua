@@ -23,7 +23,7 @@ local function erase_ores(event)
                 list[name].count = list[name].count + 1
                 list[name].amount = list[name].amount + entity.amount
                 if do_destroy then
-                    entity.destroy()
+                    entity.deplete()
                 end
             end
         end
