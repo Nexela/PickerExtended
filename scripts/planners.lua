@@ -62,7 +62,7 @@ local function planner_clicked(event)
 
     if item then
         if event.button == defines.mouse_button_type.left then
-            if planner_enabled(player, item) and player.clean_cursor() then
+            if planner_enabled(player, item) and player.clear_cursor() then
                 player.cursor_stack.set_stack(event.match)
                 event.element.parent.parent.parent.parent.visible = false
                 player.opened = nil
@@ -112,7 +112,7 @@ local function get_next_planner(player, last_planner)
                 fail = fail + 1
             until pdata.planners[planner] and game.item_prototypes[planner] and planner_enabled(player, game.item_prototypes[planner]) or fail == 100
         end
-        return planner and pdata.planners[planner] and player.clean_cursor() and lib.get_planner(player, planner)
+        return planner and pdata.planners[planner] and player.clear_cursor() and lib.get_planner(player, planner)
     elseif stack.valid_for_read then
         local name = stack.name
         local selected = player.selected
@@ -121,7 +121,7 @@ local function get_next_planner(player, last_planner)
                 name = next(pdata.planners, name)
                 fail = fail + 1
             until name and pdata.planners[name] and game.item_prototypes[name] and planner_enabled(player, game.item_prototypes[name]) or fail == 100
-            return name and pdata.planners[name] and player.clean_cursor() and lib.get_planner(player, name)
+            return name and pdata.planners[name] and player.clear_cursor() and lib.get_planner(player, name)
         end
     end
 end
