@@ -16,7 +16,6 @@ if settings.startup['picker-tool-tape-measure'].value then
         subgroup = 'tool',
         order = 'c[selection-tool]-a[tape-measure]',
         stack_size = 1,
-        stackable = false,
         selection_color = {r = 0, g = 1, b = 0},
         alt_selection_color = {r = 0, g = 1, b = 0},
         selection_mode = {'any-tile'},
@@ -24,7 +23,6 @@ if settings.startup['picker-tool-tape-measure'].value then
         selection_cursor_box_type = 'copy',
         alt_selection_cursor_box_type = 'copy',
         always_include_tiles = true,
-        show_in_library = true
     }
 end
 
@@ -39,14 +37,12 @@ if settings.startup['picker-tool-ore-eraser'].value then
         subgroup = 'tool',
         order = 'c[selection-tool]-b[ore-eraser]',
         stack_size = 1,
-        stackable = false,
         selection_color = {r = 0, g = 1, b = 0},
         alt_selection_color = {r = 0, g = 0, b = 1},
         selection_mode = {'any-entity'},
         alt_selection_mode = {'any-entity'},
         selection_cursor_box_type = 'pair',
         alt_selection_cursor_box_type = 'pair',
-        show_in_library = true
     }
 end
 
@@ -61,14 +57,12 @@ if settings.startup['picker-tool-camera'].value then
         subgroup = 'tool',
         order = 'd[selection-tool]-b[camera]',
         stack_size = 1,
-        stackable = false,
         selection_mode = {'any-tile'},
         selection_cursor_box_type = 'pair',
         selection_color = {r = 0.7, g = 0, b = 0.7},
         alt_selection_mode = {'any-tile'},
         alt_selection_color = {r = 0.7, g = 7, b = 0},
         alt_selection_cursor_box_type = 'pair',
-        show_in_library = true
     }
 end
 
@@ -82,7 +76,6 @@ if settings.startup['picker-tool-wire-cutter'].value then
         subgroup = 'tool',
         order = 'c[selection-tool]-a[wire-cutter]',
         stack_size = 1,
-        stackable = false,
         selection_color = {r = 1, g = 0, b = 0},
         alt_selection_color = {r = 0, g = 1, b = 0},
         selection_mode = {'same-force', 'buildable-type', 'items-to-place'},
@@ -90,7 +83,6 @@ if settings.startup['picker-tool-wire-cutter'].value then
         selection_cursor_box_type = 'copy',
         alt_selection_cursor_box_type = 'copy',
         always_include_tiles = false,
-        show_in_library = true
     }
 end
 
@@ -104,7 +96,6 @@ if settings.startup['picker-tool-rewire'].value then
         subgroup = 'tool',
         order = 'c[selection-tool]-a[wire-cutter]',
         stack_size = 1,
-        stackable = false,
         selection_color = {r = 1, g = 0, b = 0},
         alt_selection_color = {r = 0, g = 1, b = 0},
         selection_mode = {'same-force', 'buildable-type', 'items-to-place'},
@@ -112,7 +103,6 @@ if settings.startup['picker-tool-rewire'].value then
         selection_cursor_box_type = 'copy',
         alt_selection_cursor_box_type = 'copy',
         always_include_tiles = false,
-        show_in_library = true
     }
 end
 
