@@ -5,6 +5,7 @@ Date: ????
     - clean_cursor renamed to clear_cursor.
     - Clean up prototype loading.
     - Moved wire related tools to PickerBeltTools.
+    - Moved paste settings to Picker PipeTools.
 ---------------------------------------------------------------------------------------------------
 Version: 4.1.2
 Date: 2020-04-21
