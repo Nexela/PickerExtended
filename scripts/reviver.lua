@@ -52,14 +52,14 @@ local function picker_revive_selected_ghosts(event)
                     if selected.ghost_type == 'underground-belt' then
                         local name = selected.ghost_name
                         local belt_type = selected.belt_to_ground_type
-                        player.build_from_cursor {position = position, direction = direction}
+                        if belt_type == 'output' then
+                            direction = (direction + 4) % 8
+                        end
 
+                        player.build_from_cursor {position = position, direction = direction}
                         local ent = player.surface.find_entity(name, position)
-                        if ent then
-                            if ent.belt_to_ground_type ~= belt_type then
-                                ent.rotate()
-                            end
-                            ent.direction = direction
+                        if belt_type == 'output' and ent then
+                            ent.rotate()
                         end
                     elseif selected.ghost_type == 'pipe-to-ground' then
                         local name = selected.ghost_name
