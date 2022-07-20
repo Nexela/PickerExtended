@@ -16,7 +16,7 @@ local function measure_area(event)
         player.print('Size = ' .. size .. ' Width = ' .. width .. ' Height = ' .. height)
     end
 end
-Event.register({defines.events.on_player_selected_area, defines.events.on_player_alt_selected_area}, measure_area)
+Event.register({ defines.events.on_player_selected_area, defines.events.on_player_alt_selected_area }, measure_area)
 
 -------------------------------------------------------------------------------
 --[Screenshot Camera]--
@@ -40,9 +40,9 @@ local function paparazzi(event)
     if event.item == 'picker-camera' then
         local player = game.players[event.player_index]
         local opt = player.mod_settings
-        local _zoom = opt['picker-camera-zoom'].value
-        local _aa = opt['picker-camera-aa'].value
-        local _gui = opt['picker-camera-gui'].value
+        local _zoom = opt['picker-camera-zoom'].value --[[@as double]]
+        local _aa = opt['picker-camera-aa'].value --[[@as boolean]]
+        local _gui = opt['picker-camera-gui'].value --[[@as boolean]]
         local _alt_info = event.name == defines.events.on_player_alt_selected_area
         local _path = 'Screenshots/' .. (_alt_info and 'Alt/' or '') .. event.tick .. '.png'
 
@@ -50,11 +50,11 @@ local function paparazzi(event)
         local max_dist = (_aa and 256 / _zoom) or (512 / _zoom)
 
         local area = Area(event.area):ceil()
-        local diffx = area.right_bottom.x - area.left_top.x
-        local diffy = area.right_bottom.y - area.left_top.y
+        local diff_x = area.right_bottom.x - area.left_top.x
+        local diff_y = area.right_bottom.y - area.left_top.y
 
-        local res = {x = diffx * pix_per_tile, y = diffy * pix_per_tile}
-        local pos = {x = area.left_top.x + diffx / 2, y = area.left_top.y + diffy / 2}
+        local res = { x = diff_x * pix_per_tile, y = diff_y * pix_per_tile }
+        local pos = { x = area.left_top.x + diff_x / 2, y = area.left_top.y + diff_y / 2 }
 
         if res.x >= 1 and res.y >= 1 then
             --use another mod to handle larger screenshots if available
@@ -66,7 +66,7 @@ local function paparazzi(event)
                         player = player,
                         by_player = player,
                         position = pos,
-                        size = {x = diffx, y = diffy},
+                        size = { x = diff_x, y = diff_y },
                         zoom = _zoom,
                         path_prefix = 'Picker',
                         show_gui = _gui,
@@ -75,8 +75,8 @@ local function paparazzi(event)
                     }
                 )
             else
-                if diffx <= max_dist then
-                    if diffy <= max_dist then
+                if diff_x <= max_dist then
+                    if diff_y <= max_dist then
                         player.print('Taking screenshot of selected area')
                         game.take_screenshot {
                             player = player,
@@ -99,4 +99,4 @@ local function paparazzi(event)
         end
     end
 end
-Event.register({defines.events.on_player_selected_area, defines.events.on_player_alt_selected_area}, paparazzi)
+Event.register({ defines.events.on_player_selected_area, defines.events.on_player_alt_selected_area }, paparazzi)

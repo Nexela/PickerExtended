@@ -29,11 +29,11 @@ local function get_or_create_planner_flow(player, destroy)
         local planners = global.planners
         pdata.planners = pdata.planners or {}
 
-        flow = player.gui.center.add {type = 'flow', name = 'picker_planner_flow', direction = 'vertical'}
-        local frame = flow.add {type = 'frame', name = 'picker_planner_frame', direction = 'vertical', caption = {'planner-menu.header'}}
-        local scroll = frame.add {type = 'scroll-pane', name = 'picker_planner_scroll'}
+        flow = player.gui.center.add { type = 'flow', name = 'picker_planner_flow', direction = 'vertical' }
+        local frame = flow.add { type = 'frame', name = 'picker_planner_frame', direction = 'vertical', caption = { 'planner-menu.header' } }
+        local scroll = frame.add { type = 'scroll-pane', name = 'picker_planner_scroll' }
         scroll.style.maximal_height = 110
-        local gui_table = scroll.add {type = 'table', name = 'picker_planner_table', column_count = 6}
+        local gui_table = scroll.add { type = 'table', name = 'picker_planner_table', column_count = 6 }
         for planner in pairs(planners) do
             local proto = game.item_prototypes[planner]
             if pdata.planners[planner] == false then
@@ -48,7 +48,7 @@ local function get_or_create_planner_flow(player, destroy)
                 name = 'picker_planner_table_sprite_' .. planner,
                 sprite = 'item/' .. planner,
                 style = pdata.planners[planner] and 'picker_buttons_med' or 'picker_buttons_med_off',
-                tooltip = {'planner-menu.button', proto.localised_name, proto.localised_description}
+                tooltip = { 'planner-menu.button', proto.localised_name, proto.localised_description }
             }
         end
         flow.visible = false
@@ -56,6 +56,9 @@ local function get_or_create_planner_flow(player, destroy)
     return flow
 end
 
+---@class EventData.stdlib.PickerExtended.on_gui_click: EventData.on_gui_click
+---@field match string
+---@param event EventData.stdlib.PickerExtended.on_gui_click
 local function planner_clicked(event)
     local player, pdata = Player.get(event.player_index)
     local item = game.item_prototypes[event.match]
@@ -67,7 +70,7 @@ local function planner_clicked(event)
                 event.element.parent.parent.parent.parent.visible = false
                 player.opened = nil
             else
-                player.print({'planner-menu.not-enabled'})
+                player.print { 'planner-menu.not-enabled' }
             end
         elseif event.button == defines.mouse_button_type.right then
             event.element.style = event.element.style.name == 'picker_buttons_med' and 'picker_buttons_med_off' or 'picker_buttons_med'
@@ -140,7 +143,8 @@ Event.register('picker-next-planner', cycle_planners)
 local function planners_changed()
     global.planners = {}
     for _, item in pairs(game.item_prototypes) do
-        if item.type == 'blueprint-book' or item.type == 'blueprint' or item.type == 'deconstruction-item' or item.type == 'selection-tool' or item.type == 'upgrade-item' then
+        if item.type == 'blueprint-book' or item.type == 'blueprint' or item.type == 'deconstruction-item' or item.type == 'selection-tool' or
+            item.type == 'upgrade-item' then
             if not (item.name:find('^selection%-tool') or item.order:find('no%-picker')) then
                 global.planners[item.name] = true
             end

@@ -12,9 +12,9 @@ local function orient_players(event)
     if character and (pdata.last_sel_tick or 0) <= (game.tick - 10) and player.selected and not player.vehicle and not player.walking_state.walking then
         if player.mod_settings['picker-search-light'].value then
             --Code optimization by GotLag
-            local ppos, spos = player.position, player.selected.position
-            local dx = ppos.x - spos.x
-            local dy = spos.y - ppos.y
+            local p_pos, s_pos = player.position, player.selected.position
+            local dx = p_pos.x - s_pos.x
+            local dy = s_pos.y - p_pos.y
             local orientation = (atan2(dx, dy) / pi + 1) / 2
             character.direction = floor(orientation * 8 + 0.5) % 8
             pdata.last_sel_tick = game.tick

@@ -15,7 +15,7 @@ data:extend {
         name = 'picker-allow-multiple-craft',
         setting_type = 'runtime-per-user',
         default_value = false,
-        order = 'picker-b[multiplecraft]-a'
+        order = 'picker-b[multiple-craft]-a'
     },
     {
         type = 'bool-setting',

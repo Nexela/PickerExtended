@@ -7,14 +7,14 @@ local lib = require('__PickerAtheneum__/utils/lib')
 local function santas_little_helper(player, name)
     local allow_multiple = player.mod_settings['picker-allow-multiple-craft'].value
     if game.recipe_prototypes[name] and player.force.recipes[name].enabled and (allow_multiple or player.get_item_count(name) == 0) then
-        player.begin_crafting {count = 1, recipe = name, silent = false}
+        player.begin_crafting { count = 1, recipe = name, silent = false }
     end
 end
 
 local function picker_crafter(event)
     local player = game.players[event.player_index]
     local selected, stack = player.selected, player.cursor_stack
-    if selected then
+    if selected and stack then
         if not stack.valid_for_read then
             local _, _, ip = lib.get_placeable_item(selected)
             if ip then

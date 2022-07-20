@@ -46,8 +46,9 @@ local function picker_revive_selected_ghosts(event)
         local stack = player.cursor_stack
         if stack.valid_for_read then
             if selected.type == 'entity-ghost' and player.mod_settings['picker-revive-selected-ghosts-entity'].value then
-                if stack.type ~= 'rail-planner' and stack.prototype.place_result == game.entity_prototypes[selected.ghost_name] and pdata.next_revive_tick ~= event.tick then
-                    local direction = selected.direction or defines.direction.north
+                if stack.type ~= 'rail-planner' and stack.prototype.place_result == game.entity_prototypes[selected.ghost_name] and
+                    pdata.next_revive_tick ~= event.tick then
+                    local direction = selected.direction or defines.direction.north --[[@as defines.direction]]
                     local position = selected.position
                     -- API build_from_cursor to no do flip logic
                     if selected.ghost_type == 'underground-belt' then
@@ -56,7 +57,7 @@ local function picker_revive_selected_ghosts(event)
                         end
                         local name = selected.ghost_name
                         local belt_type = selected.belt_to_ground_type
-                        player.build_from_cursor {position = position, direction = direction}
+                        player.build_from_cursor { position = position, direction = direction }
                         local ent = player.surface.find_entity(name, position)
                         if ent then
                             if ent.belt_to_ground_type ~= belt_type then
@@ -65,19 +66,19 @@ local function picker_revive_selected_ghosts(event)
                         end
                     elseif selected.ghost_type == 'pipe-to-ground' then
                         local name = selected.ghost_name
-                        player.build_from_cursor {position = position, direction = direction}
+                        player.build_from_cursor { position = position, direction = direction }
                         local ent = player.surface.find_entity(name, position)
                         if ent and ent.direction ~= direction then
                             ent.direction = direction
                         end
                     else
-                        player.build_from_cursor {position = position, direction = direction}
+                        player.build_from_cursor { position = position, direction = direction }
                     end
                 end
             elseif selected.type == 'tile-ghost' and player.mod_settings['picker-revive-selected-ghosts-tile'].value then
                 local tile = stack.prototype.place_as_tile_result
                 if tile and tile.result == game.tile_prototypes[selected.ghost_name] and pdata.next_revive_tick ~= event.tick then
-                    player.build_from_cursor {position = selected.position, direction = selected.direction, terrain_building_size = 1}
+                    player.build_from_cursor { position = selected.position, direction = selected.direction, terrain_building_size = 1 }
                 end
             end
         end
