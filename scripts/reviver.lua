@@ -74,7 +74,7 @@ local function picker_revive_selected_ghosts(event)
                         player.build_from_cursor {position = position, direction = direction}
                     end
                 end
-            elseif selected.type == 'tile-ghost' and player.mod_settings['picker-revive-selected-ghosts-tile'].vaue then
+            elseif selected.type == 'tile-ghost' and player.mod_settings['picker-revive-selected-ghosts-tile'].value then
                 local tile = stack.prototype.place_as_tile_result
                 if tile and tile.result == game.tile_prototypes[selected.ghost_name] and pdata.next_revive_tick ~= event.tick then
                     player.build_from_cursor {position = selected.position, direction = selected.direction, terrain_building_size = 1}
