@@ -50,7 +50,7 @@ local function picker_revive_selected_ghosts(event)
                     pdata.next_revive_tick ~= event.tick then
                     local direction = selected.direction or defines.direction.north --[[@as defines.direction]]
                     local position = selected.position
-                    -- API build_from_cursor to no do flip logic
+                    ---@api build_from_cursor to not do flip logic
                     if selected.ghost_type == 'underground-belt' then
                         if selected.belt_to_ground_type == 'output' then
                             direction = (direction + 4) % 8
