@@ -6,8 +6,16 @@ local lib = require('__PickerAtheneum__/utils/lib')
 
 local function santas_little_helper(player, name)
     local allow_multiple = player.mod_settings['picker-allow-multiple-craft'].value
-    if game.recipe_prototypes[name] and player.force.recipes[name].enabled and (allow_multiple or player.get_item_count(name) == 0) then
-        player.begin_crafting { count = 1, recipe = name, silent = false }
+    for _, unlocked_recipe in pairs(player.force.recipes) do
+        for _, product in pairs(unlocked_recipe.products) do
+            if product.name == name then
+                local recipe_name = unlocked_recipe.name
+                if game.recipe_prototypes[recipe_name] and player.force.recipes[recipe_name].enabled and (allow_multiple or player.get_item_count(name) == 0) then
+                    player.begin_crafting { count = 1, recipe = recipe_name, silent = false }
+                    return
+                end
+            end
+        end
     end
 end
 
