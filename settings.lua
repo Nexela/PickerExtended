@@ -9,13 +9,19 @@ data:extend {
         default_value = true,
         order = 'picker-transfer-settings'
     },
-
     {
         type = 'bool-setting',
         name = 'picker-allow-multiple-craft',
         setting_type = 'runtime-per-user',
         default_value = false,
         order = 'picker-b[multiple-craft]-a'
+    },
+    {
+        type = 'bool-setting',
+        name = 'picker-queue-to-front',
+        setting_type = 'runtime-per-user',
+        default_value = false,
+        order = 'picker-b[multiple-craft]-b'
     },
     {
         type = 'bool-setting',
