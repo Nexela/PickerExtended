@@ -10,6 +10,7 @@ local function santas_little_helper(player, name)
     if game.recipe_prototypes[name] and player.force.recipes[name].enabled and (allow_multiple or player.get_item_count(name) == 0) then
         if to_front then global.queue_to_front = true end
         player.begin_crafting { count = 1, recipe = name, silent = false }
+        global.queue_to_front = false
     end
 end
 
