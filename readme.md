@@ -20,7 +20,7 @@ CTRL+Q
 
 ### Picker Crafter
 
-Alt+Q on an entity and picker will try to craft that entity if you have the items in your inventory. Can be bound to Q for even quicker crafting access.
+Alt+Q on an entity and picker will try to craft that entity (with option to put it in front of the currentnly sheduled crafts) if you have the items in your inventory. Can be bound to Q for even quicker crafting access.
 
 ### Picker Zapper
 
