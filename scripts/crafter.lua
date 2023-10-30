@@ -30,6 +30,7 @@ local function picker_crafter(event)
 end
 Event.register('picker-crafter', picker_crafter)
 
+
 local function picker_push_craft_to_front(event)
     if global.queue_busy or not global.queue_to_front then return nil end
 
@@ -51,13 +52,14 @@ local function picker_push_craft_to_front(event)
     end
 
     -- cover case when last item in queue is same recipe we are adding in front
-    if saved_queue[1].recipe == event.recipe.name and saved_queue[1].count - event.queued_count > 0 then
+    if #saved_queue > 0  and saved_queue[1].recipe == event.recipe.name and saved_queue[1].count - event.queued_count > 0 then
         saved_queue[1].count = saved_queue[1].count - event.queued_count
-    elseif saved_queue[1].recipe == event.recipe.name then
+        player.begin_crafting{count=event.queued_count, recipe=event.recipe, silent=true}
+    elseif #saved_queue > 0  and saved_queue[1].recipe == event.recipe.name then
         table.remove(saved_queue, 1)
+        player.begin_crafting{count=event.queued_count, recipe=event.recipe, silent=true}
     end
     
-    player.begin_crafting{count=event.queued_count, recipe=event.recipe, silent=true}
     while #saved_queue > 0 do
         queue_entry = table.remove(saved_queue, #saved_queue)
         player.begin_crafting{count=queue_entry.count, recipe=queue_entry.recipe, silent=true}
