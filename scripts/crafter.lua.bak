@@ -11,7 +11,6 @@ local function santas_little_helper(player, name)
         if to_front then global.queue_to_front = true end
         player.begin_crafting { count = 1, recipe = name, silent = false }
         global.queue_to_front = false
-        global.queue_busy = false
     end
 end
 
